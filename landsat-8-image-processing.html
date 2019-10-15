@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Landsat 8 Image Processing &amp; Visualization</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-startted-spatial-data.html">Getting Startted with Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Landsat 8 Image Processing &amp; Visualization</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>In this lesson, we will use a Landsat 8 image of the Finger Lakes region in New York State, which acquired on September 27, 2016. We will use the R-package <strong>RStoolbox</strong> to do the Landsat image processing and analysis, such as calculating spectral indices and performing principal component transformation, texture analysis, unsupervised and supervised classification and fractional cover analyses.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>This Lesson will cover:</p>
+<ul>
+<li><p><a href="#rgb-image-comparison">RGB image comparison</a></p></li>
+<li><p><a href="#pan-sharpening-or-image-fusion">Pan Sharpening or Image Fusion</a></p></li>
+<li><p><a href="#radiometric-calibration-and-atmospheric-correction">Radiometric Calibration and Atmospheric Correction</a></p></li>
+</ul>
+<div style="margin-bottom:50px;">
+
+</div>
+<div id="load-packages" class="section level4">
+<h4>Load packages:</h4>
+<pre class="r"><code>library (raster)       # raster data
+library(rasterVis)   # raster visualisation     
+library(sp)          # spatial data processing          
+library(rgdal)       # spatial data processing      
+library(RStoolbox)   # Image analysis
+library(ggplot2)     # plotting
+library(gridExtra)</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0">here</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+</div>
+<div id="import-metadata-file-.mtl" class="section level4">
+<h4>Import metadata file (*.MTL):</h4>
+<pre class="r"><code>mtlFile =paste0(dataFolder,&quot;.//Landsat8//Landsat8_RAW//LC08_L1TP_016030_20160927_20170220_01_T1_MTL.txt&quot;) #     metadata file
+metaData= readMeta(mtlFile) # read metadata file
+summary(metaData)</code></pre>
+<pre><code>## Scene:      LC80160302016271LGN01 
+## Satellite:  LANDSAT8 
+## Sensor:     OLI_TIRS 
+## Date:       2016-09-27 
+## Path/Row:   16/30 
+## Projection: +proj=utm +zone=18 +units=m +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0
+## 
+## Data:
+##                                                   FILES QUANTITY CATEGORY
+## B1_dn   LC08_L1TP_016030_20160927_20170220_01_T1_B1.TIF       dn    image
+## B2_dn   LC08_L1TP_016030_20160927_20170220_01_T1_B2.TIF       dn    image
+## B3_dn   LC08_L1TP_016030_20160927_20170220_01_T1_B3.TIF       dn    image
+## B4_dn   LC08_L1TP_016030_20160927_20170220_01_T1_B4.TIF       dn    image
+## B5_dn   LC08_L1TP_016030_20160927_20170220_01_T1_B5.TIF       dn    image
+## B6_dn   LC08_L1TP_016030_20160927_20170220_01_T1_B6.TIF       dn    image
+## B7_dn   LC08_L1TP_016030_20160927_20170220_01_T1_B7.TIF       dn    image
+## B9_dn   LC08_L1TP_016030_20160927_20170220_01_T1_B9.TIF       dn    image
+## B10_dn LC08_L1TP_016030_20160927_20170220_01_T1_B10.TIF       dn    image
+## B11_dn LC08_L1TP_016030_20160927_20170220_01_T1_B11.TIF       dn    image
+## B8_dn   LC08_L1TP_016030_20160927_20170220_01_T1_B8.TIF       dn      pan
+## QA_dn  LC08_L1TP_016030_20160927_20170220_01_T1_BQA.TIF       dn       qa
+## 
+## Available calibration parameters (gain and offset):
+##  dn -&gt; radiance (toa)
+##  dn -&gt; reflectance (toa)
+##  dn -&gt; brightness temperature (toa)</code></pre>
+</div>
+<div id="import-bands-123456-and-7" class="section level4">
+<h4>Import bands 1,2,3,4,5,6 and 7:</h4>
+<pre class="r"><code>bandList &lt;- paste0(dataFolder,&quot;.\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B&quot;, 1:7, &quot;.tif&quot;)
+s &lt;- stack(bandList)
+names(s) &lt;- c(&quot;B1&quot;,&quot;B2&quot;, &quot;B3&quot;, &quot;B4&quot;,&quot;B5&quot;, &quot;B6&quot;, &quot;B7&quot;)
+s</code></pre>
+<pre><code>## class       : RasterStack 
+## dimensions  : 504, 541, 272664, 7  (nrow, ncol, ncell, nlayers)
+## resolution  : 30, 30  (x, y)
+## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names       :    B1,    B2,    B3,    B4,    B5,    B6,    B7 
+## min values  :  8492,  7617,  6777,  6026,  5290,  5185,  5142 
+## max values  : 19081, 19935, 21595, 22716, 27590, 38013, 39165</code></pre>
+</div>
+<div id="plot-all-bands" class="section level4">
+<h4>Plot all Bands</h4>
+<pre class="r"><code>plot(s)</code></pre>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="histogram-of-bands" class="section level4">
+<h4>Histogram of Bands</h4>
+<pre class="r"><code>hist(s)</code></pre>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="rgb-image-comparison" class="section level3">
+<h3>RGB image comparison</h3>
+<p>Below are some common band combinations in RGB comparisons for Landsat Landsat 8</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/RGB_comp.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<div id="natural-color-image" class="section level4">
+<h4>Natural Color Image:</h4>
+<pre class="r"><code>p1&lt;-ggRGB(s, r=4, g=3, b=2, stretch = &quot;lin&quot;)+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  ggtitle(&quot;Natural Color\n (R= Red, G= Green, B= Blue)&quot;)
+p1</code></pre>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="false-color-image-vegetation" class="section level4">
+<h4>False Color Image (Vegetation):</h4>
+<pre class="r"><code>p2&lt;-ggRGB(s, r=5, g=4, b=3, stretch = &quot;lin&quot;)+
+theme(axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.title.y=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank())+
+  ggtitle(&quot;False Color Vegetation\n (R= NIR, G= Red,  B=Green)&quot;)
+p2</code></pre>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="false-color-image-urban" class="section level4">
+<h4>False Color Image (Urban):</h4>
+<pre class="r"><code>p3&lt;-ggRGB(s, r=7, g=6, b=4, stretch = &quot;lin&quot;)+
+theme(axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.title.y=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank())+
+  ggtitle(&quot;False Color Urban\n (R= SWIR1, G= SWIR2,  B=Red)&quot;)</code></pre>
+<p>Let’s plot all maps side by side, for this, you have to use following function</p>
+<pre class="r"><code>grid.arrange(p1, p2, p3, nrow = 1)</code></pre>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-11-1.png" width="864" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+<div id="pan-sharpening-or-image-fusion" class="section level3">
+<h3>Pan Sharpening or Image Fusion</h3>
+<p>Pan Sharpening is shorthand for “Panchromatic sharpening”. It means using a high resolution panchromatic (single band) image to “sharpen” a multispectral image. We will use <strong>panSharpen()</strong> function in <strong>RSToolbox</strong> package on three channel RGB images.</p>
+<pre class="r"><code># red (30 m)
+b4 &lt;- raster(paste0(dataFolder,&quot;.\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B4.TIF&quot;)) 
+# green (30 m)
+b2 &lt;- raster(paste0(dataFolder,&quot;.\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B2.TIF&quot;)) 
+# blue (30 m)
+b3 &lt;- raster(paste0(dataFolder,&quot;.\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B3.TIF&quot;)) 
+# Band 8 Pan (15 m)
+pan &lt;- raster(paste0(dataFolder,&quot;.\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B8.TIF&quot;))    </code></pre>
+<pre class="r"><code># raster stack
+s.rgb &lt;- stack(b4,b3,b2)
+names(s.rgb) &lt;- c(&quot;B4&quot;,&quot;B2&quot;, &quot;B3&quot;)</code></pre>
+<pre class="r"><code># Pan Sharpening
+img_pan &lt;- panSharpen(s.rgb, 
+                      pan, 
+                      r = &quot;layer.1&quot;, 
+                      g = &quot;layer.2&quot;,
+                      b = &quot;layer.3&quot;, 
+                      method = &quot;pca&quot;,
+                      norm=TRUE)
+# Plot pab image
+p4&lt;-ggRGB(img_pan, stretch=&quot;lin&quot;)+ 
+theme(axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.title.y=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank())+
+  ggtitle(&quot;Pansharpened\n (PCA)&quot;)
+p4</code></pre>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Lets, plot original and pan sharpened map side by side</p>
+<pre class="r"><code>grid.arrange(p1, p4, nrow = 1)</code></pre>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="radiometric-calibration-and-atmospheric-correction" class="section level3">
+<h3>Radiometric Calibration and Atmospheric Correction</h3>
+<p>The Landsat8 products are delivered in 16-bit unsigned integer format (0-65535) which can be re-scaled to the <strong>Top Of Atmosphere (TOA)</strong> reflectance and/or radiance using radiometric re-scaling coefficients provided in the metadata file (MTL file). The MTL file also contains the thermal constants needed to convert TIRS data to the at satellite brightness temperature.</p>
+<p>To implement radiometric calibration, we will complete the following processing steps using the radCor() function in RStoolbox:</p>
+<ul>
+<li><p>Conversion of DN values to spectral radiance at the sensor</p></li>
+<li><p>Conversion of spectral radiance to reflectance at sensor</p></li>
+<li><p>Atmospheric correction and conversion of sensor reflectance to surface reflectance</p></li>
+</ul>
+<p>First, we will create a layer stack based on metadata file:</p>
+<pre class="r"><code>lsat=stackMeta(mtlFile)     # stack landsat bands 
+summary(lsat)                     # summary of each band</code></pre>
+<pre><code>## Warning in .local(object, ...): summary is an estimate based on a sample of 1e+05 cells (36.68% of all cells)</code></pre>
+<pre><code>##         B1_dn B2_dn B3_dn B4_dn B5_dn B6_dn B7_dn B9_dn B10_dn B11_dn
+## Min.     8492  7659  6782  6042  5551  5208  5191  4998  22668  20931
+## 1st Qu.  8789  8018  7557  6686 13350 10398  7567  5045  25512  23613
+## Median   8959  8248  7904  7394 14959 11583  8728  5052  25892  23907
+## 3rd Qu.  9321  8712  8465  8502 16769 12955 10532  5058  26345  24262
+## Max.    19081 19935 21595 22716 27590 38013 39165  5101  29981  27124
+## NA&#39;s     2217  2217  2217  2217  2217  2217  2217  2217   2217   2217</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="conversion-of-dn-values-at-spectral-radiance-at-the-sensor" class="section level4">
+<h4>Conversion of DN values at spectral radiance at the sensor</h4>
+<p>At-sensor spectral radiance (also called top-of-atmosphere radiance) is the amount of energy received by the sensor per second per steradian (sr) per square meter. To convert the processing raw digital number (DN) to spectral radiance we will use radCor() function in RStoolbox. There are four methods available for doing this conversion: <strong>rad, apref, sdos, dos, costz</strong>.</p>
+<ul>
+<li>rad - Radiance</li>
+<li>apref - Apparent reflectance (top-of-atmosphere reflectance)</li>
+<li>dos - Dark object subtraction following Chavez (1989)</li>
+<li>costz - Dark object subtraction following Chavez (1996)</li>
+<li>sdos - Simple dark object subtraction. Classical DOS, Lhaze must be estimated for each band separately.</li>
+</ul>
+<p>The gain (G) and bias or intercept (I ) are different for each band and are provided in the Landsat header file. For Landsat 8, a linear equation is used to convert from DN to radiance (L):</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/Equa.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<pre class="r"><code>lsat_tra &lt;- radCor(lsat,    # landsat stack
+    metaData = metaData,      # metadata (MTL file) 
+    method = &quot;rad&quot;)           # convert DN to radiance
+lsat_tra</code></pre>
+<pre><code>## class       : RasterStack 
+## dimensions  : 504, 541, 272664, 10  (nrow, ncol, ncell, nlayers)
+## resolution  : 30, 30  (x, y)
+## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names       :      B1_tra,      B2_tra,      B3_tra,      B4_tra,      B5_tra,      B6_tra,      B7_tra,      B9_tra,     B10_tra,     B11_tra 
+## min values  : 43.66201600, 33.50591100, 20.96619600, 10.20694100,  1.76545000,  0.27992000,  0.07246402,  0.00000000,  7.56201760,  7.00657720 
+## max values  : 176.0562830, 191.2132650, 195.7889600, 176.2474060, 137.5278500,  49.9815120,  17.4347412,   0.2496565,  10.1630962,   9.1691854</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="conversion-of-spectral-radiance-to-reflectance-at-sensor" class="section level4">
+<h4>Conversion of spectral radiance to reflectance at sensor</h4>
+<p>When spectral radiance values are compared within and between sensors, variations occur frequently because of difference in sun-target-sensor configurations. Hence, these data are often converted to <strong>Top of Atmosphere (TOA)</strong> or at sensor reflectance. It eliminates effect of different solar zenith angles at the time of image acquisition, minimizes the solar radiance band differences occurring between different sensors and accounts for differences in the Earth-Sun distance.</p>
+<pre class="r"><code>lsat_tre&lt;- radCor(lsat,        # landsat stack
+    metaData = metaData,         # metadata 
+    method = &quot;apref&quot;)              # convert DN top-of-atmosphere reflectance
+lsat_tre</code></pre>
+<pre><code>## class       : RasterStack 
+## dimensions  : 504, 541, 272664, 10  (nrow, ncol, ncell, nlayers)
+## resolution  : 30, 30  (x, y)
+## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names       :       B1_tre,       B2_tre,       B3_tre,       B4_tre,       B5_tre,       B6_tre,       B7_tre,       B9_tre,       B10_bt,       B11_bt 
+## min values  : 1.036013e-01, 7.764161e-02, 5.272034e-02, 3.043955e-02, 8.603770e-03, 5.488612e-03, 4.212881e-03, 0.000000e+00, 1.036556e+02, 2.290230e+02 
+## max values  : 4.177576e-01, 4.430942e-01, 4.923433e-01, 5.256014e-01, 6.702040e-01, 9.794354e-01, 1.000000e+00, 3.115158e-03, 1.106258e+02, 2.413258e+02</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="atmospheric-correction-and-conversion-of-sensor-reflectance-to-surface-reflectance" class="section level4">
+<h4>Atmospheric correction and Conversion of sensor reflectance to surface reflectance</h4>
+<p>TOA reflectance does not take into account any atmospheric effects and it is simply a ratio of the at-sensor radiance with the incoming radiance from the sun, where the distance and angle of the sensor to the target are considered.<br />
+It is assumed that any radiation originating from dark pixels is due to atmospheric haze and not the reflectance of the surface. The haze values are estimates of path radiance, which can be subtracted in a dark object subtraction (DOS) procedure. Atmospheric haze affects almost exclusively the visible wavelength range. Therefore, typically, you’d only want to estimate haze in blue, green and red bands, but occasionally also in the NIR band. The atmospheric correction methods (sdos, dos and costz) apply to the optical (solar) region of the spectrum and do not affect the thermal band. The dark object subtraction approach relies on the estimation of atmospheric haze based on dark pixels. Dark pixels are assumed to have zero reflectance, hence the name. It is then assumed further that any radiation originating from such dark pixels is due to atmospheric haze and not to the reflectance of the surface itself. For Dark Object Subtraction (DOS), we use the estimateHaze() function to estimate the digital number (DN) pixel value for dark objects in the visible wavelength range, and then use the values to convert sensor reflectance to surface reflectance.</p>
+<p>For <strong>Dark Object Subtraction (DOS)</strong>, first we have to estimate the digital number (DN) pixel value of dark objects for the visible wavelength range using <strong>estimateHaze()</strong> function, then use these values convert sensor reflectance to surface reflectance</p>
+<pre class="r"><code># Automatic haze estimation
+hazeDN &lt;- estimateHaze(lsat, # raster object
+    hazeBands = 2:5,               # haze band B2,B3, B4 and B5  
+    plot = TRUE,                   # display hisgram and haze values
+    darkProp=0.01)               # Proportion of pixels estimate haze</code></pre>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>The following methods are available in <strong>radCor()</strong> function:</p>
+<ul>
+<li>dos - Dark object subtraction following Chavez (1989)</li>
+<li>costz - Dark object subtraction following Chavez (1996)</li>
+<li>sdos - Simple dark object subtraction. Classical DOS, Lhaze must be estimated for each band separately.</li>
+</ul>
+<p>We will convert the DN to values to surface reflectance using using the function <strong>radCor()</strong> with estimated haze and the simple dark object subtraction, <strong>sdos</strong>, argument.</p>
+<pre class="r"><code>lsat_sref &lt;- radCor(lsat,       # raster object  
+    metaData = metaData,          # metadata 
+    method = &quot;sdos&quot;,                # Simple dark object subtraction
+    hazeValues = hazeDN,          # haze value 
+    hazeBands = 2:5,                # Bands corresponding to hazeValues
+    atmosphere = &quot;veryClear&quot;)     # Atmospheric characteristics
+lsat_sref</code></pre>
+<pre><code>## class       : RasterStack 
+## dimensions  : 504, 541, 272664, 10  (nrow, ncol, ncell, nlayers)
+## resolution  : 30, 30  (x, y)
+## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names       :       B1_sre,       B2_sre,       B3_sre,       B4_sre,       B5_sre,       B6_sre,       B7_sre,      B9_sre,       B10_bt,       B11_bt 
+## min values  : 1.077987e-01, 6.414577e-03, 2.357145e-03, 3.929587e-03, 0.000000e+00, 5.283789e-03, 3.948982e-03,           ?, 1.036556e+02, 2.290230e+02 
+## max values  :    0.4346718,    0.3744582,    0.4517692,    0.5054899,    0.5213277,    0.9434545,    0.9501195,           ?,  110.6257801,  241.3257968</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="write-a-multi-band-raster" class="section level5">
+<h5>Write a multi-band raster:</h5>
+<pre class="r"><code>writeRaster(lsat_sref, filename=(paste0(dataFolder,&quot;.//Landsat8//Landsat8_PROCESSED//multi.tif&quot;)), bylayer=F, overwrite=TRUE, format=&quot;GTiff&quot;)</code></pre>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

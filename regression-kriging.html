@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Regression Kriging</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Regression Kriging</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>Regression kriging (RK) mathematically equivalent to the universal kriging or kriging with external drift, where auxiliary predictors are used directly to solve the kriging weights. Regression kriging combines a regression model with simple kriging of the regression residuals. The experimental variogram of residuals is first computed and modeled, and then simple kriging (SK) is applied to the residuals to give the spatial prediction of the residuals.</p>
+<p><img src="Image/PNG_FILE_07/RK.png" width="60%" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>In this exerciser we will use following regression model for regression kriging of SOC:</p>
+<ul>
+<li><p><a href="#generalized-linear-model">Generalized Linear Model</a></p></li>
+<li><p><a href="#random-forest">Random Forest</a></p></li>
+<li><p><a href="#meta-ensemble-machine-learning">Meta Ensemble Machine Learning</a></p></li>
+</ul>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>We will use <strong>caret</strong> package for regression and <strong>gstat</strong> for geo-statistical modeling.</p>
+<div id="load-package" class="section level4">
+<h4>Load package</h4>
+<pre class="r"><code>library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(caret)
+library(caretEnsemble)
+library(doParallel)
+library(gridExtra)</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>The soil organic carbon data (train and test data set) could be found <a href="https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0">here</a>.</p>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;</code></pre>
+<pre class="r"><code>train&lt;-read.csv(paste0(dataFolder,&quot;train_data.csv&quot;), header= TRUE) 
+state&lt;-shapefile(paste0(dataFolder,&quot;GP_STATE.shp&quot;))
+grid&lt;-read.csv(paste0(dataFolder, &quot;GP_prediction_grid_data.csv&quot;), header= TRUE) </code></pre>
+<p>First, we will create a data.frame with SOC and continuous environmental data.</p>
+</div>
+<div id="power-transformation" class="section level4">
+<h4>Power transformation</h4>
+<pre class="r"><code>powerTransform(train$SOC)</code></pre>
+<pre><code>## Estimated transformation parameter 
+## train$SOC 
+## 0.2523339</code></pre>
+<pre class="r"><code>train$SOC.bc&lt;-bcPower(train$SOC, 0.2523339)</code></pre>
+</div>
+<div id="create-dataframes" class="section level4">
+<h4>Create dataframes</h4>
+<pre class="r"><code># train data
+train.xy&lt;-train[,c(1,24,8:9)]
+train.df&lt;-train[,c(1,24,11:21)]
+# grid data
+grid.xy&lt;-grid[,c(1,2:3)]
+grid.df&lt;-grid[,c(4:14)]
+#  define response &amp; predictors
+RESPONSE&lt;-train.df$SOC.bc
+train.x&lt;-train.df[3:13]</code></pre>
+<div id="define-coordinates" class="section level5">
+<h5>Define coordinates</h5>
+<pre class="r"><code>coordinates(train.xy) = ~x+y
+coordinates(grid.xy) = ~x+y</code></pre>
+</div>
+</div>
+<div id="start-foreach-to-parallelize-for-model-fitting" class="section level4">
+<h4>Start foreach to parallelize for model fitting</h4>
+<pre class="r"><code>mc &lt;- makeCluster(detectCores())
+registerDoParallel(mc)</code></pre>
+</div>
+<div id="set-control-parameter" class="section level4">
+<h4>Set control parameter</h4>
+<pre class="r"><code>myControl &lt;- trainControl(method=&quot;repeatedcv&quot;, 
+                          number=10, 
+                          repeats=5,
+                          allowParallel = TRUE)</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="generalized-linear-model" class="section level3">
+<h3>Generalized Linear Model</h3>
+<p>The Generalized Linear Model (GLM) is a flexible generalization of ordinary linear regression that allows for response variables that have error distribution models other than a normal distribution.</p>
+<p>First will fit the GLM model with a comprehensive environmental co-variate, Then, we will compute and model the variogram of the of residuals of the GLM model and then simple kriging (SK) will be applied to the residuals to estimate the spatial prediction of the residuals (regional trend). Finally, GLM regression predicted results, and the SK kriged residuals will be added to estimate the interpolated soil organic C.</p>
+<div id="fit-generalized-linear-model-glm" class="section level4">
+<h4>Fit Generalized Linear Model (GLM)</h4>
+<pre class="r"><code>set.seed(1856)
+GLM&lt;-train(train.x,
+           RESPONSE,
+           method = &quot;glm&quot;,
+           trControl=myControl,
+           preProc=c(&#39;center&#39;, &#39;scale&#39;))
+print(GLM)</code></pre>
+<pre><code>## Generalized Linear Model 
+## 
+## 368 samples
+##  11 predictor
+## 
+## Pre-processing: centered (11), scaled (11) 
+## Resampling: Cross-Validated (10 fold, repeated 5 times) 
+## Summary of sample sizes: 331, 331, 330, 332, 332, 331, ... 
+## Resampling results:
+## 
+##   RMSE       Rsquared  MAE      
+##   0.9462919  0.472206  0.7336851</code></pre>
+</div>
+<div id="variogram-modeling-of-glm-residuals" class="section level4">
+<h4>Variogram modeling of GLM residuals</h4>
+<p>First, we have to extract the residuals of RF model, we will use <strong>resid()</strong> function to get residuals of RF model</p>
+<pre class="r"><code># Extract residuals
+train.xy$residuals.glm&lt;-resid(GLM)
+# Variogram
+v.glm&lt;-variogram(residuals.glm~ 1, data = train.xy,cutoff=300000, width=300000/15)
+# Intial parameter set by eye esitmation
+m.glm&lt;-vgm(0.15,&quot;Exp&quot;,40000,0.05)
+# least square fit
+m.f.glm&lt;-fit.variogram(v.glm, m.glm)
+m.f.glm</code></pre>
+<pre><code>##   model     psill    range
+## 1   Nug 0.1085947     0.00
+## 2   Exp 0.7943117 18818.22</code></pre>
+<pre class="r"><code>#### Plot varigram and fitted model:
+plot(v.glm, pl=F, 
+     model=m.f.glm,
+     col=&quot;black&quot;, 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main=&quot;Variogram and Fitted Model\n Residuals of GLM model&quot;,
+     xlab=&quot;Distance (m)&quot;,
+     ylab=&quot;Semivariance&quot;)</code></pre>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-13-1.png" width="432" style="display: block; margin: auto;" /></p>
+</div>
+<div id="glm-prediction-at-grid-location" class="section level4">
+<h4>GLM Prediction at grid location</h4>
+<pre class="r"><code>grid.xy$GLM &lt;- predict(GLM, grid.df)</code></pre>
+<div id="simple-kriging-prediction-of-glm-residuals-at-grid-location" class="section level5">
+<h5>Simple Kriging Prediction of GLM residuals at grid location</h5>
+<pre class="r"><code>SK.GLM&lt;-krige(residuals.glm~ 1, 
+              loc=train.xy,        # Data frame
+              newdata=grid.xy,     # Prediction location
+              model = m.f.glm,     # fitted varigram model
+              beta = 0)            # residuals from a trend; expected value is 0     </code></pre>
+<pre><code>## [using simple kriging]</code></pre>
+</div>
+</div>
+<div id="kriging-prediction-sk-regression-prediction" class="section level4">
+<h4>Kriging prediction (SK + Regression Prediction)</h4>
+<pre class="r"><code>grid.xy$SK.GLM&lt;-SK.GLM$var1.pred
+# Add RF predicted + SK preedicted residuals
+grid.xy$RK.GLM.bc&lt;-(grid.xy$GLM+grid.xy$SK.GLM)</code></pre>
+</div>
+<div id="back-transformation" class="section level4">
+<h4>Back transformation</h4>
+<p>We for back transformation we use transformation parameters</p>
+<pre class="r"><code>k1&lt;-1/0.2523339                                   
+grid.xy$RK.GLM &lt;-((grid.xy$RK.GLM.bc *0.2523339+1)^k1)
+summary(grid.xy)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##        min     max
+## x -1245285  114715
+## y  1003795 2533795
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 10674
+## Data attributes:
+##        ID             GLM              SK.GLM            RK.GLM.bc     
+##  Min.   :    1   Min.   :-0.9197   Min.   :-2.663611   Min.   :-1.084  
+##  1st Qu.: 2772   1st Qu.: 1.1693   1st Qu.:-0.104815   1st Qu.: 1.130  
+##  Median : 5510   Median : 1.7494   Median : 0.008580   Median : 1.742  
+##  Mean   : 5499   Mean   : 1.8277   Mean   : 0.001208   Mean   : 1.829  
+##  3rd Qu.: 8237   3rd Qu.: 2.4885   3rd Qu.: 0.130163   3rd Qu.: 2.553  
+##  Max.   :10999   Max.   : 4.2655   Max.   : 1.663093   Max.   : 4.995  
+##      RK.GLM       
+##  Min.   : 0.2819  
+##  1st Qu.: 2.7028  
+##  Median : 4.2374  
+##  Mean   : 5.3003  
+##  3rd Qu.: 7.1747  
+##  Max.   :25.3268</code></pre>
+</div>
+<div id="convert-to-raster" class="section level4">
+<h4>Convert to raster</h4>
+<pre class="r"><code>GLM&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;GLM&quot;)])
+SK.GLM&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;SK.GLM&quot;)])
+RK.GLM.bc&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;RK.GLM.bc&quot;)])
+RK.GLM.SOC&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;RK.GLM&quot;)])</code></pre>
+</div>
+<div id="plot-predicted-soc" class="section level4">
+<h4>Plot predicted SOC</h4>
+<pre class="r"><code>glm1&lt;-ggR(GLM, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;GLM Predicted (BoxCox)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+glm2&lt;-ggR(SK.GLM, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;SK GLM Residuals (BoxCox)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+glm3&lt;-ggR(RK.GLM.bc, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;RK-GLM Predicted (BoxCox)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+glm4&lt;-ggR(RK.GLM.SOC, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;RK-GLM Predicted (mg/g)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(glm1,glm2,glm3,glm4, ncol = 4)  # Multiplot </code></pre>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-19-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+<div id="random-forest" class="section level3">
+<h3>Random Forest</h3>
+<p>Random forests, based on the assemblage of multiple iterations of decision trees, have become a major data analysis tool that performs well in comparison to single iteration classification and regression tree analysis [Heidema et al., 2006]. Each tree is made by bootstrapping of the original data set which allows for robust error estimation with the remaining test set, the so-called Out-Of-Bag (OOB) sample. The excluded OOB samples are predicted from the bootstrap samples and by combining the OOB predictions from all trees. The RF algorithm can outperform linear regression, and unlike linear regression, RF has no requirements considering the form of the probability density function of the target variable [Hengl et al., 2015; Kuhn and Johnson, 2013]. One major disadvantage of RF is that it is difficult to interpret the relationships between the response and predictor variables. However, RF allows estimation of the importance of variables as measured by the mean decrease in prediction accuracy before and after permuting OOB variables. The difference between the two are then averaged over all trees and normalized by the standard deviation of the differences (Ahmed et al., 2017).</p>
+<p>First, will fit the RF model with a comprehensive environmental co-variate, Then, we will compute and model the variogram of the of residuals of the RF model and then simple kriging (SK) will be applied to the residuals to estimate the spatial prediction of the residuals (regional trend). Finally, RF regression predicted results, and the SK kriged residuals will be added to estimate the interpolated soil organic C.</p>
+<div id="fit-random-forest-model-rf" class="section level4">
+<h4>Fit Random Forest Model (RF)</h4>
+<pre class="r"><code>set.seed(1856)
+mtry &lt;- sqrt(ncol(train.x))             # number of variables randomly sampled as candidates at each split.
+tunegrid.rf &lt;- expand.grid(.mtry=mtry)
+RF&lt;-train(train.x,
+           RESPONSE,
+           method = &quot;rf&quot;,
+           trControl=myControl,
+           tuneGrid=tunegrid.rf,
+           ntree= 100,
+           preProc=c(&#39;center&#39;, &#39;scale&#39;))
+print(RF)</code></pre>
+<pre><code>## Random Forest 
+## 
+## 368 samples
+##  11 predictor
+## 
+## Pre-processing: centered (11), scaled (11) 
+## Resampling: Cross-Validated (10 fold, repeated 5 times) 
+## Summary of sample sizes: 331, 331, 330, 332, 332, 331, ... 
+## Resampling results:
+## 
+##   RMSE       Rsquared   MAE      
+##   0.9384411  0.4777247  0.7223098
+## 
+## Tuning parameter &#39;mtry&#39; was held constant at a value of 3.316625</code></pre>
+</div>
+<div id="variogram-modeling-of-rf-residuals" class="section level4">
+<h4>Variogram modeling of RF residuals</h4>
+<p>First, we have to extract the residuals of RF model, we will use <strong>resid()</strong> function to get residuals of RF model</p>
+<pre class="r"><code># Extract residials
+train.xy$residuals.rf&lt;-resid(RF)
+# Variogram
+v.rf&lt;-variogram(residuals.rf~ 1, data = train.xy)
+# Intial parameter set by eye esitmation
+m.rf&lt;-vgm(0.15,&quot;Exp&quot;,40000,0.05)
+# least square fit
+m.f.rf&lt;-fit.variogram(v.rf, m.rf)
+m.f.rf</code></pre>
+<pre><code>##   model     psill    range
+## 1   Nug 0.0000000     0.00
+## 2   Exp 0.1921976 13931.16</code></pre>
+<pre class="r"><code>#### Plot varigram and fitted model:
+plot(v.rf, pl=F, 
+     model=m.f.rf,
+     col=&quot;black&quot;, 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main=&quot;Variogram and Fitted Model\n Residuals of RF model&quot;,
+     xlab=&quot;Distance (m)&quot;,
+     ylab=&quot;Semivariance&quot;)</code></pre>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-22-1.png" width="432" style="display: block; margin: auto;" /></p>
+</div>
+<div id="prediction-at-grid-location" class="section level4">
+<h4>Prediction at grid location</h4>
+<pre class="r"><code>grid.xy$RF &lt;- predict(RF, grid.df)</code></pre>
+<div id="simple-kriging-prediction-of-rf-residuals-at-grid-location" class="section level5">
+<h5>Simple Kriging Prediction of RF residuals at grid location</h5>
+<pre class="r"><code>SK.RF&lt;-krige(residuals.rf~ 1, 
+              loc=train.xy,        # Data frame
+              newdata=grid.xy,     # Prediction location
+              model = m.f.rf,      # fitted varigram model
+              beta = 0)            # residuals from a trend; expected value is 0     </code></pre>
+<pre><code>## [using simple kriging]</code></pre>
+</div>
+</div>
+<div id="kriging-prediction-skregression" class="section level4">
+<h4>Kriging prediction (SK+Regression)</h4>
+<pre class="r"><code>grid.xy$SK.RF&lt;-SK.RF$var1.pred
+# Add RF predicted + SK preedicted residuals
+grid.xy$RK.RF.bc&lt;-(grid.xy$RF+grid.xy$SK.RF)</code></pre>
+</div>
+<div id="back-transformation-1" class="section level4">
+<h4>Back transformation</h4>
+<p>We for back transformation we use transformation parameters</p>
+<pre class="r"><code>k1&lt;-1/0.2523339                                   
+grid.xy$RK.RF &lt;-((grid.xy$RK.RF.bc *0.2523339+1)^k1)
+summary(grid.xy)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##        min     max
+## x -1245285  114715
+## y  1003795 2533795
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 10674
+## Data attributes:
+##        ID             GLM              SK.GLM            RK.GLM.bc     
+##  Min.   :    1   Min.   :-0.9197   Min.   :-2.663611   Min.   :-1.084  
+##  1st Qu.: 2772   1st Qu.: 1.1693   1st Qu.:-0.104815   1st Qu.: 1.130  
+##  Median : 5510   Median : 1.7494   Median : 0.008580   Median : 1.742  
+##  Mean   : 5499   Mean   : 1.8277   Mean   : 0.001208   Mean   : 1.829  
+##  3rd Qu.: 8237   3rd Qu.: 2.4885   3rd Qu.: 0.130163   3rd Qu.: 2.553  
+##  Max.   :10999   Max.   : 4.2655   Max.   : 1.663093   Max.   : 4.995  
+##      RK.GLM              RF              SK.RF           
+##  Min.   : 0.2819   Min.   :-0.4367   Min.   :-1.2867008  
+##  1st Qu.: 2.7028   1st Qu.: 1.1303   1st Qu.:-0.0343964  
+##  Median : 4.2374   Median : 1.8236   Median : 0.0009033  
+##  Mean   : 5.3003   Mean   : 1.8354   Mean   : 0.0000754  
+##  3rd Qu.: 7.1747   3rd Qu.: 2.5394   3rd Qu.: 0.0367950  
+##  Max.   :25.3268   Max.   : 4.6765   Max.   : 0.9090374  
+##     RK.RF.bc           RK.RF        
+##  Min.   :-0.8992   Min.   : 0.3606  
+##  1st Qu.: 1.1228   1st Qu.: 2.6875  
+##  Median : 1.8166   Median : 4.4609  
+##  Mean   : 1.8354   Mean   : 5.2441  
+##  3rd Qu.: 2.5520   3rd Qu.: 7.1708  
+##  Max.   : 5.2751   Max.   :28.6180</code></pre>
+</div>
+<div id="convert-to-raster-1" class="section level4">
+<h4>Convert to raster</h4>
+<pre class="r"><code>RF&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;RF&quot;)])
+SK.RF&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;SK.RF&quot;)])
+RK.RF.bc&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;RK.RF.bc&quot;)])
+RK.RF.SOC&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;RK.RF&quot;)])</code></pre>
+</div>
+<div id="plot-predicted-soc-1" class="section level4">
+<h4>Plot predicted SOC</h4>
+<pre class="r"><code>rf1&lt;-ggR(RF, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;RF Predicted (BoxCox)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+rf2&lt;-ggR(SK.RF, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;SK RF Residuals (BoxCox)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+rf3&lt;-ggR(RK.RF.bc, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;RK-RF Predicted (BoxCox)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+rf4&lt;-ggR(RK.RF.SOC, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;RK-RF Predicted (mg/g)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(rf1,rf2,rf3,rf4, ncol = 4)  # Multiplot </code></pre>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-28-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+<div id="meta-ensemble-machine-learning" class="section level3">
+<h3>Meta Ensemble Machine Learning</h3>
+<p>Ensemble machine learning methods use multiple learning algorithms to obtain better predictive performance than could be obtained from any of the constituent learning algorithms. Many of the popular modern machine learning algorithms are ensembles. For example, Random Forest and Gradient Boosting Machine are both ensemble learners. However, <strong>stacked generalization or stacking or Supper Learning</strong> (Wolpert, 1992) that introduces the concept of a meta learner that ensemble or combined several strong, diverse sets of machine learning models together to get better prediction. In this modeling approach, each base level models are trained first, then the meta-model is trained on the outputs of the base level models. The base level models often consist of different learning algorithms and therefore stacking ensembles are often heterogeneous.</p>
+<p><img src="Image/PNG_FILE_07/metaModel.png" width="60%" style="display: block; margin: auto;" /></p>
+<p>We will built a random forest (RF) regression model by stacking of GLM and RF regression models (sub-models) to predict SOC.</p>
+<div id="create-a-model-list" class="section level4">
+<h4>Create a model list</h4>
+<pre class="r"><code>algorithmList &lt;- c(&quot;glm&quot;,&quot;rf&quot;)</code></pre>
+</div>
+<div id="fit-all-models" class="section level4">
+<h4>Fit all models</h4>
+<p>We will use <strong>caretList()</strong> function of <strong>caretEnsemble</strong> package to fit all models</p>
+<pre class="r"><code>set.seed(1856)
+models&lt;-caretList(train.x, RESPONSE,
+                  methodList=algorithmList,
+                  trControl=myControl,
+                  preProc=c(&#39;center&#39;, &#39;scale&#39;)) </code></pre>
+</div>
+<div id="performance-of-sub-models" class="section level4">
+<h4>Performance of sub-models</h4>
+<pre class="r"><code>results.all &lt;- resamples(models)
+cv.models&lt;-as.data.frame(results.all[2])
+summary(results.all)</code></pre>
+<pre><code>## 
+## Call:
+## summary.resamples(object = results.all)
+## 
+## Models: glm, rf 
+## Number of resamples: 50 
+## 
+## MAE 
+##          Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## glm 0.5157651 0.6707609 0.7307180 0.7987774 0.8065927 3.7745042    0
+## rf  0.5106550 0.6539792 0.7141956 0.7175838 0.7706795 0.8925233    0
+## 
+## RMSE 
+##          Min.   1st Qu.    Median      Mean  3rd Qu.      Max. NA&#39;s
+## glm 0.6660224 0.8659659 0.9533328 1.1335664 1.041104 10.130333    0
+## rf  0.6682639 0.8572315 0.9262251 0.9293029 1.000262  1.156476    0
+## 
+## Rsquared 
+##          Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## glm 0.1186950 0.3932415 0.4767383 0.4640988 0.5440863 0.6975254    0
+## rf  0.1746744 0.4263169 0.4791852 0.4862900 0.5527687 0.7094794    0</code></pre>
+</div>
+<div id="plot-k-fold-cross-validation-results-mae-rmse-r2" class="section level4">
+<h4>Plot K-fold Cross Validation results (MAE, RMSE, R2)</h4>
+<pre class="r"><code>dotplot(results.all, 
+        scales =list(x = list(relation = &quot;free&quot;)),
+        panelRange =T,  conf.level = 0.9, 
+        between = list(x = 2))</code></pre>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-33-1.png" width="768" /></p>
+</div>
+<div id="combine-several-predictive-models-via-stacking" class="section level4">
+<h4>Combine several predictive models via stacking</h4>
+<p>We will use <strong>caretStack()</strong> function with <strong>“method”</strong> parameter <strong>“rf”</strong> for random forest regression model</p>
+<pre class="r"><code>stackControl &lt;- trainControl(method=&quot;repeatedcv&quot;, 
+                             number=10, 
+                             repeats=5, 
+                             savePredictions=TRUE)
+set.seed(1856)
+stack.rf &lt;- caretStack(models, 
+                       method=&quot;rf&quot;,
+                       trControl=stackControl)</code></pre>
+<pre><code>## note: only 1 unique complexity parameters in default grid. Truncating the grid to 1 .</code></pre>
+</div>
+<div id="ensemble-results" class="section level4">
+<h4>Ensemble results</h4>
+<pre class="r"><code>stack.rf.cv&lt;-stack.rf$ens_model$resample
+stack.rf.results&lt;-print(stack.rf)</code></pre>
+<pre><code>## A rf ensemble of 2 base models: glm, rf
+## 
+## Ensemble results:
+## Random Forest 
+## 
+## 1840 samples
+##    2 predictor
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold, repeated 5 times) 
+## Summary of sample sizes: 1656, 1656, 1656, 1656, 1656, 1656, ... 
+## Resampling results:
+## 
+##   RMSE       Rsquared   MAE     
+##   0.9073866  0.5067794  0.683433
+## 
+## Tuning parameter &#39;mtry&#39; was held constant at a value of 2</code></pre>
+</div>
+<div id="variogram-modeling-of-residuals" class="section level4">
+<h4>Variogram modeling of residuals</h4>
+<p>Now, we will calculate residuals of RF model since <strong>resid()</strong> function does not work here.</p>
+<pre class="r"><code>train.xy$REG.SOC.bc&lt;-predict(stack.rf,train.x)
+train.xy$residuals.stack&lt;-(train.xy$SOC.bc-train.xy$REG.SOC.bc)</code></pre>
+<pre class="r"><code># Variogram
+v.stack&lt;-variogram(residuals.stack~ 1, data = train.xy)
+# Intial parameter set by eye esitmation
+m.stack&lt;-vgm(0.15,&quot;Exp&quot;,40000,0.05)
+# least square fit
+m.f.stack&lt;-fit.variogram(v.stack, m.stack)
+m.f.stack</code></pre>
+<pre><code>##   model     psill    range
+## 1   Nug 0.0000000    0.000
+## 2   Exp 0.7577935 9029.593</code></pre>
+<pre class="r"><code>#### Plot varigram and fitted model:
+plot(v.stack, pl=F, 
+     model=m.f.stack,
+     col=&quot;black&quot;, 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main=&quot;Variogram and Fitted Model\n Residuals of meta-Ensemble model&quot;,
+     xlab=&quot;Distance (m)&quot;,
+     ylab=&quot;Semivariance&quot;)</code></pre>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-38-1.png" width="432" style="display: block; margin: auto;" /></p>
+</div>
+<div id="prediction-at-grid-location-1" class="section level4">
+<h4>Prediction at grid location</h4>
+<pre class="r"><code>grid.xy$stack &lt;- predict(stack.rf, grid.df)</code></pre>
+<div id="simple-kriging-prediction-of-rf-residuals-at-grid-location-1" class="section level5">
+<h5>Simple Kriging Prediction of RF residuals at grid location</h5>
+<pre class="r"><code>SK.stack&lt;-krige(residuals.stack~ 1, 
+              loc=train.xy,        # Data frame
+              newdata=grid.xy,     # Prediction location
+              model = m.f.stack,    # fitted varigram model
+              beta = 0)            # residuals from a trend; expected value is 0     </code></pre>
+<pre><code>## [using simple kriging]</code></pre>
+</div>
+</div>
+<div id="kriging-prediction-skregression-1" class="section level4">
+<h4>Kriging prediction (SK+Regression)</h4>
+<pre class="r"><code>grid.xy$SK.stack&lt;-SK.stack$var1.pred
+# Add RF predicted + SK preedicted residuals
+grid.xy$RK.stack.bc&lt;-(grid.xy$stack+grid.xy$SK.stack)</code></pre>
+</div>
+<div id="back-transformation-2" class="section level4">
+<h4>Back transformation</h4>
+<p>We for back transformation we use transformation parameters</p>
+<pre class="r"><code>k1&lt;-1/0.2523339                                   
+grid.xy$RK.stack &lt;-((grid.xy$RK.stack.bc *0.2523339+1)^k1)
+summary(grid.xy)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##        min     max
+## x -1245285  114715
+## y  1003795 2533795
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 10674
+## Data attributes:
+##        ID             GLM              SK.GLM            RK.GLM.bc     
+##  Min.   :    1   Min.   :-0.9197   Min.   :-2.663611   Min.   :-1.084  
+##  1st Qu.: 2772   1st Qu.: 1.1693   1st Qu.:-0.104815   1st Qu.: 1.130  
+##  Median : 5510   Median : 1.7494   Median : 0.008580   Median : 1.742  
+##  Mean   : 5499   Mean   : 1.8277   Mean   : 0.001208   Mean   : 1.829  
+##  3rd Qu.: 8237   3rd Qu.: 2.4885   3rd Qu.: 0.130163   3rd Qu.: 2.553  
+##  Max.   :10999   Max.   : 4.2655   Max.   : 1.663093   Max.   : 4.995  
+##      RK.GLM              RF              SK.RF           
+##  Min.   : 0.2819   Min.   :-0.4367   Min.   :-1.2867008  
+##  1st Qu.: 2.7028   1st Qu.: 1.1303   1st Qu.:-0.0343964  
+##  Median : 4.2374   Median : 1.8236   Median : 0.0009033  
+##  Mean   : 5.3003   Mean   : 1.8354   Mean   : 0.0000754  
+##  3rd Qu.: 7.1747   3rd Qu.: 2.5394   3rd Qu.: 0.0367950  
+##  Max.   :25.3268   Max.   : 4.6765   Max.   : 0.9090374  
+##     RK.RF.bc           RK.RF             stack            SK.stack        
+##  Min.   :-0.8992   Min.   : 0.3606   Min.   :-0.9311   Min.   :-1.839253  
+##  1st Qu.: 1.1228   1st Qu.: 2.6875   1st Qu.: 1.0965   1st Qu.:-0.035334  
+##  Median : 1.8166   Median : 4.4609   Median : 1.8194   Median :-0.000612  
+##  Mean   : 1.8354   Mean   : 5.2441   Mean   : 1.8351   Mean   :-0.011891  
+##  3rd Qu.: 2.5520   3rd Qu.: 7.1708   3rd Qu.: 2.5871   3rd Qu.: 0.019561  
+##  Max.   : 5.2751   Max.   :28.6180   Max.   : 5.2627   Max.   : 3.368401  
+##   RK.stack.bc        RK.stack      
+##  Min.   :-1.500   Min.   : 0.1519  
+##  1st Qu.: 1.089   1st Qu.: 2.6171  
+##  Median : 1.808   Median : 4.4351  
+##  Mean   : 1.823   Mean   : 5.3615  
+##  3rd Qu.: 2.574   3rd Qu.: 7.2683  
+##  Max.   : 5.605   Max.   :32.8859</code></pre>
+</div>
+<div id="convert-to-raster-2" class="section level4">
+<h4>Convert to raster</h4>
+<pre class="r"><code>stack&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;stack&quot;)])
+SK.stack&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;SK.stack&quot;)])
+RK.stack.bc&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;RK.stack.bc&quot;)])
+RK.stack.SOC&lt;-rasterFromXYZ(as.data.frame(grid.xy)[, c(&quot;x&quot;, &quot;y&quot;, &quot;RK.stack&quot;)])</code></pre>
+</div>
+<div id="plot-predicted-soc-2" class="section level4">
+<h4>Plot predicted SOC</h4>
+<pre class="r"><code>s1&lt;-ggR(stack, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;Meta-Ensemble Predicted (BoxCox)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+s2&lt;-ggR(SK.stack, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;SK Meta-Ensemble Residuals (BoxCox)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+s3&lt;-ggR(RK.stack.bc, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;RK-Meta-Ensemble Predicted (BoxCox)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+s4&lt;-ggR(RK.stack.SOC, geom_raster = TRUE) +
+  scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;RK-Meta-Ensemble Predicted (mg/g)&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(s1,s2,s3,s4, ncol = 4)  # Multiplot </code></pre>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-44-1.png" width="1440" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

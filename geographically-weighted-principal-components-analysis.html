@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Geographically Weighted Principal Components Analysis (GWPCA)</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Geographically Weighted Principal Components Analysis (GWPCA)</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>Principal components analysis (PCA) is commonly used to explain the covariance structure of a (high-dimensional) multivariate data set using only a few components (i.e., provide a low-dimensional alternative). The components are linear combinations of the original variables and provide a better understanding of sources of variation and structure of the data. In geographical settings, standard PCA, in which the components do not depend on location, may be replaced with a GWPCA (Fotheringham et al. 2002; Lloyd 2010a; Harris et al. 2011a), to account for spatial heterogeneity in the structure of the multivariate data. In doing so, GW PCA can identify regions where assuming the same underlying structure in all locations is inappropriate or over-simplistic. GW PCA can assess: (i) how (effective) data dimensionality varies spatially and (ii) how the original variables influence each spatially-varying component.</p>
+<div id="load-r-packages" class="section level4">
+<h4>Load R packages</h4>
+<pre class="r"><code>library(GWmodel)      ### GW models
+library(sp)           ## Data management
+library(spdep)        ## Spatial autocorrelation
+library(gstat)        ## Geostatistics
+library(RColorBrewer) ## Visualization
+library(classInt)     ## Class intervals
+library(raster)       ## spatial data
+library(gridExtra)    # Multiple plot
+library(ggplot2)      # Multiple plot</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>The spatial polygon of lung cancer mortality rate and envrionmental data could be found <a href="https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0">here</a>.</p>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;
+COUNTY&lt;-shapefile(paste0(dataFolder,&quot;COUNTY_ATLANTIC.shp&quot;))
+state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))
+df&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), header=T)</code></pre>
+</div>
+<div id="create-a-data-frame" class="section level4">
+<h4>Create a data frame</h4>
+<pre class="r"><code>df[5] &lt;- lapply(df[5], as.numeric) # Cancer data to numeric
+SPDF&lt;-merge(COUNTY,df, by=&quot;FIPS&quot;)
+names(SPDF)</code></pre>
+<pre><code>##  [1] &quot;FIPS&quot;       &quot;ID&quot;         &quot;x.x&quot;        &quot;y.x&quot;        &quot;REGION_ID&quot; 
+##  [6] &quot;DIVISION_I&quot; &quot;STATE_ID&quot;   &quot;COUNTY_ID&quot;  &quot;REGION&quot;     &quot;DIVISION&quot;  
+## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;x.y&quot;        &quot;y.y&quot;        &quot;pop&quot;       
+## [16] &quot;cancer&quot;     &quot;poverty&quot;    &quot;smoking&quot;    &quot;PM25&quot;       &quot;NO2&quot;       
+## [21] &quot;SO2&quot;</code></pre>
+<pre class="r"><code>polys&lt;- list(&quot;sp.lines&quot;, as(state, &quot;SpatialLines&quot;), col=&quot;grey&quot;, lwd=.8,lty=1)
+col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;)</code></pre>
+</div>
+<div id="create-a-data-frame-for-pca" class="section level4">
+<h4>Create a data frame for PCA</h4>
+<pre class="r"><code>mf &lt;- SPDF[, c(17:21)] 
+names(mf)</code></pre>
+<pre><code>## [1] &quot;poverty&quot; &quot;smoking&quot; &quot;PM25&quot;    &quot;NO2&quot;     &quot;SO2&quot;</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="pca" class="section level3">
+<h3>PCA</h3>
+<p>First we will PCA with scaled data of somoking, poverty PM25, NO2 and SO2.</p>
+<pre class="r"><code>data.scaled &lt;- scale(as.matrix(mf@data[, 1:5]))
+pca &lt;- princomp(data.scaled, cor = FALSE)
+(pca$sdev^2 / sum(pca$sdev^2)) * 100</code></pre>
+<pre><code>##    Comp.1    Comp.2    Comp.3    Comp.4    Comp.5 
+## 55.673035 22.459848 14.203198  7.663919  0.000000</code></pre>
+<pre class="r"><code>pca$loadings</code></pre>
+<pre><code>## 
+## Loadings:
+##         Comp.1 Comp.2 Comp.3 Comp.4 Comp.5
+## poverty  0.560  0.124  0.372  0.182  0.707
+## smoking  0.560  0.124  0.372  0.182 -0.707
+## PM25     0.435  0.369 -0.437 -0.696       
+## NO2     -0.387  0.368  0.695 -0.482       
+## SO2     -0.188  0.835 -0.224  0.466       
+## 
+##                Comp.1 Comp.2 Comp.3 Comp.4 Comp.5
+## SS loadings       1.0    1.0    1.0    1.0    1.0
+## Proportion Var    0.2    0.2    0.2    0.2    0.2
+## Cumulative Var    0.2    0.4    0.6    0.8    1.0</code></pre>
+<div style="margin-bottom:40px;">
+
+</div>
+</div>
+<div id="gw-pca" class="section level3">
+<h3>GW PCA</h3>
+<div id="create-a-data-frame-with-scaled-data" class="section level4">
+<h4>Create a data-frame with scaled data</h4>
+<pre class="r"><code>coords &lt;- as.matrix(cbind(SPDF$x.x, SPDF$y.y))
+scaled.spdf &lt;- SpatialPointsDataFrame(coords, as.data.frame(data.scaled ))</code></pre>
+<pre class="r"><code>bw.gw.pca &lt;- bw.gwpca(scaled.spdf, vars = colnames(scaled.spdf@data), k = 5, robust = FALSE, adaptive = TRUE)</code></pre>
+<pre><code>## Adaptive bandwidth(number of nearest neighbours): 412 CV score: 1.313258e-27 
+## Adaptive bandwidth(number of nearest neighbours): 256 CV score: 1.120212e-27</code></pre>
+<pre class="r"><code>bw.gw.pca</code></pre>
+<pre><code>## [1] 256</code></pre>
+<pre class="r"><code>gw.pca&lt;- gwpca(scaled.spdf, vars = colnames(scaled.spdf@data), bw=bw.gw.pca, k = 5, robust = FALSE, adaptive = TRUE)</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+<div id="visualized-and-interpreted-gwpca-output" class="section level3">
+<h3>Visualized and interpreted GWPCA output</h3>
+<ol style="list-style-type: decimal">
+<li><p>how data dimensionality varies spatially and</p></li>
+<li><p>how the original variables influence the components.</p></li>
+</ol>
+<p>For the former, the spatial distribution of local PTV for say, the frst two components can be mapped.</p>
+<div style="margin-bottom:40px;">
+
+</div>
+<pre class="r"><code># function for calculation pproportion of variance 
+prop.var &lt;- function(gwpca.obj, n.components) {
+            return((rowSums(gwpca.obj$var[, 1:n.components]) /rowSums(gwpca.obj$var)) * 100)
+                                   }</code></pre>
+<pre class="r"><code>var.gwpca &lt;- prop.var(gw.pca, 3)
+mf$var.gwpca &lt;- var.gwpca</code></pre>
+<pre class="r"><code>mypalette.4 &lt;- brewer.pal(8, &quot;YlGnBu&quot;)
+spplot(mf, &quot;var.gwpca&quot;, key.space = &quot;right&quot;,
+       col.regions = mypalette.4, cuts = 7, 
+       sp.layout =list(polys),
+       col=&quot;transparent&quot;,
+       main = &quot;Percent Total Variation for Local components 1 to 3&quot;)</code></pre>
+<p><img src="geographically-weighted-principal-components-analysis_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>We can next visualize how each of the eight variables locally influence a given component, by mapping the `winning variable’ with the highest absolute loading.</p>
+<pre class="r"><code>loadings.pc1 &lt;- gw.pca$loadings[, , 1]
+win.item = max.col(abs(loadings.pc1))
+mf$win.item &lt;- win.item</code></pre>
+<pre class="r"><code>mypalette.4 &lt;- c(&quot;lightpink&quot;, &quot;blue&quot;, &quot;grey&quot;, &quot;purple&quot;,  &quot;green&quot;)
+spplot(mf, &quot;win.item&quot;, key.space = &quot;right&quot;,
+      col.regions = mypalette.4, at = c(1, 2, 3, 4, 5),
+      main = &quot;Winning variable: highest \n abs. loading on local Comp.1&quot;,
+      sp.layout =list(polys))</code></pre>
+<p><img src="geographically-weighted-principal-components-analysis_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

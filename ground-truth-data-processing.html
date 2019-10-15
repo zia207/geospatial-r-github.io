@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Ground Truth Data Processing</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Ground Truth Data Processing</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>In this lesson we will use a sub-set of <a href="https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2">Sentinel-2</a> satellite images covering the north campus of the University at Buffalo, NY taken on September 21st, 2017. We will prepare them for for pixel based classification using machine learning algorithms. The images were already radiometrically and atmospherically corrected using <a href="https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2">Sen2Cor</a>, a python based processor develop by <a href="http://www.esa.int/ESA">ESA</a> for formatting and processing (such as atmospheric correction, aerosol optical thickness correction, water vapor retrieval, surface reflectance retrieval from TOA, geometric correction with DEM) for Sentinel-2 Level 2A imagery. All bands were re-sampled at 10 meter resolution in <a href="http://step.esa.int/main/download/">SNAP Toolboxes</a>.</p>
+<p>We will train the machine learning models with 5 feature classes extracted from Google Earth imagery: (1) parking/road/pavement, (2) building, (3) trees/bushes, (4) grass, and (5) water bodies. We used on-screen digitization in <a href="https://www.qgis.org/en/site/">QGIS</a> to create polygons representing members of these feature classes. First, we will convert the polygons to a 2.5x 2.5 meter raster grid, and then convert them to spatial points. Next, we will extract values from the B2, B3, B4, B5, B6, B7, B8, B8A, B11 and B12 bands and add them to the spatial point data set that we will use for training, validation and testing the models. We will also use all bands to create a prediction grid point data set for predicting land-use classes.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>T##### Load R packages</p>
+<pre class="r"><code>library(rgdal)       # spatial data processing
+library(raster)      # raster processing
+library(plyr)        # data manipulation 
+library(dplyr)       # data manipulation 
+library(RStoolbox)   # ploting spatial data 
+library(RColorBrewer)# color
+library(ggplot2)     # ploting
+library(sp)          # spatial data
+library(gridExtra)</code></pre>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0">here</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="load-bands" class="section level4">
+<h4>Load bands</h4>
+<pre class="r"><code>#s=stack(BLUE, GREEN, RED, NIR,SWIR1,SWIR2)
+multi=stack(paste0(dataFolder,&quot;.\\Sentinel_2\\multi_bands.tif&quot;))</code></pre>
+</div>
+<div id="groundtruth-data-processing" class="section level3">
+<h3>Groundtruth data processing</h3>
+<div id="import-training-polygon-layer" class="section level4">
+<h4>Import training polygon layer</h4>
+<pre class="r"><code>poly &lt;- shapefile(paste0(dataFolder, &quot;.\\Sentinel_2\\GroundTruth_data.shp&quot;))  
+# define projection
+crs(poly) &lt;- &quot;+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs&quot; </code></pre>
+</div>
+<div id="convert-polygon-to-raster" class="section level4">
+<h4>Convert polygon to raster</h4>
+<p>Before converting land use polygon file raster, we will extent extent of any band of Sentinel-2 to set raster extent. We use B2 for define raster extent.</p>
+<pre class="r"><code>b2&lt;-raster(paste0(dataFolder,&quot;.\\Sentinel_2\\B2.tif&quot;))  
+# # define projection
+crs(b2) &lt;- &quot;+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs&quot; 
+extent=extent(b2)</code></pre>
+</div>
+<div id="convert-to-raster-2.5-m-grid-size" class="section level4">
+<h4>Convert to raster (2.5 m grid size)</h4>
+<pre class="r"><code>r &lt;- raster(extent, resolution=2.5,
+            crs = &#39;+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs &#39;)
+extent(r) &lt;- extent(poly)
+rp &lt;- rasterize(poly, r, &#39;Class_ID&#39;)</code></pre>
+<pre class="r"><code>plot(rp, main=&quot;Ground truth data&quot;)</code></pre>
+<p><img src="ground-truth-data-processing_files/figure-html/unnamed-chunk-7-1.png" width="624" style="display: block; margin: auto;" /></p>
+</div>
+<div id="convert-raster-to-data.frame-and-rename-colum-to-layer-to-class_id" class="section level4">
+<h4>Convert raster to data.frame and rename colum to “layer”&quot; to Class_ID</h4>
+<pre class="r"><code>rp.df &lt;- as.data.frame(rasterToPoints(rp))
+colnames(rp.df)[3] &lt;- &#39;Class_ID&#39;</code></pre>
+</div>
+<div id="create-a-spatial-point-data-frame" class="section level4">
+<h4>Create a Spatial point Data frame</h4>
+<pre class="r"><code>xy &lt;- rp.df[,c(1,2)]
+point.SPDF &lt;- SpatialPointsDataFrame(coords = xy,
+                                data=rp.df,
+                                proj4string = CRS(&quot;+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs&quot;))</code></pre>
+</div>
+<div id="load-multi-band-raster" class="section level4">
+<h4>Load multi-band raster</h4>
+<pre class="r"><code>multi=stack(paste0(dataFolder,&quot;.\\Sentinel_2\\multi_bands.tif&quot;))
+# rename the bands
+names(multi) &lt;- c(&quot;B2&quot;, &quot;B3&quot;,&quot;B4&quot;,&quot;B5&quot;,&quot;B6&quot;,&quot;B7&quot;,&quot;B8&quot;,&quot;B8A&quot;,&quot;B11&quot;,&quot;B12&quot;)</code></pre>
+</div>
+<div id="plot-rgb-maps" class="section level4">
+<h4>Plot RGB maps</h4>
+<pre class="r"><code># Natural Color
+p1&lt;-ggRGB(multi, r=3, g=2, b=1, stretch = &quot;lin&quot;)+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  ggtitle(&quot;Natural Color\n(R= Red, G= Green, B= Blue)&quot;)
+# False Color image
+p2&lt;-ggRGB(multi, r=7, g=3, b=2, stretch = &quot;lin&quot;)+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  ggtitle(&quot;False Color Infrared\n(R= NIR, G= Red,  B=Green)&quot;)
+
+grid.arrange(p1, p2, nrow = 1)</code></pre>
+<p><img src="ground-truth-data-processing_files/figure-html/unnamed-chunk-11-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="extract-raster-values-to-point-file" class="section level4">
+<h4>Extract raster values to point file</h4>
+<pre class="r"><code>point.df &lt;- extract(multi, point.SPDF, df=TRUE, method=&#39;simple&#39;)</code></pre>
+</div>
+<div id="combine-with-data-frame" class="section level4">
+<h4>Combine with data frame</h4>
+<pre class="r"><code>point.mf&lt;-cbind(rp.df,point.df)
+head(point.mf)</code></pre>
+<pre><code>##          x       y Class_ID ID  B2  B3  B4  B5   B6   B7   B8  B8A  B11
+## 1 678191.5 4764069        2  1 616 682 655 767 1669 1669 1922 2414 1726
+## 2 678194.0 4764069        2  2 616 682 655 767 1669 1669 1922 2414 1726
+## 3 678196.5 4764069        2  3 616 682 655 767 1669 1669 1922 2414 1726
+## 4 678191.5 4764067        2  4 616 682 655 767 1669 1669 1922 2414 1726
+## 5 678194.0 4764067        2  5 616 682 655 767 1669 1669 1922 2414 1726
+## 6 678196.5 4764067        2  6 616 682 655 767 1669 1669 1922 2414 1726
+##    B12
+## 1 1115
+## 2 1115
+## 3 1115
+## 4 1115
+## 5 1115
+## 6 1115</code></pre>
+</div>
+<div id="keep-values-belong-only-to-5-classes" class="section level4">
+<h4>Keep values belong only to 5 classes:</h4>
+<pre class="r"><code>point&lt;-point.mf %&gt;% 
+  select(x,y,Class_ID, B2, B3, B4, B5, B6,B7,B8,B8A,B11,B12) %&gt;% 
+  filter(Class_ID &gt;0) </code></pre>
+</div>
+<div id="add-class-id-and-save-as-a-csv-file" class="section level4">
+<h4>Add class ID and save as a CSV file</h4>
+<pre class="r"><code># Import lnaduse ID file
+ID&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\Landuse_ID.csv&quot;), header=T)
+# Join with point data frame
+point.gt&lt;-join(point, ID, by=&quot;Class_ID&quot;, type=&quot;inner&quot;)
+# rearrange the data
+point.gt.df&lt;-cbind(point.gt[c(1:2)],point.gt[c(4:13)],Class=point.gt$Class,Landuse=point.gt$Landuse,Class_ID=point.gt$Class_ID)
+# omit missing values
+newdata &lt;- na.omit(point.gt.df) 
+str(newdata)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    23945 obs. of  15 variables:
+##  $ x       : num  678191 678194 678196 678191 678194 ...
+##  $ y       : num  4764069 4764069 4764069 4764067 4764067 ...
+##  $ B2      : num  616 616 616 616 616 616 589 589 278 616 ...
+##  $ B3      : num  682 682 682 682 682 682 810 810 582 682 ...
+##  $ B4      : num  655 655 655 655 655 655 763 763 534 655 ...
+##  $ B5      : num  767 767 767 767 767 ...
+##  $ B6      : num  1669 1669 1669 1669 1669 ...
+##  $ B7      : num  1669 1669 1669 1669 1669 ...
+##  $ B8      : num  1922 1922 1922 1922 1922 ...
+##  $ B8A     : num  2414 2414 2414 2414 2414 ...
+##  $ B11     : num  1726 1726 1726 1726 1726 ...
+##  $ B12     : num  1115 1115 1115 1115 1115 ...
+##  $ Class   : Factor w/ 5 levels &quot;Class_1&quot;,&quot;Class_2&quot;,..: 2 2 2 2 2 2 2 2 4 2 ...
+##  $ Landuse : Factor w/ 5 levels &quot;Building&quot;,&quot;Grass&quot;,..: 1 1 1 1 1 1 1 1 2 1 ...
+##  $ Class_ID: num  2 2 2 2 2 2 2 2 4 2 ...
+##  - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int  15977 15978 15979 15980 15986 15987 15988 15989 15990 15994 ...
+##   ..- attr(*, &quot;names&quot;)= chr  &quot;15977&quot; &quot;15978&quot; &quot;15979&quot; &quot;15980&quot; ...</code></pre>
+<pre class="r"><code># save as CSV file
+write.csv(newdata, paste0(dataFolder, &quot;.\\Sentinel_2\\point_data.csv&quot;), row.names=F)</code></pre>
+</div>
+</div>
+<div id="grid-data-processing" class="section level3">
+<h3>Grid Data Processing</h3>
+<p>First, we will empty point data frame, will use Band B2</p>
+<pre class="r"><code>grid.point &lt;- data.frame(rasterToPoints(b2))
+# Remove B2 column, just keep x &amp; y
+grid.point$B2&lt;-NULL
+# define co-ordinates and projection
+coordinates(grid.point) &lt;- ~x + y
+projection(grid.point) &lt;- CRS(&quot;+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs&quot;)</code></pre>
+<div id="extract-all-bands-values-to-grird-point" class="section level4">
+<h4>Extract all bands values to grird point:</h4>
+<pre class="r"><code>df.grid&lt;- extract(multi, grid.point, df=TRUE, method=&#39;simple&#39;)</code></pre>
+</div>
+<div id="combine-with-grid.df-we-need-to-add-xy-coordinated-for-mapping-and-write-as-a-csv-file" class="section level4">
+<h4>Combine with grid.df (we need to add xy coordinated for mapping) and write as a CSV file:</h4>
+<pre class="r"><code>grid&lt;-cbind(as.data.frame(grid.point),df.grid)
+write.csv(grid, paste0(dataFolder, &quot;.\\Sentinel_2\\prediction_grid_data.csv&quot;), row.names=F)
+head(grid)</code></pre>
+<pre><code>##        x       y ID   B2   B3   B4   B5   B6   B7   B8  B8A  B11  B12
+## 1 677775 4764065  1 1673 1734 1568  999 1033 1033 1694 1226 1440 1413
+## 2 677785 4764065  2  920  668  768  549  503  503  732  681  809  862
+## 3 677795 4764065  3  301  354  357  549  503  503  399  681  809  862
+## 4 677805 4764065  4  300  356  339  784  715  715  416  743 1098 1158
+## 5 677815 4764065  5  645  466  613  784  715  715  587  743 1098 1158
+## 6 677825 4764065  6 1966 2244 2126 1900 1787 1787 1900 1946 2229 2330</code></pre>
+</div>
+</div>
+<div id="split-the-dataset-into-training-and-test-dataset" class="section level3">
+<h3>Split the dataset into training and test dataset</h3>
+<p>Before model fitting, the ground truth point data will be randomly split into two parts. Seventy percent will be used for training the machine learning based-models and 30% will be used for evaluation of the models. For data splitting, we will use the caret (short for _C_classification _A_nd _RE_regression _T_raining) package</p>
+<p>If you want to install this package, use following R-code:</p>
+<pre class="r"><code>#install.packages(&quot;caret&quot;, dependencies = c(&quot;Depends&quot;, &quot;Suggests&quot;))</code></pre>
+<div id="laod-caret-package" class="section level4">
+<h4>Laod caret package:</h4>
+<pre class="r"><code>library(caret) </code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<div id="split-data" class="section level5">
+<h5>Split data:</h5>
+<pre class="r"><code>set.seed(3456)
+# set training index
+trainIndex &lt;- createDataPartition(newdata$Landuse, p = .7, 
+                                  list = FALSE, 
+                                  times = 1)
+train&lt;- newdata[ trainIndex,]
+test&lt;- newdata[-trainIndex,]
+# Export as CSV files
+write.csv(train, paste0(dataFolder,&quot;.\\Sentinel_2\\train_data.csv&quot;),row.names=F)
+write.csv(test, paste0(dataFolder, &quot;.\\Sentinel_2\\test_data.csv&quot;), row.names=F)</code></pre>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

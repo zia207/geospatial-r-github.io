@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Map Projection and Coordinate Reference Systems</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Map Projection and Coordinate Reference Systems</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>The <strong>coordinate reference system (CRS)</strong> or <strong>spatial reference system (SRS)</strong> is a coordinate based system used to locate features on the earth.</p>
+<p><strong>Map projections</strong> is a systematic transformation a location on the surface of the earth or a portion of the earth (sphere or an ellipsoid) into on a plane (flat piece of paper or computer screen).</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_03/Pic0.png" alt="Map Projection (Source: (https://www.statcan.gc.ca/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm)" width="40%" />
+<p class="caption">
+Map Projection (Source: (<a href="https://www.statcan.gc.ca/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm" class="uri">https://www.statcan.gc.ca/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm</a>)
+</p>
+</div>
+<div style="margin-bottom:30px;">
+
+</div>
+<p>We will cover following topics:</p>
+<ul>
+<li><p><a href="#geographic-coordinate-system-(gcs)">Geographic coordinate system (GCS)</a></p>
+<ul>
+<li><a href="#the-world-geodetic-system-84">The World Geodetic system 84</a></li>
+</ul></li>
+<li><p><a href="#projected-coordinate-system">Projected coordinate system</a></p>
+<ul>
+<li><p><a href="#universal-transverse-mercator">Universal Transverse Mercator</a></p></li>
+<li><p><a href="#albers-equal-area-conic">Albers Equal Area Conic</a></p></li>
+</ul></li>
+<li><p><a href="#coordinate-reference-system-in-r">Coordinate Reference System in R</a></p>
+<ul>
+<li><p><a href="#vector-data">Vector data</a></p></li>
+<li><p><a href="#raster-data">Raster data</a></p></li>
+</ul></li>
+</ul>
+<div style="margin-bottom:30px;">
+
+</div>
+<div id="geographic-coordinate-system-gcs" class="section level3">
+<h3>Geographic coordinate system (GCS)</h3>
+<p>Geographic coordinate systems use latitude and longitude to measure and locate feature on the globe. The GCS defines a position as a function of direction and distance from a center point of the globe, where the units of measurement are degrees. Any location on earth can be referenced by a point with longitude and latitude coordinates. For example, below figure shows a geographic coordinate system where a location is represented by the coordinate’s longitude 80 degree East and latitude 55 degree North.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_03/Pic1.png" alt="A Geographic coordinate system. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)" width="30%" />
+<p class="caption">
+A Geographic coordinate system. (Source: <a href="http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html" class="uri">http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html</a>)
+</p>
+</div>
+<p>The equidistant lines that run east and west each have a constant latitude value called <strong>parallels</strong>. The <strong>equator</strong> is the largest circle and divides the earth in half. It is equal in distance from each of the poles, and the value of this latitude line is zero. Locations north of the equator has positive latitudes that range from <strong>0 to +90 degrees</strong>, while locations south of the equator have negative latitudes that range from <strong>0 to -90 degrees</strong>.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_03/Pic2.png" alt="Latitude lines. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)" width="30%" />
+<p class="caption">
+Latitude lines. (Source: <a href="http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html" class="uri">http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html</a>)
+</p>
+</div>
+<p>The lines that run through north and south each have a constant longitude value and form circles of the same size around the earth known as <strong>meridians</strong>. The <strong>prime meridian</strong> is the line of longitude that defines the origin (zero degrees) for longitude coordinates. One of the most commonly used prime meridian locations is the line that passes through Greenwich, England. Locations east of the prime meridian up to its antipodal meridian (the continuation of the prime meridian on the other side of the globe) have positive longitudes ranging from <strong>0 to +180 degrees</strong>. Locations west of the prime meridian has negative longitudes ranging from <strong>0 to -180 degrees</strong>.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_03/Pic3.png" alt="Longitude lines. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)" width="30%" />
+<p class="caption">
+Longitude lines. (Source: <a href="http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html" class="uri">http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html</a>)
+</p>
+</div>
+<p>The latitude and longitude lines cover the globe to form a grid that know as a <strong>graticule</strong>. The point of origin of the graticule is (0,0), where the equator and the prime meridian intersect. The equator is the only place on the graticule where the linear distance corresponding to one degree latitude is approximately equal the distance corresponding to one degree longitude. Because the longitude lines converge at the poles, the distance between two meridians is different at every parallel.</p>
+<div style="margin-bottom:30px;">
+
+</div>
+</div>
+<div id="the-world-geodetic-system-84" class="section level3">
+<h3>The World Geodetic system 84</h3>
+<p>The most recent geographic coordinate system is the World Geodetic system 84 also known as <strong>WGS 1984 or EPSG:4326</strong> (EPSG- European Petroleum Survey Group). It consists of a standard coordinate system, spheroidal reference (the datum or reference ellipsoid) and raw altitude.</p>
+<p><strong>The parameters of WGS84:</strong></p>
+<pre class="r"><code># GEOGCS[&quot;WGS 84&quot;,  
+#    DATUM[&quot;WGS_1984&quot;,  
+#      SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,  
+#            AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],  
+#            AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],  
+#      PRIMEM[&quot;Greenwich&quot;,0,  
+#      AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],  
+#    UNIT[&quot;degree&quot;,0.01745329251994328,  
+#      AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],  
+#    AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]]  </code></pre>
+<div style="margin-bottom:30px;">
+
+</div>
+</div>
+<div id="projected-coordinate-system" class="section level3">
+<h3>Projected coordinate system</h3>
+<p>A projected coordinate system provide mechanisms to project maps of the earth’s spherical surface onto a two-dimensional Cartesian coordinate (x,y coordinates) plane. Projected coordinate systems are referred to as <strong>map projections</strong>. This approach is useful where accurate distance, angle, and area measurements are needed. The term ‘projection’ is often used interchangeably with projected coordinate systems.</p>
+<p>Commonly use projected coordinate systems include:</p>
+<ul>
+<li><p><a href="#universal-transverse-mercator">Universal Transverse Mercator</a></p></li>
+<li><p><a href="#albers-equal-area-conic">Albers Equal Area Conic</a></p></li>
+</ul>
+<div id="universal-transverse-mercator" class="section level4">
+<h4>Universal Transverse Mercator</h4>
+<p>The most widely used two-dimensional Cartesian coordinate system is the <strong>Universal Transverse Mercator (UTM)</strong> system which represents a horizontal position on the globe and can be used to identify positions without having to know their vertical location on the ‘y’ axis. The UTM system is not a single map projection. It represents the earth as sixty different zones, each composed of six-degree longitudinal bands, with a secant transverse Mercator projection in each. The UTM system divides the Earth between 80 S and 84 N latitude into 60 zones, each 6 of longitude in width. Zone 1 covers longitude 180 to 174 W; zone numbering increases eastward to zone 60, which covers longitude 174 to 180?.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_03/Pic4.png" alt="UTM zones.(Source: https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system)" width="40%" />
+<p class="caption">
+UTM zones.(Source: <a href="https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" class="uri">https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system</a>)
+</p>
+</div>
+<p>The Universal Transverse Mercator grid that covers the conterminous 48 United States comprises 10 zones, from Zone 10 on the west coast through Zone 19 in New England <a href="https://pubs.usgs.gov/fs/2001/0077/report.pdf">USGS, 2001</a>.The New York State falls in zones <strong>17N (EPSG 26917)</strong> and <strong>zone 18N (EPSG: 26918)</strong> with North American Datum 1983 (NAD83).</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_03/Pic5.png" alt="UTM zones of conterminous 48 United States. (Source: https://pubs.usgs.gov/fs/2001/0077/report.pdf)" width="40%" />
+<p class="caption">
+UTM zones of conterminous 48 United States. (Source: <a href="https://pubs.usgs.gov/fs/2001/0077/report.pdf" class="uri">https://pubs.usgs.gov/fs/2001/0077/report.pdf</a>)
+</p>
+</div>
+<p><strong><strong>The standard Parameters of UTM Zone 17N</strong></strong>:</p>
+<pre class="r"><code># PROJCS[&quot;NAD83 / UTM zone 17N&quot;,
+#    GEOGCS[&quot;NAD83&quot;,
+#        DATUM[&quot;North_American_Datum_1983&quot;,
+#            SPHEROID[&quot;GRS 1980&quot;,6378137,298.257222101,
+#                AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]],
+#            AUTHORITY[&quot;EPSG&quot;,&quot;6269&quot;]],
+#        PRIMEM[&quot;Greenwich&quot;,0,
+#            AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],
+#        UNIT[&quot;degree&quot;,0.01745329251994328,
+#            AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],
+#        AUTHORITY[&quot;EPSG&quot;,&quot;4269&quot;]],
+#    UNIT[&quot;metre&quot;,1,
+#        AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],
+#    PROJECTION[&quot;Transverse_Mercator&quot;],
+#    PARAMETER[&quot;latitude_of_origin&quot;,0],
+#    PARAMETER[&quot;central_meridian&quot;,-81],
+#    PARAMETER[&quot;scale_factor&quot;,0.9996],
+#    PARAMETER[&quot;false_easting&quot;,500000],
+#    PARAMETER[&quot;false_northing&quot;,0],
+#    AUTHORITY[&quot;EPSG&quot;,&quot;26917&quot;],
+#    AXIS[&quot;Easting&quot;,EAST],
+#    AXIS[&quot;Northing&quot;,NORTH]]</code></pre>
+<p><strong>PROJ4 format</strong></p>
+<pre class="r"><code># +proj=utm +zone=17 +ellps=GRS80 +datum=NAD83 +units=m +no_defs </code></pre>
+<p><strong>ESRI .PROJ format</strong></p>
+<pre class="r"><code># WGS_1984_UTM_Zone_17N
+# WKID: 32617 Authority: EPSG
+
+# Projection: Transverse_Mercator
+# False_Easting: 500000.0
+# False_Northing: 0.0
+# Central_Meridian: -81.0
+# Scale_Factor: 0.9996
+# Latitude_Of_Origin: 0.0
+# Linear Unit: Meter (1.0)
+
+# Geographic Coordinate System: GCS_WGS_1984
+# Angular Unit: Degree (0.0174532925199433)
+# Prime Meridian: Greenwich (0.0)
+# Datum: D_WGS_1984
+#  Spheroid: WGS_1984
+#    Semimajor Axis: 6378137.0
+#    Semiminor Axis: 6356752.314245179
+#    Inverse Flattening: 298.257223563</code></pre>
+<p><strong><strong>The Standard Parameters of UTM Zone 18N</strong></strong>:</p>
+<pre class="r"><code># PROJCS[&quot;NAD83 / UTM zone 18N&quot;,
+#    GEOGCS[&quot;NAD83&quot;,
+#        DATUM[&quot;North_American_Datum_1983&quot;,
+#            SPHEROID[&quot;GRS 1980&quot;,6378137,298.257222101,
+#                AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]],
+#            AUTHORITY[&quot;EPSG&quot;,&quot;6269&quot;]],
+#        PRIMEM[&quot;Greenwich&quot;,0,
+#            AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],
+#        UNIT[&quot;degree&quot;,0.01745329251994328,
+#            AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],
+#        AUTHORITY[&quot;EPSG&quot;,&quot;4269&quot;]],
+#    UNIT[&quot;metre&quot;,1,
+#        AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],
+#    PROJECTION[&quot;Transverse_Mercator&quot;],
+#    PARAMETER[&quot;latitude_of_origin&quot;,0],
+#    PARAMETER[&quot;central_meridian&quot;,-75],
+#    PARAMETER[&quot;scale_factor&quot;,0.9996],
+#    PARAMETER[&quot;false_easting&quot;,500000],
+#    PARAMETER[&quot;false_northing&quot;,0],
+#    AUTHORITY[&quot;EPSG&quot;,&quot;26918&quot;],
+#    AXIS[&quot;Easting&quot;,EAST],
+#    AXIS[&quot;Northing&quot;,NORTH]]</code></pre>
+<p><strong>PROJ4 format</strong></p>
+<pre class="r"><code># +proj=utm +zone=18 +ellps=GRS80 +datum=NAD83 +units=m +no_defs </code></pre>
+<p><strong>ESRI .PROJ format</strong></p>
+<pre class="r"><code># NAD_1983_2011_UTM_Zone_18N
+# WKID: 6347 Authority: EPSG
+
+# Projection: Transverse_Mercator
+# False_Easting: 500000.0
+# False_Northing: 0.0
+# Central_Meridian: -75.0
+# Scale_Factor: 0.9996
+# Latitude_Of_Origin: 0.0
+# Linear Unit: Meter (1.0)
+
+# Geographic Coordinate System: GCS_WGS_1984
+# Angular Unit: Degree (0.0174532925199433)
+# Prime Meridian: Greenwich (0.0)
+# Datum: D_WGS_1984
+#  Spheroid: WGS_1984
+#    Semimajor Axis: 6378137.0
+#    Semiminor Axis: 6356752.314245179
+#    Inverse Flattening: 298.257223563</code></pre>
+<div style="margin-bottom:30px;">
+
+</div>
+</div>
+<div id="albers-equal-area-conic" class="section level4">
+<h4>Albers Equal Area Conic</h4>
+<p>Albers Equal Area Conic projection system uses two standard parallels to reduce the distortion of shape in the region between the standard parallels. This projection is best suited for area extending in an east-to-west orientation like the conterminous United States. Used for the conterminous United States, normally using 29-30 and 45-30 as the two standard parallels. For this projection, the maximum scale distortion for the 48 states of the conterminous United States is 1.25 percent.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_03/Pic6.png" alt="Albers Equal Area Conic. (Source: http://www.georeference.org/doc/albers_conical_equal_area.htm)" width="40%" />
+<p class="caption">
+Albers Equal Area Conic. (Source: <a href="http://www.georeference.org/doc/albers_conical_equal_area.htm" class="uri">http://www.georeference.org/doc/albers_conical_equal_area.htm</a>)
+</p>
+</div>
+<p><strong><strong>The Standard Parameters of Albers Equal Area Conic NAD1983 (ESRI:102003)</strong></strong>:</p>
+<pre class="r"><code># PROJCS[&quot;USA_Contiguous_Albers_Equal_Area_Conic&quot;,
+#    GEOGCS[&quot;GCS_North_American_1983&quot;,
+#        DATUM[&quot;North_American_Datum_1983&quot;,
+#            SPHEROID[&quot;GRS_1980&quot;,6378137,298.257222101]],
+#        PRIMEM[&quot;Greenwich&quot;,0],
+#        UNIT[&quot;Degree&quot;,0.017453292519943295]],
+#    PROJECTION[&quot;Albers_Conic_Equal_Area&quot;],
+#    PARAMETER[&quot;False_Easting&quot;,0],
+#    PARAMETER[&quot;False_Northing&quot;,0],
+#    PARAMETER[&quot;longitude_of_center&quot;,-96],
+#    PARAMETER[&quot;Standard_Parallel_1&quot;,29.5],
+#    PARAMETER[&quot;Standard_Parallel_2&quot;,45.5],
+#    PARAMETER[&quot;latitude_of_center&quot;,37.5],
+#    UNIT[&quot;Meter&quot;,1],
+#    AUTHORITY[&quot;EPSG&quot;,&quot;102003&quot;]]</code></pre>
+<p><strong>PROJ4 format</strong></p>
+<pre class="r"><code># +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs </code></pre>
+<p><strong>ESRI .PRJ format</strong></p>
+<pre class="r"><code># USA_Contiguous_Albers_Equal_Area_Conic
+# WKID: 102003 Authority: Esri
+
+# Projection: Albers
+# False_Easting: 0.0
+# False_Northing: 0.0
+# Central_Meridian: -96.0
+# Standard_Parallel_1: 29.5
+# Standard_Parallel_2: 45.5
+# Latitude_Of_Origin: 37.5
+# Linear Unit: Meter (1.0)
+
+# Geographic Coordinate System: GCS_North_American_1983
+# Angular Unit: Degree (0.0174532925199433)
+# Prime Meridian: Greenwich (0.0)
+# Datum: D_North_American_1983
+#  Spheroid: GRS_1980
+#  Semimajor Axis: 6378137.0
+#  Semiminor Axis: 6356752.314140356
+#  Inverse Flattening: 298.257222101 </code></pre>
+<div style="margin-bottom:30px;">
+
+</div>
+</div>
+</div>
+<div id="coordinate-reference-system-in-r" class="section level3">
+<h3>Coordinate Reference System in R</h3>
+<p>In this exercise, we will learn how to check and define CRS and projection of <strong>vector</strong> and <strong>raster</strong> data in R. This is a very important step for working with geospatial data with different projection systems from different sources.</p>
+<div id="r-packages" class="section level4">
+<h4>R Packages</h4>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/rgdal/rgdal.pdf">rgdal</a>: Bindings for the Geospatial Data Abstraction Library</li>
+<li><a href="https://cran.r-project.org/web/packages/raster/raster.pdf">raster</a>: Geographic Data Analysis and Modeling</li>
+</ul>
+</div>
+<div id="load-r-packages" class="section level4">
+<h4>Load R-packages</h4>
+<p>You need to load <strong>raster</strong>, and <strong>rgdal</strong> packages. Use <strong>library ()</strong> functions to load them in R.</p>
+<pre class="r"><code>library(raster)     
+library (rgdal)
+library(sf)
+library(maptools)</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>We will use following data set which could be found <a href="https://www.dropbox.com/s/ql5xijvvxjxsogj/DATA_03.7z?dl=0">here</a>.</p>
+<ul>
+<li>New York State county shape file (polygon: NY_County_GCS)</li>
+<li>90 m SRTM DEM of Onondaga county, New York State (raster: Onondaga_DEM.tif)</li>
+</ul>
+<p>Before reading the data from a local drive, you need to define a working directory from where you want to read or to write data. We will use <strong>setwd()</strong> function to create a working directory. Or we can define a path for data outside of our working directory from where we can read files. In this case, we will use <strong>paste0(path, “file name”)</strong></p>
+<pre class="r"><code>#### Set working directory
+# setwd(&quot;~//map_projection_coordinate_reference_systems&quot;)</code></pre>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//&quot;</code></pre>
+<div style="margin-bottom:30px;">
+
+</div>
+</div>
+</div>
+<div id="vector-data" class="section level3">
+<h3>Vector data</h3>
+<p>We will use New York State County Shape file (NY_County_GCS.shp) to check, define projection. We will use <strong>shapefile()</strong> function of raster package to load Vector data in R.</p>
+<p>poly.GCS&lt;-readShapePoly(paste0(dataFolder, “NY_County_GCS.shp”))</p>
+<pre class="r"><code>county.GCS&lt;-readShapePoly(paste0(dataFolder, &quot;NY_County_GCS.shp&quot;))
+## Warning: readShapePoly is deprecated; use rgdal::readOGR or sf::st_read
+plot(county.GCS,  main=&quot;NYS County&quot;)</code></pre>
+<p><img src="map-projection-coordinate-reference-systems_files/figure-html/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>You notice that <strong>.prj</strong> file is not associated with this shape file. We can check further with <strong>proj4string()</strong> function.</p>
+<pre class="r"><code>proj4string(county.GCS)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>We know that county shape file is in geographic coordinate system. We can check it coordinates system with <strong>summary()</strong> function.</p>
+<pre class="r"><code>summary(county.GCS)</code></pre>
+<pre><code>## Object of class SpatialPolygonsDataFrame
+## Coordinates:
+##         min       max
+## x -79.76333 -71.85588
+## y  40.49909  45.01100
+## Is projected: NA 
+## proj4string : [NA]
+## Data attributes:
+##     OBJECTID        ID            AREA          PERIMETER    
+##  1      : 1   Min.   :4770   Min.   :0.0000   Min.   :0.071  
+##  10     : 1   1st Qu.:5134   1st Qu.:0.0080   1st Qu.:0.518  
+##  11     : 1   Median :5263   Median :0.1510   Median :1.866  
+##  12     : 1   Mean   :5279   Mean   :0.1672   Mean   :1.747  
+##  13     : 1   3rd Qu.:5455   3rd Qu.:0.2515   3rd Qu.:2.483  
+##  14     : 1   Max.   :5756   Max.   :0.8080   Max.   :6.986  
+##  (Other):77                                                  
+##    COUNTYP020   STATE                     COUNTY        FIPS    STATE_FIPS
+##  Min.   :1876   NY:83   Suffolk County       : 8   36103  : 8   36:83     
+##  1st Qu.:2240           Jefferson County     : 7   36045  : 7             
+##  Median :2369           Saint Lawrence County: 5   36089  : 5             
+##  Mean   :2385           Queens County        : 3   36081  : 3             
+##  3rd Qu.:2561           Erie County          : 2   36029  : 2             
+##  Max.   :2862           Nassau County        : 2   36059  : 2             
+##                         (Other)              :56   (Other):56             
+##    SQUARE_MIL        Shape_Leng       Shape_Area       
+##  Min.   :  27.24   Min.   :  6777   Min.   :2.244e+06  
+##  1st Qu.: 496.44   1st Qu.: 51266   1st Qu.:7.206e+07  
+##  Median : 839.97   Median :172376   Median :1.364e+09  
+##  Mean   : 907.23   Mean   :164634   Mean   :1.515e+09  
+##  3rd Qu.:1209.20   3rd Qu.:233235   3rd Qu.:2.314e+09  
+##  Max.   :2756.53   Max.   :645199   Max.   :7.142e+09  
+## </code></pre>
+<p>You notice that county shape file read as <strong>SpatialPolygonsDataFrame</strong> in R, and it’s x-coordinates range from -79.76333 to -71.85588, and y-coordinates range from 40.49909 and 45.01100 and CRS has not been be defined yet (<strong>Is projected: NA and proj4string : [NA]</strong>) and <strong>.PRJ</strong> file is missing. So you need to define its current CRS (<strong>WGS 1984 or EPSG:4326</strong>) before you do any further analyses like re-projection etc. We use either of following function to define it’s CRS.</p>
+<pre class="r"><code>proj4string(county.GCS) = CRS(&quot;+proj=longlat +ellps=WGS84&quot;)
+# or
+proj4string(county.GCS) &lt;- CRS(&quot;+init=epsg:4326&quot;)
+## Warning in `proj4string&lt;-`(`*tmp*`, value = new(&quot;CRS&quot;, projargs = &quot;+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;)): A new CRS was assigned to an object with an existing CRS:
+## +proj=longlat +ellps=WGS84
+## without reprojecting.
+## For reprojection, use function spTransform</code></pre>
+<p>A new CRS, <strong>WGS 1984</strong> has assigned to county shape file. You can check it again with <strong>summary()</strong> or <strong>str()</strong> functions.</p>
+<pre class="r"><code>summary (county.GCS)</code></pre>
+<pre><code>## Object of class SpatialPolygonsDataFrame
+## Coordinates:
+##         min       max
+## x -79.76333 -71.85588
+## y  40.49909  45.01100
+## Is projected: FALSE 
+## proj4string :
+## [+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84
+## +towgs84=0,0,0]
+## Data attributes:
+##     OBJECTID        ID            AREA          PERIMETER    
+##  1      : 1   Min.   :4770   Min.   :0.0000   Min.   :0.071  
+##  10     : 1   1st Qu.:5134   1st Qu.:0.0080   1st Qu.:0.518  
+##  11     : 1   Median :5263   Median :0.1510   Median :1.866  
+##  12     : 1   Mean   :5279   Mean   :0.1672   Mean   :1.747  
+##  13     : 1   3rd Qu.:5455   3rd Qu.:0.2515   3rd Qu.:2.483  
+##  14     : 1   Max.   :5756   Max.   :0.8080   Max.   :6.986  
+##  (Other):77                                                  
+##    COUNTYP020   STATE                     COUNTY        FIPS    STATE_FIPS
+##  Min.   :1876   NY:83   Suffolk County       : 8   36103  : 8   36:83     
+##  1st Qu.:2240           Jefferson County     : 7   36045  : 7             
+##  Median :2369           Saint Lawrence County: 5   36089  : 5             
+##  Mean   :2385           Queens County        : 3   36081  : 3             
+##  3rd Qu.:2561           Erie County          : 2   36029  : 2             
+##  Max.   :2862           Nassau County        : 2   36059  : 2             
+##                         (Other)              :56   (Other):56             
+##    SQUARE_MIL        Shape_Leng       Shape_Area       
+##  Min.   :  27.24   Min.   :  6777   Min.   :2.244e+06  
+##  1st Qu.: 496.44   1st Qu.: 51266   1st Qu.:7.206e+07  
+##  Median : 839.97   Median :172376   Median :1.364e+09  
+##  Mean   : 907.23   Mean   :164634   Mean   :1.515e+09  
+##  3rd Qu.:1209.20   3rd Qu.:233235   3rd Qu.:2.314e+09  
+##  Max.   :2756.53   Max.   :645199   Max.   :7.142e+09  
+## </code></pre>
+<pre class="r"><code>#str(county.GCS)</code></pre>
+<p>However, you need to save the file to make it permanent. We will use <strong>writeOGR()</strong> function of <strong>rgdal</strong> package or <strong>shapefile()</strong> function of raster package to save it. It is a good practice to write a file with it’s current CRS. After running this function, you can see a file named <strong>NY_County_GCS.prj</strong> has created in your working directory.</p>
+<pre class="r"><code>dsn=&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03&quot;
+
+writeOGR(county.GCS,                       # input spatial data
+    dsn=dsn,                               # output working directory
+    &quot;NY_County_GCS&quot;,                       # output spatial data
+    driver=&quot;ESRI Shapefile&quot;,               # define output file as ESRI shapefile
+    overwrite=TRUE)                        # write on existing file, if exist
+# or
+shapefile(county.GCS, paste0(dataFolder,&quot;NY_County_GCS.shp&quot;), overwrite=TRUE)</code></pre>
+<div id="reprojection" class="section level4">
+<h4>Reprojection</h4>
+<p>The <strong>spTransform</strong> function provide transformation between datum(s) and conversion between projections (also known as projection and/or re-projection) from one specified coordinate reference system to another. For simple projection, when no <strong>+datum</strong> tags are used, datum projection does not occur. When datum transformation is required, the <strong>+datum</strong> tag should be present with a valid value both in the CRS of the object to be transformed, and in the target CRS. In general <strong>+datum=</strong> is to be preferred to <strong>+ellps=</strong>, because the datum always fixes the ellipsoid, but the ellipsoid never fixes the datum.</p>
+<p>We will transform county shape file to WGS 1984 to <strong>Albers Equal Area Conic NAD1983</strong>.</p>
+<div id="projection-parameter-of-albers-equal-area-conic-nad1983" class="section level5">
+<h5>Projection parameter of Albers Equal Area Conic NAD1983</h5>
+<pre class="r"><code># &quot;+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs&quot;</code></pre>
+<pre class="r"><code># Create a new CRS
+usa_albers = CRS(&quot;+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs&quot;)
+# define new projection
+county.PROJ&lt;- spTransform(county.GCS,       # Input data
+                  usa_albers)               # desire projected CRS as EPSG spatial reference, but you have to use **esri**  </code></pre>
+<p>Now, check it CRS again.</p>
+<pre class="r"><code>summary(county.PROJ)</code></pre>
+<pre><code>## Object of class SpatialPolygonsDataFrame
+## Coordinates:
+##         min     max
+## x 1253128.2 1888033
+## y  257108.4  791662
+## Is projected: TRUE 
+## proj4string :
+## [+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0
+## +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0]
+## Data attributes:
+##     OBJECTID        ID            AREA          PERIMETER    
+##  1      : 1   Min.   :4770   Min.   :0.0000   Min.   :0.071  
+##  10     : 1   1st Qu.:5134   1st Qu.:0.0080   1st Qu.:0.518  
+##  11     : 1   Median :5263   Median :0.1510   Median :1.866  
+##  12     : 1   Mean   :5279   Mean   :0.1672   Mean   :1.747  
+##  13     : 1   3rd Qu.:5455   3rd Qu.:0.2515   3rd Qu.:2.483  
+##  14     : 1   Max.   :5756   Max.   :0.8080   Max.   :6.986  
+##  (Other):77                                                  
+##    COUNTYP020   STATE                     COUNTY        FIPS    STATE_FIPS
+##  Min.   :1876   NY:83   Suffolk County       : 8   36103  : 8   36:83     
+##  1st Qu.:2240           Jefferson County     : 7   36045  : 7             
+##  Median :2369           Saint Lawrence County: 5   36089  : 5             
+##  Mean   :2385           Queens County        : 3   36081  : 3             
+##  3rd Qu.:2561           Erie County          : 2   36029  : 2             
+##  Max.   :2862           Nassau County        : 2   36059  : 2             
+##                         (Other)              :56   (Other):56             
+##    SQUARE_MIL        Shape_Leng       Shape_Area       
+##  Min.   :  27.24   Min.   :  6777   Min.   :2.244e+06  
+##  1st Qu.: 496.44   1st Qu.: 51266   1st Qu.:7.206e+07  
+##  Median : 839.97   Median :172376   Median :1.364e+09  
+##  Mean   : 907.23   Mean   :164634   Mean   :1.515e+09  
+##  3rd Qu.:1209.20   3rd Qu.:233235   3rd Qu.:2.314e+09  
+##  Max.   :2756.53   Max.   :645199   Max.   :7.142e+09  
+## </code></pre>
+<p>We notice that x and y -coordinates converted from degree-decimal to meter and ** Is projected: TRUE**. Now plot WWGS 1984 and Albers projected map site by site.</p>
+<pre class="r"><code>par(mfrow=c(1,2))
+plot(county.GCS, main=&quot;WGS 1984&quot;)
+plot(county.PROJ, main=&quot;Albers Equal Area Conic&quot;)</code></pre>
+<p><img src="map-projection-coordinate-reference-systems_files/figure-html/unnamed-chunk-30-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))</code></pre>
+<p>We can save (write) this file as an ESRI shape with <strong>writeOGR()</strong> or <strong>shapefile()</strong> function for future use.</p>
+<pre class="r"><code>writeOGR(county.PROJ,                         # input spatial data 
+        dsn=dsn,                              # working directory 
+        &quot;NY_County_PROJ&quot;,                     # output spatial data 
+        driver=&quot;ESRI Shapefile&quot;,              # define output as ESRI shape file
+      overwrite=TRUE)                         # write on existing file, if exist
+# or
+shapefile(county.PROJ, paste0(dataFolder,&quot;NY_County_PROJ.shp&quot;),overwrite=TRUE)  </code></pre>
+<div style="margin-bottom:30px;">
+
+</div>
+</div>
+</div>
+</div>
+<div id="raster-data" class="section level3">
+<h3>Raster Data</h3>
+<p>This exercise you will learn how to projection transformation of will be done of raster data. In this exercise, we will use SRTM 90 digital Elevation Model New York State which was downloaded from <a href="http://www.cgiar-csi.org/data/srtm-90m-digital-elevation-database-v4-1">CGIAR-CSI</a>. We will re-project it from WSG84 coordinate to Albers Equal Area Conic NAD83 projection system. In R, you can re-project a single or multiple raster in a batch mode.</p>
+<div id="projection-of-a-single-raster" class="section level4">
+<h4>Projection of a Single Raster</h4>
+<p>First, we will re-project one tile of NY DEM raster data (~/NY_DEM_TILES/NY_DEM0.tif) from WGS 1984 CRS to Albers Equal Area Conic projection system. You can load DEM raster in R using <strong>raster()</strong> function of <strong>raster</strong> package. If you want to check raster attribute, just simple type r-object name of this raster or use <strong>crs()</strong> function.</p>
+<pre class="r"><code>DEM.GCS&lt;-raster(paste0(dataFolder,&quot;Onondaga_DEM.tif&quot;))
+DEM.GCS
+## class       : RasterLayer 
+## dimensions  : 443, 534, 236562  (nrow, ncol, ncell)
+## resolution  : 0.001133064, 0.001133064  (x, y)
+## extent      : -76.50013, -75.89507, 42.77139, 43.27333  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## data source : F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_03\Onondaga_DEM.tif 
+## names       : Onondaga_DEM
+# Or
+crs(DEM.GCS)
+## CRS arguments:
+##  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</code></pre>
+<p>You notice that CRS of this DEM has already been defined as <strong>WGS 84</strong>. Now, we will project from <strong>WGS 84</strong> to <strong>Albers Equal Area Conic NAD83</strong>. We will use <strong>projectRaster()</strong> function with proj.4 projection description of <strong>Albers Equal Area Conic NAD83</strong>. Be patient, it will take a while to project this DEM data.</p>
+<pre class="r"><code>DEM.PROJ&lt;-projectRaster(DEM.GCS, crs=usa_albers) 
+DEM.PROJ</code></pre>
+<pre><code>## class       : RasterLayer 
+## dimensions  : 526, 695, 365570  (nrow, ncol, ncell)
+## resolution  : 84.9, 131  (x, y)
+## extent      : 1476714, 1535720, 480423.3, 549329.3  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0 
+## data source : in memory
+## names       : Onondaga_DEM 
+## values      : 108.321, 619.3135  (min, max)</code></pre>
+<pre class="r"><code>par(mfrow=c(1,2))
+plot(DEM.GCS, main=&quot;WGS 1984&quot;)
+plot(DEM.PROJ, main=&quot;Albers Equal Area Conic&quot;)</code></pre>
+<p><img src="map-projection-coordinate-reference-systems_files/figure-html/unnamed-chunk-34-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))</code></pre>
+<p>Now we will save this projected raster using <strong>writeRaster()</strong> function of raster package</p>
+<pre class="r"><code>writeRaster(DEM.PROJ,                                      # Input raster
+            paste0(dataFolder,&quot;NY_DEM0_PROJ.tiff&quot;),        # output folder and output raster
+            &quot;GTiff&quot;,                                       # output raster file extension
+             overwrite=TRUE)                               # write on existing file, if exist </code></pre>
+</div>
+<div id="batch-projection-of-multiple-raster" class="section level4">
+<h4>Batch Projection of Multiple Raster</h4>
+<p>In this exercise will project four tiles of DEM raster in a loop. First, we will create a list of raster using <strong>list.files()</strong> function and then will create output raster using <strong>gsub()</strong> function</p>
+<pre class="r"><code># Input raster list
+DEM.input &lt;- list.files(path= paste0(dataFolder,&quot;.//DEM_TILES&quot;),pattern=&#39;.TIF$&#39;,full.names=T)   
+DEM.input
+## [1] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//.//DEM_TILES/Onondaga_DEM0.TIF&quot;
+## [2] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//.//DEM_TILES/Onondaga_DEM1.TIF&quot;
+## [3] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//.//DEM_TILES/Onondaga_DEM2.TIF&quot;
+## [4] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//.//DEM_TILES/Onondaga_DEM3.TIF&quot;
+# Output raster 
+DEM.output &lt;- gsub(&quot;\\.TIF$&quot;, &quot;_PROJ.TIF&quot;, DEM.input)  
+DEM.output
+## [1] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//.//DEM_TILES/Onondaga_DEM0_PROJ.TIF&quot;
+## [2] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//.//DEM_TILES/Onondaga_DEM1_PROJ.TIF&quot;
+## [3] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//.//DEM_TILES/Onondaga_DEM2_PROJ.TIF&quot;
+## [4] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//.//DEM_TILES/Onondaga_DEM3_PROJ.TIF&quot;</code></pre>
+<p>We will define proj.4 projection description of <strong>Albers Equal Area Conic NAD83</strong> as a mew projection and run <strong>projectRaster()</strong> functioning in a loop</p>
+<pre class="r"><code># Define a new projection
+newproj &lt;- &quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs&quot;
+# Reprojection and write raster
+for (i in 1:4){
+    r &lt;- raster(DEM.input[i])
+    PROJ &lt;- projectRaster(r, crs=newproj, method = &#39;bilinear&#39;, filename = DEM.output[i], overwrite=TRUE)
+}</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

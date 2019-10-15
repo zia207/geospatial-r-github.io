@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Getting Started with R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Getting Started with R</h1>
+
+</div>
+
+
+<p><strong>What is R?</strong></p>
+<p><a href="https://www.r-project.org/">R</a> is an open-source environment for statistical computing and visualization. It is based on the S language developed at Bell Laboratories in the 1980’s, and is the product of an active movement among statisticians for a powerful, programmable, portable, and open computing environment, applicable to the most complex and sophisticated problems, as well as “routine” analysis, without any restrictions on access or use.</p>
+<p><strong>Download and Installation R</strong></p>
+<p>The R can download from the <a href="www.r-project.org">R project</a> of a repository CRAN or you can install <a href="https://mran.microsoft.com/download">Microsoft R Open</a>.</p>
+<p>** Install R in Windows**</p>
+<p>Installation instruction of R in Windows and MAC could be found <a href="https://courses.edx.org/courses/UTAustinX/UT.7.01x/3T2014/56c5437b88fa43cf828bff5371c6a924/">here</a></p>
+<p>Detail Installation steps of Microsoft R Open in different operating systems can be found <a href="https://mran.microsoft.com/documents/rro/installation">here</a>.</p>
+<p><strong>Install R-base (3.5.2) in Ubuntu 16.04</strong></p>
+<p>Update repositories list: deb <a href="https://cloud.r-project.org/bin/Linux/Ubuntu" class="uri">https://cloud.r-project.org/bin/Linux/Ubuntu</a> xenial-cran35/</p>
+<p>Use following commands in terminal:</p>
+<ul>
+<li>$ sudo apt-get update</li>
+<li>$ sudo apt-key adv –keyserver keyserver.ubuntu.com –recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9</li>
+<li>$ sudo apt-get install r-base</li>
+</ul>
+<p><strong>Download and Installation R-Studio</strong></p>
+<p><a href="https://www.rstudio.com/products/RStudio/">RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. Click here to see more RStudio features.RStudio is available in open source and commercial editions and runs on the desktop (Windows, Mac, and Linux) or in a browser connected to RStudio Server or RStudio Server Pro (Debian/Ubuntu, RedHat/CentOS, and SUSE Linux)</a>.</p>
+<p>First, you have to download RStudio according to your operating system from <a href="https://www.rstudio.com/products/rstudio/download/">here</a>. For windows user, and just run the installation file and it normally detects your latest installed R version automatically. If you want to do some extra configuration, you need follow some steps which can be found <a href="http://www.dummies.com/programming/r/how-to-install-and-configure-rstudio/">here</a></p>
+<p>For Linux user, use following commands in terminal:</p>
+<ul>
+<li>$ sudo apt-get install gdebi-core</li>
+<li>$ wget <a href="https://download1.rstudio.org/rstudio-xenial-1.1.383-amd64.deb" class="uri">https://download1.rstudio.org/rstudio-xenial-1.1.383-amd64.deb</a></li>
+<li>$ sudo gdebi rstudio-xenial-1.1.383-amd64</li>
+<li>$ rm rstudio-xenial-1.1.383-amd64</li>
+</ul>
+<div style="margin-bottom:30px;">
+
+</div>
+<p>After installation, double click on desktop icon or open program from START to run R. R will be open as a <strong>Console</strong> window (Fig. 1a). You can work in console and use R with the command line. However, the command line can be quite daunting to a beginner, It it is better to work in <strong>R Editor</strong> (Fig. 1b). First you have to create a <strong>New script</strong> from <strong>File</strong> menu. Any code you run in R-script, output will be displayed in console window. We can save all of your R codes as a R script file and output in console as a R-Data file.</p>
+<p><img src="Image/PNG_FILE_01/R_BASE.png" width="70%" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:30px;">
+
+</div>
+<p>As I mentioned before, R-Studio includes console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and work space management. Moreover, you can share your codes with output as HTLM, MS-word and PDF with others.</p>
+<p><img src="Image/PNG_FILE_01/RSTUDIO.png" width="50%" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:30px;">
+
+</div>
+<p><strong>R Packages</strong></p>
+<p>Packages are collections of R functions, data, and compiled code in a well-defined format. The directory where packages are stored is called the <strong>library</strong>. We can install any R ‘package’ or multiple package directly from the console, using r-script and GUI (Tools &gt; Install Packages) through internet.</p>
+<p>Use <strong>install.packages()</strong> function in your console or in a script:</p>
+<pre class="r"><code># One package
+install.packages(&quot;raster&quot;, dependencies = TRUE)
+
+# Multiple packages
+install.packages(c(&quot;raster&quot;,&quot;gstat&quot;) dependencies = TRUE)</code></pre>
+<p><img src="Image/PNG_FILE_01/R_Package.png" width="60%" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:30px;">
+
+</div>
+<p><strong>R command prompt</strong></p>
+<p>Once you have R environment setup, then it’s easy to start your R command prompt by just typing the following command at your command prompt</p>
+<pre class="r"><code>print(&quot;Hello, World!&quot;)</code></pre>
+<pre><code>## [1] &quot;Hello, World!&quot;</code></pre>
+<p>At the prompt, we enter the expression that we want evaluated and when we hit enter, it will compute the result, for example,</p>
+<p><img src="Image/PNG_FILE_01/R_Calculator.png" width="40%" /></p>
+<div style="margin-bottom:30px;">
+
+</div>
+<p>Or, we can execute above functions in a script</p>
+<pre class="r"><code>2+2   # Addition</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>4-2   # Subtraction</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>3*3   # Multiplication</code></pre>
+<pre><code>## [1] 9</code></pre>
+<pre class="r"><code>4/2   # Division</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>2^2   # Power</code></pre>
+<pre><code>## [1] 4</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>Two or more expressions can be placed on a single line so long as they are separated by semi-colons:</p>
+<pre class="r"><code>2+2; 4/2</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre><code>## [1] 2</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>Built-in Functions</strong></p>
+<p>Some built in function are shown below:</p>
+<ul>
+<li><p>log(x): log to base e of x</p></li>
+<li><p>exp(x): antilog of x</p></li>
+<li><p>log(x,n): log to base n of x</p></li>
+<li><p>log10(x): log to base 10 of x</p></li>
+<li><p>sqrt(x): square root of x</p></li>
+<li><p>round(x, digits=0): round the value of x to an integer</p></li>
+<li><p>abs(x): the absolute value of x, ignoring the minus sign if there is one</p></li>
+</ul>
+<pre class="r"><code>log(10)</code></pre>
+<pre><code>## [1] 2.302585</code></pre>
+<pre class="r"><code>exp(1) </code></pre>
+<pre><code>## [1] 2.718282</code></pre>
+<pre class="r"><code>pi</code></pre>
+<pre><code>## [1] 3.141593</code></pre>
+<pre class="r"><code>sin(pi/2) </code></pre>
+<pre><code>## [1] 1</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>Most useful R functions have been complied and found <a href="http://cran.r-project.org/doc/contrib/Short-refcard.pdf">here</a></p>
+<div style="margin-bottom:30px;">
+
+</div>
+<p><strong>Variable Assignment</strong></p>
+<p>The variables can be assigned values using <strong>assignment statement</strong> - leftward, rightward and equal to operator (= or &lt; -). The operator &lt;- can be used anywhere, whereas the operator = is only allowed at the top level (e.g., in the complete expression typed at the command prompt) or as one of the sub expressions in a braced list of expressions.The operators &lt;&lt;- and -&gt;&gt; are normally only used in functions, and cause a search to be made through parent environments for an existing definition of the variable being assigned.</p>
+<pre class="r"><code>a &lt;-2  
+# Or  
+a = 2</code></pre>
+<p>When you want to know what is in a variable simply ask by typing the variable name.</p>
+<pre class="r"><code>a</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>We can store a computation of two variable names and do some calculation and the result is assigned to a new variable.</p>
+<pre class="r"><code>a=2
+b=3
+c=a+b
+c</code></pre>
+<pre><code>## [1] 5</code></pre>
+<p><strong>Important note</strong></p>
+<ul>
+<li><p>Variable names in R are case-sensitive so a is not the same as A.</p></li>
+<li><p>Variable names should not begin with numbers (e.g. 1x) or symbols (e.g. %x).</p></li>
+<li><p>Variable names should not contain blank spaces: use grain.yield</p></li>
+</ul>
+<div style="margin-bottom:30px;">
+
+</div>
+<p><strong>String</strong></p>
+<p>String is value written within a pair of single quote or double quotes in R. Internally R stores every string within double quotes, even when you create them with single quote.</p>
+<pre class="r"><code>a &lt;- &#39;single quote&#39;
+print(a)</code></pre>
+<pre><code>## [1] &quot;single quote&quot;</code></pre>
+<pre class="r"><code>b &lt;- &quot;double quotes&quot;
+print(b)</code></pre>
+<pre><code>## [1] &quot;double quotes&quot;</code></pre>
+<p>you can combined Many strings in R using the <strong>paste()</strong> function. It can take any number of arguments to be combined together.</p>
+<pre class="r"><code>a &lt;- &quot;Hello&quot;
+b &lt;- &#39;How&#39;
+c &lt;- &quot;are&quot;
+d &lt;-&quot; you? &quot;
+print(paste(a,b,c,d))</code></pre>
+<pre><code>## [1] &quot;Hello How are  you? &quot;</code></pre>
+<pre class="r"><code>print(paste(a,b,c,d, sep = &quot;-&quot;))</code></pre>
+<pre><code>## [1] &quot;Hello-How-are- you? &quot;</code></pre>
+<pre class="r"><code>print(paste(a,b,c,d, sep = &quot;&quot;, collapse = &quot;&quot;))</code></pre>
+<pre><code>## [1] &quot;HelloHoware you? &quot;</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>Data Types</strong></p>
+<p>R supports a wide variety of data types including <strong>scalars, vectors (numerical, character, logical), matrices, data frames</strong>, and <strong>lists</strong>.</p>
+<p>In contrast to other programming languages like C and java in R, the variables are not declared as some data type. The variables are assigned with R-Objects and the data type of the R-object becomes the data type of the variable. There are many types of R-objects. The frequently used ones are ???</p>
+<ul>
+<li><p>Vectors</p></li>
+<li><p>Matrices</p></li>
+<li><p>Lists</p></li>
+<li><p>Data Frames</p></li>
+<li><p>Arrays</p></li>
+<li><p>Factors</p></li>
+</ul>
+<div style="margin-bottom:30px;">
+
+</div>
+<p><strong>Vectors</strong></p>
+<p>A list of numbers together to form a vector.</p>
+<p><em>Numeric vector</em></p>
+<pre class="r"><code>a &lt;- c(1, 2, 5.3, 6, -2, 4, 2, 5, 10)
+a</code></pre>
+<pre><code>## [1]  1.0  2.0  5.3  6.0 -2.0  4.0  2.0  5.0 10.0</code></pre>
+<p>Vector index in R starts from 1, unlike most programming languages where index start from 0. We can use a vector of integers as index to access specific elements in a vector.</p>
+<pre class="r"><code>a[2]           #  access 2nd element</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>a[c(2, 4)]     # access 2nd and 4th element</code></pre>
+<pre><code>## [1] 2 6</code></pre>
+<pre class="r"><code>a[-1]          # access all but 1st element</code></pre>
+<pre><code>## [1]  2.0  5.3  6.0 -2.0  4.0  2.0  5.0 10.0</code></pre>
+<pre class="r"><code>a[a &lt; 0]       # filtering vectors based on conditions</code></pre>
+<pre><code>## [1] -2</code></pre>
+<pre class="r"><code>a[2] &lt;- 0      # modify 2nd element
+a</code></pre>
+<pre><code>## [1]  1.0  0.0  5.3  6.0 -2.0  4.0  2.0  5.0 10.0</code></pre>
+<p>You can apply following functions to get useful summaries of a vector:</p>
+<p><img src="Image/PNG_FILE_01/sum_stat.png" width="80%" /></p>
+<div style="margin-bottom:30px;">
+
+</div>
+<p>For examples:</p>
+<pre class="r"><code>sum(a)        # sums the values in the vector </code></pre>
+<pre><code>## [1] 31.3</code></pre>
+<pre class="r"><code>length(a)     # number of the values in the vector </code></pre>
+<pre><code>## [1] 9</code></pre>
+<pre class="r"><code>mean (a)      # the average of the values in the vector </code></pre>
+<pre><code>## [1] 3.477778</code></pre>
+<pre class="r"><code>var (a)       # the sample variance of the values </code></pre>
+<pre><code>## [1] 13.15444</code></pre>
+<pre class="r"><code>sd(a)         # the standard of deviations of the values  </code></pre>
+<pre><code>## [1] 3.626906</code></pre>
+<pre class="r"><code>max(a)        # the largest value in the vector  </code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>min(a)        # the smallest number in the vector </code></pre>
+<pre><code>## [1] -2</code></pre>
+<pre class="r"><code>median(a)     # the sample median </code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>summary(a)    # summary statistics</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  -2.000   1.000   4.000   3.478   5.300  10.000</code></pre>
+<pre class="r"><code>quantile(a)   # quantile</code></pre>
+<pre><code>##   0%  25%  50%  75% 100% 
+## -2.0  1.0  4.0  5.3 10.0</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>Matrices</strong></p>
+<p>In R, matrix is a two dimensional data structure, which is similar to vector but additionally contains the dimension attribute. All columns in a matrix must have the same mode (numeric, character, etc.) and the same length.</p>
+<p>Matrix can be created using the <strong>matrix()</strong> function.Dimension of the matrix can be defined by passing appropriate value for arguments <strong>nrow</strong> and <strong>ncol</strong></p>
+<pre class="r"><code># 4 x 4 matrix
+matrix(1:16, nrow = 4, ncol = 4)</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    5    9   13
+## [2,]    2    6   10   14
+## [3,]    3    7   11   15
+## [4,]    4    8   12   16</code></pre>
+<p>You can create matrix with row and column names:</p>
+<pre class="r"><code># create a vector
+cells=c(1,26,24,68,35,68,73,18,2,56,4,5,34,21,24,20)
+# names of column rows
+cnames = c(&quot;C1&quot;,&quot;C2&quot;,&quot;C3&quot;,&quot;C4&quot;) 
+# names of two rows
+rnames = c(&quot;R1&quot;,&quot;R2&quot;,&quot;R3&quot;,&quot;R4&quot;) 
+# Create a  4 x 4 matrix name as Z
+z= matrix(cells,
+          nrow=4,
+          ncol=4,
+          byrow=TRUE,
+          dimnames=list(rnames,cnames))
+z</code></pre>
+<pre><code>##    C1 C2 C3 C4
+## R1  1 26 24 68
+## R2 35 68 73 18
+## R3  2 56  4  5
+## R4 34 21 24 20</code></pre>
+<p>You can extract rows, columns or elements of matrix using following commands:</p>
+<pre class="r"><code>z[,4]          # 4th column of matrix</code></pre>
+<pre><code>## R1 R2 R3 R4 
+## 68 18  5 20</code></pre>
+<pre class="r"><code>z[3,]          # 3rd row of matrix</code></pre>
+<pre><code>## C1 C2 C3 C4 
+##  2 56  4  5</code></pre>
+<pre class="r"><code>z[2:4,1:3]     # rows 2,3,4 of columns 1,2,3</code></pre>
+<pre><code>##    C1 C2 C3
+## R2 35 68 73
+## R3  2 56  4
+## R4 34 21 24</code></pre>
+<p>Summary statistics of a column or any row can be calculate</p>
+<pre class="r"><code>summary(z[,3]) #  summary statistics of the 3 column of matrix</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    4.00   19.00   24.00   31.25   36.25   73.00</code></pre>
+<pre class="r"><code>summary(z[2,]) #  summary statistics of the 2 rows     </code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   18.00   30.75   51.50   48.50   69.25   73.00</code></pre>
+<pre class="r"><code>summary(z)     # summary statistics of each column</code></pre>
+<pre><code>##        C1              C2              C3              C4       
+##  Min.   : 1.00   Min.   :21.00   Min.   : 4.00   Min.   : 5.00  
+##  1st Qu.: 1.75   1st Qu.:24.75   1st Qu.:19.00   1st Qu.:14.75  
+##  Median :18.00   Median :41.00   Median :24.00   Median :19.00  
+##  Mean   :18.00   Mean   :42.75   Mean   :31.25   Mean   :27.75  
+##  3rd Qu.:34.25   3rd Qu.:59.00   3rd Qu.:36.25   3rd Qu.:32.00  
+##  Max.   :35.00   Max.   :68.00   Max.   :73.00   Max.   :68.00</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>Data-frame</strong></p>
+<p>A data frame is little different than a matrix. In data frame different, columns can have different modes (numeric, character, factor, etc.).</p>
+<pre class="r"><code>ID = c(1,2,3,4)    # create a vector of ID coloumn 
+Landuse = c(&quot;Grassland&quot;,&quot;Forest&quot;, &quot;Arable&quot;, &quot;Urban&quot;) # create a text vector 
+settlement  = c (FALSE, FALSE, FALSE, TRUE) # creates a logical vector
+pH   = c(6.6,4.5, 6.8, 7.5) # create a numerical vector
+my.data=data.frame(ID,Landuse,settlement,pH) # create a data frame
+my.data</code></pre>
+<pre><code>##   ID   Landuse settlement  pH
+## 1  1 Grassland      FALSE 6.6
+## 2  2    Forest      FALSE 4.5
+## 3  3    Arable      FALSE 6.8
+## 4  4     Urban       TRUE 7.5</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>List</strong></p>
+<p>Lists are the collection of R objects which contain elements of different types like ??? numbers, strings, vectors and another list inside it. A list can also contain a matrix or a function as its elements.</p>
+<p>In R, a list is created by placing all the items (elements) inside a bracket ( ), separated by commas.</p>
+<pre class="r"><code># Create a list containing strings, numbers, vectors and a logical values.
+my.list &lt;- list(&quot;Blue&quot;, &quot;Green&quot;, &quot;Red&quot;, c(21,32,11), TRUE, 51.23, 119.1)
+print(my.list)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;Blue&quot;
+## 
+## [[2]]
+## [1] &quot;Green&quot;
+## 
+## [[3]]
+## [1] &quot;Red&quot;
+## 
+## [[4]]
+## [1] 21 32 11
+## 
+## [[5]]
+## [1] TRUE
+## 
+## [[6]]
+## [1] 51.23
+## 
+## [[7]]
+## [1] 119.1</code></pre>
+<p>Elements of the list can be accessed by the index of the element in the list. In case of named lists it can also be accessed using the names.</p>
+<pre class="r"><code># Access the first element of the list.
+print(my.list[1])</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;Blue&quot;</code></pre>
+<pre class="r"><code># Access the 4th element. As it is also a list, all its elements will be printed.
+print(my.list[4])</code></pre>
+<pre><code>## [[1]]
+## [1] 21 32 11</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>Arrays</strong></p>
+<p>Arrays are the R data objects which can store data in more than two dimensions.</p>
+<pre class="r"><code># Create two vectors of different lengths.
+vector1 &lt;- c(2,4,3)
+vector2 &lt;- c(9,11,10,12,14,11)
+# Take these vectors as input to the array.
+result &lt;- array(c(vector1,vector2),dim = c(3,3,2))
+print(result)</code></pre>
+<pre><code>## , , 1
+## 
+##      [,1] [,2] [,3]
+## [1,]    2    9   12
+## [2,]    4   11   14
+## [3,]    3   10   11
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3]
+## [1,]    2    9   12
+## [2,]    4   11   14
+## [3,]    3   10   11</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>Factor</strong></p>
+<p>Factors are the data objects which are used to categorize the data and store it as levels</p>
+<pre class="r"><code># Create a vector as input.
+Landuse = c(&quot;Grassland&quot;,&quot;Forest&quot;, &quot;Arable&quot;, &quot;Urban&quot;) # create a text vector 
+print(Landuse)</code></pre>
+<pre><code>## [1] &quot;Grassland&quot; &quot;Forest&quot;    &quot;Arable&quot;    &quot;Urban&quot;</code></pre>
+<pre class="r"><code>print(is.factor(Landuse))</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code># Apply the factor function
+factor.data &lt;- factor(Landuse)
+print(factor.data)</code></pre>
+<pre><code>## [1] Grassland Forest    Arable    Urban    
+## Levels: Arable Forest Grassland Urban</code></pre>
+<pre class="r"><code>print(is.factor(factor.data))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>Sorting</strong></p>
+<pre class="r"><code>soil =c(&quot;S1&quot;,&quot;S2&quot;, &quot;S3&quot;, &quot;S4&quot;, &quot;S5&quot;, &quot;S6&quot;,&quot;S7&quot;, &quot;S8&quot;,&quot;S9&quot;,&quot;S10&quot;,&quot;S11&quot;,&quot;S12&quot;) # create a text vector
+pH = c(5.2,6.0,6.6,5.6,4.7,5.2,5.7, 5.9,5.3,6.8,6.2,5.8)                     # create numerical vector
+SOC = c(1.2,3.0,1.6,2.6,2.7,1.2,1.7, 2.9,2.3,1.8,2.2,1.8)                     # create numerical vector
+pH.data= data.frame(soil, pH,SOC)                                                # create a data frame       
+head(pH.data)</code></pre>
+<pre><code>##   soil  pH SOC
+## 1   S1 5.2 1.2
+## 2   S2 6.0 3.0
+## 3   S3 6.6 1.6
+## 4   S4 5.6 2.6
+## 5   S5 4.7 2.7
+## 6   S6 5.2 1.2</code></pre>
+<pre class="r"><code># attach pH.data
+attach(pH.data)</code></pre>
+<pre><code>## The following objects are masked _by_ .GlobalEnv:
+## 
+##     pH, SOC, soil</code></pre>
+<pre class="r"><code># sort by pH
+newdata.1 &lt;-pH.data[order(pH),]
+# sort by pH and SOC
+newdata.2 &lt;- pH.data[order(pH, SOC),]
+#sort by pH (ascending) and SOC (descending)
+newdata.3 &lt;- pH.data[order(pH, -SOC),] 
+
+head(newdata.1)</code></pre>
+<pre><code>##   soil  pH SOC
+## 5   S5 4.7 2.7
+## 1   S1 5.2 1.2
+## 6   S6 5.2 1.2
+## 9   S9 5.3 2.3
+## 4   S4 5.6 2.6
+## 7   S7 5.7 1.7</code></pre>
+<pre class="r"><code>head(newdata.2)</code></pre>
+<pre><code>##   soil  pH SOC
+## 5   S5 4.7 2.7
+## 1   S1 5.2 1.2
+## 6   S6 5.2 1.2
+## 9   S9 5.3 2.3
+## 4   S4 5.6 2.6
+## 7   S7 5.7 1.7</code></pre>
+<pre class="r"><code>head(newdata.3)</code></pre>
+<pre><code>##   soil  pH SOC
+## 5   S5 4.7 2.7
+## 1   S1 5.2 1.2
+## 6   S6 5.2 1.2
+## 9   S9 5.3 2.3
+## 4   S4 5.6 2.6
+## 7   S7 5.7 1.7</code></pre>
+<pre class="r"><code># dettach pH data
+detach(pH.data)</code></pre>
+<div style="margin-bottom:2px;">
+
+</div>
+<p><strong>Rounding</strong></p>
+<p>In R, various types of rounding (rounding up, rounding down, rounding to the nearest integer) can be done easily.</p>
+<pre class="r"><code>floor(5.7)  # greatest integer less than&#39; function </code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>ceiling(5.7)  # the &#39;next integer&#39; function is ceilling</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>round(5.7)   # rounded to 6  </code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>round(5.4)   # rounded to 5   </code></pre>
+<pre><code>## [1] 5</code></pre>
+<div style="margin-bottom:30px;">
+
+</div>
+<div id="importingexporting-data-in-r" class="section level3">
+<h3><strong>Importing/Exporting Data in R</strong></h3>
+<p><strong>Set working directory</strong></p>
+<p>If we want to read files from a specific location or write files to a specific location, first, we will need to set working directory in R. You can set a new working directory using <strong>setwd()</strong> function.</p>
+<pre class="r"><code># Define working directory
+#setwd(&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_01&quot;)  
+# or
+#setwd(&quot;F:/Spatial_Data_Processing_and_Analysis_R/Data/DATA_01&quot;)</code></pre>
+<p>The files under in a directory can check using following command using <strong>dir()</strong> function</p>
+<pre class="r"><code># dir()</code></pre>
+<p>R support a variety file types to read or import into R or write or export from R.</p>
+<p>The data could be found [here]<a href="https://www.dropbox.com/s/s5lwsb8jt1cbocs/DATA_01.7z?dl=0" class="uri">https://www.dropbox.com/s/s5lwsb8jt1cbocs/DATA_01.7z?dl=0</a>).</p>
+<p>*<strong>Read/Import file into R</strong> ** Read a Text File</p>
+<p>The easiest form of data to import into R is a simple text file, and this will often be acceptable for problems of small or medium scale. The primary function to import from a text file is read.table.</p>
+<pre class="r"><code># data.txt = read.table(&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_01//test_data.txt&quot;, header=T)   # read txt files</code></pre>
+<p><strong>Comma Delimited Text File</strong></p>
+<p>The sample data can be in comma separated values (CSV) format. Each cell inside such data file is separated by a special character, which usually is a comma, although other characters can be used as well.</p>
+<pre class="r"><code>data.csv =  read.csv(&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_01//test_data.csv&quot;, header=T)     # read csv files</code></pre>
+<p>** Excel**</p>
+<p>One of the best ways to read an Excel file is to export it to a comma delimited file and import it using the method above. Alternatively, we can use the <strong>xlsx</strong> package to access Excel files. The first row should contain variable/column names.</p>
+<pre class="r"><code>#install.packages(&quot;xlsx&quot;) # Install &quot;xlsx&quot; package
+# library(xlsx)            # Load xlsx package
+# data.xls &lt;- read.xlsx(&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_01//test_data.xlsx&quot;, 1)  # read xlsx file</code></pre>
+<p><strong>Export file from R</strong></p>
+<pre class="r"><code># Write CSV file
+# write.csv(data.csv , &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_01//test_data.csv&quot;, row.names = FALSE)</code></pre>
+<div style="margin-bottom:30px;">
+
+</div>
+<p><strong>Getting Information on a Dataset</strong></p>
+<p>List the objects in the working environment</p>
+<pre class="r"><code># ls()</code></pre>
+<p>List the variables in the data</p>
+<pre class="r"><code>#names(data.txt)
+names(data.csv)</code></pre>
+<pre><code>##  [1] &quot;ID&quot;    &quot;treat&quot; &quot;var&quot;   &quot;rep&quot;   &quot;PH&quot;    &quot;TN&quot;    &quot;PN&quot;    &quot;GW&quot;   
+##  [9] &quot;ster&quot;  &quot;DTM&quot;   &quot;SW&quot;    &quot;GAs&quot;   &quot;STAs&quot;</code></pre>
+<pre class="r"><code>#names(data.xls)</code></pre>
+<p>Structure of data</p>
+<pre class="r"><code>str(data.csv) </code></pre>
+<pre><code>## &#39;data.frame&#39;:    42 obs. of  13 variables:
+##  $ ID   : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ treat: Factor w/ 2 levels &quot;High As &quot;,&quot;Low As&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ var  : Factor w/ 7 levels &quot;BR01&quot;,&quot;BR06&quot;,..: 1 1 1 2 2 2 3 3 3 4 ...
+##  $ rep  : int  1 2 3 1 2 3 1 2 3 1 ...
+##  $ PH   : num  84 112 102 118 115 ...
+##  $ TN   : num  28.3 34 27.7 23.3 16.7 19 21.7 25.3 23 19.7 ...
+##  $ PN   : num  27.7 30 24 19.7 12.3 15.3 19.3 21 19 14.7 ...
+##  $ GW   : num  35.7 58.1 44.6 46.4 19.9 35.9 56.2 49.2 48.6 36.6 ...
+##  $ ster : num  20.5 14.8 5.8 20.3 32.3 14.9 6.1 9.2 4.2 12.1 ...
+##  $ DTM  : num  126 119 120 119 120 ...
+##  $ SW   : num  28.4 36.7 32.9 40 28.2 42.3 35.4 60.6 69.8 57.3 ...
+##  $ GAs  : num  0.762 0.722 0.858 1.053 1.13 ...
+##  $ STAs : num  14.6 10.8 12.7 18.2 13.7 ...</code></pre>
+<p>Levels of a factor</p>
+<pre class="r"><code>levels(data.csv$var)</code></pre>
+<pre><code>## [1] &quot;BR01&quot;      &quot;BR06&quot;      &quot;BR28&quot;      &quot;BR35&quot;      &quot;BR36&quot;      &quot;Jefferson&quot;
+## [7] &quot;Kaybonnet&quot;</code></pre>
+<p>Print first 10 rows of data</p>
+<pre class="r"><code>head(data.csv, n=10)</code></pre>
+<pre><code>##    ID  treat  var rep    PH   TN   PN   GW ster   DTM   SW   GAs  STAs
+## 1   1 Low As BR01   1  84.0 28.3 27.7 35.7 20.5 126.0 28.4 0.762 14.60
+## 2   2 Low As BR01   2 111.7 34.0 30.0 58.1 14.8 119.0 36.7 0.722 10.77
+## 3   3 Low As BR01   3 102.3 27.7 24.0 44.6  5.8 119.7 32.9 0.858 12.69
+## 4   4 Low As BR06   1 118.0 23.3 19.7 46.4 20.3 119.0 40.0 1.053 18.23
+## 5   5 Low As BR06   2 115.3 16.7 12.3 19.9 32.3 120.0 28.2 1.130 13.72
+## 6   6 Low As BR06   3 111.0 19.0 15.3 35.9 14.9 116.3 42.3 1.011 15.97
+## 7   7 Low As BR28   1 114.3 21.7 19.3 56.2  6.1 123.7 35.4 0.965 14.49
+## 8   8 Low As BR28   2 124.0 25.3 21.0 49.2  9.2 114.3 60.6 0.969 16.02
+## 9   9 Low As BR28   3 120.3 23.0 19.0 48.6  4.2 113.3 69.8 0.893 15.25
+## 10 10 Low As BR35   1 130.0 19.7 14.7 36.6 12.1 126.0 57.3 1.358 21.23</code></pre>
+<p>Print last 5 rows of mydata</p>
+<pre class="r"><code>tail(data.csv, n=5)</code></pre>
+<pre><code>##    ID    treat       var rep    PH   TN   PN   GW ster   DTM   SW   GAs
+## 38 38 High As  Jefferson   2  72.3  9.7  8.3 14.1 18.2 128.7 11.6 1.872
+## 39 39 High As  Jefferson   3  80.0 13.3 11.0 23.0 12.6 127.0 16.3 2.007
+## 40 40 High As  Kaybonnet   1  96.7 14.3  7.7  5.4 57.2 131.7 18.2 1.888
+## 41 41 High As  Kaybonnet   2 101.0 15.7  8.0  5.2 82.8 130.7 28.7 1.889
+## 42 42 High As  Kaybonnet   3 105.3 13.7 10.0 15.0 54.7 128.7 28.5 1.767
+##     STAs
+## 38 18.60
+## 39 21.02
+## 40 20.27
+## 41 22.51
+## 42 21.39</code></pre>
+<p><strong>Some Important R-packages Statistical and Spatial Data Analysis</strong></p>
+<p><strong>Utility and data manipulation</strong></p>
+<ul>
+<li><a href="https://www.tidyverse.org/">tidyverse</a>: collection of R packages designed for data science</li>
+<li><a href="https://cran.r-project.org/web/packages/data.table/data.table.pdf">data.table</a>: Fast aggregation of large data</li>
+<li><a href="https://cran.r-project.org/web/packages/dplyr/dplyr.pdf">dplyr</a>: A Grammar of Data Manipulation</li>
+<li><a href="https://cran.r-project.org/web/packages/plyr/plyr.pdf">plyr</a>: Tools for Splitting, Applying and Combining Data</li>
+<li><a href="https://cran.r-project.org/web/packages/classInt/classInt.pdf">classInt</a>: Choose Univariate Class Intervals</li>
+<li><a href="https://cran.r-project.org/web/packages/RODBC/RODBC.pdf">RODBC</a>: ODBC Database Access</li>
+<li><a href="https://cran.r-project.org/web/packages/sqldf/sqldf.pdf">sqldf</a>: Perform SQL Selects on R Data Frames</li>
+<li><a href="https://cran.r-project.org/web/packages/RPostgreSQL/RPostgreSQL.pdf">RPostgreSQL</a>: R Interface to the ‘PostgreSQL’ Database System</li>
+<li><a href="https://cran.r-project.org/web/packages/snow/snow.pdf">snow</a>: Support for simple parallel computing in R</li>
+<li><a href="ftp://cran.r-project.org/pub/R/web/packages/doParallel/doParallel.pdf">doParalle</a>: Foreach Parallel Adaptor for the ‘parallel’ Package</li>
+<li><a href="https://cran.r-project.org/web/packages/devtools/devtools.pdf">devtools</a>: Collection of package development tools</li>
+<li><a href="ftp://cran.r-project.org/pub/R/web/packages/rJava/rJava.pdf">rJava</a>:Low-Level R to Java Interface</li>
+</ul>
+<p><strong>Plotting and Mapping</strong></p>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/ggplot2/ggplot2.pdf">ggplot2</a>: An Implementation of the Grammar of Graphics</li>
+<li><a href="https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf">RColorBrewer</a>: ColorBrewer Palettes (making customize color palettes)</li>
+<li><a href="https://cran.r-project.org/web/packages/latticeExtra/latticeExtra.pdf">latticeExtra</a> : Extra Graphical Utilities Based on Lattice</li>
+<li><a href="https://cran.r-project.org/web/packages/tmap/tmap.pdf">tmap</a>: Thematic Maps</li>
+<li><a href="https://cran.r-project.org/web/packages/ggmap/ggmap.pdf">ggmap</a>: extends the plotting package ggplot2 for maps</li>
+<li><a href="https://cran.r-project.org/web/packages/rasterVis/rasterVis.pdf">rasterVis</a>:Visualization Methods for Raster Data</li>
+<li><a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html">corrplot</a>: graphical display of a correlation matrix, confidence interval</li>
+</ul>
+<p><strong>Advanced statistical analysis and Mechine Learning Packages</strong></p>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/agricolae/agricolae.pdf">agricoale</a>:Statistical Procedures for Agricultural Research</li>
+<li><a href="https://cran.r-project.org/web/packages/MASS/MASS.pdf">MASS</a>: Support Functions and Datasets for Venables and Ripley’s MASS</li>
+<li><a href="https://cran.r-project.org/web/packages/nlme/nlme.pdf">nlme</a>: Linear and Nonlinear Mixed Effects Models</li>
+<li><a href="https://cran.r-project.org/web/packages/lme4/lme4.pdf">lme4</a>: Linear Mixed-Effects Models using ‘Eigen’ and S4</li>
+<li><a href="https://cran.r-project.org/web/packages/lmerTest/index.html">lmerTest</a>: Tests in Linear Mixed Effects Models</li>
+<li><a href="http://topepo.github.io/caret/index.html">caret</a>: A set of functions that attempt to streamline the process for creating predictive models</li>
+<li><a href="https://cran.r-project.org/web/packages/caretEnsemble/vignettes/caretEnsemble-intro.html">caretEnsemble</a>: A package for making ensembles of caret models</li>
+<li><a href="https://cran.r-project.org/web/packages/h2o/h2o.pdf">H20</a>: R interface for ‘H2O’, the scalable open source machine learning platform</li>
+<li><a href="https://keras.rstudio.com/">keras</a>: a high-level neural networks ‘API’ with</li>
+</ul>
+<p><strong>Spatial data</strong></p>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/sp/sp.pdf">sp</a>: Classes and Methods for Spatial Data</li>
+<li><a href="https://cran.r-project.org/web/packages/sf/index.html">sf</a>:Support for simple features, a standardized way to encode spatial vector data</li>
+<li><a href="https://cran.r-project.org/web/packages/rgdal/rgdal.pdf">rgdal</a>: Bindings for the Geospatial Data Abstraction Library</li>
+<li><a href="https://cran.r-project.org/web/packages/raster/raster.pdf">raster</a>: Geographic Data Analysis and Modeling</li>
+<li><a href="https://cran.r-project.org/web/packages/maptools/maptools.pdf">maptools</a>: Tools for Reading and Handling Spatial Objects</li>
+<li><a href="https://cran.r-project.org/web/packages/maps/maps.pdf">maps</a>: Draw Geographical Maps</li>
+<li><a href="https://cran.r-project.org/web/packages/rgeos/rgeos.pd">rgeos</a>: Interface to Geometry Engine - Open Source (GEOS)</li>
+<li><a href="https://cran.r-project.org/web/packages/rgrass7/rgrass7.pdf">rgrass7</a> : Interface Between GRASS 7 Geographical Information System and R</li>
+<li><a href="https://cran.r-project.org/web/packages/plotGoogleMaps/plotGoogleMaps.pdf">plotGoogleMaps</a>: Plot Spatial or Spatio-Temporal Data Over Google Maps</li>
+<li><a href="https://cran.r-project.org/web/packages/landsat/landsat.pdf">landsat</a> : Radiometric and topographic correction of satellite imagery</li>
+<li><a href="https://cran.r-project.org/web/packages/RStoolbox/RStoolbox.pdf">RStoolbox</a>: Tools for Remote Sensing Data Analysis</li>
+<li><a href="https://cran.r-project.org/web/packages/wrspathrow/wrspathrow.pdf">wrspathrow</a>: Contains functions for working with the Worldwide Reference System (WRS) 1 and 2 systems used by NASA</li>
+<li><a href="https://cran.r-project.org/web/packages/ncdf4/ncdf4.pdf">ncdf4</a>:Interface to Unidata netCDF (Version 4 or Earlier) Format Data</li>
+<li><a href="https://cran.r-project.org/web/packages/RNetCDF/RNetCDF.pdf">RNetCDF</a>:nterface to NetCDF Datasets</li>
+<li><a href="https://cran.r-project.org/web/packages/PCICt/PCICt.pdf">PCICt</a>:implementation of POSIXct Work-Alike for 365 and 360 Day Calendars<br />
+</li>
+<li><a href="https://cran.r-project.org/web/packages/gstat/gstat.pdf">gstat</a>: Spatial and Spatio-Temporal Geostatistical Modelling, Prediction and Simulation</li>
+<li><a href="https://cran.r-project.org/web/packages/spdep/spdep.pdf">spdep</a>: Spatial Dependence: Weighting Schemes, Statistics and Models</li>
+<li><a href="https://cran.fhcrc.org/web/packages/automap/automap.pdf">automap</a>: Automatic interpolation package</li>
+<li><a href="https://cran.r-project.org/web/packages/GSIF/GSIF.pdf">GSIF</a>: Global Soil Information Facilities - Geostatistical Modelling with Secondary variables</li>
+<li><a href="https://cran.r-project.org/web/packages/GWmodel/GWmodel.pdf">GWmodel</a>:Geographically-Weighted Models</li>
+<li><a href="https://cran.r-project.org/web/packages/dismo/dismo.pdf">dismo</a>: Species Distribution Modeling</li>
+</ul>
+<p><strong>Installation of R-packages</strong></p>
+<p>If the R program has already been installed, the installation of any ‘package’ can be done directly from the console of R through internet or from local drive. It is better to install through the internet. Detail installation steps can be found <a href="http://jtleek.com/modules/01_DataScientistToolbox/02_09_installingRPackages/#7">here</a></p>
+<pre class="r"><code># Utility and data manipulation 
+
+install.packages(c(
+    &quot;tidyvers&quot;,
+    &quot;data.table&quot;,
+    &quot;dplyr&quot;,
+    &quot;plyr&quot;,
+    &quot;classInt&quot;, 
+    &quot;RODBC&quot;, 
+    &quot;sqldf&quot;, 
+    &quot;RPostgreSQL&quot;,
+    &quot;snow&quot;,
+    &quot;doParallel&quot;,
+    &quot;devtools&quot;,
+    &quot;rJava&quot;
+    )) 
+
+# Plotting and Mapping
+
+install.packages(c(
+    &quot;ggplot2&quot;,
+    &quot;RColorBrewer&quot;, 
+    &quot;latticeExtra&quot;,
+    &quot;ggmap&quot;,
+    &quot;tmap&quot;,
+    &quot;rasterVis&quot;,
+    &quot;corrplot&quot;,
+    )) 
+
+# Advanced statistical analysis
+
+install.packages(c(
+    &quot;agricoale&quot;,
+    &quot;MASS&quot;, 
+    &quot;nlme&quot;, 
+    &quot;lme4&quot;, 
+    &quot;lmerTest&quot;
+    ))  
+
+# Spatial data
+
+install.packages(c(
+    &quot;sp&quot;,
+    &quot;rgdal&quot;, 
+    &quot;raster&quot;, 
+    &quot;maptools&quot;, 
+    &quot;maps&quot;,
+    &quot;regeos&quot;, 
+    &quot;rgrass7&quot;,
+    &quot;plotGoogleMaps&quot;,  
+    &quot;landsat&quot;, 
+    &quot;RStoolbox&quot;,
+    &quot;rgeos&quot;,
+    &quot;wrspathrow&quot;,
+    &quot;ncdf4&quot;
+    &quot;RNetCDF&quot;,
+    &quot;PCICt&quot;, 
+    &quot;spdep&quot;, 
+    &quot;gstat&quot;,
+    &quot;automap&quot;,
+    &quot;GSIF&quot;,
+    &quot;GWmodel&quot;
+     ))</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Working with Spatial Point Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Working with Spatial Point Data</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>In this section, we will learn how to integrated a different types of spatial data and create a data frame for spatial interpolation. This excessive consists of six major steps:</p>
+<ul>
+<li><p><a href="#create-a-spatial-point-data-frame">Create a Spatial Point Data Frame</a></p></li>
+<li><p><a href="#extract-environmental-covariates-to-spdf">Extract Environmental Covariates to SPDF</a></p></li>
+<li><p><a href="#create-a-prediction-grid">Create a Prediction Grid</a></p></li>
+<li><p><a href="#exploratory-data-analysis">Exploratory Data Analysis</a></p></li>
+<li><p><a href="#plot-data-on-web-map">Plot Data on Web Map</a></p></li>
+<li><p><a href="#data-split">Data Split</a></p></li>
+</ul>
+<div id="load-r-packages" class="section level4">
+<h4>Load R-packages</h4>
+<pre class="r"><code>library(RColorBrewer)   # Create couston color plate
+library(classInt)       # create class interval of data
+library(raster)         # spatial data
+library(latticeExtra)   # advance ploting function
+library(Hmisc)          # for correlation matrix
+library(corrplot)       # create nice looking orrelation matrix plot
+library(ggplot2)        # create box-jitter plot
+library(plyr)           # data manupulation
+library(corrplot)       # Plot correlation matix
+library(dplyr)          # data  manipulation
+library(ggmap)          # advance mapping
+library(plotGoogleMaps) # plot data on Google Map</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>We will use following spatial data to create the data frame. The data could be download from <a href="https://www.dropbox.com/s/dok9aece9kcydh5/DATA_05.7z?dl=0">here</a>.</p>
+<ul>
+<li><p><strong>Soil sampling locations (GP_GPS.CSV)</strong>: This file contains coordinates of 473 soil sampling sites in <strong>Colorado, Kansas, New Mexico, and Wyoming</strong>. The soil samples were collected by United States Geological Survey (USGS) throughout the A horizon with sampling densities of 1 sample per ~1600 km2 [Smith et al., 2011].</p></li>
+<li><p><strong>Soil organic carbon (SOC) (GP_SOC_data.csv)</strong>: SOC concentration of these 473 sites. The concentration of SOC was predicted by means of mid-infrared (MIR) spectroscopy and partial least squares regression (PLSR) analysis described previously [Janik et al., 2007; Ahmed et al., 2017].</p></li>
+<li><p><strong>Raster data</strong>: DEM (ELEV), slope, aspect, topographic position index (TPI), mean annual air temperature (MAT), mean annual precipitation (MAP), soil texture (Silt+Clay), Fire Regime Groups(FRG), Normalized Difference Vegetation Index (NDVI), and land cover (NLCD) and soil erodibility factor (K_factor). This data has downloaded from <a href="https://daac.ornl.gov/NACP/guides/SOC_Stocks_Great_Plains.html">here</a> and detail description of the data can be found in <a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2016JG003488"><strong>Assessing soil carbon vulnerability in the Western USA by geospatial modeling of pyrogenic and particulate carbon stocks</strong></a>. For training purpose, all raster was re-sampled to 10 km x 10 km grid size.</p></li>
+</ul>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_05//&quot;</code></pre>
+<pre class="r"><code>ID&lt;-read.csv(paste0(dataFolder,&quot;GP_ID.csv&quot;), header= TRUE)          # id file
+gps&lt;-read.csv(paste0(dataFolder, &quot;GP_GPS.csv&quot;), header= TRUE)       # data file
+data&lt;-read.csv(paste0(dataFolder,&quot;GP_SOC_data.csv&quot;), header= TRUE)  # GPS coordinates</code></pre>
+</div>
+<div id="create-a-spatial-point-data-frame" class="section level3">
+<h3>Create a Spatial Point Data Frame</h3>
+<p>Data contains three attributes: <strong>ID, longitude and latitude</strong> in <strong>decimal degree (DD)</strong> format of soil sampling location. If you have GPS coordinates as degrees (d), minutes (m), and seconds (s) format,you need to convert to DD using below formula:</p>
+<p><img src="Image/PNG_FILE_06/Pic1.png" width="40%" style="display: block; margin: auto;" /></p>
+<div id="merge-data" class="section level4">
+<h4>Merge Data</h4>
+<p>We will merge ID, GPS and data objects using <strong>merge()</strong> function by a common ID</p>
+<pre class="r"><code># merge two data.frames
+df_01 &lt;- merge(ID,gps, by=&quot;ID&quot;)    # join GPS coordinates with state and county ID
+df &lt;- merge(df_01,data,by=&quot;ID&quot;)    # join data
+head(df)</code></pre>
+<pre><code>##   ID STATE_ID   STATE  FIPS         COUNTY Longitude Latitude    SOC
+## 1  1       56 Wyoming 56041   Uinta County -111.0119 41.05630 15.763
+## 2  2       56 Wyoming 56023 Lincoln County -110.9830 42.88350 15.883
+## 3  3       56 Wyoming 56039   Teton County -110.8065 44.53497 18.142
+## 4  4       56 Wyoming 56039   Teton County -110.7344 44.43289 10.745
+## 5  5       56 Wyoming 56029    Park County -110.7308 44.80635 10.479
+## 6  6       56 Wyoming 56039   Teton County -110.6619 44.09124 16.987</code></pre>
+<div style="margin-bottom:40px;">
+
+</div>
+</div>
+</div>
+<div id="create-a-spatial-point-dataframe-spdf" class="section level3">
+<h3>Create a Spatial point dataframe (SPDF)</h3>
+<p>Now we will create a Spatial Point data frame using <strong>SpatialPointsDataFrame()</strong> function of <strong>sp</strong> package, First you have to define xy-coordinates of the data frame</p>
+<pre class="r"><code>##  define coordinates
+xy &lt;- df[,c(6,7)]
+# Convert to spatial point
+SPDF &lt;- SpatialPointsDataFrame(coords = xy, data=df) 
+str(SPDF)</code></pre>
+<pre><code>## Formal class &#39;SpatialPointsDataFrame&#39; [package &quot;sp&quot;] with 5 slots
+##   ..@ data       :&#39;data.frame&#39;:  473 obs. of  8 variables:
+##   .. ..$ ID       : int [1:473] 1 2 3 4 5 6 7 8 9 10 ...
+##   .. ..$ STATE_ID : int [1:473] 56 56 56 56 56 56 56 56 56 56 ...
+##   .. ..$ STATE    : Factor w/ 4 levels &quot;Colorado&quot;,&quot;Kansas&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
+##   .. ..$ FIPS     : int [1:473] 56041 56023 56039 56039 56029 56039 56039 56039 56039 56035 ...
+##   .. ..$ COUNTY   : Factor w/ 161 levels &quot;Adams County&quot;,..: 152 84 148 148 111 148 148 148 148 143 ...
+##   .. ..$ Longitude: num [1:473] -111 -111 -111 -111 -111 ...
+##   .. ..$ Latitude : num [1:473] 41.1 42.9 44.5 44.4 44.8 ...
+##   .. ..$ SOC      : num [1:473] 15.8 15.9 18.1 10.7 10.5 ...
+##   ..@ coords.nrs : num(0) 
+##   ..@ coords     : num [1:473, 1:2] -111 -111 -111 -111 -111 ...
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. .. ..$ : NULL
+##   .. .. ..$ : chr [1:2] &quot;Longitude&quot; &quot;Latitude&quot;
+##   ..@ bbox       : num [1:2, 1:2] -111 31.5 -94.9 45
+##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. .. ..$ : chr [1:2] &quot;Longitude&quot; &quot;Latitude&quot;
+##   .. .. ..$ : chr [1:2] &quot;min&quot; &quot;max&quot;
+##   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot
+##   .. .. ..@ projargs: chr NA</code></pre>
+<div id="define-projection" class="section level4">
+<h4>Define projection</h4>
+<p>We will define current CRS (WGS 84) before re-project it to **Albers Equal Area Conic NAD1983&quot;</p>
+<pre class="r"><code>proj4string(SPDF) = CRS(&quot;+proj=longlat +ellps=WGS84&quot;)  # WGS 84
+proj4string(SPDF)
+## [1] &quot;+proj=longlat +ellps=WGS84&quot;</code></pre>
+<p>We will copy projection parameters (Albers Equal Area Conic NAD1983) from state boundary file and use it to re-project the SPDF file</p>
+<pre class="r"><code>state&lt;-shapefile(paste0(dataFolder, &quot;GP_STATE.shp&quot;))
+albers&lt;-proj4string(state)
+albers
+## [1] &quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0&quot;</code></pre>
+<pre class="r"><code># Reprojection
+SPDF.PROJ&lt;- spTransform(SPDF,         # Input SPDF
+                          albers)     # new projection          
+# Check project 
+proj4string(SPDF.PROJ)
+## [1] &quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0&quot;
+# Write as a ESRI shape file
+shapefile(SPDF.PROJ, paste0(dataFolder, &quot;GP_Data_PROJ.shp&quot;),overwrite=TRUE)</code></pre>
+</div>
+<div id="plot-the-data" class="section level4">
+<h4>Plot the data</h4>
+<pre class="r"><code>par(mfrow=c(1,2))
+plot(SPDF, main=&quot;WGS 1984&quot;, pch=20, cex =0.2)
+plot(state, add=T)
+plot(SPDF.PROJ, main=&quot;Albers Equal Area Conic&quot;, pch=20, cex=0.2)
+plot(state, add=T)</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))</code></pre>
+</div>
+<div id="convert-spdf-to-a-dataframe" class="section level4">
+<h4>Convert SPDF to a dataframe</h4>
+<p>Now we will create a new CSV files with data and projected-coordinates (meter)</p>
+<pre class="r"><code># convert to a data-frame
+point.df&lt;-as.data.frame(SPDF.PROJ)
+# Rename 
+colnames(point.df)[9] &lt;- &quot;x&quot;
+colnames(point.df)[10] &lt;- &quot;y&quot;</code></pre>
+<div style="margin-bottom:40px;">
+
+</div>
+</div>
+</div>
+<div id="extract-environmental-covariates-to-spdf" class="section level3">
+<h3>Extract Environmental Covariates to SPDF</h3>
+<p>Now, we will extract raster values to SPDF data frame the Characterize the sampling locations with a comprehensive set of environmental data. First, you have to create a list of raster and then stack them with <strong>stack()</strong> function.</p>
+<div id="create-a-raster-list" class="section level4">
+<h4>Create a raster list</h4>
+<pre class="r"><code>glist &lt;- list.files(path=paste0(dataFolder, &quot;.//RASTER&quot;),pattern=&#39;.tif$&#39;,full.names=T)
+s&lt;- stack(glist)
+plot(s)</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-12-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="extract-raster-values-to-spdf" class="section level4">
+<h4>Extract raster values to SPDF</h4>
+<p>We will use <strong>extract()</strong> function from <strong>raster</strong> package, but <strong>extract()</strong> will be show some error since it is conflicting with another package, so we use <strong>raster::extract</strong> function.</p>
+<pre class="r"><code>vals&lt;-raster::extract(s,
+              SPDF.PROJ,
+              df=TRUE,
+              method=&quot;simple&quot;)
+point.vals&lt;-cbind(point.df,vals)</code></pre>
+<p>Since, NLCD and FRG are categorical class raster, you need to add their class description into data frame.</p>
+<pre class="r"><code># Load ID files
+NLCD.ID&lt;-read.csv(paste0(dataFolder,&quot;NLCD_ID.csv&quot;), header= TRUE)         
+FRG.ID&lt;-read.csv(paste0(dataFolder,&quot;FRG_ID.csv&quot;), header= TRUE) 
+# Join ID 
+mf.01 &lt;- merge(point.vals,NLCD.ID,  by=&quot;NLCD&quot;, type=&quot;inner&quot;)  </code></pre>
+<pre><code>## Warning in merge.data.frame(point.vals, NLCD.ID, by = &quot;NLCD&quot;, type =
+## &quot;inner&quot;): column name &#39;ID&#39; is duplicated in the result</code></pre>
+<pre class="r"><code>mf.02 &lt;- merge(mf.01,FRG.ID,  by=&quot;FRG&quot;,type=&quot;inner&quot;) </code></pre>
+<pre><code>## Warning in merge.data.frame(mf.01, FRG.ID, by = &quot;FRG&quot;, type = &quot;inner&quot;):
+## column name &#39;ID&#39; is duplicated in the result</code></pre>
+<pre class="r"><code># Delete column 3 (extra ID)
+mf.02&lt;- mf.02[, -3]  
+# re-arrange the data-frame (use dplyr::select)
+mf&lt;-mf.02 %&gt;% 
+  select(ID,STATE_ID,STATE,FIPS,COUNTY,Longitude,Latitude,x,y,SOC,
+         ELEV,Aspect,Slope,TPI,K_Factor,MAP,MAT,NDVI,Slit_Clay,NLCD,FRG,NLCD_DES,FRG_DES) 
+head(mf)</code></pre>
+<pre><code>##    ID STATE_ID      STATE  FIPS            COUNTY  Longitude Latitude
+## 1 466       20     Kansas 20099    Labette County  -95.47712 37.26198
+## 2  55       35 New Mexico 35031   McKinley County -108.66695 35.39574
+## 3  51        8   Colorado  8033    Dolores County -108.72642 37.82026
+## 4  67       35 New Mexico 35003     Catron County -108.51250 33.92054
+## 5 449       20     Kansas 20019 Chautauqua County  -96.22429 37.01526
+## 6  86       35 New Mexico 35003     Catron County -108.14311 34.33232
+##             x       y    SOC      ELEV   Aspect    Slope        TPI
+## 1    45935.33 1580239  7.256  272.6797 185.0404 1.429968  1.0744587
+## 2 -1137299.01 1446994  4.594 2261.7820 222.3785 4.874323 -1.4409482
+## 3 -1106344.79 1716869  5.995 2404.1121 183.5729 6.680480  7.7656183
+## 4 -1145173.13 1281595 11.220 2281.4246 173.1285 7.745950 -3.2823703
+## 5   -19769.53 1552489  5.388  277.6634 168.1043 2.923675 -0.4226714
+## 6 -1105687.48 1322861  1.619 2317.4907 193.8056 2.635038 -1.4339905
+##    K_Factor       MAP       MAT      NDVI Slit_Clay NLCD FRG
+## 1 0.3255294 1099.3408 13.748117 0.6943141  77.16470    7   1
+## 2 0.2486000  410.5008  8.162200 0.3705533  40.66200    4   1
+## 3 0.0590000  568.7746  6.890750 0.6434158  53.73600    4   1
+## 4 0.2847475  391.4978  8.533788 0.3530265  46.83738    4   1
+## 5 0.3750685 1013.7034 14.152466 0.7292835  62.83973    6   1
+## 6 0.2491000  368.2008  8.189600 0.2837936  38.42100    5   1
+##             NLCD_DES             FRG_DES
+## 1 Planted/Cultivated Fire Regime Group I
+## 2             Forest Fire Regime Group I
+## 3             Forest Fire Regime Group I
+## 4             Forest Fire Regime Group I
+## 5         Herbaceous Fire Regime Group I
+## 6          Shrubland Fire Regime Group I</code></pre>
+<pre class="r"><code># Write as CSV file
+write.csv(mf, paste0(dataFolder,&quot;GP_all_data.csv&quot;), row.names=F)</code></pre>
+<div style="margin-bottom:40px;">
+
+</div>
+</div>
+</div>
+<div id="create-a-prediction-grid" class="section level3">
+<h3>Create a Prediction Grid</h3>
+<pre class="r"><code># First, we will create an empty point data frame, will ELEV raster
+DEM&lt;-raster(paste0(dataFolder, &quot;.//RASTER//ELEV.tif&quot;))
+grid.point &lt;- data.frame(rasterToPoints(DEM))
+# Remove DEM column, just keep x &amp; y
+grid.point$ELEV&lt;-NULL
+# define co-ordinates and projection
+coordinates(grid.point) &lt;- ~x + y
+projection(grid.point) &lt;- albers
+# Extract values to grid.point
+df.grid&lt;- raster::extract(s, grid.point, df=TRUE, method=&#39;simple&#39;)
+grid&lt;-cbind(as.data.frame(grid.point),df.grid)
+grid.na&lt;-na.omit(grid)
+write.csv(grid.na, paste0(dataFolder, &quot;GP_prediction_grid_data.csv&quot;), row.names=F)
+head(grid)</code></pre>
+<pre><code>##          x       y ID   Aspect     ELEV FRG  K_Factor       MAP       MAT
+## 1 -1185285 2533795  1 258.8979 2314.257   5 0.2000000  990.0264 2.1927779
+## 2 -1175285 2533795  2 217.6896 2482.817   5 0.2000000 1091.2081 1.4273914
+## 3 -1165285 2533795  3 158.6678 2693.917   5 0.1525316 1066.5002 0.2056963
+## 4 -1155285 2533795  4 153.8563 2214.005   4 0.2000000  552.9740 2.3689830
+## 5 -1145285 2533795  5 161.8305 1963.815   4 0.2000000  451.2378 2.9840243
+## 6 -1135285 2533795  6 177.0413 1944.041   4 0.2116667  377.9390 3.5895834
+##        NDVI NLCD Slit_Clay     Slope        TPI
+## 1 0.6329939    5  66.13333  9.425282   1.095321
+## 2 0.5944687    5  65.15000 10.748769  -2.123787
+## 3 0.5404650    4  56.78228 15.659680   6.394828
+## 4 0.5916601    5  69.42712 14.727632 -10.212730
+## 5 0.5918845    5  42.17317  9.150772  -4.167515
+## 6 0.5902479    5  47.91250 14.050600 -13.620614</code></pre>
+<div style="margin-bottom:40px;">
+
+</div>
+</div>
+<div id="exploratory-data-analysis" class="section level3">
+<h3>Exploratory data analysis</h3>
+<p>In statistics, exploratory data analysis (EDA) is an approach to analyzing data sets to summarize their main characteristics, often with visual methods. A statistical model can be used or not, but primarily EDA is for seeing what the data can tell us beyond the formal modeling or hypothesis testing task. Exploratory data analysis was promoted by John Tukey to encourage statisticians to explore the data, and possibly formulate hypotheses that could lead to new data collection and experiments. EDA is different from initial data analysis (IDA), which focuses more narrowly on checking assumptions required for model fitting and hypothesis testing, and handling missing values and making transformations of variables as needed. EDA encompasses IDA (Source: <a href="https://en.wikipedia.org/wiki/Exploratory_data_analysis">Wikipedia</a> )</p>
+<div id="summary-statistics" class="section level4">
+<h4>Summary statistics</h4>
+<pre class="r"><code>summary(mf$SOC)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   0.001   2.751   4.931   6.298   8.637  30.473</code></pre>
+</div>
+<div id="quantile" class="section level4">
+<h4>Quantile</h4>
+<pre class="r"><code>quantile(mf$SOC)</code></pre>
+<pre><code>##     0%    25%    50%    75%   100% 
+##  0.001  2.751  4.931  8.637 30.473</code></pre>
+</div>
+<div id="histogram-with-base-r-function" class="section level4">
+<h4>Histogram with base R function</h4>
+<pre class="r"><code>hist(mf$SOC, 
+     main=&quot;Histogram of Soil OC&quot;,
+     xlab= &quot;Soil OC (mg C/g)&quot;)</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>You can save this figure as a high resolution tif file in your working directory</p>
+<pre class="r"><code>windows(width=5, height=4.5)
+tiff( file=&quot;FIGURE_01_HISTOGRAM_SOC.tif&quot;, 
+width=5, height=4.5,units = &quot;in&quot;, pointsize = 12, res=300,
+restoreConsole = TRUE,compression =  &quot;lzw&quot;)
+
+hist(mf$SOC, 
+     main= &quot;Histogram of Soil OC&quot;,
+     xlab= &quot;Soil OC (mg C/g)&quot;)
+dev.off()</code></pre>
+</div>
+<div id="quantile-quantile-qq-plot" class="section level4">
+<h4>Quantile-Quantile (QQ) plot</h4>
+<pre class="r"><code>qqnorm(mf$SOC, pch = 1,main= &quot;&quot;)                # produces a normal QQ plot of the variable
+qqline(mf$SOC, col = &quot;steelblue&quot;, lwd = 2)      # adds a reference line</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="correlation-soc-with-environmental-data" class="section level4">
+<h4>Correlation SOC with environmental data</h4>
+<p>First you have to create a data.frame with SOC and continuous environmental data. Then, we will use <strong>rcorr()</strong> function of <strong>Hmisc</strong> package. The output of this function will produce following: ** r : the correlation matrix ** n : the matrix of the number of observations used in analyzing each pair of variables ** P : the p-values corresponding to the significance levels of correlations.</p>
+<pre class="r"><code># Create a data frame with SOC and continous environmental data 
+df.cor &lt;- mf[, c(10:19)]
+# head(df.cor)
+head(df.cor)</code></pre>
+<pre><code>##      SOC      ELEV   Aspect    Slope        TPI  K_Factor       MAP
+## 1  7.256  272.6797 185.0404 1.429968  1.0744587 0.3255294 1099.3408
+## 2  4.594 2261.7820 222.3785 4.874323 -1.4409482 0.2486000  410.5008
+## 3  5.995 2404.1121 183.5729 6.680480  7.7656183 0.0590000  568.7746
+## 4 11.220 2281.4246 173.1285 7.745950 -3.2823703 0.2847475  391.4978
+## 5  5.388  277.6634 168.1043 2.923675 -0.4226714 0.3750685 1013.7034
+## 6  1.619 2317.4907 193.8056 2.635038 -1.4339905 0.2491000  368.2008
+##         MAT      NDVI Slit_Clay
+## 1 13.748117 0.6943141  77.16470
+## 2  8.162200 0.3705533  40.66200
+## 3  6.890750 0.6434158  53.73600
+## 4  8.533788 0.3530265  46.83738
+## 5 14.152466 0.7292835  62.83973
+## 6  8.189600 0.2837936  38.42100</code></pre>
+<pre class="r"><code># create a correlation matrix
+cor.matrix &lt;- rcorr(as.matrix(df.cor))
+cor.matrix</code></pre>
+<pre><code>##             SOC  ELEV Aspect Slope   TPI K_Factor   MAP   MAT  NDVI
+## SOC        1.00  0.17   0.16  0.41  0.04    -0.12  0.50 -0.36  0.59
+## ELEV       0.17  1.00   0.22  0.70  0.00    -0.56 -0.31 -0.81 -0.07
+## Aspect     0.16  0.22   1.00  0.28  0.01    -0.12  0.13 -0.19  0.10
+## Slope      0.41  0.70   0.28  1.00 -0.01    -0.51  0.15 -0.64  0.31
+## TPI        0.04  0.00   0.01 -0.01  1.00    -0.03  0.15  0.01  0.08
+## K_Factor  -0.12 -0.56  -0.12 -0.51 -0.03     1.00  0.10  0.37 -0.07
+## MAP        0.50 -0.31   0.13  0.15  0.15     0.10  1.00  0.06  0.81
+## MAT       -0.36 -0.81  -0.19 -0.64  0.01     0.37  0.06  1.00 -0.21
+## NDVI       0.59 -0.07   0.10  0.31  0.08    -0.07  0.81 -0.21  1.00
+## Slit_Clay  0.19 -0.50  -0.08 -0.21 -0.02     0.59  0.47  0.29  0.32
+##           Slit_Clay
+## SOC            0.19
+## ELEV          -0.50
+## Aspect        -0.08
+## Slope         -0.21
+## TPI           -0.02
+## K_Factor       0.59
+## MAP            0.47
+## MAT            0.29
+## NDVI           0.32
+## Slit_Clay      1.00
+## 
+## n= 471 
+## 
+## 
+## P
+##           SOC    ELEV   Aspect Slope  TPI    K_Factor MAP    MAT    NDVI  
+## SOC              0.0003 0.0004 0.0000 0.3385 0.0118   0.0000 0.0000 0.0000
+## ELEV      0.0003        0.0000 0.0000 0.9422 0.0000   0.0000 0.0000 0.1445
+## Aspect    0.0004 0.0000        0.0000 0.8037 0.0093   0.0034 0.0000 0.0342
+## Slope     0.0000 0.0000 0.0000        0.7859 0.0000   0.0014 0.0000 0.0000
+## TPI       0.3385 0.9422 0.8037 0.7859        0.4796   0.0013 0.8871 0.1033
+## K_Factor  0.0118 0.0000 0.0093 0.0000 0.4796          0.0282 0.0000 0.1092
+## MAP       0.0000 0.0000 0.0034 0.0014 0.0013 0.0282          0.1912 0.0000
+## MAT       0.0000 0.0000 0.0000 0.0000 0.8871 0.0000   0.1912        0.0000
+## NDVI      0.0000 0.1445 0.0342 0.0000 0.1033 0.1092   0.0000 0.0000       
+## Slit_Clay 0.0000 0.0000 0.0673 0.0000 0.6182 0.0000   0.0000 0.0000 0.0000
+##           Slit_Clay
+## SOC       0.0000   
+## ELEV      0.0000   
+## Aspect    0.0673   
+## Slope     0.0000   
+## TPI       0.6182   
+## K_Factor  0.0000   
+## MAP       0.0000   
+## MAT       0.0000   
+## NDVI      0.0000   
+## Slit_Clay</code></pre>
+<p>You can create a graphical display of a correlation matrix using the function <strong>corrplot()</strong> of <strong>corrplot</strong> package. The function <strong>corrplot()</strong> takes the correlation matrix as the first argument. The second argument (<strong>type=“upper”</strong>) is used to display only the upper triangular of the correlation matrix. The correlation matrix is reordered according to the correlation coefficient using <strong>“hclust”</strong> method.</p>
+<pre class="r"><code># Insignificant correlations are leaved blank
+corrplot(cor.matrix$r, type=&quot;upper&quot;, order=&quot;hclust&quot;, 
+         main=&quot;&quot;, cex.lab = 0.5,
+         p.mat = cor.matrix$P, sig.level = 0.05, insig = &quot;blank&quot;)</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-22-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>In this plot, correlation coefficients are colored according to the value. Correlation matrix can be also reordered according to the degree of association between variables. Positive correlations are displayed in blue and negative correlations in red color. Color intensity and the size of the circle are proportional to the correlation coefficients. In the right side of the correlogram, the legend color shows the correlation coefficients and the corresponding colors. The correlations with p-value &gt; 0.05 are considered as insignificant. In this case the correlation coefficient values are leaved blank.</p>
+</div>
+<div id="variability-of-soc-in-relation-to-nlcd-landuse-nlcd-and-fire-regime-group-frg" class="section level4">
+<h4>Variability of SOC in relation to NLCD landuse (NLCD) and Fire Regime Group (FRG)</h4>
+<p>Now we explore how SOC values varied with NLCD, TSP and FRG. We will perform following tasks:</p>
+<ul>
+<li>Box-Jitter plot</li>
+<li>Barplot and Summary stat by NLCD, TSP &amp; FRG</li>
+</ul>
+</div>
+<div id="box-jitter-plot" class="section level4">
+<h4>Box-Jitter plot</h4>
+<p>We will ggplot package to create Box-Jitter plots to explore variability of SOC with NLCD, TSP and FRG. First we will created a data.frame with this variables.</p>
+<pre class="r"><code>df.cat &lt;- mf[, c(10, 22:23)]
+head(df.cat)</code></pre>
+<pre><code>##      SOC           NLCD_DES             FRG_DES
+## 1  7.256 Planted/Cultivated Fire Regime Group I
+## 2  4.594             Forest Fire Regime Group I
+## 3  5.995             Forest Fire Regime Group I
+## 4 11.220             Forest Fire Regime Group I
+## 5  5.388         Herbaceous Fire Regime Group I
+## 6  1.619          Shrubland Fire Regime Group I</code></pre>
+</div>
+<div id="nlcd" class="section level4">
+<h4>NLCD</h4>
+<pre class="r"><code>rgb.palette &lt;- colorRampPalette(c(&quot;red&quot;,&quot;yellow&quot;,&quot;green&quot;, &quot;blue&quot;),
+space = &quot;rgb&quot;)
+
+ggplot(df.cat, aes(y=SOC, x=NLCD_DES)) +
+  geom_point(aes(colour=SOC),size = I(1.7),
+             position=position_jitter(width=0.05, height=0.05)) +
+  geom_boxplot(fill=NA, outlier.colour=NA) +
+  labs(title=&quot;&quot;)+
+  theme_bw() +
+  coord_flip()+
+  theme(axis.line = element_line(colour = &quot;black&quot;),
+        # plot.title = element_text(hjust = 0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.text.y=element_text(size=12,vjust = 0.5, hjust=0.5, colour=&#39;black&#39;),
+        axis.text.x = element_text(size=12))+
+  scale_colour_gradientn(name=&quot;SOC (mg C/g)&quot;, colours =rgb.palette(10))+
+  theme(legend.text = element_text(size = 10),legend.title = element_text(size = 12))+
+  labs(y=&quot;SOC&quot;, x = &quot;&quot;)+ 
+  ggtitle(&quot;Variability of SOC in relation to NLCD&quot;)+
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="frg" class="section level4">
+<h4>FRG</h4>
+<pre class="r"><code>rgb.palette &lt;- colorRampPalette(c(&quot;red&quot;,&quot;yellow&quot;,&quot;green&quot;, &quot;blue&quot;),
+space = &quot;rgb&quot;)
+
+ggplot(df.cat, aes(y=SOC, x=FRG_DES)) +
+  geom_point(aes(colour=SOC),size = I(1.7),
+             position=position_jitter(width=0.05, height=0.05)) +
+  geom_boxplot(fill=NA, outlier.colour=NA) +
+  labs(title=&quot;&quot;)+
+  theme_bw() +
+  coord_flip()+
+  theme(axis.line = element_line(colour = &quot;black&quot;),
+        # plot.title = element_text(hjust = 0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.text.y=element_text(size=12,vjust = 0.5, hjust=0.5, colour=&#39;black&#39;),
+        axis.text.x = element_text(size=12))+
+  scale_colour_gradientn(name=&quot;SOC (mg C/g)&quot;, colours =rgb.palette(10))+
+  theme(legend.text = element_text(size = 10),legend.title = element_text(size = 12))+
+  labs(y=&quot;SOC&quot;, x = &quot;&quot;)+
+  ggtitle(&quot;Variabilty of SOC in relation to FGR&quot;)+
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-25-1.png" width="720" style="display: block; margin: auto;" /></p>
+</div>
+<div id="barplot-and-summary-statistics-grouped-by-nlcd-frg" class="section level4">
+<h4>Barplot and Summary statistics grouped by NLCD &amp; FRG</h4>
+<p>Before creating barplots, we are going to calculate summary statistics SOC by NLCD and FRG. We will <strong>ddply()</strong> function from <strong>plyr</strong> package. For standard error of mean, we will use following function:</p>
+<pre class="r"><code># Standard error
+SE &lt;- function(x){
+  sd(x)/sqrt(length(x))
+}</code></pre>
+<pre class="r"><code># NLCD
+NLCD.SOC&lt;-ddply(df.cat,~NLCD_DES, summarise, mean=mean(SOC),median=median(SOC),
+      sd=sd(SOC), min=min(SOC), max=max(SOC),se=SE(SOC))
+
+# FRG
+FRG.SOC&lt;-ddply(df.cat,~FRG_DES, summarise, mean=mean(SOC),median=median(SOC),
+      sd=sd(SOC), min=min(SOC), max=max(SOC),se=SE(SOC))</code></pre>
+</div>
+<div id="barplot---nlcd" class="section level4">
+<h4>Barplot - NLCD</h4>
+<pre class="r"><code>ggplot(NLCD.SOC, aes(x=NLCD_DES, y=mean)) + 
+  geom_bar(stat=&quot;identity&quot;, position=position_dodge(),width=0.5, fill=&quot;steelblue&quot;) +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.2,
+   position=position_dodge(.9))+
+   labs(title=&quot;&quot;)+
+  theme_bw() +
+  coord_flip()+
+  theme(axis.line = element_line(colour = &quot;black&quot;),
+        # plot.title = element_text(hjust = 0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.text.y=element_text(size=12,vjust = 0.5, hjust=0.5, colour=&#39;black&#39;),
+        axis.text.x = element_text(size=12))+
+  labs(y=&quot;SOC (mg C/g)&quot;, x = &quot;&quot;)+
+  ggtitle(&quot;Mean±SE of SOC grouped by NLCD&quot;)+
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-28-1.png" width="720" style="display: block; margin: auto;" /></p>
+</div>
+<div id="barplot-frg" class="section level4">
+<h4>Barplot FRG</h4>
+<pre class="r"><code>ggplot(FRG.SOC, aes(x=FRG_DES, y=mean)) + 
+  geom_bar(stat=&quot;identity&quot;, position=position_dodge(),width=0.5, fill=&quot;steelblue&quot;) +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.2,
+   position=position_dodge(.9))+
+   labs(title=&quot;&quot;)+
+  theme_bw() +
+  coord_flip()+
+  theme(axis.line = element_line(colour = &quot;black&quot;),
+        # plot.title = element_text(hjust = 0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.text.y=element_text(size=12,vjust = 0.5, hjust=0.5, colour=&#39;black&#39;),
+        axis.text.x = element_text(size=12))+
+  labs(y=&quot;SOC (mg C/g)&quot;, x = &quot;&quot;)+
+  ggtitle(&quot;Mean±SE of SOC grouped by FRG&quot;)+
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-29-1.png" width="720" style="display: block; margin: auto;" /></p>
+</div>
+<div id="spatial-variability-of-soc" class="section level4">
+<h4>Spatial Variability of SOC</h4>
+<p>We will use <strong>levelplot()</strong> function to create a map in quantile scale to explore spatial pattern of SOC.</p>
+<pre class="r"><code># Define class intervel (20 quantile)
+at = classIntervals(mf$SOC, n = 20, style = &quot;quantile&quot;)$brks
+round(quantile(mf$SOC, probs=seq(0,1, by=0.05)),1) # use for custom color key</code></pre>
+<pre><code>##   0%   5%  10%  15%  20%  25%  30%  35%  40%  45%  50%  55%  60%  65%  70% 
+##  0.0  0.8  1.2  1.7  2.3  2.8  3.1  3.5  4.0  4.5  4.9  5.4  6.1  6.5  7.4 
+##  75%  80%  85%  90%  95% 100% 
+##  8.6 10.0 11.2 13.4 16.5 30.5</code></pre>
+<pre class="r"><code># Create a color palette
+rgb.palette.col &lt;- colorRampPalette(c(&quot;red&quot;,&quot;yellow&quot;, &quot;green&quot;, &quot;blue&quot;),space = &quot;rgb&quot;)
+
+# Crate a Figure 
+soc&lt;-levelplot(SOC~x+y, mf,cex=0.8,
+              aspect = &quot;iso&quot;,
+              main= &quot;Spatial Variability of SOC (mg C/g)&quot;,
+              xlab=&quot;&quot;, ylab=&quot;&quot;,  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col=&quot;grey&quot;,lwd=0.5)),
+              col.regions=rgb.palette.col (20),at=at,
+              colorkey=list(space=&quot;right&quot;,width=1.5,at=1:21,labels=list(cex=1.2,at=1:21,
+              labels=c(&quot;&quot;,&quot;&quot;,&quot;&lt;2.9&quot;, &quot;&quot;,&quot;&quot;,&quot;5.6&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;10.5&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;17.8&quot;, &quot;&quot;,&quot;&quot;,&quot;&gt;29.6&quot;,&quot;&quot;,&quot;&quot;))),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col=&quot;grey30&quot;)
+              },)
+soc</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-30-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Save as 
+windows(width=6, height=6)
+tiff(file=paste0(dataFolder,&quot;FIGURE_SOC_OBSERVED_Col.tif&quot;), 
+width=6, height=6,units = &quot;in&quot;, pointsize = 12, res=600,
+restoreConsole = T,bg=&quot;transparent&quot;)
+print(soc)
+dev.off()</code></pre>
+</div>
+<div id="county-mean" class="section level4">
+<h4>County Mean</h4>
+<pre class="r"><code># Load County Shape file
+county&lt;-shapefile(paste0(dataFolder,&quot;GP_COUNTY.shp&quot;))
+# County mean
+FIPS.SOC&lt;-ddply(mf,~FIPS, summarise, mean=mean(SOC))
+# Join to County shape files
+county.soc&lt;-merge(county,FIPS.SOC, by=&quot;FIPS&quot;)</code></pre>
+<pre class="r"><code>spplot(county.soc,&quot;mean&quot;,
+       main=&quot;County Mean of SOC (mg C/g)&quot;)</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-33-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:40px;">
+
+</div>
+</div>
+</div>
+<div id="plot-data-on-web-map" class="section level3">
+<h3>Plot Data on Web Map</h3>
+<p>We use <strong>ggmap</strong> package to visualize data on Map</p>
+<pre class="r"><code>us &lt;- c(left = -125, bottom = 25.75, right = -67, top = 49)
+map &lt;- get_stamenmap(us, zoom = 5, maptype = &quot;toner-lite&quot;)
+ggmap(map)</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qmplot(Longitude, Latitude, data = df, maptype = &quot;toner-lite&quot;, color = I(&quot;red&quot;))</code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-35-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:40px;">
+
+</div>
+</div>
+<div id="data-split" class="section level3">
+<h3>Data split</h3>
+<p>The data set (n = 471) will be randomly split into 368 (80%) calibration data, which will be used for model development and 101 (20%) validation data which will used for evaluating the prediction models. For data splitting, we will use <a href="https://www.investopedia.com/terms/stratified_random_sampling.asp"><strong>Stratified Random Sampling</strong></a> algorithms.</p>
+<pre class="r"><code>mf$NLCD&lt;-as.factor(mf$NLCD)
+mf$FRG&lt;-as.factor(mf$FRG)</code></pre>
+<pre class="r"><code>tr_prop = 0.80
+# training data
+train = ddply(mf, .(NLCD,FRG),function(., seed) { set.seed(seed); .[sample(1:nrow(.), trunc(nrow(.) * tr_prop)), ] }, seed = 101)
+# Validation data (20% of data)
+test = ddply(mf,  .(NLCD,FRG), 
+            function(., seed) { set.seed(seed); .[-sample(1:nrow(.), trunc(nrow(.) * tr_prop)), ] }, seed = 101)</code></pre>
+<pre class="r"><code>write.csv(train, paste0(dataFolder,&quot;train_data.csv&quot;), row.names=F)
+write.csv(test, paste0(dataFolder,&quot;test_data.csv&quot;), row.names=F)</code></pre>
+<div id="map-training-and-test-data-set" class="section level4">
+<h4>Map Training and test data set</h4>
+<pre class="r"><code>bound&lt;-shapefile(paste0(dataFolder,&quot;GP_STATE.shp&quot;))
+at = classIntervals(mf$SOC, n = 20, style = &quot;quantile&quot;)$brks
+round(quantile(mf$SOC, probs=seq(0,1, by=0.05)),1)</code></pre>
+<pre><code>##   0%   5%  10%  15%  20%  25%  30%  35%  40%  45%  50%  55%  60%  65%  70% 
+##  0.0  0.8  1.2  1.7  2.3  2.8  3.1  3.5  4.0  4.5  4.9  5.4  6.1  6.5  7.4 
+##  75%  80%  85%  90%  95% 100% 
+##  8.6 10.0 11.2 13.4 16.5 30.5</code></pre>
+<pre class="r"><code>coordinates(test)&lt;-~x+y
+rgb.palette.col &lt;- colorRampPalette(c(&quot;red&quot;,&quot;yellow&quot;, &quot;green&quot;, &quot;blue&quot;),space = &quot;rgb&quot;)</code></pre>
+<pre class="r"><code>levelplot(SOC~x+y, mf,cex=0.6,
+              aspect = &quot;iso&quot;,main= &quot;Training (clossed) &amp; Test (open) Data&quot;,
+              xlab=&quot;&quot;, ylab=&quot;&quot;,  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col=&quot;grey&quot;,lwd=0.5)),
+              col.regions=rgb.palette.col (20),at=at,
+              colorkey=list(space=&quot;right&quot;,width=1.2,at=1:21,labels=list(cex=1.2,at=1:21,
+              labels=c(&quot;&quot;,&quot;&quot;,&quot;&lt; 1.2&quot;,&quot;&quot; ,&quot;&quot;,&quot;2.8&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;4.9&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;8.6&quot;,&quot;&quot;,&quot;&quot;,&quot;&gt;13.4&quot;,&quot;&quot;,&quot;&quot;))),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.points(test, col=&quot;black&quot;, cex=1.2,pch=21)
+              sp.polygons(bound,lty=1,lwd=0.5,col=&quot;grey30&quot;)
+              },)   </code></pre>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-40-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Geoprocessing of Vector Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Geoprocessing of Vector Data</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>Geo-processing is a GIS operation used to manipulate spatial data.</p>
+<p>In this exercise we will learn following Geo-processing operations of vector data in R.</p>
+<ul>
+<li><p><a href="#clipping">Clipping</a></p></li>
+<li><p><a href="#union">Union</a></p></li>
+<li><p><a href="#dissolve">Dissolve</a></p></li>
+<li><p><a href="#intersect">Intersect</a></p></li>
+<li><p><a href="#erase">Erase</a></p></li>
+<li><p><a href="#convex-hull">Convex Hull</a></p></li>
+<li><p><a href="#buffer">Buffer</a></p></li>
+</ul>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="r-packages" class="section level4">
+<h4>R Packages</h4>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/rgdal/rgdal.pdf">rgdal</a>: Bindings for the Geospatial Data Abstraction Library</li>
+<li><a href="https://cran.r-project.org/web/packages/raster/raster.pdf">raster</a>: Geographic Data Analysis and Modeling</li>
+<li><a href="https://cran.r-project.org/web/packages/sf/index.html">sf</a>:Support for simple features, a standardized way to encode spatial vector data</li>
+<li><a href="https://cran.r-project.org/web/packages/maptools/maptools.pdf">maptools</a>: Tools for Reading and Handling Spatial Objects</li>
+<li><a href="https://cran.r-project.org/web/packages/rgeos/rgeos.pd">rgeos</a>: Interface to Geometry Engine - Open Source (GEOS)</li>
+</ul>
+</div>
+<div id="load-packages" class="section level4">
+<h4>Load packages</h4>
+<pre class="r"><code># load packages
+library(raster)     
+library (rgdal)
+library(rgeos)
+library(maptools)
+library(sf)</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>We will use following data set, and data could available for download from <a href="https://www.dropbox.com/s/kawkzluyv9d6qes/DATA_04.7z?dl=0">here</a>.</p>
+<ul>
+<li>US State shape file (US_STATE.shp)</li>
+<li>US County shape file (US_County.shp)</li>
+<li>Point Shape File of soil sampling locations (CO_SOC_data.shp)</li>
+<li>Line shape file (Ononda_Street_PROJ.shp)</li>
+<li>Boundary of Yellow Stone National Park (Yellow_Stone.shp)</li>
+</ul>
+<p>Before reading the data from a local drive, you need to define a working directory from where you want to read or to write data. We will use <strong>setwd()</strong> function to create a working directory. Or we can define a path for data outside of our working directory from where we can read files. In this case, we will use <strong>paste0(path, “file name”)</strong></p>
+<pre class="r"><code>#### Set working directory
+# setwd(&quot;~//geoprocessing-vector-data&quot;)</code></pre>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_04//&quot;</code></pre>
+</div>
+<div id="load-us-state-county-shape-files" class="section level4">
+<h4>Load US State &amp; County Shape files</h4>
+<pre class="r"><code>US.STATE&lt;-shapefile(paste0(dataFolder,&quot;US_STATE.shp&quot;))
+US.COUNTY&lt;-shapefile(paste0(dataFolder,&quot;US_COUNTY.shp&quot;))</code></pre>
+</div>
+<div id="plot-them-site-by-site" class="section level4">
+<h4>Plot them site by site</h4>
+<pre class="r"><code># Map US state and county
+par(mfrow=c(1,2))
+plot(US.STATE, main=&quot;US State&quot;)
+plot(US.COUNTY, main=&quot;US County&quot;)</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))</code></pre>
+</div>
+<div id="extracting-a-variable-name-state-name" class="section level4">
+<h4>Extracting a variable name (State name)</h4>
+<pre class="r"><code># Extracting a variable  (state name)
+US.STATE$STATE</code></pre>
+<pre><code>##  [1] &quot;Alabama&quot;              &quot;Arizona&quot;              &quot;Colorado&quot;            
+##  [4] &quot;Connecticut&quot;          &quot;Florida&quot;              &quot;Georgia&quot;             
+##  [7] &quot;Idaho&quot;                &quot;Indiana&quot;              &quot;Kansas&quot;              
+## [10] &quot;Louisiana&quot;            &quot;Massachusetts&quot;        &quot;Minnesota&quot;           
+## [13] &quot;Missouri&quot;             &quot;Montana&quot;              &quot;Nevada&quot;              
+## [16] &quot;New Jersey&quot;           &quot;New York&quot;             &quot;North Dakota&quot;        
+## [19] &quot;Oklahoma&quot;             &quot;Pennsylvania&quot;         &quot;South Carolina&quot;      
+## [22] &quot;South Dakota&quot;         &quot;Texas&quot;                &quot;Vermont&quot;             
+## [25] &quot;West Virginia&quot;        &quot;Arkansas&quot;             &quot;California&quot;          
+## [28] &quot;Delaware&quot;             &quot;District of Columbia&quot; &quot;Illinois&quot;            
+## [31] &quot;Iowa&quot;                 &quot;Kentucky&quot;             &quot;Maine&quot;               
+## [34] &quot;Maryland&quot;             &quot;Michigan&quot;             &quot;Mississippi&quot;         
+## [37] &quot;Nebraska&quot;             &quot;New Hampshire&quot;        &quot;New Mexico&quot;          
+## [40] &quot;North Carolina&quot;       &quot;Ohio&quot;                 &quot;Oregon&quot;              
+## [43] &quot;Rhode Island&quot;         &quot;Tennessee&quot;            &quot;Utah&quot;                
+## [46] &quot;Virginia&quot;             &quot;Washington&quot;           &quot;Wisconsin&quot;           
+## [49] &quot;Wyoming&quot;</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="clipping" class="section level3">
+<h3>Clipping</h3>
+<p>Clipping spatial data is a basic GIS task. For vector data, it involves removing unwanted features outside of an area of interest. For example, you might want to do some geospatial modeling covering a area in New York state, but we may have data for USA, in this case you need to apply clipping function to remove area outside of the New York State. It acts like a cookie cutter to cut out a piece of one feature class using one or more of the features in another feature class.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_04/Clip.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<p>In R, you can do this several ways with different R packages. In this exercise, we will clip out other state or counties from US State and County polygon shape files, expect our area of interest (for example New York).</p>
+<p>The most useful function to select a area of interest from any spatial data is R-base function <strong>subset()</strong> (although it wrap with other packages).</p>
+<pre class="r"><code># NY state boundary
+NY.STATE &lt;- subset(US.STATE, STATE==&quot;New York&quot;)
+# NY county
+NY.COUNTY &lt;- subset(US.COUNTY, STATE==&quot;New York&quot;)
+NY.COUNTY</code></pre>
+<pre><code>## class       : SpatialPolygonsDataFrame 
+## features    : 62 
+## extent      : 1324221, 1991064, 2150873, 2658558  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0 
+## variables   : 11
+## names       :  FIPS,       x,       y, REGION_ID, DIVISION_I, STATE_ID, COUNTY_ID,    REGION,        DIVISION,    STATE,        COUNTY 
+## min values  : 36001, 1356926, 2161994,         1,          2,       36,         1, Northeast, Middle Atlantic, New York, Albany County 
+## max values  : 36123, 1916559, 2623675,         1,          2,       36,       123, Northeast, Middle Atlantic, New York,  Yates County</code></pre>
+<pre class="r"><code>shapefile(NY.STATE, paste0(dataFolder,&quot;NY_STATE_BD.shp&quot;), overwrite=TRUE)</code></pre>
+<p>After sub setting, you notice that <strong>NY.COUNT</strong> retains both geometry and attribute information of parent polygon</p>
+<pre class="r"><code># Map NY state boundary and county polygon
+par(mfrow=c(1,2))
+plot(NY.STATE, main=&quot;NY State&quot;)
+plot(NY.COUNTY, main=&quot;NY County&quot;)</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))</code></pre>
+<p>You can select multiple States using following <strong>subset()</strong> function</p>
+<pre class="r"><code>GP.STATE&lt;-subset(US.STATE,STATE==&quot;Colorado&quot; | STATE==&quot;Kansas&quot; | STATE==&quot;New Mexico&quot;| STATE==&quot;Wyoming&quot;)</code></pre>
+<pre class="r"><code>plot(GP.STATE, main=&quot;States  of  CO, KA, NY &amp; WY&quot;)</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><strong>gIntersection()</strong> function of <strong>rgeos</strong> package is also able to clip out undesirable area</p>
+<pre class="r"><code># Clip US county shape file with NY State boundary
+clip_01 &lt;- gIntersection(NY.STATE, US.COUNTY, byid = TRUE, drop_lower_td = TRUE) 
+clip_01</code></pre>
+<pre><code>## class       : SpatialPolygons 
+## features    : 68 
+## extent      : 1324221, 1991064, 2150873, 2658558  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0</code></pre>
+<pre class="r"><code>plot(clip_01, main= &quot;Clip with gIntersection&quot;)</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>However, the clipped output with <strong>gIntersection()</strong> function no longer contains a data frame because the gIntersection doesn’t know which data frame items to save in to the new object. This means we must add them back in manually, but even this is relatively straight-forward.</p>
+<p>The <strong>intersect()</strong> function of <strong>raster</strong> package works like <strong>subset</strong> function</p>
+<pre class="r"><code>clip_02 &lt;- intersect(NY.STATE, US.COUNTY)
+clip_02</code></pre>
+<pre><code>## class       : SpatialPolygonsDataFrame 
+## features    : 68 
+## extent      : 1324221, 1991064, 2150873, 2658558  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0 
+## variables   : 17
+## names       : REGION_ID.1, DIVISION_I.1, STATE_ID.1,  REGION.1,      DIVISION.1,  STATE.1,  FIPS,       x,       y, REGION_ID.2, DIVISION_I.2, STATE_ID.2, COUNTY_ID,  REGION.2,      DIVISION.2, ... 
+## min values  :           1,            2,         36, Northeast, Middle Atlantic, New York, 25003, 1356926, 2161994,           1,            1,         25,         1, Northeast, Middle Atlantic, ... 
+## max values  :           1,            2,         36, Northeast, Middle Atlantic, New York, 36123, 1916559, 2623675,           1,            2,         36,       123, Northeast,     New England, ...</code></pre>
+<pre class="r"><code>plot(clip_02, main=&quot;Clip with intersect&quot;)</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="union" class="section level3">
+<h3>Union</h3>
+<p><strong>Union</strong> combines two or multiple spatial objects and a create new features where geometry and attributes of input features retain.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_04/Union.png" alt="Union" width="40%" />
+<p class="caption">
+Union
+</p>
+</div>
+<p>We will use state boundary of CO, AK, NY and WY to create a new feature class using <strong>union()</strong> function of raster package or <strong>spRbind</strong> function of <strong>maptools</strong> package. The shape files of these states are located in **~_STATE** sub-directory of the working directory. We read these files one by one one using <strong>shapefile()</strong> function of raster package or create a list of these files and then apply <strong>union</strong> function function raster package or</p>
+<pre class="r"><code># Load four shapefiles of four states
+CO&lt;-shapefile(paste0(dataFolder,&quot;.\\GP_STATE\\CO_STATE_BD.shp&quot;))
+KS&lt;-shapefile(paste0(dataFolder,&quot;.\\GP_STATE\\KS_STATE_BD.shp&quot;))
+NM&lt;-shapefile(paste0(dataFolder,&quot;.\\GP_STATE\\NM_STATE_BD.shp&quot;))
+WY&lt;-shapefile(paste0(dataFolder,&quot;.\\GP_STATE\\WY_STATE_BD.shp&quot;))</code></pre>
+<p>Now we will generate a simple plot to show the spatial location of the these features, before applying <strong>union()</strong> function or <strong>spRbind()</strong>function, However, neither <strong>union()</strong> or <strong>spRbind()</strong> function can not join more than tow polygons at a time. So, you have to union polygons one by one.</p>
+<pre class="r"><code># Union CO &amp; KA
+union_01&lt;-union(CO,KS)
+# Add NM
+union_02&lt;-union(union_01, NM)
+# Add WY
+union_03&lt;-union(union_02,WY)
+# now check 
+union_03@data</code></pre>
+<pre><code>##   REGION_ID.1 DIVISION_I.1 STATE_ID.1 REGION.1 DIVISION.1  STATE.1
+## 1          NA           NA         NA     &lt;NA&gt;       &lt;NA&gt;     &lt;NA&gt;
+## 2          NA           NA         NA     &lt;NA&gt;       &lt;NA&gt;     &lt;NA&gt;
+## 3           4            8          8     West   Mountain Colorado
+## 4          NA           NA         NA     &lt;NA&gt;       &lt;NA&gt;     &lt;NA&gt;
+##   REGION_ID.2 DIVISION_I.2 STATE_ID.2 REGION.2         DIVISION.2 STATE.2
+## 1           2            4         20  Midwest West North Central  Kansas
+## 2          NA           NA         NA     &lt;NA&gt;               &lt;NA&gt;    &lt;NA&gt;
+## 3          NA           NA         NA     &lt;NA&gt;               &lt;NA&gt;    &lt;NA&gt;
+## 4           4            8         56     West           Mountain Wyoming
+##   REGION_ID.1.1 DIVISION_I.1.1 STATE_ID.1.1 REGION.1.1 DIVISION.1.1
+## 1            NA             NA           NA       &lt;NA&gt;         &lt;NA&gt;
+## 2             4              8           35       West     Mountain
+## 3            NA             NA           NA       &lt;NA&gt;         &lt;NA&gt;
+## 4            NA             NA           NA       &lt;NA&gt;         &lt;NA&gt;
+##    STATE.1.1
+## 1       &lt;NA&gt;
+## 2 New Mexico
+## 3       &lt;NA&gt;
+## 4       &lt;NA&gt;</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>You can union hundreds of spatial polygons in a folder with similar geometry and attribute table using <strong>spRbind</strong> function of <strong>maptools</strong> package or <strong>union()</strong> function in a loop. First, you have to create a list these shape files using list.files() function, then use <strong>for loop</strong> to read all the files using <strong>readORG()</strong> function and then assign new feature IDs using <strong>spChFIDs()</strong> function of <strong>sp</strong> package, and finally apply <strong>spRbind()</strong> or <strong>union()</strong>to all files to union them. It is better to use <strong>spRbind</strong> function to union several polygons since it binds attribute data row wise.</p>
+<pre class="r"><code># create a list of file 
+files &lt;- list.files(path=paste0(dataFolder, &quot;.//GP_STATE&quot;),pattern=&quot;*.shp$&quot;, recursive=TRUE,full.names=TRUE) # Create a list files
+print(files)</code></pre>
+<pre><code>## [1] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_04//.//GP_STATE/CO_STATE_BD.shp&quot;
+## [2] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_04//.//GP_STATE/KS_STATE_BD.shp&quot;
+## [3] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_04//.//GP_STATE/NM_STATE_BD.shp&quot;
+## [4] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_04//.//GP_STATE/WY_STATE_BD.shp&quot;</code></pre>
+<pre class="r"><code>uid&lt;-1
+
+# Get polygons from first file 
+GP.STATE&lt;- readOGR(files[1],gsub(&quot;^.*/(.*).shp$&quot;, &quot;\\1&quot;, files[1]))</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_04\GP_STATE\CO_STATE_BD.shp&quot;, layer: &quot;CO_STATE_BD&quot;
+## with 1 features
+## It has 6 fields</code></pre>
+<pre class="r"><code>n &lt;- length(slot(GP.STATE, &quot;polygons&quot;))
+GP.STATE &lt;- spChFIDs(GP.STATE, as.character(uid:(uid+n-1)))
+uid &lt;- uid + n
+
+# mapunit polygon: combin remaining  polygons with first polygoan
+for (i in 2:length(files)) {
+     temp.data &lt;- readOGR(files[i], gsub(&quot;^.*/(.*).shp$&quot;, &quot;\\1&quot;,files[i]))
+     n &lt;- length(slot(temp.data, &quot;polygons&quot;))
+     temp.data &lt;- spChFIDs(temp.data, as.character(uid:(uid+n-1)))
+     uid &lt;- uid + n
+     #poly.data &lt;- union(poly.data,temp.data)
+     GP.STATE &lt;- spRbind(GP.STATE,temp.data)
+}</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_04\GP_STATE\KS_STATE_BD.shp&quot;, layer: &quot;KS_STATE_BD&quot;
+## with 1 features
+## It has 6 fields
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_04\GP_STATE\NM_STATE_BD.shp&quot;, layer: &quot;NM_STATE_BD&quot;
+## with 1 features
+## It has 6 fields
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_04\GP_STATE\WY_STATE_BD.shp&quot;, layer: &quot;WY_STATE_BD&quot;
+## with 1 features
+## It has 6 fields</code></pre>
+<pre class="r"><code>GP.STATE@data</code></pre>
+<pre><code>##   REGION_ID DIVISION_I STATE_ID  REGION           DIVISION      STATE
+## 1         4          8        8    West           Mountain   Colorado
+## 2         2          4       20 Midwest West North Central     Kansas
+## 3         4          8       35    West           Mountain New Mexico
+## 4         4          8       56    West           Mountain    Wyoming</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="dissolve" class="section level3">
+<h3>Dissolve</h3>
+<p><strong>Dissolve</strong> aggregate features based on the attribute. It is an important tools that we may need to perform regularly in spatial data processing.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_04/Dissolve.png" alt="Disslove" width="40%" />
+<p class="caption">
+Disslove
+</p>
+</div>
+<p>In R, this is can be a bit involved, but I found easiest way to do dissolving features of a polygon in <a href="https://www.nceas.ucsb.edu/scicomp/usecases/PolygonDissolveOperationsR#Part2">NECAS site</a>. We will dissolve <strong>GP.STATE</strong> polygon data that we have created before. We will use <strong>unionSpatialPolygons()</strong> function of <strong>maptols</strong> package.</p>
+<pre class="r"><code># Centriods of polygona
+lps &lt;- getSpPPolygonsLabptSlots(GP.STATE)</code></pre>
+<pre><code>## Warning: use coordinates method</code></pre>
+<pre class="r"><code>IDOneBin &lt;- cut(lps[,1], range(lps[,1]), include.lowest=TRUE)
+GP.DISSOLVE_01   &lt;- unionSpatialPolygons(GP.STATE,IDOneBin)</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-24-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>You can also use <strong>aggregate()</strong> function of <strong>raster</strong> package which aggregate a SpatialPolygon* object, optionally by combining polygons that have the same attributes for one or more variables.</p>
+<pre class="r"><code>GP.DISSOLVE_02 &lt;- aggregate(GP.STATE)</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-26-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="intersect" class="section level3">
+<h3>Intersect</h3>
+<p><strong>Intersect</strong> computes a geometric of common area of two feature classes.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_04/Intersect.png" alt="Intersect" width="40%" />
+<p class="caption">
+Intersect
+</p>
+</div>
+<p>We will use Yellow Stone National Park boundary shape file to find out its location in US states. The shape file of US national park was downloaded from <a href="https://catalog.data.gov/data%20set/national-park-boundariesf0a4c/resource/a601d033-f08e-4430-91f2-674f12109bf6?inner_span=True">here</a>.</p>
+<pre class="r"><code>park&lt;-shapefile(paste0(dataFolder,&quot;Yellow_Stone.shp&quot;))
+# Apply intersect fuction  
+park.state&lt;- intersect(US.STATE, park)
+head(park.state)</code></pre>
+<pre><code>##   REGION_ID DIVISION_I STATE_ID REGION.1 DIVISION STATE.1 UNIT_CODE
+## 1         4          8       16     West Mountain   Idaho      YELL
+## 2         4          8       30     West Mountain Montana      YELL
+## 3         4          8       56     West Mountain Wyoming      YELL
+##                                                                             GIS_Notes
+## 1 Lands - http://landsnet.nps.gov/tractsnet/documents/YELL/Metadata/yell_metadata.xml
+## 2 Lands - http://landsnet.nps.gov/tractsnet/documents/YELL/Metadata/yell_metadata.xml
+## 3 Lands - http://landsnet.nps.gov/tractsnet/documents/YELL/Metadata/yell_metadata.xml
+##                   UNIT_NAME  DATE_EDIT STATE.2 REGION.2 GNIS_ID
+## 1 Yellowstone National Park 2008/04/23      WY       IM 1609331
+## 2 Yellowstone National Park 2008/04/23      WY       IM 1609331
+## 3 Yellowstone National Park 2008/04/23      WY       IM 1609331
+##       UNIT_TYPE CREATED_BY
+## 1 National Park      Lands
+## 2 National Park      Lands
+## 3 National Park      Lands
+##                                                                       METADATA
+## 1 https://irma.nps.gov/App/Reference/Profile/1048199#Yellowstone National Park
+## 2 https://irma.nps.gov/App/Reference/Profile/1048199#Yellowstone National Park
+## 3 https://irma.nps.gov/App/Reference/Profile/1048199#Yellowstone National Park
+##      PARKNAME
+## 1 Yellowstone
+## 2 Yellowstone
+## 3 Yellowstone</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="erase" class="section level3">
+<h3>Erase</h3>
+<p><strong>Erase()</strong> function in <strong>raster</strong> package erase parts of a SpatialPolygons or SpatialLines object with a SpatialPolygons object</p>
+<pre class="r"><code># Erase KS from  GO.STATE shpae files
+GP.3.STATE&lt;-erase(GP.STATE, KS)</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-31-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="convex-hull" class="section level3">
+<h3>Convex Hull</h3>
+<p>The <strong>convex hull</strong> or <em><strong>convex envelope</strong> or <strong>convex closure</strong></em> of a set spatial point data frame.</p>
+<pre class="r"><code># Import point shape file
+SPDF&lt;-shapefile(paste0(dataFolder,&quot;CO_SOC_data.shp&quot;))</code></pre>
+<pre><code>## Warning in .local(x, ...): .prj file is missing</code></pre>
+<pre class="r"><code># get coordinates
+xy&lt;-coordinates(SPDF)
+# Create convex hull
+CH.DF &lt;- chull(xy)
+# Closed polygona
+coords &lt;- xy[c(CH.DF, CH.DF[1]), ] </code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-33-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="buffer" class="section level3">
+<h3>Buffer</h3>
+<p>Buffering creates an envelope of space around selected features in a vector data. It is sometimes referred to as a zone of a specified distance around a polygon, line, or point feature. Buffering is often used for proximity analysis. In this section, we will create 400 m buffer zones around the road network and soil sampling points of CO. Such a buffer could be used later on to examine the extent of farmland or sampling points within the buffer, etc. We will use a small part of road-network of Ononda County to create 100 m buffer around them. we use use <strong>gBuffer()</strong> function in <strong>rgeos</strong> package</p>
+<div id="buffering-of-polylines" class="section level4">
+<h4>Buffering of Polylines</h4>
+<pre class="r"><code>SLDF&lt;-shapefile(paste0(dataFolder, &quot;Ononda_Street_PROJ.shp&quot;))
+SLDF.buffer&lt;-gBuffer(SLDF, width=100)</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-35-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="buffering-of-point-data" class="section level4">
+<h4>Buffering of Point data</h4>
+<pre class="r"><code>SPDF.buffer &lt;- gBuffer(SPDF, width=20*1000, byid=TRUE) # 20 km buffer</code></pre>
+<p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-37-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

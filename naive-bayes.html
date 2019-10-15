@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Naive Bayes - Supervised Image Classification</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-startted-spatial-data.html">Getting Startted with Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Naive Bayes - Supervised Image Classification</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>In this lesson we will learn about <strong>Naïve Bayes</strong> classification models, which use an algorithm that relies on Bayes Theorem, and which is based on strong assumptions concerning the independence of the predictors conditional on the response . Naïve Bayes classification models are commonly used as an alternative to decision trees for classification problems. Naive Bayes classification models are highly scalable, requiring a number of parameters linear in the number of variables (features/predictors) in a learning problem . In training the models, maximum-likelihood methods are used to evaluate a closed-form expression .</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="load-r-packages" class="section level4">
+<h4>Load R packages</h4>
+<pre class="r"><code>library(rgdal)        # spatial data processing
+library(raster)       # raster processing
+library(plyr)         # data manipulation 
+library(dplyr)        # data manipulation 
+library(RStoolbox)    # Image analysis &amp; plotting spatial data 
+library(RColorBrewer) # color
+library(ggplot2)      # plotting
+library(sp)           # spatial data
+library(caret)        # machine laerning
+library(doParallel)   # Parallel processing
+library(e1071)        # Naive Bayes</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0">here</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load data</h4>
+<pre class="r"><code>train.df&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\train_data.csv&quot;), header = T)
+test.df&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\test_data.csv&quot;), header = T)</code></pre>
+</div>
+<div id="start-foreach-to-parallelize-for-model-fitting" class="section level4">
+<h4>Start foreach to parallelize for model fitting</h4>
+<pre class="r"><code>mc &lt;- makeCluster(detectCores())
+registerDoParallel(mc)</code></pre>
+</div>
+<div id="tunning-prameters" class="section level4">
+<h4>Tunning prameters</h4>
+<pre class="r"><code>myControl &lt;- trainControl(method=&quot;repeatedcv&quot;, 
+                          number=3, 
+                          repeats=2,
+                          returnResamp=&#39;all&#39;, 
+                          allowParallel=TRUE)</code></pre>
+</div>
+<div id="train-naive-bayes-model" class="section level4">
+<h4>Train Naïve Bayes model</h4>
+<p>We will use the <strong>train()</strong> function of the caret package with the “method” parameter <strong>“nb”</strong> wrapped from the <strong>e1071</strong> package.</p>
+<pre class="r"><code>set.seed(849)
+fit.nb &lt;- train(as.factor(Landuse)~B2+B3+B4+B4+B6+B7+B8+B8A+B11+B12, 
+                data=train.df,
+                method = &quot;nb&quot;,
+                metric= &quot;Accuracy&quot;,
+                preProc = c(&quot;center&quot;, &quot;scale&quot;), 
+                trControl = myControl
+                )
+fit.nb </code></pre>
+<pre><code>## Naive Bayes 
+## 
+## 16764 samples
+##     9 predictor
+##     5 classes: &#39;Building&#39;, &#39;Grass&#39;, &#39;Parking/road/pavement&#39;, &#39;Tree/bushes&#39;, &#39;Water&#39; 
+## 
+## Pre-processing: centered (9), scaled (9) 
+## Resampling: Cross-Validated (3 fold, repeated 2 times) 
+## Summary of sample sizes: 11176, 11175, 11177, 11175, 11175, 11178, ... 
+## Resampling results across tuning parameters:
+## 
+##   usekernel  Accuracy   Kappa    
+##   FALSE      0.8800113  0.8408077
+##    TRUE      0.9065557  0.8759263
+## 
+## Tuning parameter &#39;fL&#39; was held constant at a value of 0
+## Tuning
+##  parameter &#39;adjust&#39; was held constant at a value of 1
+## Accuracy was used to select the optimal model using the largest value.
+## The final values used for the model were fL = 0, usekernel = TRUE
+##  and adjust = 1.</code></pre>
+</div>
+<div id="stop-cluster" class="section level4">
+<h4>Stop cluster</h4>
+<pre class="r"><code>stopCluster(mc)</code></pre>
+</div>
+<div id="confusion-matrix---train-data" class="section level4">
+<h4>Confusion Matrix - train data</h4>
+<pre class="r"><code>p1&lt;-predict(fit.nb, train.df, type = &quot;raw&quot;)
+confusionMatrix(p1, train.df$Landuse)</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##                        Reference
+## Prediction              Building Grass Parking/road/pavement Tree/bushes
+##   Building                  2309     0                    97           1
+##   Grass                       50  3397                     1          55
+##   Parking/road/pavement      679     0                  3743         432
+##   Tree/bushes                 63    85                    33        5180
+##   Water                        0     0                     0           0
+##                        Reference
+## Prediction              Water
+##   Building                  0
+##   Grass                     0
+##   Parking/road/pavement     8
+##   Tree/bushes               7
+##   Water                   624
+## 
+## Overall Statistics
+##                                           
+##                Accuracy : 0.9099          
+##                  95% CI : (0.9054, 0.9142)
+##     No Information Rate : 0.3381          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.8804          
+##  Mcnemar&#39;s Test P-Value : NA              
+## 
+## Statistics by Class:
+## 
+##                      Class: Building Class: Grass
+## Sensitivity                   0.7446       0.9756
+## Specificity                   0.9928       0.9920
+## Pos Pred Value                0.9593       0.9697
+## Neg Pred Value                0.9448       0.9936
+## Prevalence                    0.1850       0.2077
+## Detection Rate                0.1377       0.2026
+## Detection Prevalence          0.1436       0.2090
+## Balanced Accuracy             0.8687       0.9838
+##                      Class: Parking/road/pavement Class: Tree/bushes
+## Sensitivity                                0.9662             0.9139
+## Specificity                                0.9132             0.9831
+## Pos Pred Value                             0.7698             0.9650
+## Neg Pred Value                             0.9890             0.9572
+## Prevalence                                 0.2311             0.3381
+## Detection Rate                             0.2233             0.3090
+## Detection Prevalence                       0.2900             0.3202
+## Balanced Accuracy                          0.9397             0.9485
+##                      Class: Water
+## Sensitivity               0.97653
+## Specificity               1.00000
+## Pos Pred Value            1.00000
+## Neg Pred Value            0.99907
+## Prevalence                0.03812
+## Detection Rate            0.03722
+## Detection Prevalence      0.03722
+## Balanced Accuracy         0.98826</code></pre>
+</div>
+<div id="confusion-matrix---test-data" class="section level4">
+<h4>Confusion Matrix - test data</h4>
+<pre class="r"><code>p2&lt;-predict(fit.nb, test.df, type = &quot;raw&quot;)
+confusionMatrix(p2, test.df$Landuse)</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##                        Reference
+## Prediction              Building Grass Parking/road/pavement Tree/bushes
+##   Building                   997     0                    42           2
+##   Grass                       17  1452                     0          19
+##   Parking/road/pavement      287     0                  1606         202
+##   Tree/bushes                 27    39                    12        2206
+##   Water                        0     0                     0           0
+##                        Reference
+## Prediction              Water
+##   Building                  0
+##   Grass                     0
+##   Parking/road/pavement     4
+##   Tree/bushes               5
+##   Water                   264
+## 
+## Overall Statistics
+##                                           
+##                Accuracy : 0.9086          
+##                  95% CI : (0.9017, 0.9152)
+##     No Information Rate : 0.3383          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.8787          
+##  Mcnemar&#39;s Test P-Value : NA              
+## 
+## Statistics by Class:
+## 
+##                      Class: Building Class: Grass
+## Sensitivity                   0.7508       0.9738
+## Specificity                   0.9925       0.9937
+## Pos Pred Value                0.9577       0.9758
+## Neg Pred Value                0.9461       0.9931
+## Prevalence                    0.1849       0.2076
+## Detection Rate                0.1388       0.2022
+## Detection Prevalence          0.1450       0.2072
+## Balanced Accuracy             0.8716       0.9838
+##                      Class: Parking/road/pavement Class: Tree/bushes
+## Sensitivity                                0.9675             0.9082
+## Specificity                                0.9107             0.9825
+## Pos Pred Value                             0.7651             0.9637
+## Neg Pred Value                             0.9894             0.9544
+## Prevalence                                 0.2312             0.3383
+## Detection Rate                             0.2236             0.3072
+## Detection Prevalence                       0.2923             0.3188
+## Balanced Accuracy                          0.9391             0.9454
+##                      Class: Water
+## Sensitivity               0.96703
+## Specificity               1.00000
+## Pos Pred Value            1.00000
+## Neg Pred Value            0.99870
+## Prevalence                0.03802
+## Detection Rate            0.03676
+## Detection Prevalence      0.03676
+## Balanced Accuracy         0.98352</code></pre>
+</div>
+<div id="predition-at-grid-location" class="section level4">
+<h4>Predition at grid location</h4>
+<pre class="r"><code># read grid CSV file
+grid.df&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\prediction_grid_data.csv&quot;), header = T) 
+# Preddict at grid location
+p3&lt;-as.data.frame(predict(fit.nb, grid.df, type = &quot;raw&quot;))
+# Extract predicted landuse class
+grid.df$Landuse&lt;-p3$predict  
+# Import lnaduse ID file 
+ID&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\Landuse_ID.csv&quot;), header=T)
+# Join landuse ID
+grid.new&lt;-join(grid.df, ID, by=&quot;Landuse&quot;, type=&quot;inner&quot;) 
+# Omit missing values
+grid.new.na&lt;-na.omit(grid.new)                                                            </code></pre>
+</div>
+<div id="convert-to-raster" class="section level4">
+<h4>Convert to raster</h4>
+<pre class="r"><code>x&lt;-SpatialPointsDataFrame(as.data.frame(grid.new.na)[, c(&quot;x&quot;, &quot;y&quot;)], data = grid.new.na)
+r &lt;- rasterFromXYZ(as.data.frame(x)[, c(&quot;x&quot;, &quot;y&quot;, &quot;Class_ID&quot;)])</code></pre>
+</div>
+<div id="plot-landuse-map" class="section level4">
+<h4>Plot Landuse Map:</h4>
+<pre class="r"><code># Color Palette
+myPalette &lt;- colorRampPalette(c(&quot;light grey&quot;,&quot;burlywood4&quot;, &quot;forestgreen&quot;,&quot;light green&quot;, &quot;dodgerblue&quot;))
+# Plot Map
+LU&lt;-spplot(r,&quot;Class_ID&quot;, main=&quot;Supervised Image Classification: Naïve Bayes&quot; , 
+      colorkey = list(space=&quot;right&quot;,tick.number=1,height=1, width=1.5,
+              labels = list(at = seq(1,4.8,length=5),cex=1.0,
+              lab = c(&quot;Road/parking/pavement&quot; ,&quot;Building&quot;, &quot;Tree/buses&quot;, &quot;Grass&quot;, &quot;Water&quot;))),
+              col.regions=myPalette,cut=4)
+LU</code></pre>
+<p><img src="naive-bayes_files/figure-html/unnamed-chunk-12-1.png" width="624" style="display: block; margin: auto;" /></p>
+</div>
+<div id="write-raster" class="section level4">
+<h4>Write raster</h4>
+<pre class="r"><code># writeRaster(r, filename = paste0(dataFolder,&quot;.\\Sentinel_2\\NB_Landuse.tiff&quot;), &quot;GTiff&quot;, overwrite=T)</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Working With Spatial Polygon Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Working With Spatial Polygon Data</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>This lesson we will cover following:</p>
+<ul>
+<li><p><a href="#data-processing">Data Processing</a></p></li>
+<li><p><a href="#visualization">Visualization</a></p></li>
+<li><p><a href="#animation">Animation</a></p></li>
+</ul>
+<p>The will use following data set fo US Atlantic regions (expcept Florida) which could be avilable fro download from <a href="https://www.dropbox.com/s/1ofgjkpat6dso1l/DATA_06.7z?dl=0">here</a>.</p>
+<div id="age-adjusted-lung-bronchus-cancer-mortality-rates-by-county" class="section level2">
+<h2>Age Adjusted Lung &amp; Bronchus Cancer Mortality Rates by County</h2>
+<p>Age Adjusted Lung &amp; Bronchus Cancer Mortality Rates from 1980 t0 2014 by county was obtained from <a href="http://ghdx.healthdata.org/us-data">Institute for Health Metrics and Evaluation (IHME)</a>. The rate was estimated using spatially explicit Bayesian mixed effects regression models for both males and females <a href="https://jamanetwork.com/journals/jama/fullarticle/2598772">(Mokdad et al., 2016)</a>. The model incorporated 7 covariates, such as proportion of the adult population that graduated high school, the proportion of the population that is Hispanic, the proportion of the population that is black, the proportion of the population that is a race other than black or white, The proportion of a county that is contained within a state or federal Native American reservation, the median household income, and the population density. To reduce the noise due to low mortality rate in a small population size, we smoothed data with the <a href="https://en.wikipedia.org/wiki/Empirical_Bayes_method">Empirical Bayesian smoother</a>, a tool for dealing with rate instability associated with small sample sizes. It takes the population in the region as an indicator of confidence in the data, with higher population providing a higher confidence in the value at that location. We used <a href="https://www.biomedware.com/?module=Page&amp;sID=spacestat">SpaceStat</a> (Evaluation version) Software for smoothing data.</p>
+</div>
+<div id="age-standardized-cigarette-smoking-prevalence-by-county" class="section level2">
+<h2>Age-standardized Cigarette Smoking (%) Prevalence by County</h2>
+<p>Age-standardized cigarette smoking (%) prevalence by County estimated from the <a href="https://www.cdc.gov/brfss/index.html">Behavioral Risk Factor Surveillance System (BRFSS)</a> survey data <a href="https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-12-5">(Dwyer-Lindgren et al., 2014)</a>. The prevalence (%) were estimated by logistic hierarchical mixed effects regression models, stratified by sex. All estimates were age-standardized following the age structure of the 2000 census. The uncertainty of the prevalence estimates was assessed using simulation methods.</p>
+</div>
+<div id="age-standardized-poverty-rate-by-county" class="section level2">
+<h2>Age-standardized Poverty Rate by County</h2>
+<p>County-level poverty data (% population below poverty level) are from US Census <a href="https://www.census.gov/programs-surveys/saipe/about.html">Small Area Income and Poverty Estimates (SAIPE)</a> Program. Income and poverty rate were estimated by combining survey data with population estimates and administrative records.</p>
+</div>
+<div id="particulate-matter-pm2.5" class="section level2">
+<h2>Particulate Matter (PM2.5)</h2>
+<p>Annual mean PM2.5 from 1998 to 2012 were modeled from aerosol optical depth from multiple satellite (<a href="https://www-misr.jpl.nasa.gov/">Multiangle Imaging Spectra Radiometer</a>, <a href="https://darktarget.gsfc.nasa.gov/products/land-10">MODIS Dark Target</a>, <a href="https://deepblue.gsfc.nasa.gov/science">MODIS and SeaWiFS Deep Blue</a>, <a href="https://ladsweb.modaps.eosdis.nasa.gov/api/v1/productGroupPage/name=maiac">MODIS MAIAC</a>) products and validated by ground-based PM2.5 monitoring sites <a href="https://pubs.acs.org/doi/abs/10.1021/acs.est.5b05833">(Aaron van Donkelaar et al., 2016)</a>. All raster grid of PM2.5 were re-sampled at 2.5 km x 2 km grid size using <a href="http://desktop.arcgis.com/en/arcmap/10.3/guide-books/extensions/geostatistical-analyst/what-is-empirical-bayesian-kriging-.htm">Empirical Bayesian Kriging</a> in ArcPython - Geo-statistical Tool <a href="https://www.esri.com/en-us/home">(ESRI, 2017)</a>). County population weighted mean for each year were calculated from the population data.</p>
+</div>
+<div id="nitrogen-dioxide-no2" class="section level2">
+<h2>Nitrogen dioxide (NO2)</h2>
+<p>Annual mean ambient NO2 Concentrations estimated from three satellite instruments, such as <a href="https://earth.esa.int/web/guest/missions/esa-operational-eo-missions/ers/instruments/gome">Global Ozone Monitoring Experiment (GOME)</a>, <a href="https://www.sciencedirect.com/science/article/pii/009457659400278T">Scanning Imaging Absorption Spectrometer for Atmospheric Chartography (SCIAMACHY)</a> and <a href="http://www.ospo.noaa.gov/Products/atmosphere/gome/gome-A.html">GOME-2</a> satellite in combination with chemical transport model <a href="https://ehp.niehs.nih.gov/1409567/">(Gedders et al., (2016)</a>. All raster grid of PM2.5 were re-sampled at 2.5 km x 2 km grid size using <a href="http://desktop.arcgis.com/en/arcmap/10.3/guide-books/extensions/geostatistical-analyst/what-is-empirical-bayesian-kriging-.htm">Empirical Bayesian Kriging</a> in ArcPython - Geo-statistical Tool <a href="https://www.esri.com/en-us/home">(ESRI, 2017)</a>). County population weighted mean for each year were calculated from the population data.</p>
+</div>
+<div id="sulfer-dioxide-so2" class="section level2">
+<h2>Sulfer dioxide (SO2)</h2>
+<p>Annual mean ambient SO2 Concentrations estimated were obtained from time series Multi-source SO2 emission retrievals and consistency of satellite and surface measurements of <a href="https://www.atmos-chem-phys.net/17/12597/2017https://www.atmos-chem-phys.net/17/12597/2017/">(Fioletov et al,(2017)</a>. All raster grid of PM2.5 were re-sampled at 2.5 km x 2 km grid size using <a href="http://desktop.arcgis.com/en/arcmap/10.3/guide-books/extensions/geostatistical-analyst/what-is-empirical-bayesian-kriging-.htm">Empirical Bayesian Kriging</a> in ArcPython - Geo-statistical Tool <a href="https://www.esri.com/en-us/home">(ESRI, 2017)</a>). County population weighted mean for each year were calculated from the population data.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="load-packages" class="section level3">
+<h3>Load packages</h3>
+<pre class="r"><code>library(sp)
+library(rgeos)
+library(rgdal)
+library(lattice)
+library(latticeExtra)
+library(RColorBrewer)
+library(ggplot2) 
+library(raster)
+library(classInt)
+library(stringr)
+library(data.table)
+library(rcompanion)</code></pre>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_06\\&quot;</code></pre>
+</div>
+<div id="load-all-csv-files" class="section level4">
+<h4>Load all CSV files</h4>
+<pre class="r"><code>cancer&lt;-read.csv(paste0(dataFolder, &quot;Lung_cancer_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+poverty&lt;-read.csv(paste0(dataFolder, &quot;POVERTY_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+smoking&lt;-read.csv(paste0(dataFolder, &quot;SMOKING_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+PM25&lt;-read.csv(paste0(dataFolder, &quot;PM25_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+NO2&lt;-read.csv(paste0(dataFolder, &quot;NO2_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+SO2&lt;-read.csv(paste0(dataFolder, &quot;SO2_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+pop&lt;-read.csv(paste0(dataFolder, &quot;POP_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)</code></pre>
+</div>
+</div>
+<div id="data-processing" class="section level3">
+<h3>Data Processing</h3>
+<div id="load-state-and-county-shape-files-and-extract-centriod-from-county-shape-file" class="section level4">
+<h4>Load State and County Shape files and Extract Centriod from County Shape file</h4>
+<pre class="r"><code>county&lt;-shapefile(paste0(dataFolder,&quot;COUNTY_ATLANTIC.shp&quot;))
+state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))</code></pre>
+</div>
+<div id="calculate-country-centriods" class="section level4">
+<h4>Calculate Country Centriods</h4>
+<pre class="r"><code>centroids = gCentroid(county,byid=TRUE)</code></pre>
+<pre class="r"><code>plot(state, main=&quot;County Centriods&quot;)
+points(centroids,pch=1, cex=0.5, col=&quot;red&quot;)</code></pre>
+<p><img src="working-with-spatial-polygon_files/figure-html/unnamed-chunk-6-1.png" width="336" style="display: block; margin: auto;" /></p>
+</div>
+<div id="convert-contriods-to-spdf" class="section level4">
+<h4>Convert contriods to SPDF</h4>
+<pre class="r"><code>XY.centriods&lt;-as.data.frame(centroids)
+str(XY.centriods)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    666 obs. of  2 variables:
+##  $ x: num  1056524 1653442 1633708 1584049 1735811 ...
+##  $ y: num  1376613 2267301 2096683 1901443 2409536 ...</code></pre>
+</div>
+<div id="calculate-mean-of-all-variables" class="section level4">
+<h4>Calculate Mean of All variables</h4>
+<p>We will create a data frame 15 years (1998-2012) mean all variables, and will this data in spatial statistics lesson.</p>
+<pre class="r"><code>mean&lt;-read.csv(paste0(dataFolder, &quot;FIPS_COUNTY_ATLANTIC_COUNTY.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+mean$x&lt;-XY.centriods$x
+mean$y&lt;-XY.centriods$y
+mean$pop&lt;-apply(pop[2:16],1,mean,na.rm=TRUE)
+mean$cancer&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
+mean$poverty&lt;-apply(poverty[2:16],1,mean,na.rm=TRUE)
+mean$smoking&lt;-apply(smoking[2:16],1,mean,na.rm=TRUE)
+mean$PM25&lt;-apply(PM25[2:16],1,mean,na.rm=TRUE)
+mean$NO2&lt;-apply(NO2[2:16],1,mean,na.rm=TRUE)
+mean$SO2&lt;-apply(SO2[2:16],1,mean,na.rm=TRUE)
+head(mean)</code></pre>
+<pre><code>##    FIPS       x       y       pop   cancer   poverty  smoking     PM25
+## 1 13111 1056524 1376613 116485.00 71.87066 15.920000 27.93333 11.75533
+## 2 42115 1653442 2267301 194008.40 58.85177 12.220000 26.96667  9.02600
+## 3 42075 1633708 2096683 475512.47 60.67665  8.986667 25.27333 11.96333
+## 4 51683 1584049 1901443 232863.80 61.56533  7.860000 22.90000 12.73133
+## 5 36057 1735811 2409536  22256.53 59.21461 14.746667 27.18000  8.30200
+## 6 13149 1003647 1193902  16508.67 85.76928 17.506667 30.21333 12.27133
+##         NO2         SO2
+## 1 0.9776667 0.064184954
+## 2 1.4999333 0.033210980
+## 3 3.6164667 0.120281334
+## 4 3.6219333 0.118371127
+## 5 1.6327333 0.006404368
+## 6 1.6258000 0.138780485</code></pre>
+<pre class="r"><code>write.csv(mean, paste0(dataFolder, &quot;data_atlantic_1998_2012.csv&quot;), row.names=FALSE)</code></pre>
+</div>
+<div id="calculate-confidence-ci-95-ci-alpha-.05.-of-mean" class="section level4">
+<h4>Calculate confidence CI (95% CI, alpha = .05. ) of Mean</h4>
+<p>Now we will create a data frame with mean, standard and calculate of confidence intervals</p>
+<pre class="r"><code>n=15
+df=15-1
+cancer.stat&lt;-read.csv(paste0(dataFolder, &quot;FIPS_COUNTY_ATLANTIC_COUNTY.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+cancer.stat$mean&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
+cancer.stat$sd&lt;-apply(cancer[2:16],1,sd,na.rm=TRUE)
+cancer.stat$mse&lt;- qt(.95,df)*cancer.stat$sd/sqrt(10)
+cancer.stat$upper&lt;-cancer.stat$mean + cancer.stat$mse
+cancer.stat$lower&lt;-cancer.stat$mean - cancer.stat$mse 
+head(cancer.stat)</code></pre>
+<pre><code>##    FIPS     mean       sd      mse    upper    lower
+## 1 13111 71.87066 2.564211 1.428202 73.29886 70.44246
+## 2 42115 58.85177 3.058839 1.703697 60.55547 57.14807
+## 3 42075 60.67665 2.315031 1.289415 61.96607 59.38724
+## 4 51683 61.56533 9.605861 5.350226 66.91556 56.21511
+## 5 36057 59.21461 3.344015 1.862533 61.07714 57.35208
+## 6 13149 85.76928 3.670388 2.044315 87.81359 83.72496</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+<div id="visualization" class="section level3">
+<h3>Visualization</h3>
+<p>Before plotting the data, we need join the data to county shape files</p>
+<pre class="r"><code># Join data to county shape file
+SPOLY.DF&lt;-merge(county,cancer.stat, by=&quot;FIPS&quot;)</code></pre>
+<pre class="r"><code>polys&lt;- list(&quot;sp.lines&quot;, as(state, &quot;SpatialLines&quot;), col=&quot;grey&quot;, lwd=.8,lty=1)
+col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;)
+
+at.break = classIntervals(cancer.stat$mean, n = 20, style = &quot;quantile&quot;)$brks
+round(quantile(cancer.stat$mean, probs=seq(0,1, by=0.05)),1)</code></pre>
+<pre><code>##    0%    5%   10%   15%   20%   25%   30%   35%   40%   45%   50%   55% 
+##  39.3  50.8  55.2  59.2  60.8  62.4  63.7  65.2  66.9  68.2  69.3  70.8 
+##   60%   65%   70%   75%   80%   85%   90%   95%  100% 
+##  72.3  73.5  75.1  77.2  79.3  81.1  84.4  90.8 120.4</code></pre>
+<pre class="r"><code>spplot(SPOLY.DF, 
+       c(&quot;mean&quot;, &quot;lower&quot;, &quot;upper&quot;), 
+       names.attr = c(&quot;Mean&quot;,&quot;Lower&quot;, &quot;Upper&quot;),
+       main = &quot;Mean and 90% CI of Lung Cancer Mortality Rate (1998-2012)\n
+             (death per 100,000)&quot;,
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       par.settings = list(axis.line = list(col = &quot;grey&quot;), 
+                           strip.background = list(col = &#39;transparent&#39;),
+                           strip.border = list(col = &#39;grey&#39;)),
+       par.strip.text=list(cex=0.9),
+       at=at.break,
+       colorkey=list(space=&quot;right&quot;,height=1, width=1.8,at=1:21,labels=list(cex=2.0,at=1:21,
+                 labels=c(&quot;&quot; ,&quot;&quot;, &quot;&lt; 55&quot;, &quot;&quot; ,&quot;&quot;, &quot;62&quot;,&quot;&quot;, &quot;&quot;, &quot;&quot; , &quot;&quot;, &quot;69&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 
+                          &quot;77&quot;, &quot;&quot;, &quot;&quot;, &quot;&gt; 85&quot;, &quot;&quot;, &quot;&quot;))),
+       col.regions=col.palette(100))</code></pre>
+<p><img src="working-with-spatial-polygon_files/figure-html/unnamed-chunk-11-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="animation" class="section level3">
+<h3>Animation</h3>
+<p>We Created an animated time series map of Lung Cancer Mortality Rate from 1998-2012, To create an animation map in R, we have to install <em>animation</em> packages in R. This package depends on <a href="https://www.imagemagick.org/"><em>ImageMagick</em></a> software.</p>
+<pre class="r"><code>library(animation)</code></pre>
+<p>After install you have define PATH of this software.</p>
+<pre class="r"><code>Sys.setenv(PATH = paste(&quot;C:\\Program Files\\ImageMagick-7.0.6-0-Q16&quot;, Sys.getenv(&quot;PATH&quot;), sep = &quot;;&quot;))
+ani.options(convert=&quot;C:\\Program Files\\ImageMagick-7.0.6-0-Q16\\covert.exe&quot;)
+magickPath&lt;-shortPathName(&quot;C:\\Program Files\\ImageMagick-7.0.6-0-Q16-x64\\magick.exe&quot;)
+ani.options(convert=magickPath)</code></pre>
+<pre class="r"><code>wide.df&lt;-read.csv(paste0(dataFolder, &quot;Lung_cancer_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+# add id variable
+wide.df$id &lt;- c(1:666) # total 738 counties
+# change name of first variable
+colnames(wide.df)[1] &lt;- &#39;FIPS&#39;
+# convert from wide to long
+long.df&lt;- reshape2::melt(wide.df, id.vars=c(&quot;FIPS&quot;,&quot;id&quot;))
+head(long.df)</code></pre>
+<pre><code>##    FIPS id variable    value
+## 1 13111  1     1998 73.09316
+## 2 42115  2     1998 61.73904
+## 3 42075  3     1998 62.61683
+## 4 51683  4     1998 75.72253
+## 5 36057  5     1998 61.92260
+## 6 13149  6     1998 88.91067</code></pre>
+<pre class="r"><code># change name of third variable
+colnames(long.df)[3] &lt;- &#39;Year&#39;
+colnames(long.df)[4] &lt;- &#39;Rate&#39;
+
+at.risk = classIntervals(long.df$Rate, n = 20, style = &quot;quantile&quot;)$brks
+round(quantile(long.df$Rate, probs=seq(0,1, by=0.05)),4)</code></pre>
+<pre><code>##       0%       5%      10%      15%      20%      25%      30%      35% 
+##  32.3006  49.5058  54.4828  57.6885  59.8426  61.8422  63.6249  65.2329 
+##      40%      45%      50%      55%      60%      65%      70%      75% 
+##  66.7559  68.1899  69.6374  71.0781  72.5374  74.1125  75.6719  77.5922 
+##      80%      85%      90%      95%     100% 
+##  79.5096  81.8511  85.2153  91.7250 126.6729</code></pre>
+<pre class="r"><code>mydata &lt;- merge(county,cancer, by=&#39;FIPS&#39;)
+names(mydata)</code></pre>
+<pre><code>##  [1] &quot;FIPS&quot;       &quot;ID&quot;         &quot;ID2&quot;        &quot;x&quot;          &quot;y&quot;         
+##  [6] &quot;REGION_ID&quot;  &quot;DIVISION_I&quot; &quot;STATE_ID&quot;   &quot;COUNTY_ID&quot;  &quot;REGION&quot;    
+## [11] &quot;DIVISION&quot;   &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;1998&quot;       &quot;1999&quot;      
+## [16] &quot;2000&quot;       &quot;2001&quot;       &quot;2002&quot;       &quot;2003&quot;       &quot;2004&quot;      
+## [21] &quot;2005&quot;       &quot;2006&quot;       &quot;2007&quot;       &quot;2008&quot;       &quot;2009&quot;      
+## [26] &quot;2010&quot;       &quot;2011&quot;       &quot;2012&quot;</code></pre>
+<pre class="r"><code># delete unncessary  columns
+mydata &lt;- mydata[, -c(1:12)] # delete columns 1 through 11 &amp; 27
+new.col&lt;-paste0(&quot;Year&quot;, seq(1998, 2012, by=1))
+names(mydata)[1:15] = new.col</code></pre>
+<pre><code>## Warning in checkNames(value): attempt to set invalid names: this may lead
+## to problems later on. See ?make.names</code></pre>
+<pre class="r"><code>year=1998:2012
+saveGIF(
+  for (i in seq(year)){
+    print(spplot(mydata [,i], 
+                main = list(label=paste0(&quot;Mortality Rate from Lung &amp; Bronchus Cancer
+                                          \n(death per 100,000):&quot;,year[i]),cex=1.5),
+                 sp.layout=list(polys),
+                 par.settings=list(axis.line=list(col=&quot;grey80&quot;,lwd=0.5)),
+                 col=&quot;transparent&quot;,
+                 at=at.risk,
+                 colorkey=list(space=&quot;right&quot;,height=1, width=1.8,at=1:21,labels=list(cex=2.0,at=1:21,
+                 labels=c(&quot;&quot; ,&quot;&quot;, &quot;&lt; 54&quot;, &quot;&quot; ,&quot;&quot;, &quot;62&quot;,&quot;&quot;, &quot;&quot;, &quot;&quot; , &quot;&quot;, &quot;69&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 
+                          &quot;75&quot;, &quot;&quot;, &quot;&quot;, &quot;&gt; 92&quot;, &quot;&quot;, &quot;&quot;))),
+                 col.regions=col.palette(100)))}, 
+  ani.width = 500, ani.height = 700, interval = .5, clean = TRUE, outdir = getwd())</code></pre>
+<div class="figure">
+<img src="FIGURE_Cancer_ATLANTIC.gif" />
+
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

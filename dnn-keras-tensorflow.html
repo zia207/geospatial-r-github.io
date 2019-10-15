@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Deep Neural Network Supervised Image Classification with Keras/TensorFlow</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Deep Neural Network Supervised Image Classification with Keras/TensorFlow</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p><a href="http://neuralnetworksanddeeplearning.com/chap6.html"><strong>Deep Neural Network</strong></a> or <a href="https://en.wikipedia.org/wiki/Deep_learning"><strong>Deep Dearning</strong></a>is based on a multi-layer feed forward artificial neural network that is trained with stochastic gradient descent using back-propagation. The network can contain many hidden layers consisting of neurons with activation functions. Advanced features such as adaptive learning rate, rate annealing, momentum training, dropout, L1 or L2 regularization, check pointing, and grid search enable high predictive accuracy. Each compute node trains a copy of the global model parameters on its local data with multi-threading (asynchronously) and contributes periodically to the global model via model averaging across the network.</p>
+<p>This tutorial will show how to implement <a href="https://en.wikipedia.org/wiki/Deep_learning">Deep Neural Network</a> for <a href="https://gis.stackexchange.com/questions/237461/distinction-between-pixel-based-and-object-based-classification">pixel based</a> <a href="https://articles.extension.org/pages/40214/whats-the-difference-between-a-supervised-and-unsupervised-image-classification">supervised classification</a> of <a href="https://sentinel.esa.int/web/sentinel/missions/sentinel-2">Sentinel-2 multispectral images</a> using <a href="https://keras.rstudio.com/">keras</a> package in <a href="https://cloud.r-project.org/">R</a> under <a href="https://www.microsoft.com/en-us/software-download/windows10">Windows 10</a>.</p>
+<p><a href="https://keras.rstudio.com/">keras</a> is a popular Python package for deep neural networks with multiple back ends, including <a href="https://www.tensorflow.org/">TensorFlow</a>, <a href="https://docs.microsoft.com/en-us/cognitive-toolkit/">Microsoft Cognitive Toolkit (CNTK)</a>, and <a href="http://deeplearning.net/software/theano/">Theano</a>. Two R packages allow you to use [Keras[(<a href="https://keras.rstudio.com/" class="uri">https://keras.rstudio.com/</a>)] from R: <a href="https://keras.rstudio.com/">keras</a> and <a href="https://github.com/statsmaths/kerasR">kerasR</a>. The <strong>keras</strong> package is able to provide a flexible and feature-rich API and can run both <a href="https://www.tensorflow.org/install/install_windows">CPU and GUP version of TensorFlow</a> in both Windows and Linux. If you want to run this tutorial with <a href="https://www.tensorflow.org/install/install_windows">GUP version of TensorFlow</a> you need following prerequisites in your system:</p>
+<ul>
+<li><p><a href="https://developer.nvidia.com/cuda-gpus">NVIDIA GUP</a>: First, you must make sure weather your computer is running with <a href="https://developer.nvidia.com/cuda-gpus">NVIDIA® GPU</a> or not. Follow the instruction as described <a href="http://nvidia.custhelp.com/app/answers/detail/a_id/2040/~/identifying-the-graphics-card-model-and-device-id-in-a-pc">here</a></p></li>
+<li><p><a href="https://developer.nvidia.com/cuda-90-download-archive?target_os=Windows&amp;target_arch=x86_64&amp;target_version=10&amp;target_type=exelocal">CUDA Toolkit v9.0</a>: If you have an NVIDIA® GPU in your system, you need to download and install <a href="https://developer.nvidia.com/cuda-90-download-archive?target_os=Windows&amp;target_arch=x86_64&amp;target_version=10&amp;target_type=exelocal">CUDA Toolkit v9.0</a>. Detail installation steps can be found <a href="http://nvidia.custhelp.com/app/answers/detail/a_id/2040/~/identifying-the-graphics-card-model-and-device-id-in-a-pc">here</a></p></li>
+<li><p><a href="https://developer.nvidia.com/cudnn">cuDNN v7.0</a>: The download the zip file version <a href="https://developer.nvidia.com/cudnn">cuDNN v7.0</a> for your CUDA Toolkit v9.0.You need to extract the zip file and add the location where you extracted it to your system PATH. Detail installation steps can be found here <a href="F:\DeepLearning_tutorial\Satellite_Image_Calssification\h20_R_ImageCalssification\keras_R\Detail%20installation%20steps%20are%20described%20here">here</a>.</p></li>
+</ul>
+<p>Detail installation steps of Keras back-end GPU or CUP version of Tensorflow can be found <a href="https://tensorflow.rstudio.com/keras/reference/install_keras.html">here</a>.</p>
+<div style="margin-bottom:30px;">
+
+</div>
+<div id="import-packages" class="section level4">
+<h4>Import packages</h4>
+<pre class="r"><code>library(rgdal)
+library(raster)
+library(dplyr)
+library(plyr)
+library(keras)         # karas api in R
+library(tfruns)        # Create and manage unique directories for each &#39;TensorFlow&#39; training run. 
+library(tfestimators) # Interface to &#39;TensorFlow&#39; Estimators </code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>The data could be available for download <a href="https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0">here</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+</div>
+<div id="load-point-and-grid-data" class="section level4">
+<h4>Load point and grid data</h4>
+<pre class="r"><code>point&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\point_data.csv&quot;), header = T)
+grid&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\prediction_grid_data.csv&quot;), header = T)</code></pre>
+</div>
+<div id="creat-data-frames" class="section level4">
+<h4>Creat data frames</h4>
+<pre class="r"><code>point.df&lt;-cbind(point[c(3:13)])
+grid.df&lt;-grid[c(4:13)]
+grid.xy&lt;-grid[c(3,1:2)]</code></pre>
+</div>
+<div id="convert-class-to-dummy-variables" class="section level4">
+<h4>Convert Class to dummy variables:</h4>
+<pre class="r"><code>point.df[,11] &lt;- as.numeric(point.df[,11]) -1 </code></pre>
+</div>
+<div id="convert-data-as-matrix" class="section level4">
+<h4>Convert data as matrix</h4>
+<pre class="r"><code>point.df&lt;- as.matrix(point.df)
+grid.df &lt;- as.matrix(grid.df)</code></pre>
+</div>
+<div id="set-dimnames-to-null" class="section level4">
+<h4>Set <code>dimnames</code> to <code>NULL</code>:</h4>
+<pre class="r"><code>dimnames(point.df) &lt;- NULL
+dimnames(grid.df) &lt;- NULL</code></pre>
+</div>
+<div id="standardize_the-data-x-meanxsdx" class="section level4">
+<h4>Standardize_the data: ((x-mean(x))/sd(x))</h4>
+<pre class="r"><code>point.df[, 1:10] = scale(point.df[, 1:10])
+grid.df[, 1:10] = scale(grid.df[, 1:10])</code></pre>
+</div>
+<div id="split-data" class="section level4">
+<h4>Split data</h4>
+<pre class="r"><code>##  Determine sample size
+ind &lt;- sample(2, nrow(point.df), replace=TRUE, prob=c(0.80, 0.20))
+# Split the `Split data
+training &lt;- point.df[ind==1, 1:10]
+test &lt;- point.df[ind==2, 1:10]
+# Split the class attribute
+trainingtarget &lt;- point.df[ind==1, 11]
+testtarget &lt;- point.df[ind==2, 11]</code></pre>
+</div>
+<div id="hyperparameter-flag" class="section level4">
+<h4>Hyperparameter flag</h4>
+<pre class="r"><code>FLAGS &lt;- flags(
+  flag_numeric(&#39;dropout_1&#39;, 0.2, &#39;First dropout&#39;),
+  flag_numeric(&#39;dropout_2&#39;, 0.2, &#39;Second dropout&#39;),
+  flag_numeric(&#39;dropout_3&#39;, 0.1, &#39;Third dropout&#39;),
+  flag_numeric(&#39;dropout_4&#39;, 0.1, &#39;Forth dropout&#39;)
+  )</code></pre>
+</div>
+<div id="define-model-parameters-with-4-hidden-layers-with-200-neurons" class="section level4">
+<h4>Define model parameters with 4 hidden layers with 200 neurons</h4>
+<pre class="r"><code>model &lt;- keras_model_sequential()
+model %&gt;% 
+  # Imput layer
+  layer_dense(units = 200, activation = &#39;relu&#39;, 
+              kernel_regularizer =regularizer_l1_l2(l1 = 0.00001, l2 = 0.00001),input_shape = c(10)) %&gt;% 
+  layer_dropout(rate = FLAGS$dropout_1,seed = 1) %&gt;% 
+  # Hidden layers
+  layer_dense(units = 200, activation = &#39;relu&#39;,
+              kernel_regularizer = regularizer_l1_l2(l1 = 0.00001, l2 = 0.00001)) %&gt;%
+  layer_dropout(rate = FLAGS$dropout_2,seed = 1) %&gt;%
+  layer_dense(units = 200, activation = &#39;relu&#39;,
+              kernel_regularizer = regularizer_l1_l2(l1 = 0.00001, l2 = 0.00001)) %&gt;%
+  layer_dropout(rate = FLAGS$dropout_3,seed = 1) %&gt;%
+  layer_dense(units = 200, activation = &#39;relu&#39;,
+              kernel_regularizer = regularizer_l1_l2(l1 = 0.0001, l2 = 0.00001)) %&gt;%
+  layer_dropout(rate = FLAGS$dropout_4) %&gt;%
+  # Output layer
+  layer_dense(units = 5, activation = &#39;softmax&#39;)
+summary(model)</code></pre>
+<pre><code>## ___________________________________________________________________________
+## Layer (type)                     Output Shape                  Param #     
+## ===========================================================================
+## dense_6 (Dense)                  (None, 200)                   2200        
+## ___________________________________________________________________________
+## dropout_5 (Dropout)              (None, 200)                   0           
+## ___________________________________________________________________________
+## dense_7 (Dense)                  (None, 200)                   40200       
+## ___________________________________________________________________________
+## dropout_6 (Dropout)              (None, 200)                   0           
+## ___________________________________________________________________________
+## dense_8 (Dense)                  (None, 200)                   40200       
+## ___________________________________________________________________________
+## dropout_7 (Dropout)              (None, 200)                   0           
+## ___________________________________________________________________________
+## dense_9 (Dense)                  (None, 200)                   40200       
+## ___________________________________________________________________________
+## dropout_8 (Dropout)              (None, 200)                   0           
+## ___________________________________________________________________________
+## dense_10 (Dense)                 (None, 5)                     1005        
+## ===========================================================================
+## Total params: 123,805
+## Trainable params: 123,805
+## Non-trainable params: 0
+## ___________________________________________________________________________</code></pre>
+</div>
+<div id="define-an-optimizer-stochastic-gradient-descent-optimizer" class="section level4">
+<h4>Define an optimizer (Stochastic gradient descent optimizer)</h4>
+<pre class="r"><code>optimizer &lt;- optimizer_sgd(lr=0.01)</code></pre>
+</div>
+<div id="compile-the-model" class="section level4">
+<h4>Compile the model:</h4>
+<pre class="r"><code>model %&gt;% compile(
+  loss = &#39;sparse_categorical_crossentropy&#39;,
+  optimizer = optimizer,
+  metrics = &#39;accuracy&#39;
+)</code></pre>
+</div>
+<div id="fit-the-model-to-the-data" class="section level4">
+<h4>Fit the model to the data</h4>
+<pre class="r"><code>history&lt;-model %&gt;% fit(
+  training, trainingtarget, 
+  epochs = 50, 
+  batch_size = 100, 
+  shuffle = TRUE,
+  validation_split = 0.2
+  )</code></pre>
+</div>
+<div id="plot-history" class="section level4">
+<h4>Plot history:</h4>
+<pre class="r"><code>plot(history)</code></pre>
+<p><img src="dnn-keras-tensorflow_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="evaluate-the-model" class="section level4">
+<h4>Evaluate the model</h4>
+<pre class="r"><code>score &lt;- model %&gt;% evaluate(test, testtarget, batch_size = 100)
+cat(&#39;Test loss:&#39;, score[[1]], &#39;\n&#39;)</code></pre>
+<pre><code>## Test loss: 0.5103238</code></pre>
+<pre class="r"><code>cat(&#39;Test accuracy:&#39;, score[[2]], &#39;\n&#39;)</code></pre>
+<pre><code>## Test accuracy: 0.926049</code></pre>
+</div>
+<div id="prediction-confusion-matrix---test-data" class="section level4">
+<h4>Prediction &amp; confusion matrix - test data</h4>
+<pre class="r"><code>class.test &lt;- model %&gt;%
+  predict_classes(test, batch_size = 100)
+# Confusion matrix
+table(testtarget,class.test)</code></pre>
+<pre><code>##           class.test
+## testtarget    0    1    2    3    4
+##          0 1026   83   33    0    0
+##          1   89  795   43    2    0
+##          2   63    8 1504   15    0
+##          3    0    0   16  950    0
+##          4    0    0    4    0  183</code></pre>
+</div>
+<div id="predicted-class-probability" class="section level4">
+<h4>Predicted Class Probability</h4>
+<pre class="r"><code>prob.test &lt;- model %&gt;%
+  predict_proba(test, batch_size = 100)</code></pre>
+</div>
+<div id="prediction-at-grid-locations" class="section level4">
+<h4>Prediction at grid locations:</h4>
+<pre class="r"><code>Class.grid &lt;- model %&gt;%
+  predict_classes(grid.df, batch_size = 100)</code></pre>
+</div>
+<div id="detach-keras-tfruns-tftestimators" class="section level4">
+<h4>Detach keras, tfruns, tftestimators</h4>
+<pre class="r"><code>detach(package:keras, unload=TRUE)
+detach(package:tfruns, unload=TRUE)
+detach(package:tfestimators, unload=TRUE)</code></pre>
+</div>
+<div id="change-column-name" class="section level4">
+<h4>Change column name:</h4>
+<pre class="r"><code>class&lt;-as.data.frame(Class.grid)
+new.grid&lt;-cbind(x=grid.xy$x, y=grid.xy$y,Class_ID=class )
+colnames(new.grid)[3]&lt;-&quot;Class_ID&quot;
+new.grid.na&lt;-na.omit(new.grid)</code></pre>
+</div>
+<div id="load-landuse-id-file" class="section level4">
+<h4>Load landuse ID file</h4>
+<pre class="r"><code>#### Join Class Id Column
+ID&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\Landuse_ID_keras.csv&quot;), header=TRUE)
+ID</code></pre>
+<pre><code>##   Class_ID   Class           Description
+## 1        0 Class_1 Parking/road/pavement
+## 2        1 Class_2              Building
+## 3        2 Class_3           Tree/bushes
+## 4        3 Class_4                 Grass
+## 5        4 Class_5                 Water</code></pre>
+</div>
+<div id="convert-to-raster" class="section level4">
+<h4>Convert to raster</h4>
+<pre class="r"><code>#### Convert to raster
+x&lt;-SpatialPointsDataFrame(as.data.frame(new.grid.na)[, c(&quot;x&quot;, &quot;y&quot;)], data = new.grid.na)
+r &lt;- rasterFromXYZ(as.data.frame(x)[, c(&quot;x&quot;, &quot;y&quot;, &quot;Class_ID&quot;)])</code></pre>
+</div>
+<div id="plot-map" class="section level4">
+<h4>Plot map:</h4>
+<pre class="r"><code># Create color palette
+myPalette &lt;- colorRampPalette(c(&quot;light grey&quot;,&quot;burlywood4&quot;, &quot;forestgreen&quot;,&quot;light green&quot;, &quot;dodgerblue&quot;))
+# Plot Map
+LU&lt;-spplot(r,&quot;Class_ID&quot;, main=&quot;Supervised Image Classification: DNN keras-R&quot; , 
+      colorkey = list(space=&quot;right&quot;,tick.number=1,height=1, width=1.5,
+              labels = list(at = seq(0,3.8,length=5),cex=1.0,
+              lab = c(&quot;Road/parking/pavement&quot; ,&quot;Building&quot;, &quot;Tree/buses&quot;, &quot;Grass&quot;, &quot;Water&quot;))),
+              col.regions=myPalette,cut=4)
+LU</code></pre>
+<p><img src="dnn-keras-tensorflow_files/figure-html/unnamed-chunk-24-1.png" width="624" style="display: block; margin: auto;" /></p>
+</div>
+<div id="write-raster" class="section level4">
+<h4>Write raster</h4>
+<pre class="r"><code>#writeRaster(r, filename = paste0(dataFolder,&quot;.\\Sentinel_2\\DNN_keras_Landuse.tiff&quot;), &quot;GTiff&quot;, overwrite=T)</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

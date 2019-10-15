@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Reomte Sensing Basic</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Reomte Sensing Basic</h1>
+
+</div>
+
+
+<div style="margin-bottom:50px;">
+
+</div>
+<p><strong>Remote sensing</strong> is a branch of geo-spatial science that deals with gathering information about the environment from a distance using different kinds of sensors mounted on aircraft, spacecraft, satellites or Unmanned Aerial Vehicles (UAVs). There are two types of sensors: <strong>active or passive</strong>. With <strong>active sensors</strong> (e.g. radar) energy is transmitted from the sensor to provide their own illumination. <strong>Passive systems</strong> (e.g. optical sensors) rely on an external energy source (for example the sunlight) for illumination and function in the optical part of wavelength spectrum. These wavelengths are useful for distinguishing objects on the earth’s surface and can be used to generate images of the earth over a relatively large area at low cost. Multi-spectral optical satellite sensors commonly used for detailed mapping include <a href="https://landsat.usgs.gov/">Landsat</a>, and <a href="https://sentinel.esa.int/web/sentinel/missions/sentinel-2">Sentinel-2</a>, which offer publicly available, moderate resolution images. Very high resolution images are provided by commercial providers such as <a href="https://www.planet.com/">Planet</a>, <a href="https://www.satimagingcorp.com/satellite-sensors/quickbird/">QuickBird</a>, and <a href="https://www.digitalglobe.com/">DigitalGlobe</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>Before start, we need to know the following basic remote sensing concepts.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>Spatial Resolution:</strong></p>
+<p><a href="https://www.satimagingcorp.com/services/resources/characterization-of-satellite-remote-sensing-systems/">The spatial resolution specifies the pixel size of satellite images covering the earth surface.</a></p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/Spatial_Resolution.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<p><strong>Temporal Resolution:</strong></p>
+<p><a href="https://www.satimagingcorp.com/services/resources/characterization-of-satellite-remote-sensing-systems/">The temporal resolution specifies the revisiting frequency of a satellite sensor for a specific location.</a></p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/Temporal_Resolution.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<p><strong>Spectral Resolution:</strong></p>
+<p><a href="https://www.satimagingcorp.com/services/resources/characterization-of-satellite-remote-sensing-systems/">In the first instance, a sensor’s spectral resolution specifies the number of spectral bands in which the sensor can collect reflected radiance. But the number of bands is not the only important aspect of spectral resolution. The position of bands in the electromagnetic spectrum is important, too. In general, high spectral resolution: - 220 bands, medium spectral resolution: 3 - 15 bands, and Low spectral resolution: - 3 bands.</a></p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/Spectral_Resolution.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<p><strong>Digital Number (DN)</strong></p>
+<p><a href="http://www.un-spider.org/node/10958">Digital Number (DN) is the generic term used for pixel values. These values correlate with the energy that is observed and measured at the sensor. Although the DNs are related to the surface reflectance values, they are not the same. Depending on the purpose of the study, comparing DNs acquired by a satellite, without correcting for atmospheric effects, can lead to problems - even if the Landsat DNs have been calibrated and processed.</a></p>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><strong>Radiance, Reflectance, and Top of Atmosphere (TOA)</strong></p>
+<p><a href="http://www.un-spider.org/node/10958">Radiance is directly measured by remote sensing instruments. Radiance includes the radiation reflected from the surface, in addition to the radiation that bounces in from neighboring pixels, and the radiation reflected from clouds. Radiance is dependent on not only the illumination (both its intensity and direction), but the orientation and position of the target also. In other words, the path of light through the atmosphere can change as the light travels down to the earth through the atmosphere, suffering wavelength-dependent scattering. The light then diffusively reflects off of the Earth’s surface (Figure 1), travelling back up through the Earth’s atmosphere, enduring further scattering effects as it does so. Some of these factors can be corrected by using Top of Atmosphere (TOA) reflectance values, instead of DNs.</a></p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/DN.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<p><strong>Landsat 8</strong></p>
+<p><strong>Landsat 8</strong> launched on February 11, 2013 and acquiring images of entire earth every 16 days in an 8-day offset from Landsat 7.Landsat 8 measures different ranges of frequencies along the electromagnetic spectrum - a color, although not necessarily a color visible to the human eye. Each range is called a band, and Landsat 8 has 11 bands. Out of which seven bands are consistent with the Thematic Mapper (TM) and Enhanced Thematic Mapper Plus (ETM+) sensors found on earlier Landsat satellites (Landsat 7 and 5/4), providing for compatibility with the historical Landsat data, while also improving measurement capabilities. Two new spectral bands, a deep blue coastal/aerosol band and a shortwave-infrared cirrus band, have added to Landsat8 for allowing scientists to measure water quality and improve detection of high, thin clouds.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/Bands.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<p><strong>Sentinel 2</strong></p>
+<p><a href="https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2">Sentinel-2</a> was launched by <a href="https://www.esa.int/About_Us/Welcome_to_ESA">European Space Agency</a> on 23 June 2015 and Sentinel-2B on - 07 March 2017 for Land monitoring. These two satellites provide high resolution optical imagery globally every 10 days with one satellite and 5 days with 2 satellites.The <a href="https://earth.esa.int/web/sentinel/user-guides/sentinel-2-msi/resolutions/spatial">spatial</a> and <a href="https://earth.esa.int/web/sentinel/user-guides/sentinel-2-msi/resolutions/spatial">radiometric</a> resolution of Sentinel-2 imagery varies by spectral band. Sentinel-2 data are acquired in 13 spectral bands. These area:</p>
+<ul>
+<li>four bands at 10 m: Band 2, Band 3, Band 4, and Band 8</li>
+<li>six bands at 20 m: Band 5, Band 6, Band 7, Band 8a, Band 11, and Band 12</li>
+<li>three bands at 60 m: Band 1, Band 9, and Band 10</li>
+</ul>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/Sen2Bands.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<p><strong>Synthetic Aperture Radar (SAR)</strong></p>
+<p>In synthetic aperture radar (SAR) imaging is on kind of active sensing system by is <a href="https://crisp.nus.edu.sg/~research/tutorial/mw.htm#sar">microwave pulses are transmitted by an antenna towards the earth surface. The microwave energy scattered back to the spacecraft is measured. The SAR makes use of the radar principle to form an image by utilising the time delay of the backscattered signals.</a></p>
+<p><strong>Sentinel 1 SAR</strong></p>
+<p>Two <a href="https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-1">Sentinel 1</a> SAR Satellite were lunched by <a href="https://www.esa.int/About_Us/Welcome_to_ESA">European Space Agency</a> for Land and Ocean monitoring. Sentinel-1A was launched on 3 April 2014 and Sentinel-1B on 25 April 2016 . The another goal of this mission is to provide C-Band SAR data continuity following the retirement of ERS-2 and the end of the Envisat mission. These satellites carry a C-SAR sensor (C-band Synthetic Aperture Radar), which offers medium and high resolution imaging in all weather conditions. The C-SAR is capable of obtaining night imagery and detecting small movement on the ground, which makes it useful for land and sea monitoring.</p>
+<div style="margin-bottom:50px;">
+
+</div>
+<p>So there are many numerous choices of remote sensing data. However, we’ll only focus on freely available <strong>Landsat-8</strong> and <strong>Sentinel-2</strong>. You can access these data from following sources:</p>
+<ul>
+<li><a href="http://earthexplorer.usgs.gov/" class="uri">http://earthexplorer.usgs.gov/</a></li>
+<li><a href="https://lpdaacsvc.cr.usgs.gov/appeears/" class="uri">https://lpdaacsvc.cr.usgs.gov/appeears/</a></li>
+<li><a href="https://search.earthdata.nasa.gov/search/" class="uri">https://search.earthdata.nasa.gov/search/</a></li>
+<li><a href="https://lpdaac.usgs.gov/data_access/data_pool/" class="uri">https://lpdaac.usgs.gov/data_access/data_pool/</a></li>
+<li><a href="https://scihub.copernicus.eu/" class="uri">https://scihub.copernicus.eu/</a></li>
+<li><a href="https://aws.amazon.com/public-data-sets/landsat/" class="uri">https://aws.amazon.com/public-data-sets/landsat/</a></li>
+</ul>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

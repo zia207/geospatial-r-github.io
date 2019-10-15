@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Indicator Kriging</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-startted-spatial-data.html">Getting Startted with Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Indicator Kriging</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>Indicator kriging (IK) is a non-parametric geostatistical method that works with variables after indicator transformation (0, 1) of pre-defined threshold values and map the probability of exceeding pre-defined threshold values. This is directly useful for probabilistic decision-making. It can also be used to estimate an entire cumulative probability distribution (CDF) and the mean (E-type-estimate) of CDF can be used as an estimate of the pollutant concentration after modeling of the upper and lower tails of the distribution <a href="https://www.ncbi.nlm.nih.gov/pubmed/20161335">(Goovaerts, 2009)</a>. The CDF based IK is applicable when data is strongly skewed, traditional data transformation limit to get robust statistics and estimators due to extreme values.</p>
+<p>In R using <strong>gstat</strong> package, we can implement Indicator kriging (IK) for probabilistic mapping. But there is no R package available yet to ** E-type-estimate** from CDF’s of IK. You can do it with the most popular geostatistical software <a href="http://www.gslib.com/">Gslib</a> and <a href="http://sgems.sourceforge.net/">SGeMS</a>. ** AUTO-IK**<a href="https://www.ncbi.nlm.nih.gov/pubmed/20161335">(Goovaerts, 2009)</a>, is an automated Gslib routines for selection of thresholds for binary coding of continuous data, computation and modeling of indicator semivariograms, modeling of probability distributions at unmonitored locations (regular or irregular grids), and estimation of the mean and variance of these distributions.</p>
+<p>In this exercise will use ground water arsenic (As) concentration data for Bangladesh from <a href="http://www.bgs.ac.uk/research/groundwater/health/arsenic/Bangladesh/data.html">British Geological Survey</a>. The data-base contains hydro-chemical data of the survey of 3534 boreholes from 61 of the 64 districts of Bangladesh. ). About 27.7% and 2.5% of the sampled wells had As concentration less than the instrumental detection limit of 0.5 u/L for hydride generation-atomic fluorescence spectrometry and 6.0 ug/L for hydride generation- ICP- AES, respectively. Samples that have As concretion below detection limits, we assigned values of half the equipment detection limits (0.25 or 3.0 ug/l).</p>
+<p>The soil organic carbon data (train and test data set) could be found <a href="https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0">here</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>We will use two thresholds - 10 ppb (WHO standard) and 50 ppb (Bangladesh standard) to create probability maps exceeding these thresholds, We will follow steps below:</p>
+<ul>
+<li><p>Convert numeric variables to indicator variables</p></li>
+<li><p>Compute and model indicator variograms</p></li>
+<li><p>Predict the probability of exceeding a threshold by indicator kriging</p></li>
+</ul>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="load-package" class="section level4">
+<h4>Load package:</h4>
+<pre class="r"><code>library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(rasterVis)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(gridExtra)</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;</code></pre>
+<pre class="r"><code>df&lt;-read.csv(paste0(dataFolder,&quot;bgs_geochemical.csv&quot;), header= TRUE) 
+grid&lt;-read.csv(paste0(dataFolder,&quot;bd_grid.csv&quot;), header= TRUE) 
+bd&lt;-shapefile(paste0(dataFolder,&quot;BD_Banladesh_BUTM.shp&quot;)) </code></pre>
+<div id="explotory-data-analysis" class="section level5">
+<h5>Explotory data analysis</h5>
+<pre class="r"><code>summary(df$As)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    0.25    0.25    3.90   55.17   49.98 1660.00</code></pre>
+<pre class="r"><code>par(mfrow=c(1,2))
+hist(df$As, breaks=20, xlab = &quot;As (ppb)&quot;, main=&quot;Histogram of As&quot;)
+box()
+qqnorm(df$As, pch = 1,main= &quot;QQ-plot of As&quot;) 
+qqline(df$As, col = &quot;steelblue&quot;, lwd = 2) </code></pre>
+<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))</code></pre>
+</div>
+</div>
+<div id="create-a-spdf" class="section level4">
+<h4>Create a SPDF</h4>
+<p>All sampling locations are in Geographical co-ordinates system, so we need convert the data in a projected coordinate system (Albers Equal Area Conic NAD1983)</p>
+<pre class="r"><code>##  define coordinates
+xy &lt;- df[,c(4,5)]
+# Convert to spatial point
+SPDF &lt;- SpatialPointsDataFrame(coords = xy, data=df) 
+# Define projection
+proj4string(SPDF) = CRS(&quot;+proj=longlat +ellps=WGS84&quot;)  # WGS 84
+# Change projection 
+BUTM&lt;-proj4string(bd)              # extract projection information
+SPDF.PROJ&lt;- spTransform(SPDF,        # Input SPDF
+                          BUTM)       # projection  </code></pre>
+<pre class="r"><code># convert to a data-frame
+point.df&lt;-as.data.frame(SPDF.PROJ)
+# Rename (last two column)
+colnames(point.df)[35] &lt;- &quot;x&quot;
+colnames(point.df)[36] &lt;- &quot;y&quot;
+mf&lt;-point.df[,c(35:36,7,15,23)]
+head(mf)</code></pre>
+<pre><code>##          x       y WELL_TYPE  As    Fe
+## 1 509574.3 2474006       DTW 0.5 0.103
+## 2 439962.9 2647931       STW 0.5 0.087
+## 3 662328.1 2718502       STW 0.5  1.37
+## 4 619708.4 2631583       STW 0.5 0.128
+## 5 454332.2 2522667       DTW 0.5 0.019
+## 6 438852.0 2576967       STW 0.5 0.042</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="indicator-transformation" class="section level4">
+<h4>Indicator transformation</h4>
+<p>Now, we compute an indicator variable for threshold 400 ppm Pb using following equation. Here an indicator for a continuous variable is 1 if the value is below a defined threshold, 0 otherwise</p>
+<p><img src="Image/PNG_FILE_07/IK.png" width="50%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ik.10&lt;-mf$As &gt; 10    # threshold 10 ppb
+ik.50&lt;-mf$As &gt; 50    # threshold 50 ppb</code></pre>
+<p>Now, we create a df with this indicator.</p>
+<pre class="r"><code>ik.df&lt;-as.data.frame(cbind(mf,ik.10,ik.50))
+head(ik.df)</code></pre>
+<pre><code>##          x       y WELL_TYPE  As    Fe ik.10 ik.50
+## 1 509574.3 2474006       DTW 0.5 0.103 FALSE FALSE
+## 2 439962.9 2647931       STW 0.5 0.087 FALSE FALSE
+## 3 662328.1 2718502       STW 0.5  1.37 FALSE FALSE
+## 4 619708.4 2631583       STW 0.5 0.128 FALSE FALSE
+## 5 454332.2 2522667       DTW 0.5 0.019 FALSE FALSE
+## 6 438852.0 2576967       STW 0.5 0.042 FALSE FALSE</code></pre>
+<pre class="r"><code>coordinates(ik.df)=~x+y
+coordinates(grid) = ~x+y</code></pre>
+</div>
+<div id="map-data" class="section level4">
+<h4>Map data</h4>
+<pre class="r"><code>spplot(ik.df, zcol = &quot;As&quot;, col.regions = c(&quot;green&quot;, &quot;orange&quot;, &quot;red&quot;), cex=.5,
+       main = &quot;Groundwater As  (ppb)&quot;)</code></pre>
+<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p1&lt;-spplot(ik.df, zcol = &quot;ik.50&quot;, col.regions = c(&quot;green&quot;, &quot;red&quot;), cex=.5,
+       main = &quot;As &gt; 10 ppb&quot;)
+p2&lt;-spplot(ik.df, zcol = &quot;ik.50&quot;, col.regions = c(&quot;green&quot;, &quot;red&quot;), cex=.5,
+       main = &quot; As &gt; 50 ppb&quot;)
+grid.arrange(p1, p2, ncol=2)</code></pre>
+<img src="indicator-kriging_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="indicator-variograms" class="section level4">
+<h4>Indicator Variograms</h4>
+<pre class="r"><code>ik.df &lt;- ik.df[-zerodist(ik.df)[,1],] 
+# Variogram
+v10&lt;-variogram(ik.10~ 1, data = ik.df)
+v50&lt;-variogram(ik.50~ 1, data = ik.df)
+# Intial parameter set by eye esitmation
+m10&lt;-vgm(0.15,&quot;Exp&quot;,40000,0.05)
+m50&lt;-vgm(0.15,&quot;Exp&quot;,40000,0.05)
+# least square fit
+m.f.10&lt;-fit.variogram(v10, m10)
+m.f.50&lt;-fit.variogram(v50, m50)
+m.f.10</code></pre>
+<pre><code>##   model     psill    range
+## 1   Nug 0.1346799     0.00
+## 2   Exp 0.1155823 46860.32</code></pre>
+<pre class="r"><code>m.f.50</code></pre>
+<pre><code>##   model     psill    range
+## 1   Nug 0.1005604     0.00
+## 2   Exp 0.1030162 56236.76</code></pre>
+</div>
+<div id="plot-varigram-and-fitted-model" class="section level4">
+<h4>Plot varigram and fitted model</h4>
+<pre class="r"><code>#### Plot varigram and fitted model:
+v1&lt;-plot(v10, pl=F, 
+     model=m.f.10,
+     col=&quot;black&quot;, 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main=&quot;Indicator Variogram\n As &gt; 10 ppb&quot;,
+     xlab=&quot;Distance (m)&quot;,
+     ylab=&quot;Semivariance&quot;)
+
+v2&lt;-plot(v50, pl=F, 
+     model=m.f.50,
+     col=&quot;black&quot;, 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main=&quot;Indicator Variogram\n As &gt; 50 ppb&quot;,
+     xlab=&quot;Distance (m)&quot;,
+     ylab=&quot;Semivariance&quot;)
+grid.arrange(v1, v2, nrow = 1)</code></pre>
+<img src="indicator-kriging_files/figure-html/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="cross-validation" class="section level4">
+<h4>Cross validation</h4>
+<p>We will compute the Leave-one-out cross-validation (LOOCV) of the IK prediction of As concentration greater than 10 and 5 ppb. It works the same as for parametric kriging: hold one point out, predict its probability of a TRUE indicator from the other points, and then compare this probability with the actual value of the indicator.</p>
+<pre class="r"><code>cv.10 &lt;- krige.cv(ik.10 ~ 1, loc = ik.df, model = m.f.10, nfold=5)
+cv.50 &lt;- krige.cv(ik.50 ~ 1, loc = ik.df, model = m.f.50, nfold=5)</code></pre>
+</div>
+<div id="limit-the-predicted-probabilities-to-the-range" class="section level4">
+<h4>Limit the predicted probabilities to the range:</h4>
+<pre class="r"><code>cv.10$var1.pred &lt;- pmin(1, cv.10$var1.pred)
+cv.10$var1.pred &lt;- pmax(0, cv.10$var1.pred)
+
+cv.50$var1.pred &lt;- pmin(1, cv.50$var1.pred)
+cv.50$var1.pred &lt;- pmax(0, cv.50$var1.pred)
+summary(cv.50)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##         min       max
+## x  306178.9  751030.6
+## y 2298326.2 2946787.5
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 3420
+## Data attributes:
+##    var1.pred          var1.var       observed          residual        
+##  Min.   :0.00000   Min.   :0.1085   Mode :logical   Min.   :-0.975015  
+##  1st Qu.:0.02409   1st Qu.:0.1157   FALSE:2558      1st Qu.:-0.163434  
+##  Median :0.14408   Median :0.1174   TRUE :862       Median :-0.025028  
+##  Mean   :0.25209   Mean   :0.1178                   Mean   : 0.000281  
+##  3rd Qu.:0.39747   3rd Qu.:0.1192                   3rd Qu.: 0.011829  
+##  Max.   :1.00000   Max.   :0.1620                   Max.   : 1.007251  
+##      zscore                fold      
+##  Min.   :-2.8686009   Min.   :1.000  
+##  1st Qu.:-0.4785196   1st Qu.:2.000  
+##  Median :-0.0723274   Median :3.000  
+##  Mean   : 0.0008065   Mean   :2.994  
+##  3rd Qu.: 0.0345433   3rd Qu.:4.000  
+##  Max.   : 2.9707475   Max.   :5.000</code></pre>
+<pre class="r"><code>summary(cv.10)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##         min       max
+## x  306178.9  751030.6
+## y 2298326.2 2946787.5
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 3420
+## Data attributes:
+##    var1.pred         var1.var       observed          residual        
+##  Min.   :0.0000   Min.   :0.1449   Mode :logical   Min.   :-0.994055  
+##  1st Qu.:0.1235   1st Qu.:0.1550   FALSE:1978      1st Qu.:-0.240866  
+##  Median :0.3919   Median :0.1571   TRUE :1442      Median :-0.020066  
+##  Mean   :0.4207   Mean   :0.1577                   Mean   : 0.001075  
+##  3rd Qu.:0.6877   3rd Qu.:0.1595                   3rd Qu.: 0.241823  
+##  Max.   :1.0000   Max.   :0.2123                   Max.   : 1.003021  
+##      zscore               fold      
+##  Min.   :-2.507825   Min.   :1.000  
+##  1st Qu.:-0.606311   1st Qu.:2.000  
+##  Median :-0.050460   Median :3.000  
+##  Mean   : 0.002609   Mean   :3.023  
+##  3rd Qu.: 0.613741   3rd Qu.:4.000  
+##  Max.   : 2.558276   Max.   :5.000</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>Now we will make post-plots of the predicted probabilities, with the symbol size proportional to the probability, with the points colored red for a FALSE indicator and green for a TRUE indicator</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code>par(mfrow=c(1,2))
+plot(coordinates(cv.10), asp = 1, pch=21, col = ifelse(cv.10$observed,
+ &quot;red&quot;, &quot;green&quot;), cex = 0.2 + 1 * cv.10$var1.pred,
+ xlab = &quot;E (km)&quot;, ylab = &quot;N (km)&quot;, main = &quot;Probability of TRUE indicator (10 ppb)&quot;,
+ sub = &quot;Actual indicator: green/red = FALSE/TRUE&quot;)
+ grid()
+
+plot(coordinates(cv.50), asp = 1, pch=21, col = ifelse(cv.50$observed,
+ &quot;red&quot;, &quot;green&quot;), cex = 0.4 + 1 * cv.50$var1.pred,
+ xlab = &quot;E (km)&quot;, ylab = &quot;N (km)&quot;, main = &quot;Probability of TRUE indicator (50 ppb)&quot;,
+ sub = &quot;Actual indicator: green/red = FALSE/TRUE&quot;)
+ grid()</code></pre>
+<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-18-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code> par(mfrow=c(1,1))</code></pre>
+</div>
+<div id="ik-prediction-at-grid-location" class="section level4">
+<h4>IK Prediction at grid location</h4>
+<pre class="r"><code>ik.grid.10&lt;-krige(ik.10~ 1, nmax=50,
+              loc=ik.df,        # Data frame
+              newdata=grid,     # Prediction location
+              model = m.f.10)   # fitted varigram model  </code></pre>
+<pre><code>## [using ordinary kriging]</code></pre>
+<pre class="r"><code>ik.grid.50&lt;-krige(ik.50~ 1, nmax=50,
+              loc=ik.df,        # Data frame
+              newdata=grid,     # Prediction location
+              model = m.f.50)   # fitted varigram model   </code></pre>
+<pre><code>## [using ordinary kriging]</code></pre>
+<pre class="r"><code>summary(ik.grid.50)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##         min       max
+## x  301021.7  751021.7
+## y 2279492.7 2944492.7
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 5339
+## Data attributes:
+##    var1.pred            var1.var     
+##  Min.   :-0.005204   Min.   :0.1084  
+##  1st Qu.: 0.014550   1st Qu.:0.1150  
+##  Median : 0.129556   Median :0.1167  
+##  Mean   : 0.237453   Mean   :0.1197  
+##  3rd Qu.: 0.378431   3rd Qu.:0.1198  
+##  Max.   : 1.000370   Max.   :0.1883</code></pre>
+<pre class="r"><code>summary(ik.grid.10)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##         min       max
+## x  301021.7  751021.7
+## y 2279492.7 2944492.7
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 5339
+## Data attributes:
+##    var1.pred            var1.var     
+##  Min.   :-0.006402   Min.   :0.1451  
+##  1st Qu.: 0.097765   1st Qu.:0.1541  
+##  Median : 0.368668   Median :0.1564  
+##  Mean   : 0.407622   Mean   :0.1601  
+##  3rd Qu.: 0.684044   3rd Qu.:0.1604  
+##  Max.   : 1.000148   Max.   :0.2436</code></pre>
+</div>
+<div id="limit-the-predicted-probabilities-to-the-range-1" class="section level4">
+<h4>Limit the predicted probabilities to the range:</h4>
+<pre class="r"><code>ik.grid.10$var1.pred &lt;- pmin(1, ik.grid.10$var1.pred)
+ik.grid.10$var1.pred &lt;- pmax(0, ik.grid.10$var1.pred)
+
+ik.grid.50$var1.pred &lt;- pmin(1, ik.grid.50$var1.pred)
+ik.grid.50$var1.pred &lt;- pmax(0, ik.grid.50$var1.pred)
+summary(ik.grid.50)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##         min       max
+## x  301021.7  751021.7
+## y 2279492.7 2944492.7
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 5339
+## Data attributes:
+##    var1.pred          var1.var     
+##  Min.   :0.00000   Min.   :0.1084  
+##  1st Qu.:0.01455   1st Qu.:0.1150  
+##  Median :0.12956   Median :0.1167  
+##  Mean   :0.23748   Mean   :0.1197  
+##  3rd Qu.:0.37843   3rd Qu.:0.1198  
+##  Max.   :1.00000   Max.   :0.1883</code></pre>
+<pre class="r"><code>summary(ik.grid.10)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##         min       max
+## x  301021.7  751021.7
+## y 2279492.7 2944492.7
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 5339
+## Data attributes:
+##    var1.pred          var1.var     
+##  Min.   :0.00000   Min.   :0.1451  
+##  1st Qu.:0.09777   1st Qu.:0.1541  
+##  Median :0.36867   Median :0.1564  
+##  Mean   :0.40764   Mean   :0.1601  
+##  3rd Qu.:0.68404   3rd Qu.:0.1604  
+##  Max.   :1.00000   Max.   :0.2436</code></pre>
+</div>
+<div id="convert-to-raster" class="section level4">
+<h4>Convert to raster</h4>
+<pre class="r"><code>p10&lt;-rasterFromXYZ(as.data.frame(ik.grid.10)[, c(&quot;x&quot;, &quot;y&quot;, &quot;var1.pred&quot;)])
+p50&lt;-rasterFromXYZ(as.data.frame(ik.grid.50)[, c(&quot;x&quot;, &quot;y&quot;, &quot;var1.pred&quot;)])</code></pre>
+</div>
+<div id="plot-probability-maps" class="section level4">
+<h4>Plot Probability Maps</h4>
+<p>For plotting the maps, we will use <strong>levelplot()</strong> function of <strong>rasterVis</strong> package.</p>
+<pre class="r"><code>colr &lt;-  colorRampPalette(c(&quot;blue&quot;,&quot;green&quot;,&#39;yellow&#39;,&quot;red&quot;), space = &quot;rgb&quot;)
+p.strip &lt;- list(cex=1.25)
+ckey &lt;- list(labels=list(cex=1, rot=0), height=1)
+
+ik.plot.10&lt;-levelplot(p10, 
+             margin=FALSE, 
+             auto.key=FALSE,
+             scales=list(y=list(draw=F,cex=.3,rot=90, tck= 0.35,alternating=1,col=&quot;grey&quot;),
+             x=list(draw=F, cex=.3,tck= .35)),
+             par.settings=list(axis.line=list(col=&#39;grey&#39;)), 
+             col.regions=colr, 
+             colorkey=ckey, 
+             par.strip.text=p.strip,
+             main=&quot;Probability As &gt; 10 ppb&quot;)
+
+ik.plot.50&lt;-levelplot(p50, 
+             margin=FALSE, 
+             auto.key=FALSE,
+             scales=list(y=list(draw=F,cex=.3,rot=90, tck= 0.35,alternating=1,col=&quot;grey&quot;),
+             x=list(draw=F, cex=.3,tck= .35)),
+             par.settings=list(axis.line=list(col=&#39;grey&#39;)), 
+             col.regions=colr, 
+             colorkey=ckey, 
+             par.strip.text=p.strip,
+             main=&quot;Probability As &gt; 50 ppb&quot;)
+
+grid.arrange(ik.plot.10, ik.plot.50, nrow = 1)</code></pre>
+<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-22-1.png" width="816" style="display: block; margin: auto;" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

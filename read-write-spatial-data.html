@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Read and Write Spatial Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-startted-spatial-data.html">Getting Startted with Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Read and Write Spatial Data</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>In this exercise, you will learn how to read and write following types of spatial data with R.</p>
+<ul>
+<li><p><a href="#vector-data">Vector data</a></p>
+<ul>
+<li><p><a href="#polygons">Polygon data</a></p></li>
+<li><p><a href="#points-vector">Points Vector</a></p></li>
+<li><p><a href="#lines-or-polylines">Lines or Polylines</a></p></li>
+</ul></li>
+<li><p><a href="#raster-data">Raster data</a></p>
+<ul>
+<li><p><a href="#single-band-raster">Single band raster</a></p></li>
+<li><p><a href="#multi-bands-raster">Multi-bands raster</a></p></li>
+</ul></li>
+</ul>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="r-packages" class="section level4">
+<h4>R Packages</h4>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/maptools/maptools.pdf">maptools</a>: Tools for Reading and Handling Spatial Objects</li>
+<li><p><a href="https://cran.r-project.org/web/packages/rgdal/rgdal.pdf">rgdal</a>: Bindings for the Geospatial Data Abstraction Library</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/raster/raster.pdf">raster</a>: Geographic Data Analysis and Modeling</p></li>
+</ul>
+<p>We will use <strong>library()</strong> function to load packages in R. We will load three R packages for this lesson</p>
+<pre class="r"><code># Load packages
+library(maptools)   # spatial vector data
+library (rgdal)     # Geospatial Data Abstraction Library for spatial data 
+library (raster)    # raster and vector data read &amp; write</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>We will use following data set and could be found <a href="https://www.dropbox.com/s/92r6ot7yujjs9fo/DATA_02.7z?dl=0">here</a>.</p>
+<ul>
+<li>New York State county shape file (Polygon: NY_County_GCS)</li>
+<li>Soil Carbon Data (SOC) from Colorado, Kansas, New Mexico, and Wyoming (Point: GP_SOC_GCS.shp)</li>
+<li>Road network maps of Onondaga county, New York State (polyline: “Onondaga_Street_GCS.shp)</li>
+<li>90 m SRTM DEM of Onondaga county, New York State (raster: Onondaga_DEM.tif)</li>
+<li>Landsat8 multibands Images</li>
+</ul>
+<p>Before reading the data from a local drive, you need to define a working directory from where you want to read or to write data. We will use <strong>setwd()</strong> function to create a working directory. Or we can define a path for data outside of our working directory from where we can read files. In this case, we will use <strong>paste0(data path, “file name”)</strong></p>
+<pre class="r"><code>#### Set working directory
+# setwd(&quot;~//Read_Write_Spatial_Data&quot;)</code></pre>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_02//&quot;</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="vector-data" class="section level2">
+<h2>Vector Data</h2>
+<p><strong>Vector</strong> data consists of <strong>“geometry”</strong> or <strong>“shape”</strong> of the locations which describe information of spatial objects on earth. There are three types vector data such as <strong>polygons, points and line or polylines</strong> which structures of the geometry consists of sets of coordinate pairs (x, y).</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_02/vector.png" alt="Vector Data (Source: http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/)" width="60%" />
+<p class="caption">
+Vector Data (Source: <a href="http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/" class="uri">http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/</a>)
+</p>
+</div>
+<p>The <strong>shapefile</strong>, a interchangeably data format which are regulated by <a href="https://www.esri.com/en-us/home">ESRI</a>. It is one of the most common form of geospatial vector data used in GIS software and analyses. Three unique files are required for a shapefile, including: <strong>.shx</strong> (shape index format; this tags the shapefile with a position, so users can move it forward and backward among layers, a <strong>.shp</strong> (shape format, which stores geometric data, and a <strong>.dbf</strong> (attribute format file; which holds attributes (information) for the shapes in the file).</p>
+<p>In this exercise, we will will learn how to read and write <strong>polygons, points and line or polylines</strong> vector data in R.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="polygons" class="section level3">
+<h3>Polygons</h3>
+<p>Polygons are two-dimensional geographical features covering a portion of the earth’s surface, for example, forests, lakes, administrative boundaries, farmers’ fields, or any other organizational unit the user defines. Polygons are important because their area and perimeter can be measured.</p>
+<div id="read-poylgons" class="section level4">
+<h4>Read Poylgons</h4>
+<p>For reading ESRI shape file, we can use either <strong>readShapePoly()</strong>, <strong>shapefile()</strong>, and <strong>readOGR()</strong> with <strong>maptools</strong>, <strong>raster</strong>, and <strong>rgdal</strong> packages, respectively. Unlike, rgdal or raster packages, the <strong>readShapePoly()</strong> functions neither read <a href="https://en.wikipedia.org/wiki/Map_projection">projection</a> information or write projection system.</p>
+<pre class="r"><code># Read with maptools
+#poly.GCS&lt;-readShapePoly(NY_County_GCS.shp&quot;)                      # if data in working directory
+poly.GCS&lt;-readShapePoly(paste0(dataFolder, &quot;NY_County_GCS.shp&quot;))  # read polygon data from data path</code></pre>
+<pre><code>## Warning: readShapePoly is deprecated; use rgdal::readOGR or sf::st_read</code></pre>
+<pre class="r"><code>print(proj4string(poly.GCS))                                            # check projection</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code># Read with raster package
+poly.GCS&lt;-shapefile(paste0(dataFolder, &quot;NY_County_GCS.shp&quot;))      # read polygon </code></pre>
+<pre><code>## Warning in .local(x, ...): .prj file is missing</code></pre>
+<pre class="r"><code>print(proj4string(poly.GCS))                                            # check projection</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code># Read with rgdal package
+dsn=&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_02&quot;
+poly.GCS&lt;- readOGR(dsn=dsn, &quot;NY_County_GCS&quot;)   </code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_02&quot;, layer: &quot;NY_County_GCS&quot;
+## with 83 features
+## It has 12 fields</code></pre>
+<pre class="r"><code>print(proj4string(poly.GCS))                                             # check projection</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>If you have set working directory already, no need to define the “dsn” and file extension. Notice that both <strong>shapefile()</strong> and <strong>readOGR()</strong> does not read the <strong>.prj</strong> file, since this file is missing. You can get detail information of vector data with <strong>ogrInfo()</strong> function without loading the data in R.</p>
+<pre class="r"><code>ogrInfo(dsn =dsn, &quot;NY_County_GCS&quot;)</code></pre>
+<pre><code>## Source: &quot;F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_02&quot;, layer: &quot;NY_County_GCS&quot;
+## Driver: ESRI Shapefile; number of rows: 83 
+## Feature type: wkbPolygon with 2 dimensions
+## Extent: (-79.76333 40.49909) - (-71.85588 45.011)
+## LDID: 87 
+## Number of fields: 12 
+##          name type length typeName
+## 1    OBJECTID    4     80   String
+## 2          ID    2     24     Real
+## 3        AREA    2     24     Real
+## 4   PERIMETER    2     24     Real
+## 5  COUNTYP020    2     24     Real
+## 6       STATE    4     80   String
+## 7      COUNTY    4     80   String
+## 8        FIPS    4     80   String
+## 9  STATE_FIPS    4     80   String
+## 10 SQUARE_MIL    2     24     Real
+## 11 Shape_Leng    2     24     Real
+## 12 Shape_Area    2     24     Real</code></pre>
+<p>You can plot county shape file using <strong>plot()</strong> function.</p>
+<pre class="r"><code># Map county shape polygon file
+plot(poly.GCS, main=&quot;Counties of New York State&quot;)</code></pre>
+<p><img src="read-write-spatial-data_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="write-polygon" class="section level4">
+<h4>Write Polygon</h4>
+<p>We will use <strong>writeOGR()</strong> function of <strong>rgdal</strong> package or <strong>shapefile()</strong> function of raster package to write the vector data.</p>
+<pre class="r"><code># gdal package  
+writeOGR(poly.GCS,               # input spatial data
+    dsn =dsn,                    # output working directory
+    &quot;NY_County_GCS&quot;,               # output spatial data
+    driver=&quot;ESRI Shapefile&quot;,       # define output file as ESRI shapefile
+    overwrite=TRUE)                # write on existing file, if exist
+# raster package
+shapefile(poly.GCS, paste0(dataFolder, &quot;NY_County_GCS.shp&quot;), overwrite=TRUE)  </code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+<div id="points-vector" class="section level3">
+<h3>Points Vector</h3>
+<p>Zero-dimensional points are important for geographical features like wells, soil-sampling locations that can be best expressed by a single reference point. Often point vector data consist off several points into a multi-point structure, with a single attribute record. For example, all the soil sampling points could be considered as a single geometry. The main drawback of a point feature, however, are that they cannot be used to make measurements (as you can with a polygon).</p>
+<p>We used 650 soil samples from Colorado, Kansas, New Mexico, and Wyoming. These samples were collected by the United States Geological Survey (USGS) as a part of the USGS Geo-chemical Landscapes Project [Smith et al., 2011]. We will use <strong>shapefile()</strong> or <strong>readOGR()</strong> to read this vector data.</p>
+<pre class="r"><code># Reading point shape file 
+point.GCS&lt;- readOGR(dsn=dsn, &quot;GP_SOC_GCS&quot;)                  # with rgdal
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_02&quot;, layer: &quot;GP_SOC_GCS&quot;
+## with 473 features
+## It has 8 fields
+# Or
+#point.GCS&lt;-shapefile(&quot;GP_SOC_GCS.shp&quot;)                     # with raster
+point.GCS&lt;-shapefile(paste0(dataFolder,&quot;GP_SOC_GCS.shp&quot;))   # with raster
+## Warning in .local(x, ...): .prj file is missing
+print(proj4string(point.GCS))                               # check projection                                  
+## [1] NA</code></pre>
+<pre class="r"><code># Map point shape file
+plot(point.GCS,
+     main= &quot;Point Vector map&quot;,
+     pch=20,   # symbol type
+     cex=0.8)  # symbol size</code></pre>
+<p><img src="read-write-spatial-data_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>We will use <strong>writeOGR()</strong> function of <strong>rgdal</strong> package or <strong>shapefile()</strong> function of raster package to write the vector data.</p>
+<pre class="r"><code># gdal 
+writeOGR(point.GCS,               # input spatial data
+    dsn=dsn,                          # output working directory
+    &quot;bgs_groundwater&quot;,          # output spatial data
+    driver=&quot;ESRI Shapefile&quot;,      # define output file as ESRI shapefile
+    overwrite=TRUE)               # write on existing file, if exist
+# raster
+shapefile(point.GCS, paste0(dataFolder,&quot;GP_SOC_GCS.shp&quot;), overwrite=TRUE)</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="lines-or-polylines" class="section level3">
+<h3>Lines or Polylines</h3>
+<p>One-dimensional lines, also called polylines, are used to represent geographical features like rivers, roads, railroads, trails, and topographic lines. Note that these features are linear in nature and do not have area like polygons. Hence, they can measure distance. In this exercise we use road network maps of Onondaga county, New York State. This map can be found <a href="https://gis.ny.gov/">here</a>.</p>
+<pre class="r"><code># Read polylines 
+#line.GCS&lt;- readOGR(dsn=&quot;.&quot;, &quot;Ononda_Street_GCS&quot;)                    # read polygon
+line.GCS&lt;-shapefile(paste0(dataFolder,&quot;Ononda_Street_GCS.shp&quot;))      # with raster
+## Warning in .local(x, ...): .prj file is missing
+print(proj4string(line.GCS))    
+## [1] NA</code></pre>
+<pre class="r"><code># Plot line vactor data
+plot(line.GCS, main=&quot;Road network in Onondaga County, NY&quot;)</code></pre>
+<p><img src="read-write-spatial-data_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:30px;">
+
+</div>
+</div>
+</div>
+<div id="raster-data" class="section level2">
+<h2>Raster data</h2>
+<p>Unlike vector data, a raster data consists of cells or pixels organized into rows and columns as a matrix where each cell contains a value representing geographical feature on the earth. The size of the area on the surface that each pixel covers is known as the spatial resolution of the image. For instance, an image that has a 1 m spatial resolution means that each pixel in the image represents a 1 m x 1 m area. There are two types of raster data: continuous and discrete. An example of discrete raster data is Land use raster. Data types are flexible, including discrete and categorical data, such as soil or land-use maps, or continuous data as in digital elevation models, precipitation gradient maps, or pollutant concentration maps, etc.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_02/raster.png" alt="Raster Data (Source: http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/)" width="60%" />
+<p class="caption">
+Raster Data (Source: <a href="http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/" class="uri">http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/</a>)
+</p>
+</div>
+<p>Generally, two types of raster use in GIS and remote sensing application: <strong>a single band</strong>, or layer measure of a single characteristic of spatial area and <strong>multiple bands</strong> raster contains multiple spatially corresponding matrices of cell values representing the same spatial area. An example of a single-band raster data set is a digital elevation model (DEM). Each cell in a DEM contains only one value representing elevation of earth surface. Most satellite imagery has multiple bands, typically containing values within band of the electromagnetic spectrum.</p>
+<p>In this exercise, we will use SRTM 90 Digital Elevation Model of Onondaga County, New York State which was downloaded from <a href="http://www.cgiar-csi.org/data/srtm-90m-digital-elevation-database-v4-1">CGIAR-CSI</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="single-band-raster" class="section level3">
+<h3>Single band raster</h3>
+<div id="read-raster" class="section level4">
+<h4>Read raster</h4>
+<p><strong>raster()</strong> function of raster package will use to read the raster data in R</p>
+<pre class="r"><code>#DEM&lt;-raster(&quot;Onondaga_DEM.tif&quot;)                     # load raster data with raster package, working directory
+DEM&lt;-raster(paste0(dataFolder,&quot;Onondaga_DEM.tif&quot;))   # load raster data with raster package, data folder
+print(DEM)                                           # raster Information
+## class       : RasterLayer 
+## dimensions  : 443, 534, 236562  (nrow, ncol, ncell)
+## resolution  : 0.001133064, 0.001133064  (x, y)
+## extent      : -76.50013, -75.89507, 42.77139, 43.27333  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## data source : F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_02\Onondaga_DEM.tif 
+## names       : Onondaga_DEM</code></pre>
+<pre class="r"><code>plot(DEM, main= &quot;DEM raster&quot;)</code></pre>
+<p><img src="read-write-spatial-data_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="write-raster" class="section level4">
+<h4>Write raster</h4>
+<p>Now we will write DEM data using <strong>writeRaster()</strong> function of raster package</p>
+<pre class="r"><code># Write raster
+writeRaster(DEM,                             # Input raster
+            paste0(dataFolder,&quot;DEM.tif&quot;),    # output raster in data folder
+            &quot;GTiff&quot;,                         # output raster file extension
+            overwrite=TRUE)                  # write on existing file, if exist </code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+<div id="multi-bands-raster" class="section level3">
+<h3>Multi-bands raster</h3>
+<p>For loading multi-bands image in R, we will use a sub-set of Landsat 8 multispectral image covering Onondaga county of New York state. This image was downloaded from <a href="http://earthexplorer.usgs.gov/">USGS Earth Explore</a>. You can read single band image one by one with <strong>raster()</strong> function.</p>
+<pre class="r"><code># read band 2 (Blue band)
+b2&lt;-raster(paste0(dataFolder,&quot;.\\LC08_20150706_subset\\LC08_L1TP_015030_20150716_20170226_01_T1_B2.TIF&quot;))
+# read band 3 (Green band)
+b3&lt;-raster(paste0(dataFolder,&quot;.\\LC08_20150706_subset\\LC08_L1TP_015030_20150716_20170226_01_T1_B3.TIF&quot;))
+# read band 4 (Red band)
+b4&lt;-raster(paste0(dataFolder,&quot;.\\LC08_20150706_subset\\LC08_L1TP_015030_20150716_20170226_01_T1_B4.TIF&quot;))
+# read band 4 (NIR band)
+b5&lt;-raster(paste0(dataFolder,&quot;.\\LC08_20150706_subset\\LC08_L1TP_015030_20150716_20170226_01_T1_B5.TIF&quot;))</code></pre>
+<p>Now, you can use <strong>stack()</strong> or <strong>brick()</strong> function to create multi-band raster stack. We will discuss detail in Lesson 4.</p>
+<pre class="r"><code># Stack all raster
+multi_band&lt;-stack(b2,b3,b4,b5)</code></pre>
+<p>OR you can create a list of raster layers to use (for example bands 2 to 5) first then use <em>stack()</em> function to raster list read all several raster</p>
+<pre class="r"><code>bandList &lt;- paste0(dataFolder,&quot;.\\LC08_20150706_subset\\LC08_L1TP_015030_20150716_20170226_01_T1_B&quot;, 2:5, &quot;.tif&quot;)
+bandList</code></pre>
+<pre><code>## [1] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_02//.\\LC08_20150706_subset\\LC08_L1TP_015030_20150716_20170226_01_T1_B2.tif&quot;
+## [2] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_02//.\\LC08_20150706_subset\\LC08_L1TP_015030_20150716_20170226_01_T1_B3.tif&quot;
+## [3] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_02//.\\LC08_20150706_subset\\LC08_L1TP_015030_20150716_20170226_01_T1_B4.tif&quot;
+## [4] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_02//.\\LC08_20150706_subset\\LC08_L1TP_015030_20150716_20170226_01_T1_B5.tif&quot;</code></pre>
+<pre class="r"><code>multi_band &lt;- stack(bandList)
+multi_band</code></pre>
+<pre><code>## class       : RasterStack 
+## dimensions  : 1853, 1630, 3020390, 4  (nrow, ncol, ncell, nlayers)
+## resolution  : 30, 30  (x, y)
+## extent      : 377925, 426825, 4736175, 4791765  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names       : LC08_L1TP_015030_20150716_20170226_01_T1_B2, LC08_L1TP_015030_20150716_20170226_01_T1_B3, LC08_L1TP_015030_20150716_20170226_01_T1_B4, LC08_L1TP_015030_20150716_20170226_01_T1_B5</code></pre>
+<p>Use simple plot function to map all raster in raster stack</p>
+<pre class="r"><code># Plot all raster in raster stack
+# Rename the raster bands in raster stack
+names(multi_band) &lt;- c(&quot;B2&quot;, &quot;B3&quot;, &quot;B4&quot;, &quot;B5&quot;)
+plot(multi_band, main=&quot;Blue, Green, Red &amp; NIR bands of Landsat 8&quot;)</code></pre>
+<p><img src="read-write-spatial-data_files/figure-html/unnamed-chunk-23-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p>We use same ##writeRaster()** function to write raster stack of 5 bands as a composite band (multi-band)</p>
+<pre class="r"><code>#writeRaster(multi_band, &quot;.\\LC08_20150706_subset\\multi_band.tif&quot;, overwrite=TRUE)
+writeRaster(multi_band, paste0(dataFolder,&quot;.\\LC08_20150706_subset\\multi_band.tif&quot;), overwrite=TRUE)</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

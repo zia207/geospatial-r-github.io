@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Cross-validation</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Cross-validation</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>Cross-validation is a re-sampling procedure used to evaluate models on a limited data sample. It is better than residuals evaluation. Two major types of cross-validation techniques are usually use for model evaluation: 1) K-fold cross validation and 2) Leave-one-out cross validation.</p>
+<p>In <strong>K-fold cross validation</strong>, The data set is randomly divided into a test and training set k different times, and model evolution is repeated k times. Each time, one of the k subsets is used as the test set and the other k-1 subsets are put together to form a training set. Then the average error across all k trials is computed. A variant of this method is to randomly divide the data into a test and training set k different times.</p>
+<p>In <strong>Leave-one-out cross validation</strong>, K is equal to N, the number of data points in the set. The model is trained on all the data except for one point and a prediction is made for that point. Eventually model predict at each observation point separately, using all the other observations and e average error is computed and used to evaluate the model.</p>
+<div style="margin-bottom:40px;">
+
+</div>
+<div id="load-package" class="section level4">
+<h4>Load package</h4>
+<pre class="r"><code>library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(spatstat)
+library(dismo)
+library(fields)
+library(gridExtra)</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load data</h4>
+<p>The soil organic carbon data (train and test data set) could be found <a href="https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0">here</a>.</p>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;</code></pre>
+<pre class="r"><code>train&lt;-read.csv(paste0(dataFolder,&quot;train_data.csv&quot;), header= TRUE) </code></pre>
+</div>
+<div id="data-transformation" class="section level4">
+<h4>Data Transformation</h4>
+<p>Power Transform uses the maximum likelihood-like approach of Box and Cox (1964) to select a transformation of a univariate or multivariate response for normality. First we have to calculate appropriate <strong>transformation parameters</strong> using <strong>powerTransform()</strong> function of <strong>car</strong> package and then use this parameter to transform the data using <strong>bcPower()</strong> function.</p>
+<pre class="r"><code>powerTransform(train$SOC)</code></pre>
+<pre><code>## Estimated transformation parameter 
+## train$SOC 
+## 0.2523339</code></pre>
+<pre class="r"><code>train$SOC.bc&lt;-bcPower(train$SOC, 0.2523339)</code></pre>
+</div>
+<div id="define-coordinates" class="section level4">
+<h4>Define coordinates</h4>
+<pre class="r"><code>coordinates(train) = ~x+y</code></pre>
+</div>
+<div id="variogram-modeling" class="section level4">
+<h4>Variogram Modeling</h4>
+<pre class="r"><code># Variogram
+v&lt;-variogram(SOC.bc~ 1, data = train, cloud=F)
+# Intial parameter set by eye esitmation
+m&lt;-vgm(1.5,&quot;Exp&quot;,40000,0.5)
+# least square fit
+m.f&lt;-fit.variogram(v, m)
+m.f</code></pre>
+<pre><code>##   model     psill    range
+## 1   Nug 0.5165678     0.00
+## 2   Exp 1.0816886 82374.23</code></pre>
+</div>
+<div id="k-fold-cross-valiadtion" class="section level3">
+<h3>K-fold cross valiadtion</h3>
+<p>We will evaluate the model with k-fold cross validation. We will use <strong>krige.cv()</strong> function</p>
+<pre class="r"><code>cv&lt;-krige.cv(SOC.bc ~ 1,
+         train,              # data
+         model = m.f,        # fitted varigram model 
+         nfold=10)           # five-fold cross validation</code></pre>
+<pre class="r"><code>summary(cv)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##        min        max
+## x -1246454   83927.82
+## y  1019863 2526240.55
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 368
+## Data attributes:
+##    var1.pred          var1.var         observed         residual        
+##  Min.   :0.09685   Min.   :0.8118   Min.   :-1.499   Min.   :-3.322559  
+##  1st Qu.:1.45533   1st Qu.:0.9819   1st Qu.: 1.149   1st Qu.:-0.720574  
+##  Median :1.99373   Median :1.0492   Median : 1.974   Median : 0.009772  
+##  Mean   :1.98323   Mean   :1.0613   Mean   : 1.981   Mean   :-0.002032  
+##  3rd Qu.:2.55045   3rd Qu.:1.1284   3rd Qu.: 2.919   3rd Qu.: 0.689298  
+##  Max.   :3.91871   Max.   :1.4058   Max.   : 5.423   Max.   : 2.986926  
+##      zscore               fold       
+##  Min.   :-3.412563   Min.   : 1.000  
+##  1st Qu.:-0.686537   1st Qu.: 3.000  
+##  Median : 0.009391   Median : 6.000  
+##  Mean   :-0.000888   Mean   : 5.546  
+##  3rd Qu.: 0.679506   3rd Qu.: 8.000  
+##  Max.   : 3.021788   Max.   :10.000</code></pre>
+<div id="residuals-plot" class="section level4">
+<h4>Residuals plot</h4>
+<pre class="r"><code>bubble(cv, zcol = &quot;residual&quot;, maxsize = 2.0,  main = &quot;K-fold Cross-validation residuals&quot;)</code></pre>
+<p><img src="cross-validation_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Mean Error (ME)
+ME&lt;-round(mean(cv$residual),3)
+# Mean Absolute Error
+MAE&lt;-round(mean(abs(cv$residual)),3)
+# Root Mean Squre Error (RMSE)
+RMSE&lt;-round(sqrt(mean(cv$residual^2)),3)
+# Mean Squared Deviation Ratio (MSDR)
+MSDR&lt;-mean(cv$residual^2/cv$var1.var)
+
+ME</code></pre>
+<pre><code>## [1] -0.002</code></pre>
+<pre class="r"><code>MAE</code></pre>
+<pre><code>## [1] 0.842</code></pre>
+<pre class="r"><code>RMSE</code></pre>
+<pre><code>## [1] 1.061</code></pre>
+<pre class="r"><code>MSDR</code></pre>
+<pre><code>## [1] 1.068851</code></pre>
+</div>
+</div>
+<div id="actual-vs.predicted-values-linear-regression" class="section level3">
+<h3>Actual vs. predicted values: linear regression</h3>
+<p>Another way to compare actual vs. predicted values is by a linear regression between them. Ideally, this would be a 1:1 line: intercept is 0 (no bias) and the slope is set at 1 (gain is equal).</p>
+<pre class="r"><code>lm.cv &lt;- lm(cv$var1.pred ~ cv$observed)
+summary(lm.cv)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = cv$var1.pred ~ cv$observed)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.78029 -0.38672 -0.02555  0.41988  2.07663 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.32144    0.06048   21.85   &lt;2e-16 ***
+## cv$observed  0.33403    0.02562   13.04   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.6308 on 366 degrees of freedom
+## Multiple R-squared:  0.3171, Adjusted R-squared:  0.3153 
+## F-statistic:   170 on 1 and 366 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div id="plot" class="section level4">
+<h4>1:1 Plot</h4>
+<pre class="r"><code>plot(cv$observed, cv$var1.pred,main=list(&quot;K-fold Cross Validation&quot;,cex=1),
+   sub = &quot;1:1 line red, regression green&quot;,
+   xlab = &quot;Observed Box-COX SOC&quot;,
+   ylab = &quot;Predicted Box-COX SOC&quot;, 
+   cex.axis=.6,
+   xlim = c(-2,6), 
+   ylim =c(-2,6), 
+   pch = 21, 
+   cex=1)
+abline(0, 1, col=&quot;red&quot;)
+abline(lm.cv, col = &quot;green&quot;)</code></pre>
+<p><img src="cross-validation_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="leave-one-out-cross-validation" class="section level3">
+<h3>Leave-one-out cross validation</h3>
+<pre class="r"><code>cv.LOOCV&lt;-krige.cv(SOC.bc ~ 1,
+         train,           # data
+         model = m.f)    # fitted varigram model </code></pre>
+<pre class="r"><code>summary (cv.LOOCV)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##        min        max
+## x -1246454   83927.82
+## y  1019863 2526240.55
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 368
+## Data attributes:
+##    var1.pred         var1.var         observed         residual        
+##  Min.   :0.1107   Min.   :0.8041   Min.   :-1.499   Min.   :-3.188887  
+##  1st Qu.:1.4400   1st Qu.:0.9591   1st Qu.: 1.149   1st Qu.:-0.708533  
+##  Median :1.9942   Median :1.0281   Median : 1.974   Median :-0.008027  
+##  Mean   :1.9824   Mean   :1.0382   Mean   : 1.981   Mean   :-0.001238  
+##  3rd Qu.:2.5319   3rd Qu.:1.1016   3rd Qu.: 2.919   3rd Qu.: 0.723783  
+##  Max.   :3.9177   Max.   :1.4022   Max.   : 5.423   Max.   : 2.934362  
+##      zscore               fold       
+##  Min.   :-3.286447   Min.   :  1.00  
+##  1st Qu.:-0.698335   1st Qu.: 92.75  
+##  Median :-0.008109   Median :184.50  
+##  Mean   :-0.000655   Mean   :184.50  
+##  3rd Qu.: 0.721153   3rd Qu.:276.25  
+##  Max.   : 2.992528   Max.   :368.00</code></pre>
+<pre class="r"><code># Mean Error (ME)
+ME.LOOCV&lt;-round(mean(cv.LOOCV$residual),3)
+# Mean Absolute Error
+MAE.LOOCV&lt;-round(mean(abs(cv.LOOCV$residual)),3)
+# Root Mean Squre Error (RMSE)
+RMSE.LOOCV&lt;-round(sqrt(mean(cv.LOOCV$residual^2)),3)
+# Mean Squared Deviation Ratio (MSDR)
+MSDR.LOOCV&lt;-mean(cv.LOOCV$residual^2/cv$var1.var)
+
+ME.LOOCV</code></pre>
+<pre><code>## [1] -0.001</code></pre>
+<pre class="r"><code>MAE.LOOCV</code></pre>
+<pre><code>## [1] 0.832</code></pre>
+<pre class="r"><code>RMSE.LOOCV</code></pre>
+<pre><code>## [1] 1.042</code></pre>
+<pre class="r"><code>MSDR.LOOCV</code></pre>
+<pre><code>## [1] 1.034742</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

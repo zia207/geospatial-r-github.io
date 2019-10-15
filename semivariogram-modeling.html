@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Semivariogram Modeling</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-startted-spatial-data.html">Getting Startted with Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Semivariogram Modeling</h1>
+
+</div>
+
+
+<p>Semivariogram is a function describing the degree of spatial correlation of a spatial random variable. In spatial modeling, semivariogram begins with a graph of the empirical semivariogram, which is the half of average squared difference between points separated by a distance. The semivariogram is calculated as:</p>
+<p><img src="Image/PNG_FILE_07/Vario.png" width="30%" style="display: block; margin: auto;" /></p>
+<p>Where, Nh is the number of pairs separated by vector h, vector h is lag distance, xi is the starting location and xi+h is the ending location. If y is only dependent on the length of lag distance but not its direction.</p>
+<p>The semivariogram is directly related to covariance function, which measure the strength of statistical correlation or similarity as a function of distance. Unlike covariance function function, the experimental semivariogram measures the average dissimilarity between data separated by distance by vector h (lag distance). The distances between pairs at which the average semivariogram is calculated are called <strong>lags</strong>.</p>
+<p>In this exercises we will cover:</p>
+<ul>
+<li><p><a href="#experimental-variogram">Experimental Variogram</a></p></li>
+<li><p><a href="#variogram-cloud">Variogram Cloud</a></p></li>
+<li><p><a href="#isotropic-variogram">Isotropic Variogram</a></p></li>
+<li><p><a href="#anisotropic-variogram">Anisotropic Variogram</a></p></li>
+<li><p><a href="#fitting-variogram-model">Fitting Variogram Model</a></p></li>
+<li><p><a href="#goodness-of-fit">Goodness-of-Fit</a></p></li>
+<li><p><a href="#variogram-modeling-with-transformed-data">Variogram Modeling with Transformed Data</a></p></li>
+<li><p><a href="#fitting-with-nested-models">Fitting with Nested Models</a></p></li>
+</ul>
+<div id="load-package" class="section level4">
+<h4>Load package:</h4>
+<pre class="r"><code>library(gstat)
+library(moments)
+library(raster)</code></pre>
+<pre><code>## Loading required package: sp</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>The soil organic carbon data (train and test data set) that we have created in previous lesson is available for download <a href="https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0">here</a>.</p>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;</code></pre>
+<pre class="r"><code>train&lt;-read.csv(paste0(dataFolder,&quot;train_data.csv&quot;), header= TRUE) </code></pre>
+</div>
+<div id="experimental-variogram" class="section level3">
+<h3>Experimental Variogram</h3>
+<p>We use <strong>variovariogram()</strong> function of <strong>gstat</strong> package to calculate experimental variogram of SOC. Before that we have to define x &amp; y variables to coordinates</p>
+<pre class="r"><code>coordinates(train) = ~x+y</code></pre>
+<div id="variogram-cloud" class="section level4">
+<h4>Variogram Cloud</h4>
+<p>We will use all default values to calculate the semivariance cloud which show the semivariogram values for all pairs of locations within a dataset and plots them as a function of the distance that separates the two locations.</p>
+<pre class="r"><code>v.cloud&lt;-variogram(SOC~ 1, data = train, cloud=T)
+head(v.cloud)</code></pre>
+<pre><code>##       dist      gamma dir.hor dir.ver   id left right
+## 1 511201.3 16.1425620       0       0 var1    2     1
+## 2 430399.9 35.7266045       0       0 var1    3     1
+## 3 186259.2  3.8392205       0       0 var1    3     2
+## 4 256816.3 17.7786845       0       0 var1    4     1
+## 5 287418.1  0.0394805       0       0 var1    4     2
+## 6 294316.2  3.1000500       0       0 var1    4     3</code></pre>
+<pre class="r"><code>plot(v.cloud, main = &quot;Variogram cloud&quot;, xlab = &quot;Separation distance (m)&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>The variogram cloud shows all point-pairs, but it is difficult to examine the general pattern of spatial dependence. For examine the spatial dependence, we will calculate the empirical variogram, which organizes the cloud into bins, like a histogram.</p>
+</div>
+</div>
+<div id="isotropic-variogram" class="section level3">
+<h3>Isotropic Variogram</h3>
+<p>When spatial dependence is the same in all directions.</p>
+<pre class="r"><code>v&lt;-variogram(SOC~ 1, data = train, cloud=F)
+v</code></pre>
+<pre><code>##      np      dist    gamma dir.hor dir.ver   id
+## 1   342  31257.18 17.37406       0       0 var1
+## 2  1103  68803.65 19.87922       0       0 var1
+## 3  1641 112768.06 21.46750       0       0 var1
+## 4  2168 156934.71 23.24128       0       0 var1
+## 5  2481 201237.11 22.90060       0       0 var1
+## 6  2757 245847.81 25.82815       0       0 var1
+## 7  2903 290428.32 26.94507       0       0 var1
+## 8  2959 335388.48 25.33999       0       0 var1
+## 9  3157 379593.68 26.05625       0       0 var1
+## 10 3197 424435.66 25.78618       0       0 var1
+## 11 3147 469107.57 27.48611       0       0 var1
+## 12 3251 513418.76 27.54411       0       0 var1
+## 13 3140 558052.44 26.53490       0       0 var1
+## 14 3043 603268.68 27.46021       0       0 var1
+## 15 2976 647329.04 26.89069       0       0 var1</code></pre>
+<pre class="r"><code>plot(v, main = &quot;Variogram - default&quot;, xlab = &quot;Separation distance (m)&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-9-1.png" width="528" style="display: block; margin: auto;" /></p>
+<p>We can set cutoff (maximum separation) to specify with the <strong>cutoff</strong> optional argument, the bin <strong>width</strong> with the width optional argument to the variogram method.</p>
+<p><strong>cutoff</strong>: spatial separation distance up to which point pairs are included in semivariance estimates; as a default, the length of the diagonal of the box spanning the data is divided by three.</p>
+<p><strong>width</strong> is subsequent distance intervals into which data point pairs are grouped for semivariance estimates</p>
+<p>Let’s try to calculate semivariogram with 500 Km cutoff and 2500 width</p>
+<pre class="r"><code>v.cut&lt;-variogram(SOC ~ 1, train, cutoff=500000, width=500000/20)</code></pre>
+<pre class="r"><code>plot(v.cut, main = &quot;Variogram with cutoff and fixed width&quot;, xlab = &quot;Separation distance (m)&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-11-1.png" width="528" style="display: block; margin: auto;" /></p>
+</div>
+<div id="anisotropic-variogram" class="section level3">
+<h3>Anisotropic Variogram</h3>
+<p>When spatial dependence (autocorrelation) is stronger in one direction than in others. We can detect anisotropy by visualization by the <strong>variogram surface (also called “variogram map”)</strong> and <strong>directional variograms</strong></p>
+<div id="variogram-map" class="section level4">
+<h4>Variogram map</h4>
+<p>We will use the variogram method with the optional <strong>map=TRUE</strong> argument</p>
+<pre class="r"><code>v.map&lt;-variogram(SOC ~ 1, train, map = TRUE, cutoff=600000, width=600000/17)</code></pre>
+<pre class="r"><code>plot(v.map, col.regions = bpy.colors(64),
+     main=&quot;Variogram Map&quot;,
+     xlab=&quot;x&quot;,
+     ylab=&quot;y&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-13-1.png" width="528" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="directional-variograms" class="section level3">
+<h3>Directional Variograms</h3>
+<p>Now, display the directional variograms of the SOC content at 30 degree N and 120 degree N, i.e. the suspected major and minor axes of the anisotropy ellipse.</p>
+<pre class="r"><code>plot(variogram(SOC ~ 1, train, 
+               alpha = c(30, 120),
+               cutoff = 600000),  
+               main = &quot;Directional Variograms, SOC&quot;,
+               sub = &quot;Azimuth 30N (left), 120N (right)&quot;, 
+               pch = 20, col = &quot;blue&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-14-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="fitting-variogram-model" class="section level3">
+<h3>Fitting Variogram Model</h3>
+<p>After the experimental variogram is computed, we usually observe semivarince in variogram plot and then select a reasonable model to fit a semivariogram curve to the empirical data. Least square method is applied to fit variogram in accordance with the principle of minimum variance estimate. The goal is to achieve the best fit, and also incorporate our knowledge of the phenomenon in the model. The model parameters will then be used in kriging predictions.</p>
+<p>There are several parameters can be calculated from fitted model. The height that the semivariogram reaches when it levels off or the value at which the model first flattens out is called the <strong>sill</strong>. It is often composed of two parts: <strong>nugget</strong> and <strong>partial sill</strong>. A discontinuity at the origin or the value at which the semi-variogram (almost) intercepts the y-value, called <strong>nugget</strong> effect. The nugget effect explains measurement error and microscale variation. The distance at which the sill first flattens out is call <strong>range</strong>. In <strong>gstat</strong> models the sill is specified as a <strong>partial sill</strong>, that is, the difference between the total sill and the nugget. This is also known as the <strong>structural sill</strong>.</p>
+<p><img src="Image/PNG_FILE_07/Fit.vario.png" width="50%" style="display: block; margin: auto;" /></p>
+<p>There are several models available in <strong>gstat</strong> package to fit the variogram. We can see the forms of all the models in gstat with the <strong>show.vgms()</strong> function.</p>
+<pre class="r"><code>show.vgms()</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>The most common model of variogram mainly includes <strong>linear model, spherical model, exponential model, and Gaussian model</strong> and so on. The mathematical expressions of these models are as follows:</p>
+<p><img src="Image/PNG_FILE_07/Varo_model.png" width="60%" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>For the nugget effect model, the sill is reached as soon as h &gt; 0</p></li>
+<li><p>The spherical model reaches its sill at distance (actual range)</p></li>
+<li><p>The exponential and Guaussian models reach their sill asymptotically</p></li>
+</ul>
+<p>First, we will use <strong>vgm()</strong> method to create a variogram model object and set range, sill and nugget values by eye to fit initial model then automatically adjust the parameters using <strong>fit.variogram()</strong> function. We will fit the model with <strong>Exp (exponential)</strong> and <strong>Sph (spherical)</strong>.</p>
+<div id="exponential-exp-model" class="section level4">
+<h4>Exponential (Exp) model</h4>
+<pre class="r"><code># Intial parameter set by eye esitmation
+m.exp&lt;-vgm(25,&quot;Exp&quot;,25000,10)
+# least square fit
+m.exp.f&lt;-fit.variogram(v, m.exp)
+m.exp.f</code></pre>
+<pre><code>##   model    psill    range
+## 1   Nug 15.12586      0.0
+## 2   Exp 12.20305 148458.6</code></pre>
+<pre class="r"><code>plot(v, pl=F, model=m.exp.f,col=&quot;black&quot;, cex=1, lwd=0.5,lty=1,pch=20,
+     main=&quot;Variogram models - Exponential&quot;,xlab=&quot;Distance (m)&quot;,ylab=&quot;Semivariance&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-19-1.png" width="528" style="display: block; margin: auto;" /></p>
+<p>Above Figure shows the experimental variogram and fitted model for soil SOC. The variograms of SOC showed a clear spatial dependence with bounded sills and were fitted well with exponential models. The variance of SOC increases steadily with increasing lag distance and approaches its sill asymptotically within a range of 148458.6 m and autocorrelation may be extended to the effective range of 3 X 148458.6 m (3 times of range in exponential model).</p>
+</div>
+<div id="spherical-sph-model" class="section level4">
+<h4>Spherical (Sph) model</h4>
+<pre class="r"><code># Intial parameter set by eye esitmation
+m.sph&lt;-vgm(25,&quot;Sph&quot;,40000,10)
+# least square fit
+m.sph.f&lt;-fit.variogram(v, m.sph)
+m.sph.f</code></pre>
+<pre><code>##   model    psill    range
+## 1   Nug 16.16983      0.0
+## 2   Sph 10.23490 324339.6</code></pre>
+<pre class="r"><code>plot(v, pl=F, model=m.sph.f,col=&quot;black&quot;, cex=1, lwd=0.5,lty=1,pch=20,
+     main=&quot;Variogram models - Spherical&quot;,xlab=&quot;Distance (m)&quot;,ylab=&quot;Semivariance&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-21-1.png" width="528" style="display: block; margin: auto;" /></p>
+<p>The variograms of SOC were fitted well with spherical model and sill is more bounded than that of exponential model within a range of 324339.6 m.</p>
+</div>
+</div>
+<div id="goodness-of-fit" class="section level3">
+<h3>Goodness-of-fit</h3>
+<p>Now we will quantify how well the variogram model fits the empirical variogram (internal goodness-of-fit).This is the residual sum of squares, weighted as in the model fitting method, from the model fit. The lower the better, of course.</p>
+<pre class="r"><code>attributes(m.exp.f)$SSErr</code></pre>
+<pre><code>## [1] 2.561876e-07</code></pre>
+<pre class="r"><code>attributes(m.sph.f)$SSErr</code></pre>
+<pre><code>## [1] 3.470261e-07</code></pre>
+<p>We can fit experimental variogram with a set of models, in which case the best fitting will be returned:</p>
+<pre class="r"><code>fit.variogram(v, vgm(c(&quot;Exp&quot;, &quot;Sph&quot;, &quot;Mat&quot;)))</code></pre>
+<pre><code>##   model    psill    range
+## 1   Nug 15.12586      0.0
+## 2   Exp 12.20305 148458.6</code></pre>
+</div>
+<div id="variogram-modeling-with-transformed-data" class="section level3">
+<h3>Variogram Modeling with Transformed Data</h3>
+<p>The key assumption of kriging is the right form of stationarity (second order, intrinsic), not the probability distribution. However,if the empirical distribution of the data is skewed then the kriging estimators are sensitive to a few large data values. Let check distribution of SOC and skewness.</p>
+<p>We apply the function <strong>skewness()</strong> from the <strong>moments</strong> package to compute the skewness coefficient of SOC.</p>
+<pre class="r"><code>hist(train$SOC,
+     main= &quot;Distribution of SOC&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-24-1.png" width="528" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>skewness(train$SOC) </code></pre>
+<pre><code>## [1] 1.412073</code></pre>
+<p>So SOC data highly positively skewed (skewness &gt;1)</p>
+<p>The R function <strong>shapiro.test()</strong> can be used to perform the Shapiro-Wilk test of normality for one variable (univariate):</p>
+<pre class="r"><code>shapiro.test(train$SOC)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  train$SOC
+## W = 0.88057, p-value = 2.7e-16</code></pre>
+<p>From the above output, the p-value &lt; 0.05 implying that the distribution of the SOC are significantly different from normal distribution. In other words, we can assume that SOC is not-normally distributed.</p>
+<p>So, SOC values is highly skewed and not-normally distributed, it is better to use transformed data for geostatistical modeling. We can transforming data in different ways in R (<a href="http://rcompanion.org/handbook/I_12.html" class="uri">http://rcompanion.org/handbook/I_12.html</a>). Here we try log10 and power transformation</p>
+<div id="log10-transformation" class="section level4">
+<h4>Log10 transformation</h4>
+<pre class="r"><code>train$logSOC&lt;-log10(train$SOC)
+hist(train$logSOC, main=&quot;Log10 transformed SOC&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-27-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>skewness(train$logSOC)</code></pre>
+<pre><code>## [1] -0.6221917</code></pre>
+<pre class="r"><code>shapiro.test(train$logSOC)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  train$logSOC
+## W = 0.97465, p-value = 4.743e-06</code></pre>
+</div>
+<div id="power-transformation-box-cox" class="section level4">
+<h4>Power transformation (Box-Cox)</h4>
+<p>Power Transform uses the maximum likelihood-like approach of Box and Cox (1964) to select a transformation of a univariate or multivariate response for normality. First we have to calculate appropriate <strong>transformation parameters</strong> using <strong>powerTransform()</strong> function of <strong>car</strong> package and then use this parameter to transform the data using <strong>bcPower()</strong> function.</p>
+<pre class="r"><code>library(car)</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## Warning: package &#39;carData&#39; was built under R version 3.5.2</code></pre>
+<pre class="r"><code>powerTransform(train$SOC)</code></pre>
+<pre><code>## Estimated transformation parameter 
+## train$SOC 
+## 0.2523339</code></pre>
+<pre class="r"><code>train$SOC.bc&lt;-bcPower(train$SOC, 0.2523339)</code></pre>
+<pre class="r"><code>hist(train$SOC.bc,
+     main=&quot;Box-Cox Transformation of SOC&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-31-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>skewness(train$SOC.bc)</code></pre>
+<pre><code>## [1] -0.03190983</code></pre>
+<pre class="r"><code>shapiro.test(train$SOC.bc)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  train$SOC.bc
+## W = 0.99625, p-value = 0.5407</code></pre>
+<p>The power transformed SOC is perfectly normally distributed and skewness is close to zero. So we will power transformed SOC for further analysis. Lets’ fit the variogram model with power transformed data:</p>
+<pre class="r"><code>v.bc&lt;-variogram(SOC.bc~ 1, data = train, cloud=F)
+plot(v.bc)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-33-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Intial parameter set by eye esitmation
+m.bc&lt;-vgm(1.5,&quot;Exp&quot;,40000,0.5)  # Exponential model
+# least square fit
+m.f.bc&lt;-fit.variogram(v.bc, m.bc)</code></pre>
+<pre class="r"><code>#### Plot varigram and fitted model:
+plot(v.bc, pl=F, 
+     model=m.f.bc,
+     col=&quot;black&quot;, 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main=&quot;Variogram and Fitted Model\n Box-Cox Transformed SOC&quot;,
+     xlab=&quot;Distance (m)&quot;,
+     ylab=&quot;Semivariance&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-35-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="fitting-with-nested-models" class="section level3">
+<h3>Fitting with Nested Models</h3>
+<p>When you try to represent an empirical semivariogram by fitting a theoretical model, you might find that using a combination of theoretical models results in a more accurate fit onto the empirical semivariance than using a single model. This is known as model nesting. The semivariance models that result as the sum of two or more semivariance structures are called nested models.</p>
+<p>Now, we will model an empirical variogram with two structural components: Short range structure with sherical model and long-range structure</p>
+<div id="short-range-structure" class="section level4">
+<h4>Short-range structure</h4>
+<pre class="r"><code>v&lt;-variogram(SOC~ 1, data = train, cloud=F, cutoff=600000, width=600000/20)
+(vm &lt;- vgm(20, &quot;Sph&quot;, 45000, 10))</code></pre>
+<pre><code>##   model psill range
+## 1   Nug    10     0
+## 2   Sph    20 45000</code></pre>
+<pre class="r"><code>vmf &lt;- fit.variogram(v, vm)</code></pre>
+<pre><code>## Warning in fit.variogram(v, vm): linear model has singular covariance
+## matrix
+
+## Warning in fit.variogram(v, vm): linear model has singular covariance
+## matrix
+
+## Warning in fit.variogram(v, vm): linear model has singular covariance
+## matrix</code></pre>
+<pre class="r"><code>plot(v,model=vmf)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+</div>
+<div id="long-range-structure" class="section level4">
+<h4>Long-range structure</h4>
+<pre class="r"><code>(vm &lt;- vgm(4, &quot;Exp&quot;, 95000, add.to = vmf))</code></pre>
+<pre><code>##   model     psill    range
+## 1   Nug  9.204687     0.00
+## 2   Sph 12.515992 39868.57
+## 3   Exp  4.000000 95000.00</code></pre>
+<pre class="r"><code>(vmf2 &lt;- fit.variogram(v, vm))</code></pre>
+<pre><code>## Warning in fit.variogram(v, vm): singular model in variogram fit</code></pre>
+<pre><code>##   model     psill     range
+## 1   Nug 11.408501      0.00
+## 2   Sph  7.693448  35705.55
+## 3   Exp  7.235032 141214.47</code></pre>
+<pre class="r"><code>#### Plot varigram and fitted model:
+plot(v, pl=F, 
+     model=vmf2,
+     col=&quot;black&quot;, 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main=&quot;Nested Structure&quot;,
+     xlab=&quot;Distance (m)&quot;,
+     ylab=&quot;Semivariance&quot;)</code></pre>
+<p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-38-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

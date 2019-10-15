@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Working with Raster Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Working with Raster Data</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>In this exerciser we will learn following raster processing techniques with R:</p>
+<ul>
+<li><p><a href="#basic-raster-operation">Basic Raster Operation</a></p></li>
+<li><p><a href="#clipping">Clipping</a></p></li>
+<li><p><a href="#reclassification">Reclassification</a></p></li>
+<li><p><a href="#focal-statistics">Focal Statistics</a></p></li>
+<li><p><a href="#raster-algebra">Raster Algebra</a></p></li>
+<li><p><a href="#aggregation">Aggregation</a></p></li>
+<li><p><a href="#resample">Resample</a></p></li>
+<li><p><a href="#mosaic">Mosaic</a></p></li>
+<li><p><a href="#convert-raster-to-point-data">Convert Raster to Point Data</a></p></li>
+<li><p><a href="#convert-point-data-to-raster">Convert Point Data to Raster</a></p></li>
+<li><p><a href="#raster-stack-and-raster-brick">Raster Stack and Raster Brick</a></p></li>
+<li><p><a href="#digital-terrain-modeling">Digital Terrain Modeling</a></p>
+<ul>
+<li><p><a href="#slope">Slope</a></p></li>
+<li><p><a href="#aspect">Aspect</a></p></li>
+<li><p><a href="#hillshade">Hillshade</a></p></li>
+<li><p><a href="#terrain-ruggedness-index">Terrain Ruggedness Index</a></p></li>
+<li><p><a href="#topographic-position-index">Topographic Position Index</a></p></li>
+<li><p><a href="#roughness">Roughness</a></p></li>
+<li><p><a href="#curvature">Curvature</a></p></li>
+<li><p><a href="#flow-direction">Flow Direction</a></p></li>
+</ul></li>
+</ul>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="r-packages" class="section level4">
+<h4>R-Packages</h4>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/rgdal/rgdal.pdf">rgdal</a>: Bindings for the Geospatial Data Abstraction Library</li>
+<li><a href="https://cran.r-project.org/web/packages/raster/raster.pdf">raster</a>: Geographic Data Analysis and Modeling</li>
+<li><a href="https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf">RColorBrewer</a>: ColorBrewer Palettes (making customize color palettes)</li>
+<li><a href="https://cran.r-project.org/web/packages/classInt/classInt.pdf">classInt</a>: Choose Uni variate Class Intervals</li>
+</ul>
+</div>
+<div id="load-r-packages" class="section level4">
+<h4>Load R packages</h4>
+<pre class="r"><code>library (rgdal)           # Geospatial Data Abstraction Library
+library (raster)          # raster data
+library(classInt)     # for class interval
+library(RColorBrewer)   # for customize colour palettes
+library(gridExtra)    # plotting
+library(spatialEco)   # Curveture analysis</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>We will use elevation data (5 km x 5 km) of four states of great plain region of USA (GP_ELEV.tif) and data set could be available for download from <a href="https://www.dropbox.com/s/qv252sfhs2d6f3p/DATA_07.7z?dl=0">here</a></p>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//&quot;</code></pre>
+</div>
+<div id="load-raster" class="section level4">
+<h4>Load raster</h4>
+<pre class="r"><code>ELEV.GP&lt;-raster(paste0(dataFolder,&quot;GP_ELEV.tif&quot;))</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="basic-raster-operation" class="section level3">
+<h3>Basic Raster Operation</h3>
+<div id="check-projection-system" class="section level4">
+<h4>Check projection system</h4>
+<pre class="r"><code>ELEV.GP@crs</code></pre>
+<pre><code>## CRS arguments:
+##  +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0
+## +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs</code></pre>
+</div>
+<div id="check-raster-attribute" class="section level4">
+<h4>Check raster attribute</h4>
+<pre class="r"><code>ELEV.GP</code></pre>
+<pre><code>## class       : RasterLayer 
+## dimensions  : 310, 275, 85250  (nrow, ncol, ncell)
+## resolution  : 5000, 5000  (x, y)
+## extent      : -1250285, 124715, 988795, 2538795  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+## data source : F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_07\GP_ELEV.tif 
+## names       : GP_ELEV 
+## values      : 224.4348, 3828.2  (min, max)</code></pre>
+<ul>
+<li>Nrow, Ncol: the number of rows and columns in the data (imagine a spreadsheet or a matrix).</li>
+<li>Ncells: the total number of pixels or cells that make up the raster.</li>
+<li>Resolution: the size of each pixel (deg decimal).</li>
+<li>Extent: the spatial extent of the raster. This value will be in the same coordinate units as the coordinate reference system of the raster.</li>
+<li>Coord ref: the coordinate reference system string for the raster. This raster is in Geographical Coordinate system with a datum of WGS 84.</li>
+</ul>
+</div>
+<div id="raster-extent" class="section level4">
+<h4>Raster extent</h4>
+<pre class="r"><code>extent(ELEV.GP)</code></pre>
+<pre><code>## class       : Extent 
+## xmin        : -1250285 
+## xmax        : 124715 
+## ymin        : 988795 
+## ymax        : 2538795</code></pre>
+</div>
+<div id="raster-statistics" class="section level4">
+<h4>Raster statistics</h4>
+<p>R allow you to calculate some basic statistics of raster data. We can use <strong>summary</strong> function to get some statistics of raster layer.</p>
+<pre class="r"><code>summary(ELEV.GP)</code></pre>
+<pre><code>##            GP_ELEV
+## Min.      224.4348
+## 1st Qu.  1207.6884
+## Median   1633.6725
+## 3rd Qu.  2160.3500
+## Max.     3828.2000
+## NA&#39;s    42766.0000</code></pre>
+</div>
+<div id="histogram-of-raster" class="section level4">
+<h4>Histogram of raster</h4>
+<p>R-base function <strong>hist</strong> is also useful to know frequency of raster values</p>
+<pre class="r"><code>HISTO.GP&lt;-hist(ELEV.GP, 
+     breaks=6,  
+     col= &quot;purple&quot;,                                              # color of histogram 
+     main=&quot;Distribution of Elevation values with 5 breaks&quot;,     # tittle of the plot
+     xlab= &quot;Elevation (m)&quot;,                                     # x-axis name
+     ylab = &quot;Number of Pixels&quot;)                                 # y-axis name
+box()</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-raster" class="section level4">
+<h4>Plot raster</h4>
+<pre class="r"><code>plot(ELEV.GP, main=&quot;Albers Equal Area Conic&quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+<div id="clipping" class="section level3">
+<h3>Clipping</h3>
+<p>Now will clip this DEM with extent of CO state shape file. Before clipping, you have to make sure both raster and vector data are in same projection systems.</p>
+<pre class="r"><code># Load CO state shape file
+CO.STATE&lt;-shapefile(paste0(dataFolder,&quot;CO_STATE_BD.shp&quot;))
+proj4string(CO.STATE)</code></pre>
+<pre><code>## [1] &quot;+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0&quot;</code></pre>
+<p>In R, clipping of a raster is two steps procedure, first you have to apply <strong>crop()</strong> function &amp; then <strong>mask</strong> functions of <strong>raster</strong> package. <strong>Crop</strong> returns a geographic subset of an object as specified by an <strong>extent</strong> object (or object from which an extent object can be extracted/created). <strong>mask</strong> Create a new Raster object that has the same values as input raster.</p>
+<pre class="r"><code>ELEV.CO&lt;- crop(ELEV.GP, extent(CO.STATE))
+ELEV.CO &lt;-raster::mask(ELEV.CO, CO.STATE)
+writeRaster(ELEV.CO, paste0(dataFolder,&quot;CO_ELEV.tiff&quot;),&quot;GTiff&quot;,overwrite=TRUE)</code></pre>
+<div id="plot-clip-dem" class="section level5">
+<h5>Plot Clip DEM</h5>
+<pre class="r"><code>plot(ELEV.CO, main= &quot;5 km x 5 Km DEM of CO State&quot;)
+plot(CO.STATE, add=TRUE)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+<div id="reclassification" class="section level3">
+<h3>Reclassification</h3>
+<p><a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Reclassifying%20raster%20data.htm">Reclassification is the process of reassigning a value, a range of values, or a list of values in a raster to new output values.</a></p>
+<div id="histogram" class="section level4">
+<h4>Histogram</h4>
+<p>Before reclassification, we create a histogram with 4 breaks, of ELEV.CO raster</p>
+<pre class="r"><code>HISTO.CO&lt;-hist(ELEV.CO, 
+     breaks=3,  
+     col= &quot;purple&quot;,                                             # color of histogram 
+     main=&quot;Distribution of Elevation values with 4 breaks&quot;,     # tittle of the plot
+     xlab= &quot;Elevation (m)&quot;,                                     # x-axis name
+     ylab = &quot;Number of Pixels&quot;)                                 # y-axis name
+box()</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>Now, you can check where are breaks and how many pixels in each category, and use these breaks to plot a raster layer</p>
+<pre class="r"><code>HISTO.CO$breaks</code></pre>
+<pre><code>## [1] 1000 2000 3000 4000</code></pre>
+<pre class="r"><code>HISTO.CO$counts</code></pre>
+<pre><code>## [1] 5347 4083 1335</code></pre>
+<pre class="r"><code># plot using  the histogram breaks.
+plot(ELEV.CO, 
+     breaks = c(1000, 2000, 3000, 4000), 
+     col = terrain.colors(5),
+     main=&quot;DEM &quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>We will use breaks of histogram to reclassify the DEM raster. First, you have to create classification matrix</p>
+<ul>
+<li>Class 1: 1000 - 2000 m (low elevation)</li>
+<li>Class 2: 2000 - 3000 m (medium elevation)</li>
+<li>Class 3: 3000 - 4000 (Inf) m (high elevation)</li>
+</ul>
+<pre class="r"><code># Create a dataframe
+reclass_df &lt;- c(1000, 2000, 1,
+                2000, 3000, 2,
+                3000, Inf, 3)
+reclass_df</code></pre>
+<pre><code>## [1] 1000 2000    1 2000 3000    2 3000  Inf    3</code></pre>
+<p>Next, you have to reshape the data frame to matrix using <strong>matrix</strong> function</p>
+<pre class="r"><code>reclass_m &lt;- matrix(reclass_df,
+                ncol = 3,
+                byrow = TRUE)
+reclass_m</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,] 1000 2000    1
+## [2,] 2000 3000    2
+## [3,] 3000  Inf    3</code></pre>
+<p>Now you have to apply <strong>reclassify()</strong> function of raster package using re-class_m object.</p>
+<pre class="r"><code>ELEV.CO.reclass &lt;- reclassify(ELEV.CO,
+                     reclass_m)</code></pre>
+<p>You can view the distribution of pixels assigned to each class using the bar-plot().</p>
+<pre class="r"><code>barplot(ELEV.CO.reclass,
+        main = &quot;Number of pixels in each class&quot;)
+box()</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Now we plot the reclassified raster using <strong>plot</strong> function with a nice looking legend</p>
+<pre class="r"><code>plot(ELEV.CO.reclass,
+     legend = FALSE,
+     col = c(&quot;green&quot;, &quot;blue&quot;, &quot;red&quot;), axes = FALSE,
+     main = &quot;Reclassified DEM&quot;)
+
+legend(&quot;topright&quot;,
+       legend = c(&quot;Low&quot;, &quot;Medium&quot;, &quot;High&quot;),
+       fill = c(&quot;green&quot;, &quot;blue&quot;, &quot;red&quot;),
+       border = FALSE,
+       bty = &quot;n&quot;) # turn off legend border</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="quantile" class="section level4">
+<h4>Quantile</h4>
+<p>Sometimes <strong>quantile</strong> function is us full to the distribution of raster values</p>
+<pre class="r"><code>quantile(ELEV.CO)                     #  default 5 quantile</code></pre>
+<pre><code>##       0%      25%      50%      75%     100% 
+## 1032.333 1490.708 2006.680 2608.840 3828.200</code></pre>
+<pre class="r"><code>quantile(ELEV.CO, prob=seq(0,1,0.1))  # 10 quantile</code></pre>
+<pre><code>##       0%      10%      20%      30%      40%      50%      60%      70% 
+## 1032.333 1280.194 1418.156 1567.555 1770.616 2006.680 2267.440 2480.909 
+##      80%      90%     100% 
+## 2756.125 3089.469 3828.200</code></pre>
+<div id="define-quantile-breaks" class="section level5">
+<h5>Define quantile breaks</h5>
+<p>If you want create a raster map using the quantile, you fave to use <strong>classInt</strong> package. The <strong>classIntervals</strong> function is create a custom breaks of raster values using different styles (such as “fixed”, “sd”, “equal”, “pretty”, “quantile”, “kmeans”, “hclust”, “bclust”, “fisher”, &amp; “jenks”). For details, please see help, just type <strong>?classIntervals</strong> in R console</p>
+<p>First, we have to convert raster to vector using <strong>values</strong> function. Then, you have to create a object with a quantile interval applying <strong>classIntervals</strong> function to vector data.</p>
+<pre class="r"><code>value.vector &lt;- values(ELEV.CO)
+value.vector &lt;- value.vector[value.vector != 0]
+at = round(classIntervals(value.vector, n = 10, style = &quot;quantile&quot;)$brks, 0) # 10 quantile
+at</code></pre>
+<pre><code>##  [1] 1032 1280 1418 1568 1771 2007 2267 2481 2756 3089 3828</code></pre>
+<p>Now, we plot the DEM raster using the this custom break. We will use <strong>sppot</strong> function from <strong>sp</strong> package to plot raster data with state boundary shape file. Before that we will create a custom color palette using <strong>colorRampPalette</strong> of <strong>RColorBrewer</strong>.</p>
+<pre class="r"><code>rgb.palette &lt;- colorRampPalette(c(&quot;lightblue&quot;,&quot;blue&quot;,&quot;green&quot;,&quot;yellow&quot;,&quot;red&quot;),
+space = &quot;rgb&quot;)
+polys&lt;- list(&quot;sp.lines&quot;, as(CO.STATE, &quot;SpatialLines&quot;), col=&quot;grey&quot;, lty=1)  # CO state boundary
+spplot(ELEV.CO, main = &quot;Quantile of DEM (m)&quot;,
+   at=at,sp.layout=list(polys),
+   par.settings=list(axis.line=list(col=&quot;darkgrey&quot;,lwd=1)),
+   colorkey=list(space=&quot;right&quot;,height=1, width=1.3,at=1:11,labels=list(cex=1.0,at=1:11,
+   labels=c(&quot;1032&quot;,&quot;1280&quot;,&quot;1418&quot;,&quot;1568&quot;,&quot;1771&quot;,&quot;2007&quot;,&quot;2267&quot;,&quot;2481&quot;,&quot;2756&quot;,&quot;3089&quot;,&quot;3828&quot;))),
+   col.regions=rgb.palette(100))</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+</div>
+</div>
+<div id="focal-statistics" class="section level3">
+<h3>Focal Statistics</h3>
+<p>Focal statistics calculate for each input cell location a statistic (mean, sum etc) of the values within a specified neighborhood around it. Conceptually, on execution, the algorithm visits each cell in the raster and calculates the specified statistic with the identified neighborhood. The cell for which the statistic is being calculated is referred to as the processing cell. The value of the processing cell, as well as all the cell values in the identified neighborhood, is included in the neighborhood statistics calculation. The neighborhoods can overlap so that cells in one neighborhood may also be included in the neighborhood of another processing cell. (Source:<a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)</p>
+<p>To illustrate the neighborhood processing for Focal Statistics calculating a Sum statistic, consider the processing cell with a value of 5 in the following diagram. A rectangular 3 by 3 cell neighborhood shape is specified. The sum of the values of the neighboring cells (3 + 2 + 3 + 4 + 2 + 1 + 4 = 19) plus the value of the processing cell (5) equals 24 (19 + 5 = 24). So a value of 24 is given to the cell in the output raster in the same location as the processing cell in the input raster.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_05/focal.png" alt="Focal Statistics(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
+<p class="caption">
+Focal Statistics(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)
+</p>
+</div>
+<p>The above figure demonstrates how the calculations are performed on a single cell in the input raster. In the following diagram, the results for all the input cells are shown. The cells highlighted in yellow identify the same processing cell and neighborhood as in the example above.</p>
+<p>We will calculate focal mean of each cell of DEM data using <strong>focal()</strong> function of raster package.</p>
+<pre class="r"><code>focal.sum&lt;- focal(ELEV.CO, 
+    w=matrix(1/9,nrow=3,ncol=3),    # matrix of weights for 3 x 3 
+    fun=sum)</code></pre>
+<pre class="r"><code>spplot(focal.sum, main=&quot;Focal Sum of DEM (m)&quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-26-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>focal.mean&lt;- focal(ELEV.CO, 
+    w=matrix(1/9,nrow=3,ncol=3),    # matrix of weights for 3 x 3 
+    fun=mean)</code></pre>
+<pre class="r"><code>spplot(focal.mean,main=&quot;Focal Mean of DEM (m)&quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-28-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="raster-algebra" class="section level3">
+<h3>Raster Algebra</h3>
+<p>Raster algebra in R is a set-based algebra for manipulating a raster object more raster layers (“maps”) of similar dimensions to produce a new raster layer (map) using algebraic operations. It includes the normal algebraic operators such as +, -, *, /, logical operators such as &gt;, &gt;=, &lt;, ==, ! and functions like abs, round, ceiling, floor, trunc, sqrt, log, log10, exp, cos, sin, atan, tan, max, min, range, prod, sum, any, all.</p>
+<p>A simple sample of raster algebra in R is to convert unit of DEM raster from meter to feet (1 m = 3.28084 feet)</p>
+<pre class="r"><code>dem.feet&lt;-ELEV.CO*3.28084</code></pre>
+<pre class="r"><code>plot(dem.feet, main= &quot;DEM (feet)&quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-30-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>dem.feet.1000&lt;-dem.feet/1000
+plot(dem.feet.1000, main = &quot;DEM (feet x 1000)&quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-31-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="aggregation" class="section level3">
+<h3>Aggregation</h3>
+<p>Aggregate a Raster object to create a new Raster-layer with a lower resolution (larger cells). Aggregation groups rectangular areas to create larger cells. The value for the resulting cells is computed with a user-specified function. First, we will create 10 km x 10 km raster (mean &amp; standard deviation) from 5 km x 5 kg raster using <strong>aggregate</strong> function of <strong>raster</strong> package. If aggregate function does not work, remove “mean” or “sd” objects if you have created before.</p>
+<pre class="r"><code>#rm(mean)
+#rm(sd)
+mean.DEM&lt;-aggregate(ELEV.CO, fact=2, fun=mean) 
+sd.DEM&lt;-aggregate(ELEV.CO, fact=2, fun=sd) 
+se.DEM&lt;-sd.DEM/sqrt(2)
+mean.DEM</code></pre>
+<pre><code>## class       : RasterLayer 
+## dimensions  : 51, 64, 3264  (nrow, ncol, ncell)
+## resolution  : 10000, 10000  (x, y)
+## extent      : -1145285, -505285, 1563795, 2073795  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+## data source : in memory
+## names       : GP_ELEV 
+## values      : 1052.791, 3692.687  (min, max)</code></pre>
+<pre class="r"><code>p1&lt;-spplot(mean.DEM, main=&quot;Mean (10 km x 10 km) of DEM (m)&quot;)
+p2&lt;-spplot(sd.DEM, main=&quot;SD of DEM (m)&quot;)
+p3&lt;-spplot(se.DEM, main=&quot;SE of DEM (m)&quot;)
+grid.arrange(p1, p2, p3, ncol=3)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-33-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="resample" class="section level3">
+<h3>Resample</h3>
+<p>Re-sample transfers values between non matching Raster in in terms of origin and resolution. We will re-sample 10 km raster to 5 km raster again using ELEV.CO ( 5 km). We will use <strong>resample</strong> function. Here two methods available: <strong>bilinear</strong> for bilinear interpolation, or **ngb* for using the nearest neighbor. First argument is a raster object to be re-sampled and second argument is raster object with parameters that first raster should be re-sampled to.</p>
+<pre class="r"><code>dem.5km&lt;-resample(mean.DEM, ELEV.CO, method=&#39;bilinear&#39;) #
+dem.5km</code></pre>
+<pre><code>## class       : RasterLayer 
+## dimensions  : 101, 128, 12928  (nrow, ncol, ncell)
+## resolution  : 5000, 5000  (x, y)
+## extent      : -1145285, -505285, 1568795, 2073795  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+## data source : in memory
+## names       : GP_ELEV 
+## values      : 1045.513, 3630.237  (min, max)</code></pre>
+<pre class="r"><code>spplot(dem.5km, main=&quot;Resampled DEM - 5 x 5 km&quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-35-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="mosaic" class="section level3">
+<h3>Mosaic</h3>
+<p>We will use <em>merge()</em> function to mosaic all raster ./DEM.GP folder to create a seamless raster of great plain</p>
+<pre class="r"><code>DEM.input &lt;- list.files(path= paste0(dataFolder,&quot;.//DEM_GP&quot;),pattern=&quot;.tif$&quot;,full.names=T)   
+DEM.input</code></pre>
+<pre><code>## [1] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//.//DEM_GP/CO_ELEV.tif&quot;
+## [2] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//.//DEM_GP/KS_ELEV.tif&quot;
+## [3] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//.//DEM_GP/NM_ELEV.tif&quot;
+## [4] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//.//DEM_GP/WY_ELEV.tif&quot;</code></pre>
+<pre class="r"><code>r &lt;- lapply(DEM.input, raster)
+r1&lt;-do.call(merge, c(r, tolerance = 1))</code></pre>
+<pre class="r"><code>plot(r1, main=&quot;Mosaic DEM (m)&quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-37-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="convert-raster-to-point-data" class="section level3">
+<h3>Convert Raster to Point Data</h3>
+<p>For convert raster data to spatial point data frame, we will use <strong>rasterToPoints()</strong> function and then we will apply <strong>as.data.frame()</strong> function to convert a regular data frame</p>
+<pre class="r"><code>SPDF &lt;- rasterToPoints(ELEV.CO)
+str(SPDF)</code></pre>
+<pre><code>##  num [1:10765, 1:3] -1082785 -1077785 -1072785 -1082785 -1077785 ...
+##  - attr(*, &quot;dimnames&quot;)=List of 2
+##   ..$ : NULL
+##   ..$ : chr [1:3] &quot;x&quot; &quot;y&quot; &quot;GP_ELEV&quot;</code></pre>
+<pre class="r"><code>df&lt;-as.data.frame(SPDF)
+head(df)</code></pre>
+<pre><code>##          x       y GP_ELEV
+## 1 -1082785 2071295 2568.92
+## 2 -1077785 2071295 2610.72
+## 3 -1072785 2071295 2393.16
+## 4 -1082785 2066295 2498.28
+## 5 -1077785 2066295 2481.25
+## 6 -1072785 2066295 2610.20</code></pre>
+<pre class="r"><code>write.csv(df, paste0(dataFolder,&quot;GP_ElEV.csv&quot;, row.names = F))</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="convert-point-data-to-raster" class="section level3">
+<h3>Convert Point Data to Raster</h3>
+<p>First, we will convert df to a <strong>SpatialPointsDataFrame</strong>, then we will use <strong>rasterFromXYZ</strong> to convert point data frame to raster. Finally, we will define CRS to <em>Albers Equal Area Conic</em></p>
+<pre class="r"><code>x&lt;-SpatialPointsDataFrame(df[, c(&quot;x&quot;, &quot;y&quot;)], data = df)
+DEM &lt;- rasterFromXYZ(as.data.frame(x)[, c(&quot;x&quot;, &quot;y&quot;, &quot;GP_ELEV&quot;)])
+usa_albers = CRS(&quot;+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs&quot;)
+proj4string(DEM) = usa_albers</code></pre>
+<pre class="r"><code>spplot(DEM)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-40-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="raster-stack-and-raster-brick" class="section level3">
+<h3>Raster Stack and Raster Brick</h3>
+<p>You can use <strong>High-level</strong> functions to manipulate multiple raster after creating create raster stack (collection of raster layers) using <strong>stack()</strong> or <strong>brick()</strong> functions of raster <strong>raster</strong> package. The <strong>stack()</strong> and <strong>bricck()</strong> functions can both store multiple layers. However, how they store each layers is different. The layers in a in <strong>stack()</strong> are stored as links to raster data that is located somewhere on our computer. A <strong>brick()</strong> contains all of the objects stored within the actual R object. <strong>brick()</strong> is more efficient and faster than <strong>stack()</strong>, We will use mean.DEM and sd.DEM raster to create standard error map.</p>
+<pre class="r"><code>s&lt;-stack(mean.DEM,sd.DEM, se.DEM) # stack
+names(s)&lt;-c(&quot;Mean&quot;, &quot;SD&quot;,&quot;SE&quot;)  # rename the layers
+s</code></pre>
+<pre><code>## class       : RasterStack 
+## dimensions  : 51, 64, 3264, 3  (nrow, ncol, ncell, nlayers)
+## resolution  : 10000, 10000  (x, y)
+## extent      : -1145285, -505285, 1563795, 2073795  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+## names       :      Mean,        SD,        SE 
+## min values  :  1052.791,     0.000,     0.000 
+## max values  : 3692.6873,  470.5111,  332.7016</code></pre>
+<pre class="r"><code>spplot(s)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-42-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:30px;">
+
+</div>
+</div>
+<div id="digital-terrain-modeling" class="section level3">
+<h3>Digital Terrain Modeling</h3>
+<p>Terrain analysis or land surface analysis is a process that describes terrain, for example it’s roughness, altitude, etc., quantitatively. Such analysis can be very useful in assessing land suitability for agriculture, construction, roads, or in designing irrigation schemes, and other land use features.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="slope" class="section level4">
+<h4>Slope</h4>
+<p>The slope is an incline, or steepness, of a surface. The slope can be measured in degrees from horizontal (0-90), or percent slope (which is the rise divided by the run, multiplied by 100). A slope of 30 and 45 degrees equals 58 and 100 percent slope, respectively. As the slope angle approaches vertical (90 degrees), the percent slope approaches infinity. The slope for a cell in a raster is the steepest slope of a plane defined by the cell and its eight surrounding neighbors. (Source: ESRI online GIS Dictionary).</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_05/slope.png" alt="Slope(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
+<p class="caption">
+Slope(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)
+</p>
+</div>
+<p>We will use <strong>terrain()</strong> function from raster package to create raster slope.</p>
+<pre class="r"><code>SLOPE &lt;- terrain(ELEV.CO,           # raster DEM
+    opt=&quot;slope&quot;,                        # Slope function 
+    unit=&#39;degrees&#39;)                 # unit degree</code></pre>
+<pre class="r"><code>plot(SLOPE,
+       col = rainbow(16), main= &quot;Slope (degree)&quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-45-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="aspect" class="section level4">
+<h4>Aspect</h4>
+<p>The compass direction that a slope faces is most commonly measured from degrees north. The Aspect command provides a 32-bit float raster that ranges from 0° and 360°. This represents the azimuth (the angular distance from the north to south point of the horizon that can be transversed by a vertical circle that intersects the horizon, which represents the direction of an object from the observer) that slopes are facing. In other words, 0° means that the slope is facing North, 90° indicates East, 180° indicates a Southward facing, and 270° is to the west. This however requires that the top of your input raster is north oriented, as most are. Values found in between these ranges assume a mixture of cardinal directions, ex. 250 indicates a hillside with a Southeast facing aspect. The aspect value -9999 is generally used as the ‘nodata’ value to indicate use of an undefined aspect in areas lacking variation in topography, with slope=0. You can also make use of the legend to indicate the appropriate aspect for each hillside in your study area. The legend permits you to identify North (~ 0 or 360 degrees), South (~ 180 degrees), East (~270 degrees) or West (~90 degrees) facing slopes).</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_05/aspect.png" alt="Aspect(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
+<p class="caption">
+Aspect(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)
+</p>
+</div>
+<pre class="r"><code>ASPECT &lt;- terrain(ELEV.CO,        #  raster DEM
+    opt=&quot;aspect&quot;,                       #  aspect function 
+    unit=&#39;degrees&#39;)                   #  unit degree</code></pre>
+<pre class="r"><code>plot(ASPECT,
+       col = rainbow(16), main= &quot;Aspect (degree)&quot;)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-48-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="hillshade" class="section level4">
+<h4>Hillshade</h4>
+<p><a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm">A hillshade is a grayscale 3D representation of the surface, with the sun’s relative position taken into account for shading the image. This function uses the altitude and azimuth properties to specify the sun’s position.</a></p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_05/hillshade.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
+<p class="caption">
+Hill Shade(Source: <a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm" class="uri">http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm</a>)
+</p>
+</div>
+<p>We generate a hill shade layer from slope and aspect layers (both in degree). Slope and aspect can be computed with function terrain. A hill shade layer is often used as a backdrop on top of which another, semi-transparent, layer is drawn.</p>
+<pre class="r"><code>hill &lt;- hillShade(SLOPE, ASPECT, 45, 250)
+plot(hill, col=grey(0:100/100), legend=FALSE, main=&#39;Hillshade Map of CO&#39;)
+plot(ELEV.CO, col=rainbow(50, alpha=0.35), add=TRUE)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-50-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="terrain-ruggedness-index" class="section level4">
+<h4>Terrain Ruggedness Index</h4>
+<p>TRI (Terrain Ruggedness Index) is the mean of the absolute differences between the value of a cell and the value of its 8 surrounding cells (the amount of elevation difference between adjacent cells of a DEM). This provides a relative measure of elevation changes between a specified grid cell and neighbors. The TRI is useful for analyzing what environments might be suited to particular crops or species which may be sensitive to particular sloped environments, or for assessing the potential flow of soil during erosion events, and so on.</p>
+<pre class="r"><code>TRI&lt;- terrain(ELEV.CO,          #  raster DEM
+    opt=&quot;TRI&quot;,                  #  TRI function 
+    unit=&#39;degrees&#39;)                 #  unit degree</code></pre>
+<pre class="r"><code>plot(TRI,
+       main= &quot;Terrain Ruggedness Index (TRI)&quot;,
+     col=rainbow(50))</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-52-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="topographic-position-index" class="section level4">
+<h4>Topographic Position Index</h4>
+<p>TPI (Topographic Position Index) is the difference between the value of a cell and the mean value of its 8 surrounding cells.Positive TPI values represent locations that are higher than the average of their surroundings, as defined by the neighborhood (<strong>ridges</strong>). Negative TPI values represent locations that are lower than their surroundings (<strong>valleys</strong>). TPI values near zero are either <strong>flat areas</strong> (where the slope is near zero) or areas of constant slope. Topographic position is an inherent scale-dependent phenomenon.</p>
+<pre class="r"><code>TPI&lt;- terrain(ELEV.CO,          #  raster DEM
+    opt=&quot;TPI&quot;,                  #  TPI function
+    unit=&#39;degrees&#39;)                 #  unit degree</code></pre>
+<pre class="r"><code>plot(TPI,
+       main= &quot;Topographic Position Index (TPI)&quot;,
+     col=rainbow(50))</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-54-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="roughness" class="section level4">
+<h4>Roughness</h4>
+<p>Roughness is the difference between the maximum and the minimum value of a cell and its 8 surrounding cells.</p>
+<pre class="r"><code>ROUGH&lt;- terrain(ELEV.CO,          # raster DEM
+    opt=&quot;roughness&quot;,            # roughness function
+    unit=&#39;degrees&#39;)                 # unit degree</code></pre>
+<pre class="r"><code>plot(ROUGH,
+       main= &quot;Roughness&quot;,
+     col=rainbow(50))</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-56-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="curvature" class="section level4">
+<h4>Curvature</h4>
+<p>Curvature is the change in the degree of slope for a given distance on that slope. It is a very helpful measure to understand the surface water flow through a landscape, and can be used in part to help design an irrigation scheme, for example. It is widely used by hydrological scientists. When interpreting data from a curve, any positive values indicate a convex (upward bulging) slope, while negative values correspond to a convex (downward facing) curve. The first is like a dinner bowl sanding correctly on a table, the latter is like a bowl that has been flipped over and is facing down. Any pixels observed that show positive curvature indicate the potential for liquid flow dispersal away from a central area, while and negative values indicate accumulation. In combination, convex and concave surfaces approximate actual topography.</p>
+<p>A Plan curve is the measurement of the rate at which a horizontal curve changes. Positive and negative values respectively indicate divergence and convergence of a particular slope. Highlight a divergent slope, negative values a convergent slope.</p>
+<p>A Profile curve is conversely a vertical measurement of the change of a slope. Positive values indicate convexity, while negative values represent concave profiles.</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_05/curveture.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
+<p class="caption">
+Hill Shade(Source: <a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm" class="uri">http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm</a>)
+</p>
+</div>
+<p>In there is no package available yet for Curvature analysis in R. I have a function <a href="http://r-video-tutorial.blogspot.com/2012/10/terrain-attributes-with-raster-package.html%20for%20curvature%20analysis">here</a>. We will call this function using <strong>source(“curveture_function.R”)</strong>, But when I run this, it shows error.</p>
+<pre class="r"><code>#source(&quot;curveture_function.R&quot;)
+# profile&lt;-curv(DEM, calc = &quot;profile&quot;)
+# plan&lt;-curv(DEM, calc = &quot;plan&quot;)</code></pre>
+<p>However, in <strong>spatialEco</strong> package allow to calculate McNab’s and Bolstad’s variants of the surface curvature (concavity/convexity) index (McNab 1993; Bolstad &amp; Lillesand 1992; McNab 1989). The index is based on features that confine the view from the center of a 3x3 window. In the Bolstad equation, edge correction is addressed be dividing by the radius distance to the outermost cell (36.2m). We will use <strong>curveture</strong> function of <strong>spatialEco</strong> package.</p>
+<pre class="r"><code># McNab curvature
+m.crv &lt;- curvature(ELEV.CO, s=5, type=&quot;mcnab&quot;)
+# Bolstad curvature
+b.crv &lt;- curvature(ELEV.CO, s=5, type=&quot;bolstad&quot;)</code></pre>
+<pre class="r"><code>p1&lt;-spplot(m.crv, main=&quot;McNab curvature&quot;)
+p2&lt;-spplot(b.crv, main=&quot;Bolstad curvature&quot;)
+grid.arrange(p1, p2, ncol=2)</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-60-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="flow-direction" class="section level4">
+<h4>Flow Direction</h4>
+<p>The direction of the greatest drop in elevation (or the smallest rise if all neighbors are higher).</p>
+<pre class="r"><code>FLD&lt;- terrain(ELEV.CO,          #  raster DEM
+    opt=&quot;flowdir &quot;,             # flow direction
+    unit=&#39;degrees&#39;)                 # unit degree</code></pre>
+<pre class="r"><code>plot(FLD,
+       main= &quot;Flow Direction&quot;,
+     col=rainbow(50))</code></pre>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-62-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

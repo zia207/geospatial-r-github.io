@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Texture Analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Texture Analysis</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>Texture is one of the most important characteristics dealt with during image interpretation and classification. Texture analysis has been successfully applied to forestry and vegetation studies using a variety of remote sensing data (Asner et al., 2002; Franklin et al., 2000) and radar images (Costa, 2004; Hess et al., 2003). The <strong>Gray Level Co-occurrence Matrix (GLCM)</strong> is one of the most widely used methods to compute second order texture measures. This method considers the spatial relationships between two pixels at a time which are called the the reference and the neighbor pixel. The neighbor pixel can be to the East (0), North-East (45), North (90), or North-West (135) of the reference pixel. For a more detail, please see <a href="https://prism.ucalgary.ca/handle/1880/51900">here</a>.</p>
+<ul>
+<li><p><a href="#texture-analysis">Texture Analysis</a></p></li>
+<li><p><a href="#principal-componet-analysis-of-texture-bands">Principal Componet Analysis of Texture Bands</a></p></li>
+</ul>
+<div id="load-packages" class="section level4">
+<h4>Load packages</h4>
+<pre class="r"><code>library (raster)        # raster data
+library(rasterVis)    # raster visualisation    
+library(sp)               # Spatial data
+library(rgdal)        # sptaial data 
+library(RStoolbox)    # Image analysis
+library(ggplot2)      # advance plotting
+library(glcm)         # texture analysis</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0">here</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+</div>
+<div id="load-bands" class="section level4">
+<h4>Load bands</h4>
+<pre class="r"><code>RED&lt;- raster(paste0(dataFolder,&quot;//Landsat8//Landsat8_PROCESSED//_B4_sre.tif&quot;))
+NIR&lt;- raster(paste0(dataFolder,&quot;//Landsat8//Landsat8_PROCESSED//_B5_sre.tif&quot;))</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="texture-analysis" class="section level2">
+<h2>Texture Analysis</h2>
+<p>We will use <strong>glcm</strong> package to calculate following eight texture statistics of RED and NIR bands derived from grey-level co-occurrence matrices</p>
+<p><img src="Image/PNG_FILE_08/Texture.png" width="60%" style="display: block; margin: auto;" /></p>
+<div id="red-band-texture" class="section level4">
+<h4>Red Band Texture</h4>
+<pre class="r"><code>glcm.red &lt;- glcm(RED,
+                   window = c(7, 7),
+                   shift=list(c(0,1), c(1,1), c(1,0), c(1,-1)), 
+                   statistics = c(&quot;mean&quot;,
+                                  &quot;variance&quot;,
+                                  &quot;homogeneity&quot;,
+                                  &quot;contrast&quot;,
+                                  &quot;entropy&quot;, 
+                                  &quot;dissimilarity&quot;,
+                                  &quot;second_moment&quot;, 
+                                  &quot;correlation&quot;))
+glcm.red</code></pre>
+<pre><code>## class       : RasterStack 
+## dimensions  : 504, 541, 272664, 8  (nrow, ncol, ncell, nlayers)
+## resolution  : 30, 30  (x, y)
+## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names       :   glcm_mean, glcm_variance, glcm_homogeneity, glcm_contrast, glcm_entropy, glcm_dissimilarity, glcm_second_moment, glcm_correlation 
+## min values  :   0.0312500,     0.9255645,        0.1830405,     0.0000000,    0.0000000,          0.0000000,          0.0241566,             -Inf 
+## max values  :   0.3770727,   169.8674705,        1.0000000,    71.7908163,    3.7689108,          6.4642857,          1.0000000,              Inf</code></pre>
+<pre class="r"><code>plot(glcm.red)</code></pre>
+<p><img src="texture-analysis_files/figure-html/unnamed-chunk-6-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>     #main= &quot;GLCM Texture of Red Band&quot;)</code></pre>
+</div>
+<div id="nir-band-texture" class="section level4">
+<h4>NIR Band texture</h4>
+<pre class="r"><code>glcm.nir &lt;- glcm(NIR,
+                   window = c(7, 7),
+                   shift=list(c(0,1), c(1,1), c(1,0), c(1,-1)), 
+                   statistics = c(&quot;mean&quot;,
+                                  &quot;variance&quot;,
+                                  &quot;homogeneity&quot;,
+                                  &quot;contrast&quot;,
+                                  &quot;entropy&quot;, 
+                                  &quot;dissimilarity&quot;,
+                                  &quot;second_moment&quot;, 
+                                  &quot;correlation&quot;))</code></pre>
+<pre class="r"><code>plot(glcm.nir)</code></pre>
+<p><img src="texture-analysis_files/figure-html/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="write-all-texture-bands" class="section level4">
+<h4>Write all texture bands</h4>
+<pre class="r"><code># writeRaster(glcm.red, paste0(dataFolder,  &quot;.//Landsat8//Texture//&quot;),  paste0(&quot;RED_&quot;, names(glcm.nir)), bylayer=T, overwrite=TRUE, format=&quot;GTiff&quot;)
+# writeRaster(glcm.nir, paste0(dataFolder, &quot;.//Landsat8//Texture//&quot;),  paste0(&quot;NIR_&quot;, names(glcm.nir)), bylayer=T, overwrite=TRUE, format=&quot;GTiff&quot;)</code></pre>
+</div>
+<div id="write-multiband-raster" class="section level4">
+<h4>Write multiband raster</h4>
+<pre class="r"><code># writeRaster(glcm.red, filename=paste0(dataFolder,&quot;.//Landsat8//Texture//RED_Texture_multi.tif&quot;), bylayer=F, overwrite=TRUE, format=&quot;GTiff&quot;)
+# writeRaster(glcm.nir, filename=paste0(dataFolder,&quot;.//Landsat8//Texture//NIR_Texture_multi.tif&quot;), bylayer=F, overwrite=TRUE, format=&quot;GTiff&quot;)</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="principal-componet-analysis-of-texture-bands" class="section level3">
+<h3>Principal Componet Analysis of Texture Bands</h3>
+<p>In order to reduce the redundancy in the texture bands and to determine appropriate texture features, it is neceassry to do principle component analyses (PCA) to the all texture images. We will use <strong>rasterPCA()</strong> faction of <strong>RSToolbox</strong> to calculates R-mode PCA for RasterBricks or RasterStacks and returns a RasterBrick with multiple layers of PCA scores.</p>
+<pre class="r"><code>r&lt;-stack(glcm.red,glcm.nir)  # stack PC raster of red and NIR bands (total raster 8 x 2 = 16)
+r</code></pre>
+<pre><code>## class       : RasterStack 
+## dimensions  : 504, 541, 272664, 16  (nrow, ncol, ncell, nlayers)
+## resolution  : 30, 30  (x, y)
+## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names       : glcm_mean.1, glcm_variance.1, glcm_homogeneity.1, glcm_contrast.1, glcm_entropy.1, glcm_dissimilarity.1, glcm_second_moment.1, glcm_correlation.1, glcm_mean.2, glcm_variance.2, glcm_homogeneity.2, glcm_contrast.2, glcm_entropy.2, glcm_dissimilarity.2, glcm_second_moment.2, ... 
+## min values  :  0.03125000,      0.92556451,         0.18304046,      0.00000000,     0.00000000,           0.00000000,           0.02415660,               -Inf,  0.03140944,      0.92280891,         0.15628695,      0.01020408,     0.04981169,           0.01020408,           0.02186589, ... 
+## max values  :   0.3770727,     169.8674705,          1.0000000,      71.7908163,      3.7689108,            6.4642857,            1.0000000,                Inf,   0.8759566,     754.4886370,          0.9948980,     106.0816327,      3.8423098,            7.9693878,            0.9800083, ...</code></pre>
+<div id="develop-a-pca-model" class="section level4">
+<h4>Develop a PCA model</h4>
+<pre class="r"><code>r1&lt;-scale(r)        # scale the data
+r1[is.na(r1)] &lt;- 0  # define zero  all miising vaalues
+rpc &lt;- rasterPCA(r1, nComp=4)
+summary(rpc$model)</code></pre>
+<pre><code>## Importance of components:
+##                           Comp.1    Comp.2     Comp.3     Comp.4
+## Standard deviation     2.2629110 2.2353332 1.14616868 0.85397999
+## Proportion of Variance 0.3791344 0.3699498 0.09726471 0.05399501
+## Cumulative Proportion  0.3791344 0.7490842 0.84634887 0.90034388
+##                            Comp.5     Comp.6     Comp.7      Comp.8
+## Standard deviation     0.78446480 0.62713144 0.37113915 0.321962193
+## Proportion of Variance 0.04556225 0.02911893 0.01019839 0.007674816
+## Cumulative Proportion  0.94590613 0.97502506 0.98522345 0.992898265
+##                             Comp.9     Comp.10     Comp.11    Comp.12
+## Standard deviation     0.173120352 0.163495250 0.126134487 0.11798550
+## Proportion of Variance 0.002218986 0.001979103 0.001177947 0.00103066
+## Cumulative Proportion  0.995117251 0.997096354 0.998274302 0.99930496
+##                             Comp.13      Comp.14 Comp.15 Comp.16
+## Standard deviation     0.0765902470 0.0593417660       0       0
+## Proportion of Variance 0.0004343153 0.0002607229       0       0
+## Cumulative Proportion  0.9997392771 1.0000000000       1       1</code></pre>
+</div>
+<div id="extact-firs-4-pcs-from-the-model" class="section level4">
+<h4>Extact firs 4 PCs from the model</h4>
+<p>Since, the fist four PCs exlain 90% variabilty of these 16 texture, we will extract these 4 components only.</p>
+<pre class="r"><code>PC1&lt;-rpc$map$PC1
+PC2&lt;-rpc$map$PC2
+PC3&lt;-rpc$map$PC3
+PC4&lt;-rpc$map$PC4</code></pre>
+</div>
+<div id="write-pca-raster" class="section level4">
+<h4>Write PCA raster</h4>
+<pre class="r"><code># writeRaster(PC1, filename = paste0(dataFolder,&quot;.\\Landsat8\\PCA\\PC1_Texture.tiff&quot;), &quot;GTiff&quot;, overwrite=T)
+# writeRaster(PC2, filename = paste0(dataFolder,&quot;.\\Landsat8\\PCA\\PC2_Texture.tiff&quot;), &quot;GTiff&quot;, overwrite=T)
+# writeRaster(PC3, filename = paste0(dataFolder,&quot;.\\Landsat8\\PCA\\PC3_Texture.tiff&quot;), &quot;GTiff&quot;, overwrite=T)
+# writeRaster(PC4, filename = paste0(dataFolder,&quot;\\Landsat8\\PCA\\PC4_Texture.tiff&quot;), &quot;GTiff&quot;, overwrite=T)</code></pre>
+</div>
+<div id="plot-pcs" class="section level4">
+<h4>Plot PCs</h4>
+<pre class="r"><code>if(require(gridExtra)){
+  plots &lt;- lapply(1:4, function(x) ggR(rpc$map, x, geom_raster = TRUE))
+  grid.arrange(plots[[1]],plots[[2]], plots[[3]], plots[[4]],ncol=2)
+}</code></pre>
+<p><img src="texture-analysis_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

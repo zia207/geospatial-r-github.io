@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Co-Kriging</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Co-Kriging</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>Co-kriging (CK) is an extension of ordinary kriging in which additional observed variables (know as co-variate which are often correlated with the variable of interest) are used to improve the precision of the interpolation of the variable of interest. Unlike regression and universal kriging, Co-Kriging does not require that the secondary information is available at all prediction locations. The co-variable may be measured at the same points as the target (co-located samples), at other points, or both. The most common application of co-kriging is when the co-variable is cheaper to measure than the target variable.</p>
+<p><img src="Image/PNG_FILE_07/cokriging.png" width="60%" style="display: block; margin: auto;" /></p>
+<p>In this excessive first we will explore relation between SOC and other environmental co-variates such as elevation, NDVI, TPI, and then we will select one variable that would show highest relationship with SOC. This variable will be used for cokriging of SOC. The soil organic carbon data (train and test data set) that we have created before is available for download from <a href="https://www.dropbox.com/s/0fnrtmanl5lnkws/DATA_07.7z?dl=0">here</a>.</p>
+<div id="load-package" class="section level4">
+<h4>Load package</h4>
+<pre class="r"><code>library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(spatstat)
+library(dismo)
+library(fields)
+library(gridExtra)
+library(Hmisc)</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>The soil organic carbon data (train and test data set) that we have created before is available for download <a href="https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0">here</a>.</p>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;</code></pre>
+<pre class="r"><code>train&lt;-read.csv(paste0(dataFolder,&quot;train_data.csv&quot;), header= TRUE) 
+state&lt;-shapefile(paste0(dataFolder,&quot;GP_STATE.shp&quot;))
+grid&lt;-read.csv(paste0(dataFolder, &quot;GP_prediction_grid_data.csv&quot;), header= TRUE) </code></pre>
+<p>First, we will create a data.frame with SOC and continuous environmental data. Then, we will use <strong>rcorr()</strong> function of <strong>Hmisc</strong> package. We will use Box-Cox transformed SOC for correlation analysis.</p>
+</div>
+<div id="power-transformation" class="section level4">
+<h4>Power transformation</h4>
+<pre class="r"><code>powerTransform(train$SOC)</code></pre>
+<pre><code>## Estimated transformation parameter 
+## train$SOC 
+## 0.2523339</code></pre>
+<pre class="r"><code>SOC.bc&lt;-bcPower(train$SOC, 0.2523339)
+train$SOC.bc&lt;-bcPower(train$SOC, 0.2523339)</code></pre>
+</div>
+<div id="correlation-matrix" class="section level4">
+<h4>Correlation matrix</h4>
+<pre class="r"><code># create a data.frame
+co.var &lt;- train[, c(11:19)]
+df.cor&lt;-cbind(SOC.bc,co.var )
+# Corelation matrix
+cor.matrix &lt;- rcorr(as.matrix(df.cor))
+cor.matrix</code></pre>
+<pre><code>##           SOC.bc  ELEV Aspect Slope   TPI K_Factor   MAP   MAT  NDVI
+## SOC.bc      1.00  0.11   0.05  0.35  0.05    -0.04  0.53 -0.34  0.63
+## ELEV        0.11  1.00   0.22  0.71  0.00    -0.58 -0.28 -0.81 -0.06
+## Aspect      0.05  0.22   1.00  0.25  0.01    -0.11  0.13 -0.22  0.10
+## Slope       0.35  0.71   0.25  1.00 -0.05    -0.51  0.16 -0.66  0.32
+## TPI         0.05  0.00   0.01 -0.05  1.00    -0.01  0.15  0.00  0.08
+## K_Factor   -0.04 -0.58  -0.11 -0.51 -0.01     1.00  0.13  0.38 -0.04
+## MAP         0.53 -0.28   0.13  0.16  0.15     0.13  1.00  0.03  0.81
+## MAT        -0.34 -0.81  -0.22 -0.66  0.00     0.38  0.03  1.00 -0.24
+## NDVI        0.63 -0.06   0.10  0.32  0.08    -0.04  0.81 -0.24  1.00
+## Slit_Clay   0.29 -0.50  -0.11 -0.22 -0.01     0.60  0.46  0.28  0.32
+##           Slit_Clay
+## SOC.bc         0.29
+## ELEV          -0.50
+## Aspect        -0.11
+## Slope         -0.22
+## TPI           -0.01
+## K_Factor       0.60
+## MAP            0.46
+## MAT            0.28
+## NDVI           0.32
+## Slit_Clay      1.00
+## 
+## n= 368 
+## 
+## 
+## P
+##           SOC.bc ELEV   Aspect Slope  TPI    K_Factor MAP    MAT    NDVI  
+## SOC.bc           0.0396 0.3087 0.0000 0.3154 0.4435   0.0000 0.0000 0.0000
+## ELEV      0.0396        0.0000 0.0000 0.9679 0.0000   0.0000 0.0000 0.2922
+## Aspect    0.3087 0.0000        0.0000 0.8022 0.0381   0.0157 0.0000 0.0566
+## Slope     0.0000 0.0000 0.0000        0.3112 0.0000   0.0025 0.0000 0.0000
+## TPI       0.3154 0.9679 0.8022 0.3112        0.7832   0.0043 0.9946 0.1302
+## K_Factor  0.4435 0.0000 0.0381 0.0000 0.7832          0.0121 0.0000 0.4041
+## MAP       0.0000 0.0000 0.0157 0.0025 0.0043 0.0121          0.5909 0.0000
+## MAT       0.0000 0.0000 0.0000 0.0000 0.9946 0.0000   0.5909        0.0000
+## NDVI      0.0000 0.2922 0.0566 0.0000 0.1302 0.4041   0.0000 0.0000       
+## Slit_Clay 0.0000 0.0000 0.0304 0.0000 0.8297 0.0000   0.0000 0.0000 0.0000
+##           Slit_Clay
+## SOC.bc    0.0000   
+## ELEV      0.0000   
+## Aspect    0.0304   
+## Slope     0.0000   
+## TPI       0.8297   
+## K_Factor  0.0000   
+## MAP       0.0000   
+## MAT       0.0000   
+## NDVI      0.0000   
+## Slit_Clay</code></pre>
+</div>
+<div id="variogram-modeling-of-co-regionalisation-or-corss-varoigram" class="section level3">
+<h3>Variogram Modeling of co-regionalisation or Corss-Varoigram</h3>
+<p>From correlation analysis, it is observed that only <strong>NDVI</strong> shows the highest correlation with SOC (r = 0.63, p-value &lt; 0.001), So will use NDVI for co-kriging. We first model the spatial structure of the target variable (SOC), the co-variable (NDVI) and its covariance with the target variable (SOC). This is called a <strong>co-regionalisation</strong>. It is an extension of the theory of a single regionalism variable used for ordinary kriging. The direct and cross-variograms must be modeled together, with some restrictions to ensure that the resulting CK system can be solved. Cross-variogram (per pair of regionalized variables) is calculated using following equation:</p>
+<p><img src="Image/PNG_FILE_07/crossvariogram.png" width="60%" style="display: block; margin: auto;" /></p>
+<p>Before variogram modeling. first. we have to define x &amp; y variables to coordinates</p>
+<pre class="r"><code>coordinates(train) = ~x+y
+coordinates(grid) = ~x+y</code></pre>
+<div id="direct-varoigram-of-target-variables-soc" class="section level4">
+<h4>Direct Varoigram of Target Variables (SOC)</h4>
+<pre class="r"><code># Variogram
+v.soc&lt;-variogram(SOC.bc~ 1, data = train, cloud=F)
+# Intial parameter set by eye esitmation
+m.soc&lt;-vgm(1.5,&quot;Exp&quot;,400000,0.5)
+# least square fit
+m.f.soc&lt;-fit.variogram(v.soc, m.soc)
+p1&lt;-plot(v.soc, pl=F, model=m.f.soc, main= &quot;SOC&quot;)</code></pre>
+</div>
+<div id="direct-varoigram-of-variogram-modeling-of-co-variables-ndvi" class="section level4">
+<h4>Direct Varoigram of Variogram Modeling of Co-Variables (NDVI)</h4>
+<pre class="r"><code># Variogram
+v.ndvi&lt;-variogram(NDVI~ 1, data = train, cloud=F)
+# Intial parameter set by eye esitmation
+m.ndvi&lt;-vgm(1.5,&quot;Exp&quot;,40000,0.5)
+# least square fit
+m.f.ndvi&lt;-fit.variogram(v.ndvi, m.ndvi)
+p2&lt;-plot(v.ndvi, pl=F, model=m.f.ndvi, main=&quot;NDVI&quot;)</code></pre>
+<pre class="r"><code>grid.arrange(p1, p2, ncol = 2)  # Multiplot </code></pre>
+<p><img src="cokriging_files/figure-html/unnamed-chunk-12-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cross-variogram" class="section level4">
+<h4>Cross-Variogram</h4>
+<p>For modeling Cross-Varoigram, We have to fit models to both the direct and cross-variograms simultaneously with same shape and range, but may have different partial sills and nuggets.</p>
+<p>For modeling of Cross-Varoigram in R, we have to build the <strong>gstat</strong> model sequentially, using the <strong>gstat</strong> method. First we have to build a <strong>gstat</strong> structure for target (SOC) and covariates (NDVI). Then, add we will fit variogram models to the <strong>gstat</strong> object.</p>
+<pre class="r"><code>g &lt;- gstat(NULL, id = &quot;SOC&quot;, form = SOC.bc ~ 1, data=train)
+g &lt;- gstat(g, id = &quot;NDVI&quot;, form = NDVI ~ 1, data=train)</code></pre>
+<p>Mow display the two direct variograms and one cross-variogram</p>
+<pre class="r"><code>v.cross &lt;- variogram(g)
+plot(v.cross, pl=F)</code></pre>
+<p><img src="cokriging_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We will add variogram models to the gstat object and fit a them using the linear model of co-regionalisation. By filling all the frames with one model (using the fill.all = T argument), these conditions are automatically met.</p>
+<pre class="r"><code>#g &lt;- gstat(g, id = &quot;SOC&quot;, model = m.f.soc, fill.all=T)
+g &lt;- gstat(g, id = &quot;SOC&quot;, model = m.f.soc, fill.all=T)
+g</code></pre>
+<pre><code>## data:
+## SOC : formula = SOC.bc`~`1 ; data dim = 368 x 22
+## NDVI : formula = NDVI`~`1 ; data dim = 368 x 22
+## variograms:
+##             model     psill    range
+## SOC[1]        Nug 0.5165078     0.00
+## SOC[2]        Exp 1.0817190 82362.04
+## NDVI[1]       Nug 0.5165078     0.00
+## NDVI[2]       Exp 1.0817190 82362.04
+## SOC.NDVI[1]   Nug 0.5165078     0.00
+## SOC.NDVI[2]   Exp 1.0817190 82362.04</code></pre>
+<p>Now we fit all three variograms together, ensuring they lead to a positive definite co-kriging system. For this we use the fit.lmc method (“fit linear model of co-regionalization”). This takes the initial estimate, fits all the variograms, and then each of the partial sills is adjusted (by least squares) to the closest value that will result in a positive definite matrices.</p>
+<pre class="r"><code>g &lt;- fit.lmc(v.cross, g)
+g</code></pre>
+<pre><code>## data:
+## SOC : formula = SOC.bc`~`1 ; data dim = 368 x 22
+## NDVI : formula = NDVI`~`1 ; data dim = 368 x 22
+## variograms:
+##             model        psill    range
+## SOC[1]        Nug  0.516509101     0.00
+## SOC[2]        Exp  1.081719638 82362.04
+## NDVI[1]       Nug  0.001006654     0.00
+## NDVI[2]       Exp  0.018584071 82362.04
+## SOC.NDVI[1]   Nug -0.022802328     0.00
+## SOC.NDVI[2]   Exp  0.125599263 82362.04</code></pre>
+<pre class="r"><code>plot(variogram(g), model=g$model)</code></pre>
+<p><img src="cokriging_files/figure-html/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="co-kriging-prediction-at-grid-locations" class="section level4">
+<h4>Co-Kriging Prediction at grid locations</h4>
+<p>The wrapper method <strong>krige()</strong>that was used for OK can only be used for univariate kriging; here we have to use the <strong>predict()</strong> function. This takes a gstat object as the first argument and the prediction points data frame as the second argument</p>
+<pre class="r"><code>CK &lt;- predict(g, grid)</code></pre>
+<pre><code>## Linear Model of Coregionalization found. Good.
+## [using ordinary cokriging]</code></pre>
+<pre class="r"><code>summary(CK)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##        min     max
+## x -1245285  114715
+## y  1003795 2533795
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 10674
+## Data attributes:
+##     SOC.pred         SOC.var         NDVI.pred         NDVI.var       
+##  Min.   :-0.146   Min.   :0.5951   Min.   :0.1565   Min.   :0.001187  
+##  1st Qu.: 1.170   1st Qu.:0.8408   1st Qu.:0.3090   1st Qu.:0.005756  
+##  Median : 1.805   Median :0.9288   Median :0.4035   Median :0.007375  
+##  Mean   : 1.854   Mean   :0.9461   Mean   :0.4185   Mean   :0.007672  
+##  3rd Qu.: 2.525   3rd Qu.:1.0345   3rd Qu.:0.5125   3rd Qu.:0.009305  
+##  Max.   : 4.272   Max.   :1.4296   Max.   :0.7758   Max.   :0.016465  
+##   cov.SOC.NDVI     
+##  Min.   :-0.02614  
+##  1st Qu.: 0.00624  
+##  Median : 0.01757  
+##  Mean   : 0.01955  
+##  3rd Qu.: 0.03097  
+##  Max.   : 0.08082</code></pre>
+</div>
+<div id="back-transformation" class="section level4">
+<h4>Back transformation</h4>
+<p>We will back transformation using transformation parameters that have used Box-cos transformation</p>
+<pre class="r"><code>k1&lt;-1/0.2523339                                   
+CK$CK.pred &lt;-((CK$SOC.pred *0.2523339+1)^k1)
+CK$CK.var &lt;-((CK$SOC.var *0.2523339+1)^k1)
+summary(CK)</code></pre>
+<pre><code>## Object of class SpatialPointsDataFrame
+## Coordinates:
+##        min     max
+## x -1245285  114715
+## y  1003795 2533795
+## Is projected: NA 
+## proj4string : [NA]
+## Number of points: 10674
+## Data attributes:
+##     SOC.pred         SOC.var         NDVI.pred         NDVI.var       
+##  Min.   :-0.146   Min.   :0.5951   Min.   :0.1565   Min.   :0.001187  
+##  1st Qu.: 1.170   1st Qu.:0.8408   1st Qu.:0.3090   1st Qu.:0.005756  
+##  Median : 1.805   Median :0.9288   Median :0.4035   Median :0.007375  
+##  Mean   : 1.854   Mean   :0.9461   Mean   :0.4185   Mean   :0.007672  
+##  3rd Qu.: 2.525   3rd Qu.:1.0345   3rd Qu.:0.5125   3rd Qu.:0.009305  
+##  Max.   : 4.272   Max.   :1.4296   Max.   :0.7758   Max.   :0.016465  
+##   cov.SOC.NDVI         CK.pred            CK.var     
+##  Min.   :-0.02614   Min.   : 0.8617   Min.   :1.741  
+##  1st Qu.: 0.00624   1st Qu.: 2.7875   1st Qu.:2.144  
+##  Median : 0.01757   Median : 4.4252   Median :2.303  
+##  Mean   : 0.01955   Mean   : 5.1919   Mean   :2.349  
+##  3rd Qu.: 0.03097   3rd Qu.: 7.0556   3rd Qu.:2.507  
+##  Max.   : 0.08082   Max.   :18.1452   Max.   :3.390</code></pre>
+</div>
+<div id="convert-to-raster" class="section level4">
+<h4>Convert to raster</h4>
+<pre class="r"><code>CK.pred&lt;-rasterFromXYZ(as.data.frame(CK)[, c(&quot;x&quot;, &quot;y&quot;, &quot;CK.pred&quot;)])
+CK.var&lt;-rasterFromXYZ(as.data.frame(CK)[, c(&quot;x&quot;, &quot;y&quot;, &quot;CK.var&quot;)])</code></pre>
+</div>
+<div id="plot-predicted-soc-and-ok-error" class="section level4">
+<h4>Plot predicted SOC and OK Error</h4>
+<pre class="r"><code>p3&lt;-ggR(CK.pred, geom_raster = TRUE) +
+scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;CK Predicted SOC&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+p4&lt;-ggR(CK.var, geom_raster = TRUE) +
+scale_fill_gradientn(&quot;&quot;, colours = c(&quot;blue&quot;,  &quot;green&quot;,&quot;yellow&quot;, &quot;orange&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;CK Predition Variance&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(p3,p4, ncol = 2)  # Multiplot </code></pre>
+<p><img src="cokriging_files/figure-html/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Above plots show the interpolated map of soil SOC with associated error at each prediction grid. CK predicted map shows global pattern and hot spot locations of SOC concentration. The kriging variance is higher in unsampled locations, since variance depends on geometry of the sampling locations with lower variance near sampling locations.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

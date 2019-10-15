@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Spectral Indices</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="getting-started-with-r.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-statistics.html">Spatial Statistics</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing Data with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Spectral Indices</h1>
+
+</div>
+
+
+<div style="margin-bottom:40px;">
+
+</div>
+<p>In this lesson, we will learn how to calculate different types of spectral indices using R. For this purpose, we will use atmospheric-corrected, Landsat-8 bands that we created in the previous section. We will calculate the following indices:</p>
+<ul>
+<li><p><a href="#normalized-difference-vegetation-index">Normalized Difference Vegetation Index (NDVI)</a></p></li>
+<li><p><a href="#soil-adjusted-vegetation-index">Soil Adjusted Vegetation Index (SAVI)</a></p></li>
+<li><p><a href="#modified-soil-adjusted-vegetation-index">Modified Soil Adjusted Vegetation Index (MSAVI)</a></p></li>
+<li><p><a href="#enhanced-vegetation-index">Enhanced Vegetation Index (EVI)</a></p></li>
+<li><p><a href="#two-bands-enhanced-vegetation-index">Two bands Enhanced Vegetation Index (EVI2)</a></p></li>
+<li><p><a href="#normalized-difference-water-index">Normalized Difference Water Index (NDWI)</a></p></li>
+</ul>
+<div id="load-packages" class="section level4">
+<h4>Load packages</h4>
+<pre class="r"><code>library (raster)      # raster data
+library(rasterVis)  # raster visualisation  
+library(sp)         # Spatial data processing           
+library(rgdal)      # Spatial data processing
+library(RStoolbox)  # Image analysis
+library(ggplot2)    # ploting</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0">here</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+<p>We will use blue (b2), red (b4), NIR (b5) and Shortwave Infra-red1 (SWIR1) bands to calculate above mentioned indices.</p>
+</div>
+<div id="load-bands" class="section level4">
+<h4>Load bands</h4>
+<pre class="r"><code>BLUE&lt;- raster(paste0(dataFolder,&quot;//Landsat8//Landsat8_PROCESSED//_B2_sre.tif&quot;))
+RED&lt;- raster(paste0(dataFolder,&quot;//Landsat8//Landsat8_PROCESSED//_B4_sre.tif&quot;))
+NIR&lt;- raster(paste0(dataFolder,&quot;//Landsat8//Landsat8_PROCESSED//_B5_sre.tif&quot;))
+SWIR1&lt;- raster(paste0(dataFolder,&quot;//Landsat8//Landsat8_PROCESSED//_B6_sre.tif&quot;))</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="normalized-difference-vegetation-index" class="section level3">
+<h3>Normalized Difference Vegetation Index</h3>
+<p>The <strong>Normalized Difference Vegetation Index (NDVI)</strong> is an index of plant “greenness” or photosynthetic activity, and is one of the most commonly used vegetation indices. Vegetation indices are based on the observation that different surfaces reflect different types of light differently. Photosynthetically active vegetation, in particular, absorbs most of the red light that hits it, while reflecting much of the near infrared light. Vegetation that is dead or stressed reflects more red light and less near infrared light. The biophysical interpretation of NDVI is the fraction of absorbed photosynthetically active radiation.</p>
+<p><strong>NDVI</strong> is calculated as:</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/NDVI.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<pre class="r"><code>NDVI = (NIR - RED)/(NIR +RED)
+
+ggR(NDVI, geom_raster = TRUE) +
+    scale_fill_gradientn(&quot;NDVI&quot;, 
+    colours = c(&quot;red&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;green4&quot;))+
+    ggtitle(&quot;Normalized Difference Vegetation Index (NDVI)&quot;)</code></pre>
+<p><img src="spectral-indices_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="soil-adjusted-vegetation-index" class="section level3">
+<h3>Soil Adjusted Vegetation Index</h3>
+<p>This index is similar to NDVI, but it suppresses the effects of pixels containing bare soil, by incorporating a canopy background adjustment factor, L, into the calculations. L is a function of vegetation density, which can be based on prior knowledge of vegetation amounts. In the absence of such knowledge, Huete (1988) suggests using a value of L=0.5 to account for first-order soil background variations. This index is best used in areas with relatively sparse vegetation where soil is visible through the canopy.</p>
+<p>** Soil Adjusted Vegetation Inde (SAVI)** is calculated as:</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/SAVI.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<pre class="r"><code>L=0.5
+SAVI= (1 + L)*(NIR - RED)/(NIR + RED + L)
+
+ggR(SAVI, geom_raster = TRUE) +
+   scale_fill_gradientn(&quot;SAVI&quot;, colours = c(&quot;red&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;green4&quot;))+
+   ggtitle(&quot;Soil Adjusted Vegetation Index (SAVI)&quot;)</code></pre>
+<p><img src="spectral-indices_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="modified-soil-adjusted-vegetation-index" class="section level3">
+<h3>Modified Soil Adjusted Vegetation Index</h3>
+<p>The <strong>modified soil-adjusted vegetation index (MSAVI)</strong> addresses some of the limitations of the NDVI when applied to areas with a high degree of exposed soil surface. The problem with the original soil-adjusted vegetation index (SAVI) is that it required specifying the soil-brightness correction factor (L) through trial-and-error based on the amount of vegetation in the study area or using a “one size fits all” correction factor of 0.5 To more reliably and simply calculate a soil brightness correction factor, Qi et al. (1994a) developed MSAVI (Qi et al. 1994b).</p>
+<p><strong>MSAVI</strong> is calculated as:</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/MSAVI.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<pre class="r"><code>MSAVI = NIR + 0.5 - (0.5 * sqrt((2 * NIR + 1)^2 - 8 * (NIR - (2 * RED))))
+
+ggR(MSAVI, geom_raster = TRUE) +
+   scale_fill_gradientn(&quot;MSAVI&quot;, colours = c(&quot;red&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;blue&quot;))+
+    ggtitle(&quot;Modified Soil Adjusted Vegetation Index (MSAVI)&quot;)</code></pre>
+<p><img src="spectral-indices_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="enhanced-vegetation-index" class="section level3">
+<h3>Enhanced Vegetation Index</h3>
+<p>The Enhanced Vegetation Index (EVI) was also developed to address some of the limitations of the NDVI. The EVI was developed for areas with high biomass, which cause a problem for the NDVI. It reduces the influence of atmospheric conditions on vegetation index values, and corrects for canopy background signals. Accordingly, EVI tends to be more sensitive than NDVI to plant canopy differences like leaf area index (LAI), canopy structure, and plant phenology.</p>
+<p>EVI is calculated as:</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/EVI.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<pre class="r"><code># The coefficients adopted in the MODIS-EVI algorithm are; 
+#  C1, C2, and L are coefficients to correct for atmospheric condition 
+# (i.e., aerosol resistance). 
+# For the standard MODIS EVI product: 
+
+L_evi=1 
+C1 = 6
+C2 = 7.5
+G  = 2.5
+
+EVI = G * ((NIR - RED)/(NIR + C1 * RED - C2 * BLUE + L_evi))
+
+ggR(EVI, geom_raster = TRUE) +
+   scale_fill_gradientn(&quot;EVI&quot;, colours = c(&quot;red&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;blue&quot;))+
+   ggtitle(&quot;Enhanced Vegetation Index (EVI)&quot;)</code></pre>
+<p><img src="spectral-indices_files/figure-html/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="two-bands-enhanced-vegetation-index" class="section level3">
+<h3>Two bands Enhanced Vegetation Index</h3>
+<p>A two-band Enhanced Vegetation Index (EVI2) without the blue band reflectance has recently been developed as a proxy for the phenology, quantity, and activity of vegetation . EVI2 has several advantages over NDVI including the ability to resolve LAI differences for vegetation with different background soil reflectance values.</p>
+<p><strong>EVI2</strong> is calculated as:</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/EVI2.png" alt="Clipping" width="40%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<pre class="r"><code>G=2.5
+EVI2= G * (NIR - RED)/(NIR + 2.4 * RED + 1)
+
+ggR(EVI2, geom_raster = TRUE) +
+   scale_fill_gradientn(&quot;EVI2&quot;, colours = c(&quot;red&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;blue&quot;))+
+   ggtitle(&quot;Two-bands Enhanced Vegetation Index (EVI2)&quot;)</code></pre>
+<p><img src="spectral-indices_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="normalized-difference-water-index" class="section level3">
+<h3>Normalized Difference Water Index</h3>
+<p>The NDWI index is designed for water body mapping. A water body has strong absorbability and low radiation in the visible to infrared range of wavelengths. Consequently, the green and Near Infra-red bands from remote sensing images are used in the calculation of the index. The NDWI can usually enhance the detection of water bodies</p>
+<p><strong>NDWI</strong> is calculated as:</p>
+<div class="figure" style="text-align: center">
+<img src="Image/PNG_FILE_08/NDWI.png" alt="Clipping" width="30%" />
+<p class="caption">
+Clipping
+</p>
+</div>
+<pre class="r"><code>NDWI=(NIR - SWIR1)/(NIR + SWIR1)
+
+ggR(NDWI, geom_raster = TRUE) +
+    scale_fill_gradientn(&quot;NDWI&quot;, 
+    colours = c(&quot;blue&quot;, &quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;))+
+    ggtitle(&quot;Normalized Difference Water Index (NDWI)&quot;)</code></pre>
+<p><img src="spectral-indices_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
