@@ -1,7 +1,7 @@
-name: Geospatial Data Science
+name: Geospatial Data Science in R
 output_dir: '.'
 navbar:
-  title: Geospatial Data Science
+  title: Geospatial Data Science in R
   type: inverse
   left:
   - text: Home
