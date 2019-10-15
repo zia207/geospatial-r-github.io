@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415684350.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2378748954",
+    "id" : "30E1D248",
+    "lastKnownWriteTime" : 1549456332,
+    "last_content_update" : 1549456332804,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/exboost.Rmd",
+    "project_path" : "exboost.Rmd",
+    "properties" : {
+        "cursorPosition" : "182,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

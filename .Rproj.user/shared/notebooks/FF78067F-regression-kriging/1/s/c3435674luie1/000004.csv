@@ -1,0 +1,8 @@
+"0","# Variogram"
+"0","v.stack<-variogram(residuals.stack~ 1, data = train.xy)"
+"0","# Intial parameter set by eye esitmation"
+"0","m.stack<-vgm(0.15,""Exp"",40000,0.05)"
+"0","# least square fit"
+"0","m.f.stack<-fit.variogram(v.stack, m.stack)"
+"2","No convergence after 200 iterations: try different initial values?"
+"0","m.f.stack"

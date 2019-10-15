@@ -180,7 +180,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,7 +349,7 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
-      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
 </li>
@@ -513,7 +513,7 @@ head(point.mf)</code></pre>
 <div id="keep-values-belong-only-to-5-classes" class="section level4">
 <h4>Keep values belong only to 5 classes:</h4>
 <pre class="r"><code>point&lt;-point.mf %&gt;% 
-  select(x,y,Class_ID, B2, B3, B4, B5, B6,B7,B8,B8A,B11,B12) %&gt;% 
+  dplyr:: select(x,y,Class_ID, B2, B3, B4, B5, B6,B7,B8,B8A,B11,B12) %&gt;% 
   filter(Class_ID &gt;0) </code></pre>
 </div>
 <div id="add-class-id-and-save-as-a-csv-file" class="section level4">
@@ -584,7 +584,6 @@ head(grid)</code></pre>
 <div id="laod-caret-package" class="section level4">
 <h4>Laod caret package:</h4>
 <pre class="r"><code>library(caret) </code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
 <div id="split-data" class="section level5">
 <h5>Split data:</h5>
 <pre class="r"><code>set.seed(3456)
@@ -597,6 +596,7 @@ test&lt;- newdata[-trainIndex,]
 # Export as CSV files
 write.csv(train, paste0(dataFolder,&quot;.\\Sentinel_2\\train_data.csv&quot;),row.names=F)
 write.csv(test, paste0(dataFolder, &quot;.\\Sentinel_2\\test_data.csv&quot;), row.names=F)</code></pre>
+<pre class="r"><code>rm(list = ls())</code></pre>
 </div>
 </div>
 </div>

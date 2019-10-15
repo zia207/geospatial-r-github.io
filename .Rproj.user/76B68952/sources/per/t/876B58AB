@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1548306355464.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1614035373",
+    "id" : "876B58AB",
+    "lastKnownWriteTime" : 1548276538,
+    "last_content_update" : 1548276538,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/working-with-raster-data.Rmd",
+    "project_path" : "working-with-raster-data.Rmd",
+    "properties" : {
+        "cursorPosition" : "19,0",
+        "ignored_words" : "Resample,resample,Hillshade,hillshade,rgdal,https,cran,pdf,RColorBrewer,ColorBrewer,classInt,tif,Nrow,Ncol,Ncells,Coord,quantile,sd,kmeans,hclust,bclust,jenks,http,arcgis,trunc,sqrt,atan,bilinear,df,transversed,nodata,hydrological,McNab's,Bolstad's,McNab,Bolstad,Lillesand\n",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

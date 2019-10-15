@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549416041459.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2819044152",
+    "id" : "EB1A0320",
+    "lastKnownWriteTime" : 1549461873,
+    "last_content_update" : 1549461873071,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/spatial-autocorrelation.Rmd",
+    "project_path" : "spatial-autocorrelation.Rmd",
+    "properties" : {
+        "cursorPosition" : "251,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 15,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

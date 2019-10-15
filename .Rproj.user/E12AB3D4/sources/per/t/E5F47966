@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549416182113.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "289348696",
+    "id" : "E5F47966",
+    "lastKnownWriteTime" : 1549463363,
+    "last_content_update" : 1549463363252,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/texture-analysis.Rmd",
+    "project_path" : "texture-analysis.Rmd",
+    "properties" : {
+        "cursorPosition" : "175,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 21,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

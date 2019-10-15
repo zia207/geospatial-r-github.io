@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1548306257626.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2731682988",
+    "id" : "F73B3F38",
+    "lastKnownWriteTime" : 1548306291,
+    "last_content_update" : 1548306291316,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/universal-kriging.Rmd",
+    "project_path" : "universal-kriging.Rmd",
+    "properties" : {
+        "cursorPosition" : "4,6",
+        "ignored_words" : "stationarity,univariate,semivariances,varoigram,bc,lm,Ist,unsampled\n",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

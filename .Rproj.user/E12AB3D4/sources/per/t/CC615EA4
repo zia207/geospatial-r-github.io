@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549456100283.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "772219596",
+    "id" : "CC615EA4",
+    "lastKnownWriteTime" : 1548288716,
+    "last_content_update" : 1548288716,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/deep-learning-keras-tensorflow.Rmd",
+    "project_path" : "deep-learning-keras-tensorflow.Rmd",
+    "properties" : {
+        "cursorPosition" : "8,312",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 45,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

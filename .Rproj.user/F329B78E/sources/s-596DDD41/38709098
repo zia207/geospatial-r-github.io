@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544154403706.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "38709098",
+    "lastKnownWriteTime" : 1544206628,
+    "last_content_update" : 1544206628101,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/supervised-classification.Rmd",
+    "project_path" : "supervised-classification.Rmd",
+    "properties" : {
+        "cursorPosition" : "22,0",
+        "ignored_words" : "eXBoost,exboost,Kersa,TensorFolow,tensorflow\n",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 36,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

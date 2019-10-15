@@ -1,0 +1,4 @@
+"0","r <- raster(extent, resolution=2.5,"
+"0","            crs = '+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs ')"
+"0","extent(r) <- extent(poly)"
+"0","rp <- rasterize(poly, r, 'Class_ID')"

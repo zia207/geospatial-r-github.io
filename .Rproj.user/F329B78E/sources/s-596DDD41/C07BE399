@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544310685327.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C07BE399",
+    "lastKnownWriteTime" : 1544133081,
+    "last_content_update" : 1544133081,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/data-preparation.Rmd",
+    "project_path" : "data-preparation.Rmd",
+    "properties" : {
+        "cursorPosition" : "18,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 41,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544465051143.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "62319855",
+    "lastKnownWriteTime" : 1544466551,
+    "last_content_update" : 1544466551147,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/validation-independent-dataset.Rmd",
+    "project_path" : "validation-independent-dataset.Rmd",
+    "properties" : {
+        "cursorPosition" : "15,16",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 47,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

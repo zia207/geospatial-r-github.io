@@ -1,0 +1,20 @@
+"0","library(rgdal)        # spatial data processing"
+"0","library(raster)       # raster processing"
+"0","library(plyr)         # data manipulation "
+"0","library(dplyr)        # data manipulation "
+"0","library(RStoolbox)    # Image analysis & plotting spatial data "
+"0","library(RColorBrewer) # color"
+"0","library(ggplot2)      # plotting"
+"0","library(sp)           # spatial data"
+"0","library(caret)        # machine laerning"
+"0","library(doParallel)   # Parallel processing"
+"0","library(e1071)        # Naive Bayes"
+"2","
+Attaching package: ‘e1071’
+
+"
+"2","The following object is masked from ‘package:raster’:
+
+    interpolate
+
+"

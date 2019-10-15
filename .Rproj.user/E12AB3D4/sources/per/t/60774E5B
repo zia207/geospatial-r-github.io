@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415990551.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2407562886",
+    "id" : "60774E5B",
+    "lastKnownWriteTime" : 1549461678,
+    "last_content_update" : 1549461678567,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/landsat-8-image-processing.Rmd",
+    "project_path" : "landsat-8-image-processing.Rmd",
+    "properties" : {
+        "cursorPosition" : "315,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 13,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

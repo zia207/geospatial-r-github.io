@@ -1,0 +1,3 @@
+"0","spplot(v.gp, 'SOC',"
+"0","       main= ""Thiessen polygons (Voronoi)"","
+"0","       col.regions=rev(get_col_regions()))"

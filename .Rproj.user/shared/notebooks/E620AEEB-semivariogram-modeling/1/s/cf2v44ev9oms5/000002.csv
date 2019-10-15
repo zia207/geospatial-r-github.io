@@ -1,0 +1,2 @@
+"0","v.bc<-variogram(SOC.bc~ 1, data = train, cloud=F)"
+"0","plot(v.bc)"

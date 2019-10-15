@@ -1,0 +1,148 @@
+"0","set.seed(849)"
+"0","fit.nb <- train(as.factor(Landuse)~B2+B3+B4+B4+B6+B7+B8+B8A+B11+B12, "
+"0","                data=train.df,"
+"0","                method = ""nb"","
+"0","                metric= ""Accuracy"","
+"0","                preProc = c(""center"", ""scale""), "
+"0","                trControl = myControl"
+"0","                )"
+"1","1 package is needed for this model and is not installed. (klaR). Would you like to try to install it now?"
+"1","
+"
+"1","1: yes"
+"1","
+"
+"1","2: no"
+"1","
+"
+"1","
+"
+"0","1"
+"2","Installing package into ‘C:/Users/zahmed2/Documents/R/win-library/3.5’
+(as ‘lib’ is unspecified)
+"
+"2","also installing the dependencies ‘labelled’, ‘combinat’, ‘questionr’
+
+"
+"2","cannot open URL 'http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5/PACKAGES.rds': HTTP status was '404 Not Found'"
+"2","cannot open URL 'http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5/PACKAGES.gz': HTTP status was '404 Not Found'"
+"2","cannot open URL 'http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5/PACKAGES': HTTP status was '404 Not Found'"
+"2","unable to access index for repository http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5:
+  cannot open URL 'http://www.stats.ox.ac.uk/pub/RWin/bin/windows/contrib/3.5/PACKAGES'"
+"2","trying URL 'https://mran.microsoft.com/snapshot/2018-08-01/bin/windows/contrib/3.5/labelled_1.1.0.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 112873 bytes (110 KB)
+"
+"2","downloaded 110 KB
+
+"
+"2","trying URL 'https://mran.microsoft.com/snapshot/2018-08-01/bin/windows/contrib/3.5/combinat_0.0-8.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 42494 bytes (41 KB)
+"
+"2","downloaded 41 KB
+
+"
+"2","trying URL 'https://mran.microsoft.com/snapshot/2018-08-01/bin/windows/contrib/3.5/questionr_0.6.3.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 1591841 bytes (1.5 MB)
+"
+"2","downloaded 1.5 MB
+
+"
+"2","trying URL 'https://mran.microsoft.com/snapshot/2018-08-01/bin/windows/contrib/3.5/klaR_0.6-14.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 563763 bytes (550 KB)
+"
+"2","downloaded 550 KB
+
+"
+"1","package â€˜labelledâ€™ successfully unpacked and MD5 sums checked
+"
+"1","package â€˜combinatâ€™ successfully unpacked and MD5 sums checked
+"
+"1","package â€˜questionrâ€™ successfully unpacked and MD5 sums checked
+"
+"1","package â€˜klaRâ€™ successfully unpacked and MD5 sums checked
+"
+"1","
+"
+"1","The downloaded binary packages are in
+	C:\Users\zahmed2\AppData\Local\Temp\1\Rtmp6Dn9fe\downloaded_packages"
+"1","
+"
+"0","fit.nb "
+"1","Naive Bayes"
+"1"," "
+"1","
+
+"
+"1","16764"
+"1"," samples"
+"1","
+"
+"1","    9"
+"1"," predictor"
+"1","
+"
+"1","    5"
+"1"," "
+"1","classes:"
+"1"," "
+"1","'Building', 'Grass', 'Parking/road/pavement', 'Tree/bushes', 'Water'"
+"1"," "
+"1","
+"
+"1","
+"
+"1","Pre-processing: centered (9), scaled (9)"
+"1"," "
+"1","
+"
+"1","Resampling:"
+"1"," "
+"1","Cross-Validated (3 fold, repeated 2 times)"
+"1"," "
+"1","
+"
+"1","Summary of sample sizes:"
+"1"," "
+"1","11176, 11175, 11177, 11175, 11175, 11178, ..."
+"1"," "
+"1","
+"
+"1","Resampling results"
+"1"," across tuning parameters"
+"1",":
+
+"
+"1","  usekernel"
+"1","  Accuracy "
+"1","  Kappa    "
+"1","
+"
+"1","  FALSE    "
+"1","  0.8800113"
+"1","  0.8408077"
+"1","
+"
+"1","   TRUE    "
+"1","  0.9065557"
+"1","  0.8759263"
+"1","
+"
+"1","
+"
+"1","Tuning parameter 'fL' was held constant at a value of 0
+Tuning parameter 'adjust' was held constant at a value of 1"
+"1","
+"
+"1","Accuracy was used to select the optimal model using the largest value.
+"
+"1","The final values used for the model were fL = 0, usekernel = TRUE and adjust = 1."
+"1","
+"

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415632507.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2071604878",
+    "id" : "BE6A98CD",
+    "lastKnownWriteTime" : 1549456190,
+    "last_content_update" : 1549456190377,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/cross-validation.Rmd",
+    "project_path" : "cross-validation.Rmd",
+    "properties" : {
+        "cursorPosition" : "185,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

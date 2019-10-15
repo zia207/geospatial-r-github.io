@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549416145970.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4165483977",
+    "id" : "A0CC189A",
+    "lastKnownWriteTime" : 1548193074,
+    "last_content_update" : 1548193074,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/spectral-indices.Rmd",
+    "project_path" : "spectral-indices.Rmd",
+    "properties" : {
+        "cursorPosition" : "50,9",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 18,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

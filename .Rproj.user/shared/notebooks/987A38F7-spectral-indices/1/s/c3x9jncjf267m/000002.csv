@@ -1,0 +1,5 @@
+"0","G=2.5"
+"0","EVI2= G * (NIR - RED)/(NIR + 2.4 * RED + 1)"
+"0","ggR(EVI2, geom_raster = TRUE) +"
+"0","   scale_fill_gradientn(""EVI2"", colours = c(""red"", ""yellow"", ""green"", ""blue""))+"
+"0","   ggtitle(""Two-bands Enhanced Vegetation Index (EVI2)"")"

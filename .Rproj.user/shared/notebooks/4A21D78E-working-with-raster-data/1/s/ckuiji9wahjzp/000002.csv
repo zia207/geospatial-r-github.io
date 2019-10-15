@@ -1,0 +1,13 @@
+"0","library (rgdal) 		  # Geospatial Data Abstraction Library"
+"0","library (raster) 		  # raster data"
+"0","library(classInt)     # for class interval"
+"2","Loading required package: spData
+"
+"2","To access larger datasets in this package, install the spDataLarge package with: `install.packages('spDataLarge',
+repos='https://nowosad.github.io/drat/', type='source'))`
+"
+"0","library(RColorBrewer)	# for customize colour palettes"
+"0","library(gridExtra)    # plotting"
+"0","library(spatialEco)   # Curveture analysis"
+"2","Error in library(spatialEco) : there is no package called ‘spatialEco’
+"

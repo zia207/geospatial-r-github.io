@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544284729385.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "633E72BB",
+    "lastKnownWriteTime" : 1544462463,
+    "last_content_update" : 1544462463253,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/working-with-raster-data.Rmd",
+    "project_path" : "working-with-raster-data.Rmd",
+    "properties" : {
+        "cursorPosition" : "93,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 40,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

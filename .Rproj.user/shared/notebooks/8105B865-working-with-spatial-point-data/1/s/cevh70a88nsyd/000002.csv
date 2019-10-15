@@ -1,0 +1,4 @@
+"0","# merge two data.frames"
+"0","df_01 <- merge(ID,gps, by=""ID"")    # join GPS coordinates with state and county ID"
+"0","df <- merge(df_01,data,by=""ID"")    # join data"
+"0","head(df)"

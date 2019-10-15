@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544209700027.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "CCE3C946",
+    "lastKnownWriteTime" : 1544229920,
+    "last_content_update" : 1544229920523,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/deep-learning-h2o.Rmd",
+    "project_path" : "deep-learning-h2o.Rmd",
+    "properties" : {
+        "cursorPosition" : "78,31",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 38,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

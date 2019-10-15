@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544467152172.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5AA4D832",
+    "lastKnownWriteTime" : 1544489244,
+    "last_content_update" : 1544490359132,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/conditional-simulation-spatial-uncertinity.Rmd",
+    "project_path" : "conditional-simulation-spatial-uncertinity.Rmd",
+    "properties" : {
+        "cursorPosition" : "136,13",
+        "scrollLine" : "127",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 50,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

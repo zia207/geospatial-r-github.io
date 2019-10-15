@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541781667040.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "CD8AC5C2",
+    "lastKnownWriteTime" : 1544458980,
+    "last_content_update" : 1544458980519,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/cokriging.Rmd",
+    "project_path" : "cokriging.Rmd",
+    "properties" : {
+        "cursorPosition" : "17,17",
+        "ignored_words" : "variogram,kriging,Kriging,semivariogram,gstat,stationarity,covariates,excersice,variates,covariance,variograms,regionalised,Varoigram\n",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 12,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

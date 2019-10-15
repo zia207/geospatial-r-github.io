@@ -1,0 +1,323 @@
+---
+title: "Indicator Kriging"
+---
+
+
+Indicator kriging (IK) is a non-parametric geostatistical method that works with variables after indicator transformation (0, 1) of pre-defined threshold values and map the probability of exceeding pre-defined threshold values. This is directly useful for probabilistic decision-making. It can also be used to estimate an entire cumulative probability distribution (CDF) and the mean (E-type-estimate) of  CDF can be used as an estimate of the pollutant concentration after modeling of the upper and lower tails of the distribution [(Goovaerts, 2009)]( https://www.ncbi.nlm.nih.gov/pubmed/20161335).   The CDF based IK is applicable when data is strongly skewed, traditional data transformation limit to get robust statistics and estimators due to extreme values.   
+
+
+In R using **gstat** package, we can implement Indicator kriging (IK) for probabilistic mapping. But there is no R package available yet to ** E-type-estimate** from CDF's of IK. You can do it with the most popular geostatistical software [Gslib](http://www.gslib.com/) and [SGeMS](http://sgems.sourceforge.net/).  ** AUTO-IK**[(Goovaerts, 2009)]( https://www.ncbi.nlm.nih.gov/pubmed/20161335), is an automated Gslib routines for selection of thresholds for binary coding of continuous data, computation and modeling of indicator semivariograms, modeling of probability distributions at unmonitored locations (regular or irregular grids), and estimation of the mean and variance of these distributions.  
+
+
+In this exercise will use ground water arsenic (As) concentration data for Bangladesh from [British Geological Survey](http://www.bgs.ac.uk/research/groundwater/health/arsenic/Bangladesh/data.html).  The data-base contains hydro-chemical data of the survey of 3534 boreholes from 61 of the 64 districts of Bangladesh. ).  About 27.7% and 2.5% of the sampled wells had As concentration less than the instrumental detection limit of 0.5 u/L for hydride generation-atomic fluorescence spectrometry and 6.0 ug/L for hydride generation- ICP- AES, respectively. Samples that have As concretion below detection limits, we assigned values of half the equipment detection limits (0.25 or 3.0 ug/l). 
+
+
+The data  is available for download [here](https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0). 
+
+
+We use will use two thresholds - 10 ppb (WHO standard) and 50 ppb (Bangladesh standard) to create  probability maps exceeding these thresholds, We will follow steps below:
+
+* Convert numeric variables to indicator variables 
+* Compute and model indicator variograms
+* Predict the probability of exceeding a threshold by indicator kriging 
+
+
+#### Load package: 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(rasterVis)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(gridExtra)
+```
+
+
+#### Load Data
+
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+```
+
+
+```{r}
+df<-read.csv(paste0(dataFolder,"bgs_geochemical.csv"), header= TRUE) 
+grid<-read.csv(paste0(dataFolder,"bd_grid.csv"), header= TRUE) 
+bd<-shapefile(paste0(dataFolder,"BD_Banladesh_BUTM.shp")) 
+```
+
+
+##### Explotory data analysis 
+
+
+```{r}
+summary(df$As)
+```
+
+
+```{r,echo=TRUE, fig.align='center',fig.height=4, fig.width=8}
+par(mfrow=c(1,2))
+hist(df$As, breaks=20, xlab = "As (ppb)", main="Histogram of As")
+box()
+qqnorm(df$As, pch = 1,main= "QQ-plot of As") 
+qqline(df$As, col = "steelblue", lwd = 2) 
+par(mfrow=c(1,1))
+```
+
+
+
+#### Create a SPDF
+
+All sampling locations are in Geographical co-ordinates system, so we need convert the data in a projected coordinate system (Albers Equal Area Conic NAD1983)
+
+```{r}
+##  define coordinates
+xy <- df[,c(4,5)]
+# Convert to spatial point
+SPDF <- SpatialPointsDataFrame(coords = xy, data=df) 
+# Define projection
+proj4string(SPDF) = CRS("+proj=longlat +ellps=WGS84")  # WGS 84
+# Change projection 
+BUTM<-proj4string(bd)              # extract projection information
+SPDF.PROJ<- spTransform(SPDF,	     # Input SPDF
+		                  BUTM)       # projection  
+```
+
+
+
+```{r}
+# convert to a data-frame
+point.df<-as.data.frame(SPDF.PROJ)
+# Rename (last two column)
+colnames(point.df)[35] <- "x"
+colnames(point.df)[36] <- "y"
+mf<-point.df[,c(35:36,7,15,23)]
+head(mf)
+```
+
+#### Indicator  transformation
+
+Now, we compute an indicator variable for threshold 400 ppm Pb using following equation. Here an indicator for a continuous variable is 1 if the value is below a defined threshold, 0 otherwise
+
+
+
+```{r echo=FALSE, out.width='50%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\IK.png')
+```
+
+
+```{r}
+ik.10<-mf$As > 10    # threshold 10 ppb
+ik.50<-mf$As > 50    # threshold 50 ppb
+```
+
+
+Now, we create a df with this indicator.
+
+```{r}
+ik.df<-as.data.frame(cbind(mf,ik.10,ik.50))
+head(ik.df)
+```
+
+
+```{r}
+coordinates(ik.df)=~x+y
+coordinates(grid) = ~x+y
+```
+
+
+#### Map data
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width= 6,message=F, warning=F}
+spplot(ik.df, zcol = "As", col.regions = c("green", "orange", "red"), cex=.5,
+       main = "Groundwater As  (ppb)")
+```
+
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width= 7,message=F, warning=F}
+p1<-spplot(ik.df, zcol = "ik.50", col.regions = c("green", "red"), cex=.5,
+       main = "As > 10 ppb")
+p2<-spplot(ik.df, zcol = "ik.50", col.regions = c("green", "red"), cex=.5,
+       main = " As > 50 ppb")
+grid.arrange(p1, p2, ncol=2)
+
+```
+
+
+#### Indicator Variograms 
+
+
+```{r message=F, warning=F}
+
+ik.df <- ik.df[-zerodist(ik.df)[,1],] 
+# Variogram
+v10<-variogram(ik.10~ 1, data = ik.df)
+v50<-variogram(ik.50~ 1, data = ik.df)
+# Intial parameter set by eye esitmation
+m10<-vgm(0.15,"Exp",40000,0.05)
+m50<-vgm(0.15,"Exp",40000,0.05)
+# least square fit
+m.f.10<-fit.variogram(v10, m10)
+m.f.50<-fit.variogram(v50, m50)
+m.f.10
+m.f.50
+```
+
+
+#### Plot varigram and fitted model:
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 8,message=F, warning=F}
+#### Plot varigram and fitted model:
+v1<-plot(v10, pl=F, 
+     model=m.f.10,
+     col="black", 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main="Indicator Variogram\n As > 10 ppb",
+     xlab="Distance (m)",
+     ylab="Semivariance")
+
+v2<-plot(v50, pl=F, 
+     model=m.f.50,
+     col="black", 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main="Indicator Variogram\n As > 50 ppb",
+     xlab="Distance (m)",
+     ylab="Semivariance")
+grid.arrange(v1, v2, nrow = 1)
+```
+
+
+#### Cross validation
+
+We will compute the Leave-one-out cross-validation (LOOCV) of the IK prediction of As concentration greater than 10 and 5 ppb. It works the same as for parametric kriging: hold one point out, predict its probability of a TRUE indicator from the other points, and then compare this probability with the actual value of the indicator.
+
+
+```{r}
+cv.10 <- krige.cv(ik.10 ~ 1, loc = ik.df, model = m.f.10, nfold=5)
+cv.50 <- krige.cv(ik.50 ~ 1, loc = ik.df, model = m.f.50, nfold=5)
+```
+
+#### Limit the predicted probabilities to the range:
+
+```{r}
+cv.10$var1.pred <- pmin(1, cv.10$var1.pred)
+cv.10$var1.pred <- pmax(0, cv.10$var1.pred)
+
+cv.50$var1.pred <- pmin(1, cv.50$var1.pred)
+cv.50$var1.pred <- pmax(0, cv.50$var1.pred)
+summary(cv.50)
+summary(cv.10)
+```
+
+
+Now we will make  post-plots of the predicted probabilities, with the symbol size proportional to the probability, with the points coloured red for a FALSE indicator and green for a TRUE indicator
+
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width= 8,message=F, warning=F}
+par(mfrow=c(1,2))
+plot(coordinates(cv.10), asp = 1, pch=21, col = ifelse(cv.10$observed,
+ "red", "green"), cex = 0.2 + 1 * cv.10$var1.pred,
+ xlab = "E (km)", ylab = "N (km)", main = "Probability of TRUE indicator (10 ppb)",
+ sub = "Actual indicator: green/red = FALSE/TRUE")
+ grid()
+
+plot(coordinates(cv.50), asp = 1, pch=21, col = ifelse(cv.50$observed,
+ "red", "green"), cex = 0.4 + 1 * cv.50$var1.pred,
+ xlab = "E (km)", ylab = "N (km)", main = "Probability of TRUE indicator (50 ppb)",
+ sub = "Actual indicator: green/red = FALSE/TRUE")
+ grid()
+ par(mfrow=c(1,1))
+
+```
+
+
+#### IK Prediction at grid location
+
+```{r message=F, warning=F}
+ik.grid.10<-krige(ik.10~ 1, nmax=50,
+              loc=ik.df,        # Data frame
+              newdata=grid,     # Prediction location
+              model = m.f.10)   # fitted varigram model  
+
+ik.grid.50<-krige(ik.50~ 1, nmax=50,
+              loc=ik.df,        # Data frame
+              newdata=grid,     # Prediction location
+              model = m.f.50)   # fitted varigram model   
+summary(ik.grid.50)
+summary(ik.grid.10)
+```
+
+
+#### Limit the predicted probabilities to the range:
+
+```{r}
+ik.grid.10$var1.pred <- pmin(1, ik.grid.10$var1.pred)
+ik.grid.10$var1.pred <- pmax(0, ik.grid.10$var1.pred)
+
+ik.grid.50$var1.pred <- pmin(1, ik.grid.50$var1.pred)
+ik.grid.50$var1.pred <- pmax(0, ik.grid.50$var1.pred)
+summary(ik.grid.50)
+summary(ik.grid.10)
+```
+
+
+#### Convert to raster
+
+
+```{r message=F, warning=F}
+p10<-rasterFromXYZ(as.data.frame(ik.grid.10)[, c("x", "y", "var1.pred")])
+p50<-rasterFromXYZ(as.data.frame(ik.grid.50)[, c("x", "y", "var1.pred")])
+```
+
+
+#### Plot Probability Maps
+
+For plotting the maps, we will use **levelplot()** function of **rasterVis** package. 
+
+```{r,echo=TRUE,fig.align='center',fig.height=6, fig.width=8.5}
+
+colr <-  colorRampPalette(c("blue","green",'yellow',"red"), space = "rgb")
+p.strip <- list(cex=1.25)
+ckey <- list(labels=list(cex=1, rot=0), height=1)
+
+ik.plot.10<-levelplot(p10, 
+             margin=FALSE, 
+             auto.key=FALSE,
+             scales=list(y=list(draw=F,cex=.3,rot=90, tck= 0.35,alternating=1,col="grey"),
+             x=list(draw=F, cex=.3,tck= .35)),
+             par.settings=list(axis.line=list(col='grey')), 
+             col.regions=colr, 
+             colorkey=ckey, 
+             par.strip.text=p.strip,
+             main="Probability As > 10 ppb")
+
+ik.plot.50<-levelplot(p50, 
+             margin=FALSE, 
+             auto.key=FALSE,
+             scales=list(y=list(draw=F,cex=.3,rot=90, tck= 0.35,alternating=1,col="grey"),
+             x=list(draw=F, cex=.3,tck= .35)),
+             par.settings=list(axis.line=list(col='grey')), 
+             col.regions=colr, 
+             colorkey=ckey, 
+             par.strip.text=p.strip,
+             main="Probability As > 50 ppb")
+
+grid.arrange(ik.plot.10, ik.plot.50, nrow = 1)
+```
+

@@ -180,7 +180,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,7 +349,7 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
-      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
 </li>
@@ -545,10 +545,7 @@ sp.layout=list(bound),
    labels=c(&quot;&quot;,   &quot;&lt; 1.2&quot;,   &quot;&quot;,   &quot; 2.9&quot;, &quot;&quot;,  &quot; 4.7&quot;,  &quot;&quot;,  &quot; 7.2&quot;, &quot;&quot;,  &quot;&gt; 12.5&quot;,  &quot;&quot;))),
    col.regions=rgb.palette(20)))}, 
 height = 600, width = 600, interval = .5, outdir = getwd())</code></pre>
-<div class="figure">
-<img src="FIGURE_SOC_SIM_ANIMATION.gif" />
-
-</div>
+<p><img src="FIGURE_SOC_SIM_ANIMATION.gif" /></p>
 </div>
 </div>
 <div id="measures-of-local-uncertinity" class="section level3">
@@ -576,6 +573,7 @@ spplot(grid.xy, c(4:5), sp.layout=list(bound), col.regions=col(20),
        names.attr = c(&quot;0.1-quantile&quot;, &quot;Median&quot;,&quot;0.9 Quantile&quot;))</code></pre>
 <p><img src="conditional-simulation-spatial-uncertainty_files/figure-html/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>High Soil carbon (yellow part) of 0.1-quantile map indicate areas where unknown SOC concentration certainly large, whereas low value parts of (dark yellow) of the 0.9-qauntile map where concentration of SOC certainly small.</p>
+<pre class="r"><code>rm(list = ls())</code></pre>
 </div>
 </div>
 

@@ -1,0 +1,113 @@
+---
+title: "Reomte Sensing Basic"
+---
+<div style="margin-bottom:50px;">
+</div>
+
+**Remote sensing** is a branch of geo-spatial science that deals with gathering information about the environment from a distance using different kinds of sensors mounted on aircraft, spacecraft, satellites or Unmanned Aerial Vehicles (UAVs). There are two types of sensors: **active or passive**.  With **active sensors** (e.g. radar) energy is transmitted from the sensor to provide their own illumination. **Passive systems** (e.g. optical sensors) rely on an external energy source (for example the sunlight) for illumination and function in the optical part of wavelength spectrum.  These wavelengths are useful for distinguishing objects on the earth’s surface and can be used to generate images of the earth over a relatively large area at low cost. Multi-spectral optical satellite sensors commonly used for detailed mapping include [Landsat](https://landsat.usgs.gov/), and [Sentinel-2](https://sentinel.esa.int/web/sentinel/missions/sentinel-2), which offer publicly available, moderate resolution images.  Very high resolution images are provided by commercial providers such as [Planet](https://www.planet.com/), [QuickBird](https://www.satimagingcorp.com/satellite-sensors/quickbird/),  and [DigitalGlobe](https://www.digitalglobe.com/). 
+
+<div style="margin-bottom:20px;">
+</div>
+
+Before start, we need to know the following basic remote sensing concepts.
+
+<div style="margin-bottom:20px;">
+</div>
+
+**Spatial Resolution:**
+
+[The spatial resolution specifies the pixel size of satellite images covering the earth surface.](https://www.satimagingcorp.com/services/resources/characterization-of-satellite-remote-sensing-systems/)
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\Spatial_Resolution.png")
+```
+
+
+
+**Temporal Resolution:**
+
+[The temporal resolution specifies the revisiting frequency of a satellite sensor for a specific location.](https://www.satimagingcorp.com/services/resources/characterization-of-satellite-remote-sensing-systems/)
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\Temporal_Resolution.png")
+```
+
+
+**Spectral Resolution:**
+
+[In the first instance, a sensor's spectral resolution specifies the number of spectral bands in which the sensor can collect reflected radiance. But the number of bands is not the only important aspect of spectral resolution. The position of bands in the electromagnetic spectrum is important, too. In general, high spectral resolution: - 220 bands, medium spectral resolution: 3 - 15 bands, and Low spectral resolution: - 3 bands.](https://www.satimagingcorp.com/services/resources/characterization-of-satellite-remote-sensing-systems/)
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\Spectral_Resolution.png")
+```
+
+
+**Digital Number (DN)**
+
+[Digital Number (DN) is the generic term used for pixel values. These values correlate with the energy that is observed and measured at the sensor. Although the DNs are related to the surface reflectance values, they are not the same. Depending on the purpose of the study, comparing DNs acquired by a satellite, without correcting for atmospheric effects, can lead to problems - even if the Landsat DNs have been calibrated and processed.](http://www.un-spider.org/node/10958)
+
+<div style="margin-bottom:20px;">
+</div>
+
+**Radiance, Reflectance, and Top of Atmosphere (TOA)**
+
+[Radiance is directly measured by remote sensing instruments. Radiance includes the radiation reflected from the surface, in addition to the radiation that bounces in from neighboring pixels, and the radiation reflected from clouds. Radiance is dependent on not only the illumination (both its intensity and direction), but the orientation and position of the target also. In other words, the path of light through the atmosphere can change as the light travels down to the earth through the atmosphere, suffering wavelength-dependent scattering. The light then diffusively reflects off of the Earth's surface (Figure 1), travelling back up through the Earth's atmosphere, enduring further scattering effects as it does so. Some of these factors can be corrected by using Top of Atmosphere (TOA) reflectance values, instead of DNs.](http://www.un-spider.org/node/10958)
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\DN.png")
+```
+
+
+**Landsat 8**
+
+**Landsat 8** launched on February 11, 2013 and acquiring images of entire earth every 16 days in an 8-day offset from Landsat 7.Landsat 8 measures different ranges of frequencies along the electromagnetic spectrum - a color, although not necessarily a color visible to the human eye. Each range is called a band, and Landsat 8 has 11 bands. Out of which seven bands are consistent with the Thematic Mapper (TM) and Enhanced Thematic Mapper Plus (ETM+) sensors found on earlier Landsat satellites (Landsat 7 and 5/4), providing for compatibility with the historical Landsat data, while also improving measurement capabilities. Two new spectral bands, a deep blue coastal/aerosol band and a shortwave-infrared cirrus band, have added to Landsat8 for allowing scientists to measure water quality and improve detection of high, thin clouds.
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\Bands.png")
+```
+
+
+**Sentinel 2**
+
+[Sentinel-2](https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2) was launched by [European Space Agency](https://www.esa.int/About_Us/Welcome_to_ESA) on 23 June 2015  and Sentinel-2B on - 07 March 2017 for  Land monitoring. These two satellites  provide high resolution optical imagery globally every 10 days with one satellite and 5 days with 2 satellites.The [spatial](https://earth.esa.int/web/sentinel/user-guides/sentinel-2-msi/resolutions/spatial) and [radiometric](https://earth.esa.int/web/sentinel/user-guides/sentinel-2-msi/resolutions/spatial) resolution of Sentinel-2 imagery varies by spectral band. Sentinel-2 data are acquired in 13 spectral bands. These area: 
+
+* four bands at 10 m: Band 2, Band 3, Band 4, and Band 8
+* six bands at 20 m: Band 5, Band 6, Band 7, Band 8a, Band 11, and Band 12
+* three bands at 60 m: Band 1, Band 9, and Band 10
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\Sen2Bands.png")
+```
+
+
+**Synthetic Aperture Radar (SAR)**
+
+In synthetic aperture radar (SAR) imaging is on kind of active sensing system by is [microwave pulses are transmitted by an antenna towards the earth surface. The microwave energy scattered back to the spacecraft is measured. The SAR makes use of the radar principle to form an image by utilising the time delay of the backscattered signals.](https://crisp.nus.edu.sg/~research/tutorial/mw.htm#sar) 
+
+
+**Sentinel 1 SAR**
+
+Two [Sentinel 1](https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-1) SAR Satellite were lunched  by [European Space Agency](https://www.esa.int/About_Us/Welcome_to_ESA) for  Land and Ocean monitoring. Sentinel-1A was launched on 3 April 2014 and Sentinel-1B on 25 April 2016 . The another goal of this  mission is to provide C-Band SAR data continuity following the retirement of ERS-2 and the end of the Envisat mission. These satellites carry a C-SAR sensor (C-band Synthetic Aperture Radar), which offers medium and high resolution imaging in all weather conditions. The C-SAR is capable of obtaining night imagery and detecting small movement on the ground, which makes it useful for land and sea monitoring.
+
+<div style="margin-bottom:50px;">
+</div>
+
+So there are many numerous choices of remote sensing data. However, we'll only focus on freely available **Landsat-8** and **Sentinel-2**.  You can access these data from following sources:
+
+* http://earthexplorer.usgs.gov/ 
+* https://lpdaacsvc.cr.usgs.gov/appeears/ 
+* https://search.earthdata.nasa.gov/search/ 
+* https://lpdaac.usgs.gov/data_access/data_pool/ 
+* https://scihub.copernicus.eu/
+* https://aws.amazon.com/public-data-sets/landsat/ 
+
+
+
+ 
+
+

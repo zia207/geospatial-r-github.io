@@ -1,0 +1,45 @@
+"0","library(GWmodel)      ### GW models"
+"2","package ‘GWmodel’ was built under R version 3.5.2"
+"2","Loading required package: maptools
+"
+"2","Checking rgeos availability: TRUE
+"
+"2","Loading required package: robustbase
+"
+"2","package ‘robustbase’ was built under R version 3.5.2"
+"2","Loading required package: Rcpp
+"
+"2","Loading required package: spdep
+"
+"2","Loading required package: Matrix
+"
+"2","Loading required package: spData
+"
+"2","To access larger datasets in this package, install the spDataLarge package with: `install.packages('spDataLarge',
+repos='https://nowosad.github.io/drat/', type='source'))`
+"
+"2","
+Attaching package: ‘spData’
+
+"
+"2","The following objects are masked _by_ ‘.GlobalEnv’:
+
+    coords, polys, x
+
+"
+"2","Welcome to GWmodel version 2.0-6.
+ Note: This verision has been re-built with RcppArmadillo to improve its performance.
+The new version of GWmodel 2.0-5 now is ready, and new functions have been incorporated:
+ 1) gwr.multiscale, multiscale GWR
+ 2) gtwr, Geographically and Temporally Weighted Regression
+"
+"0","library(sp)           ## Data management"
+"0","library(spdep)        ## Spatial autocorrelation"
+"0","library(gstat)        ## Geostatistics"
+"0","library(RColorBrewer) ## Visualization"
+"0","library(classInt)     ## Class intervals"
+"0","library(raster)       ## spatial data"
+"0","library(gridExtra)    # Multiple plot"
+"0","library(ggplot2)      # Multiple plot"
+"2","Need help getting started? Try the cookbook for R: http://www.cookbook-r.com/Graphs/
+"

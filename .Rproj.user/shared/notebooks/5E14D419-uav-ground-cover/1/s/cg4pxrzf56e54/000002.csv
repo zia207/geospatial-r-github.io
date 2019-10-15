@@ -1,0 +1,7 @@
+"0","library(raster)"
+"0","library(rgdal)"
+"0","library(landsat)"
+"0","library(sp)"
+"0","library(RColorBrewer)"
+"0","library(RStoolbox)   # Image analysis"
+"0","library(ggplot2)"

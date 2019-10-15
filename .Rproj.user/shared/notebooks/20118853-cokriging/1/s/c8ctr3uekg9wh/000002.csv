@@ -1,0 +1,194 @@
+"0","library(plyr)"
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:plyr’:
+
+    arrange, count, desc, failwith, id, mutate, rename, summarise, summarize
+
+"
+"2","The following objects are masked from ‘package:raster’:
+
+    intersect, select, union
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(gstat)"
+"0","library(raster)"
+"0","library(ggplot2)"
+"2","Need help getting started? Try the cookbook for R: http://www.cookbook-r.com/Graphs/
+"
+"0","library(car)"
+"2","
+Attaching package: ‘car’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    recode
+
+"
+"0","library(classInt)"
+"0","library(RStoolbox)"
+"0","library(spatstat)"
+"2","Loading required package: spatstat.data
+"
+"2","Loading required package: nlme
+"
+"2","
+Attaching package: ‘nlme’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    collapse
+
+"
+"2","The following object is masked from ‘package:raster’:
+
+    getData
+
+"
+"2","Loading required package: rpart
+"
+"2","
+spatstat 1.54-0       (nickname: ‘Vacuous Mission Statement’) 
+For an introduction to spatstat, type ‘beginner’ 
+
+"
+"2","
+Note: R version 3.4.3 (2017-11-30) is more than 9 months old; we strongly recommend upgrading to the latest version
+"
+"2","
+Attaching package: ‘spatstat’
+
+"
+"2","The following objects are masked from ‘package:car’:
+
+    bc, ellipse
+
+"
+"2","The following object is masked from ‘package:gstat’:
+
+    idw
+
+"
+"2","The following objects are masked from ‘package:raster’:
+
+    area, rotate, shift
+
+"
+"0","library(dismo)"
+"2","
+Attaching package: ‘dismo’
+
+"
+"2","The following object is masked from ‘package:spatstat’:
+
+    domain
+
+"
+"0","library(fields)"
+"2","Loading required package: spam
+"
+"2","Loading required package: dotCall64
+"
+"2","Loading required package: grid
+"
+"2","Spam version 2.1-2 (2017-12-21) is loaded.
+Type 'help( Spam)' or 'demo( spam)' for a short introduction 
+and overview of this package.
+Help for individual functions is also obtained by adding the
+suffix '.spam' to the function name, e.g. 'help( chol.spam)'.
+"
+"2","
+Attaching package: ‘spam’
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    backsolve, forwardsolve
+
+"
+"2","Loading required package: maps
+"
+"2","
+Attaching package: ‘maps’
+
+"
+"2","The following object is masked from ‘package:plyr’:
+
+    ozone
+
+"
+"0","library(gridExtra)"
+"2","
+Attaching package: ‘gridExtra’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    combine
+
+"
+"0","library(Hmisc)"
+"2","Loading required package: lattice
+"
+"2","
+Attaching package: ‘lattice’
+
+"
+"2","The following object is masked from ‘package:spatstat’:
+
+    panel.histogram
+
+"
+"2","Loading required package: survival
+"
+"2","Loading required package: Formula
+"
+"2","
+Attaching package: ‘Hmisc’
+
+"
+"2","The following object is masked from ‘package:gridExtra’:
+
+    combine
+
+"
+"2","The following object is masked from ‘package:fields’:
+
+    describe
+
+"
+"2","The following objects are masked from ‘package:dplyr’:
+
+    combine, src, summarize
+
+"
+"2","The following objects are masked from ‘package:plyr’:
+
+    is.discrete, summarize
+
+"
+"2","The following objects are masked from ‘package:raster’:
+
+    mask, zoom
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    format.pval, round.POSIXt, trunc.POSIXt, units
+
+"

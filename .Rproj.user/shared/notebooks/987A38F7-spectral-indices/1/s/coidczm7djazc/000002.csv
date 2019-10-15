@@ -1,0 +1,6 @@
+"0","library (raster) 	  # raster data"
+"0","library(rasterVis)	# raster visualisation 	"
+"0","library(sp)         # Spatial data processing			"
+"0","library(rgdal)      # Spatial data processing"
+"0","library(RStoolbox)  # Image analysis"
+"0","library(ggplot2)    # ploting"

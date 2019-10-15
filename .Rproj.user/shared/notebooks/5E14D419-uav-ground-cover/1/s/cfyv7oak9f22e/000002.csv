@@ -1,0 +1,2 @@
+"0","red = as(b2, ""SpatialGridDataFrame"") # red band"
+"0","nir = as(b5, ""SpatialGridDataFrame"") # NIR band"

@@ -1,0 +1,123 @@
+name: Geospatial Data Science
+output_dir: '.'
+navbar:
+  title: Geospatial Data Science
+  type: inverse
+  left:
+  - text: Home
+    icon: fa-home
+    href: index.html
+  - text: Spatial Data Processing with R
+    href: spatial-data-processing-R.html
+    menu:
+    - text: Content
+      href: about.html
+    - text: Getting Started with R
+      href: getting-started-with-r.html
+    - text: Read and Write Spatial Data in R
+      href: read-write-spatial-data.html
+    - text: Map Projection and Coordinate Reference Systems
+      href: map-projection-coordinate-reference-systems.html
+    - text: Geoprocessing of Vector data
+      href: geoprocessing-vector-data.html
+    - text: Working with Spatial Point Data
+      href: working-with-spatial-point-data.html
+    - text: Working with Spatial Polygon Data
+      href: working-with-spatial-polygon.html
+    - text: Working with Raster Data
+      href: working-with-raster-data.html
+  - text: Spatial Statistics with R
+    href: spatial-statistics.html
+    menu:
+    - text: Content
+      href: about-b.html
+    - text: Spatial Statistics
+      href: spatial-statistics.html
+    - text: Spatial Autocorrelation
+      href: spatial-autocorrelation.html
+    - text: Geographically Weighted Model
+      href: geographically-weighted-models.html
+    - text: Geographically Weighted Summary Statistics
+      href: geographically-weighted-summary-statistics.html
+    - text: Geographically Weighted Principal Components Analysis
+      href: geographically-weighted-principal-components-analysis.html   
+    - text: Geographically Weighted Regression
+      href: geographically-weighted-regression.html 
+    - text: Spatial Interpolation
+      href: spatial-interpolation.html
+    - text: Deterministic Methods for Spatial Interpolation
+      href: deterministic-methods-for-spatial-interpolation.html
+    - text: Geostatistical Methods for Spatial Interpolation
+      href: geostatistical-methods-for-spatial-interpolation.html
+    - text: Semivariogram Modeling
+      href: semivariogram-modeling.html
+    - text: Kriging
+      href: kriging.html
+    - text: Ordinary Kriging
+      href: ordinary-kriging.html
+    - text: Universal Kriging
+      href: universal-kriging.html
+    - text: Co-Kriging
+      href: cokriging.html
+    - text: Regression kriging
+      href: regression-kriging.html
+    - text: Indicator kriging
+      href: indicator-kriging.html
+    - text: Assessing the Quality of Spatial Predictions
+      href: assessing-quality-spatial-predictions.html
+    - text: Cross-validation
+      href: cross-validation.html 
+    - text: Validation with an Independent Dataset
+      href: validation-independent-dataset.html.
+    - text: Conditional Simulation for Spatial Uncertainty
+      href: conditional-simulation-spatial-uncertainty.html
+  - text: Remote Sensing Data with R
+    href: remote-sensing-in-R.html
+    menu:
+    - text: Content
+      href: about-c.html
+    - text: Remote Sensing Basic
+      href: reomte-sensing-basic.html
+    - text: Landsat 8 Image Processing & Visualization
+      href: landsat-8-image-processing.html
+    - text: Spectral Indices
+      href: spectral-indices.html
+    - text: Green Ground Cover from UAV Images
+      href: uav-ground-cover.html
+    - text: Texture Analysis
+      href: texture-analysis.html
+    - text: Image Classification
+      href: image-classification.html
+    - text: Ground Truth Data Processing
+      href: ground-truth-data-processing.html
+    - text: Unsupervised Classification
+      href: unsupervised-classification.html
+    - text: Supervised Classification
+      href: supervised-classification.html
+    - text: Random Forest
+      href: random-forest.html
+    - text: Support Vector Machine
+      href: support-vector-machine.html
+    - text: Naïve Bayes
+      href: naive-bayes.html
+    - text: eXtreme Gradient Boosting
+      href: exboost.html
+    - text: Deep Learning with H20
+      href: deep-learning-h2o.html
+    - text: Deep Learning with Keras-TensorFlow
+      href: dnn-keras-tensorflow.html
+  right:
+  - text: Email
+    icon: fa-envelope fa-lg
+    href: mailto:zia207@gmail.com
+  - icon: fa-github fa-lg
+    href: http://github.com/zia207
+  - icon: fa-linkedin fa-lg
+    href: https://www.linkedin.com/in/zia-ahmed-a7653578
+output:
+  html_document:
+    theme: cosmo
+    css: styles.css
+    lib_dir: site_libs
+    self_contained: no
+

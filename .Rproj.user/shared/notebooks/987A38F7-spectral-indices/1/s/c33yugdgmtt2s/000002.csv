@@ -1,0 +1,5 @@
+"0","NDVI = (NIR - RED)/(NIR +RED)"
+"0","ggR(NDVI, geom_raster = TRUE) +"
+"0","	scale_fill_gradientn(""NDVI"", "
+"0","	colours = c(""red"", ""yellow"", ""green"", ""green4""))+"
+"0","	ggtitle(""Normalized Difference Vegetation Index (NDVI)"")"

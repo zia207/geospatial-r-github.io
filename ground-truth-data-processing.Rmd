@@ -1,0 +1,243 @@
+---
+title: "Ground Truth Data Processing"
+---
+
+<div style="margin-bottom:40px;">
+</div>
+
+
+In this lesson we will use a sub-set of [Sentinel-2](https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2) satellite images covering  the north campus of the University at Buffalo, NY taken on September 21st, 2017.  We will prepare them for for pixel based classification  using machine learning algorithms. The images were already radiometrically and atmospherically corrected using [Sen2Cor](https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2), a python based processor develop by [ESA](http://www.esa.int/ESA) for formatting and processing (such as atmospheric correction, aerosol optical thickness correction, water vapor retrieval, surface reflectance retrieval from TOA, geometric correction with DEM) for Sentinel-2 Level 2A imagery. All bands were re-sampled at 10 meter resolution in [SNAP Toolboxes](http://step.esa.int/main/download/).
+
+We will train the machine learning models with 5 feature classes extracted from Google Earth imagery: (1) parking/road/pavement, (2) building, (3) trees/bushes, (4) grass, and (5) water bodies. We used on-screen digitization in [QGIS](https://www.qgis.org/en/site/) to create polygons representing members of these feature classes.
+First, we will convert the polygons to a 2.5x 2.5 meter raster grid, and then convert them to spatial points. Next, we will extract values from the B2, B3, B4, B5, B6, B7, B8, B8A, B11 and B12 bands and add them to the spatial point data set that we will use for training, validation and testing the models. We will also use all bands to create a prediction grid point data set for predicting land-use classes. 
+
+<div style="margin-bottom:20px;">
+</div>
+
+T##### Load R packages 
+
+```{r message=F, warning=F}
+library(rgdal)       # spatial data processing
+library(raster)      # raster processing
+library(plyr)        # data manipulation 
+library(dplyr)       # data manipulation 
+library(RStoolbox)   # ploting spatial data 
+library(RColorBrewer)# color
+library(ggplot2)     # ploting
+library(sp)          # spatial data
+library(gridExtra)
+```
+
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//"
+```
+
+
+<div style="margin-bottom:20px;">
+</div>
+
+The data could be available for download from [here](https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0).
+
+<div style="margin-bottom:20px;">
+</div>
+
+#### Load bands
+
+```{r}
+#s=stack(BLUE, GREEN, RED, NIR,SWIR1,SWIR2)
+multi=stack(paste0(dataFolder,".\\Sentinel_2\\multi_bands.tif"))
+```
+
+
+### Groundtruth data processing
+
+#### Import training polygon layer 
+
+```{r message=F, warning=F}
+poly <- shapefile(paste0(dataFolder, ".\\Sentinel_2\\GroundTruth_data.shp"))  
+# define projection
+crs(poly) <- "+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs" 
+```
+
+#### Convert polygon to raster
+
+Before converting land use polygon file raster, we will extent extent of  any band of Sentinel-2 to set raster extent. We use B2 for define raster extent. 
+
+```{r}
+b2<-raster(paste0(dataFolder,".\\Sentinel_2\\B2.tif"))  
+# # define projection
+crs(b2) <- "+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs" 
+extent=extent(b2)
+```
+
+#### Convert to raster (2.5 m grid size)
+
+```{r}
+r <- raster(extent, resolution=2.5,
+            crs = '+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs ')
+extent(r) <- extent(poly)
+rp <- rasterize(poly, r, 'Class_ID')
+```
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=6.5,message=F, warning=F}
+plot(rp, main="Ground truth data")
+```
+
+#### Convert raster to data.frame and rename colum to "layer"" to Class_ID
+
+```{r}
+rp.df <- as.data.frame(rasterToPoints(rp))
+colnames(rp.df)[3] <- 'Class_ID'
+```
+
+#### Create a Spatial point Data frame
+
+```{r}
+xy <- rp.df[,c(1,2)]
+point.SPDF <- SpatialPointsDataFrame(coords = xy,
+                                data=rp.df,
+                                proj4string = CRS("+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
+```
+
+#### Load multi-band raster
+
+```{r}
+multi=stack(paste0(dataFolder,".\\Sentinel_2\\multi_bands.tif"))
+# rename the bands
+names(multi) <- c("B2", "B3","B4","B5","B6","B7","B8","B8A","B11","B12")
+```
+
+#### Plot RGB maps
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=8}
+# Natural Color
+p1<-ggRGB(multi, r=3, g=2, b=1, stretch = "lin")+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  ggtitle("Natural Color\n(R= Red, G= Green, B= Blue)")
+# False Color image
+p2<-ggRGB(multi, r=7, g=3, b=2, stretch = "lin")+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  ggtitle("False Color Infrared\n(R= NIR, G= Red,  B=Green)")
+
+grid.arrange(p1, p2, nrow = 1)
+```
+
+
+#### Extract raster values to point file
+
+```{r}
+point.df <- extract(multi, point.SPDF, df=TRUE, method='simple')
+```
+
+#### Combine with data frame
+
+```{r}
+point.mf<-cbind(rp.df,point.df)
+head(point.mf)
+```
+
+#### Keep values belong only to 5 classes:
+
+```{r}
+point<-point.mf %>% 
+  dplyr:: select(x,y,Class_ID, B2, B3, B4, B5, B6,B7,B8,B8A,B11,B12) %>% 
+  filter(Class_ID >0) 
+```
+
+#### Add class ID and save as a CSV file
+
+```{r}
+# Import lnaduse ID file
+ID<-read.csv(paste0(dataFolder,".\\Sentinel_2\\Landuse_ID.csv"), header=T)
+# Join with point data frame
+point.gt<-join(point, ID, by="Class_ID", type="inner")
+# rearrange the data
+point.gt.df<-cbind(point.gt[c(1:2)],point.gt[c(4:13)],Class=point.gt$Class,Landuse=point.gt$Landuse,Class_ID=point.gt$Class_ID)
+# omit missing values
+newdata <- na.omit(point.gt.df) 
+str(newdata)
+# save as CSV file
+write.csv(newdata, paste0(dataFolder, ".\\Sentinel_2\\point_data.csv"), row.names=F)
+```
+
+
+### Grid Data Processing
+
+First, we will empty point data frame, will use Band B2
+
+```{r}
+grid.point <- data.frame(rasterToPoints(b2))
+# Remove B2 column, just keep x & y
+grid.point$B2<-NULL
+# define co-ordinates and projection
+coordinates(grid.point) <- ~x + y
+projection(grid.point) <- CRS("+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
+```
+
+
+#### Extract all bands values to grird point:
+
+```{r}
+df.grid<- extract(multi, grid.point, df=TRUE, method='simple')
+```
+
+#### Combine with grid.df (we need to add xy coordinated for mapping) and write as a CSV file:
+
+```{r}
+grid<-cbind(as.data.frame(grid.point),df.grid)
+write.csv(grid, paste0(dataFolder, ".\\Sentinel_2\\prediction_grid_data.csv"), row.names=F)
+head(grid)
+```
+
+
+###  Split the dataset into training and test dataset 
+
+Before model fitting, the ground truth point data will be randomly split into two parts.  Seventy percent  will be used for training the machine learning based-models and 30% will be used for evaluation of the models. For data splitting, we will use the caret (short for _C_classification _A_nd _RE_regression _T_raining) package
+
+
+If you want to install this package, use following R-code:
+
+
+```{r}
+#install.packages("caret", dependencies = c("Depends", "Suggests"))
+```
+
+#### Laod caret package:
+
+```{r}
+library(caret) 
+```
+
+##### Split data:
+
+```{r}
+set.seed(3456)
+# set training index
+trainIndex <- createDataPartition(newdata$Landuse, p = .7, 
+                                  list = FALSE, 
+                                  times = 1)
+train<- newdata[ trainIndex,]
+test<- newdata[-trainIndex,]
+# Export as CSV files
+write.csv(train, paste0(dataFolder,".\\Sentinel_2\\train_data.csv"),row.names=F)
+write.csv(test, paste0(dataFolder, ".\\Sentinel_2\\test_data.csv"), row.names=F)
+```
+
+
+
+```{r}
+rm(list = ls())
+```
+

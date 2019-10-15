@@ -1,0 +1,7 @@
+"0","# Get the CV models from the deeplearning model object` object"
+"0","cv_models <- sapply(dl_model@model$cross_validation_models, "
+"0","                    function(i) h2o.getModel(i$name))"
+"0","# Plot the scoring history over time"
+"0","plot(cv_models[[1]], "
+"0","     timestep = ""epochs"", "
+"0","     metric = ""classification_error"")"

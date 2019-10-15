@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415773671.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1813967926",
+    "id" : "A46B6825",
+    "lastKnownWriteTime" : 1549456366,
+    "last_content_update" : 1549456366327,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/geographically-weighted-regression.Rmd",
+    "project_path" : "geographically-weighted-regression.Rmd",
+    "properties" : {
+        "cursorPosition" : "359,3",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

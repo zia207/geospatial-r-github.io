@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544127942261.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7B6D19C2",
+    "lastKnownWriteTime" : 1540834587,
+    "last_content_update" : 1540834587,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/spatial-data-processing-analysis-R.Rmd",
+    "project_path" : "spatial-data-processing-analysis-R.Rmd",
+    "properties" : {
+        "cursorPosition" : "3,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 20,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

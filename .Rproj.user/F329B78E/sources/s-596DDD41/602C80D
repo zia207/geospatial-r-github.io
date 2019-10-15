@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544151312231.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "602C80D",
+    "lastKnownWriteTime" : 1544151922,
+    "last_content_update" : 1544151922222,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/image-classification.Rmd",
+    "project_path" : "image-classification.Rmd",
+    "properties" : {
+        "cursorPosition" : "12,715",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 33,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

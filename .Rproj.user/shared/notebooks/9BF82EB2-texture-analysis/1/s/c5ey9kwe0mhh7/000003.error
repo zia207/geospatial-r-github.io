@@ -1,0 +1,1 @@
+{"frames":[{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"library(glcm)","line_number":0},{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"stop(txt, domain = NA)","line_number":0}],"message":"Error in library(glcm) : there is no package called ‘glcm’\n"}

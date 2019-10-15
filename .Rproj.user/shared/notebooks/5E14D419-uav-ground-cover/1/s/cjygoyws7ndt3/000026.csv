@@ -1,0 +1,4 @@
+"0","plot(as.vector(as.matrix(red)), as.vector(as.matrix(nir)),"
+"0","   main=""Bare Soil Line"", "
+"0","   xlab=""RED-band"", ylab=""NIR-band"", xlim=c(0,255), ylim=c(0,255),"
+"0","   pch=19, cex=0.7, col=""grey"")"

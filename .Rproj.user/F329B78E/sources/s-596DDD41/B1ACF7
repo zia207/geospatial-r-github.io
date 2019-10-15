@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544131663993.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B1ACF7",
+    "lastKnownWriteTime" : 1544461691,
+    "last_content_update" : 1544461691877,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/working-with-spatial-point-data.Rmd",
+    "project_path" : "working-with-spatial-point-data.Rmd",
+    "properties" : {
+        "cursorPosition" : "59,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 25,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

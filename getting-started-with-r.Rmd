@@ -1,0 +1,762 @@
+---
+title: "Getting Started with R"
+---
+
+**What is R?** 
+
+[R](https://www.r-project.org/) is an open-source environment for statistical computing and visualization. It is based on the S language developed at Bell Laboratories in the 1980's, and is the product of an active movement among statisticians for a powerful, programmable, portable, and open computing environment, applicable to the most complex and sophisticated problems, as well as "routine" analysis, without any restrictions on access or use.
+
+**Download and Installation R**
+
+The R can download from the [R project](www.r-project.org ) of a repository CRAN or you can install [Microsoft R Open](https://mran.microsoft.com/download).  
+
+
+** Install R in Windows** 
+
+Installation instruction of R  in Windows and MAC could be found  [here](https://courses.edx.org/courses/UTAustinX/UT.7.01x/3T2014/56c5437b88fa43cf828bff5371c6a924/)
+
+Detail Installation steps of Microsoft R Open in different operating systems can be found [here](https://mran.microsoft.com/documents/rro/installation). 
+
+**Install R-base (3.5.2) in Ubuntu 16.04**  
+
+Update repositories list:  deb https://cloud.r-project.org/bin/Linux/Ubuntu xenial-cran35/
+
+Use following commands in terminal:
+   
+* $ sudo apt-get update
+* $ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+* $ sudo apt-get install r-base
+
+
+**Download and Installation R-Studio**
+
+[RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. Click here to see more RStudio features.RStudio is available in open source and commercial editions and runs on the desktop (Windows, Mac, and Linux) or in a browser connected to RStudio Server or RStudio Server Pro (Debian/Ubuntu, RedHat/CentOS, and SUSE Linux)](https://www.rstudio.com/products/RStudio/).
+
+First, you have to download RStudio according to your operating system from [here](https://www.rstudio.com/products/rstudio/download/). 
+For windows user, and just run the installation file and it normally detects your latest installed R version automatically. If you want to do some extra configuration, you need follow  some steps which can be found [here](http://www.dummies.com/programming/r/how-to-install-and-configure-rstudio/)
+
+For Linux user, use following commands in terminal:
+
+* $ sudo apt-get install gdebi-core
+* $ wget https://download1.rstudio.org/rstudio-xenial-1.1.383-amd64.deb
+* $ sudo gdebi rstudio-xenial-1.1.383-amd64
+* $ rm rstudio-xenial-1.1.383-amd64
+
+<div style="margin-bottom:30px;">
+</div>
+
+
+
+After installation, double click on desktop icon or open program from START to run R.  R will be open as a **Console**  window (Fig. 1a). You can work in console and use R with the command line. However, the command line can be quite daunting to a beginner, It it is better to work in **R Editor** (Fig. 1b).  First you have to create a **New script** from  **File** menu. Any code you run in R-script, output will be displayed  in console window. We can save all of your R codes as a R script file and output in console as a R-Data file.   
+
+
+```{r echo=FALSE, out.width='70%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_01\\R_BASE.png')
+```
+
+<div style="margin-bottom:30px;">
+</div>
+
+As I mentioned before, R-Studio  includes console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and work space management. Moreover, you can share your codes with output as HTLM, MS-word and PDF with others. 
+
+
+```{r echo=FALSE, out.width='50%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_01\\RSTUDIO.png')
+```
+
+<div style="margin-bottom:30px;">
+</div>
+
+
+**R Packages** 
+
+Packages are collections of R functions, data, and compiled code in a well-defined format. The directory where packages are stored is called the **library**. We can install any R 'package' or multiple package  directly from the console, using r-script and GUI (Tools > Install Packages) through internet. 
+
+Use **install.packages()** function in your console or in  a script:     
+
+
+```{r,eval=F, echo=T}
+# One package
+install.packages("raster", dependencies = TRUE)
+
+# Multiple packages
+install.packages(c("raster","gstat") dependencies = TRUE)
+```
+
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_01\\R_Package.png')
+```
+
+
+<div style="margin-bottom:30px;">
+</div>
+
+
+**R command prompt**
+
+Once you have R environment setup, then it's easy to start your R command prompt by just typing the following command at your command prompt 
+
+
+```{r}
+print("Hello, World!")
+```
+
+
+At the prompt, we enter the expression that we want evaluated and when we hit enter, it will compute the result, for example, 
+
+
+
+```{r echo=FALSE, out.width='40%'}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_01\\R_Calculator.png')
+```
+
+<div style="margin-bottom:30px;">
+</div>
+
+Or, we can execute above functions in a script
+
+
+```{r}
+
+2+2   # Addition
+
+4-2   # Subtraction
+
+3*3   # Multiplication
+
+4/2   # Division
+
+2^2   # Power
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+
+Two or more  expressions can be placed on a single line so long as they are separated by semi-colons:
+
+```{r}
+2+2; 4/2
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+
+**Built-in Functions**
+
+
+Some built in function are shown below:
+
+
+* log(x): 			        log to base e of x
+
+* exp(x): 			        antilog of x  
+
+* log(x,n): 		        log to base n of x
+
+* log10(x): 		        log to base 10 of x
+
+* sqrt(x): 		          square root of x
+
+* round(x, digits=0): 	round the value of x to an integer
+
+* abs(x):			          the absolute value of x, ignoring the minus sign if there is one
+
+
+
+```{r}
+log(10)
+exp(1) 
+pi
+sin(pi/2) 
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+Most useful R functions have been complied and found [here](http://cran.r-project.org/doc/contrib/Short-refcard.pdf)
+
+
+<div style="margin-bottom:30px;">
+</div>
+
+
+**Variable Assignment** 
+
+The variables can be assigned values using **assignment statement** -  leftward, rightward and equal to operator (= or < -).  The operator <- can be used anywhere, whereas the operator = is only allowed at the top level (e.g., in the complete expression typed at the command prompt) or as one of the sub expressions in a braced list of expressions.The operators <<- and ->> are normally only used in functions, and cause a search to be made through parent environments for an existing definition of the variable being assigned. 
+
+```{r}
+a <-2  
+# Or  
+a = 2
+```
+
+When you want to know what is in a variable simply ask by typing the variable name.
+
+```{r}
+a
+```
+
+We can store a computation of two variable names  and  do some calculation  and the result is assigned to a new variable.
+
+```{r}
+a=2
+b=3
+c=a+b
+c
+```
+
+**Important note**
+
+* Variable names in R are case-sensitive so a is not the same as A. 
+
+* Variable names should not begin with numbers (e.g. 1x) or symbols (e.g. %x).
+
+* Variable names should not contain blank spaces: use grain.yield 
+
+<div style="margin-bottom:30px;">
+</div>
+
+
+**String**
+
+String is value written within a pair of single quote or double quotes in R. Internally R stores every string within double quotes, even when you create them with single quote.
+
+```{r}
+a <- 'single quote'
+print(a)
+b <- "double quotes"
+print(b)
+```
+
+you can combined Many strings in R using the **paste()** function. It can take any number of arguments to be combined together.
+
+```{r}
+a <- "Hello"
+b <- 'How'
+c <- "are"
+d <-" you? "
+print(paste(a,b,c,d))
+print(paste(a,b,c,d, sep = "-"))
+print(paste(a,b,c,d, sep = "", collapse = ""))
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+**Data Types**
+
+R supports  a wide variety of data types including **scalars, vectors (numerical, character, logical), matrices, data frames**, and **lists**.
+
+In contrast to other programming languages like C and java in R, the variables are not declared as some data type. The variables are assigned with R-Objects and the data type of the R-object becomes the data type of the variable. There are many types of R-objects. The frequently used ones are ???
+
+* Vectors
+
+* Matrices
+
+* Lists
+
+* Data Frames
+
+* Arrays
+
+* Factors
+
+
+<div style="margin-bottom:30px;">
+</div>
+
+**Vectors**
+
+A list of numbers together to form a vector.
+
+*Numeric vector*
+
+
+```{r}
+a <- c(1, 2, 5.3, 6, -2, 4, 2, 5, 10)
+a
+```
+
+
+Vector index in R starts from 1, unlike most programming languages where index start from 0. We can use a vector of integers as index to access specific elements in a vector.
+
+
+```{r}
+a[2]           #  access 2nd element
+a[c(2, 4)]     # access 2nd and 4th element
+a[-1]          # access all but 1st element
+a[a < 0]       # filtering vectors based on conditions
+a[2] <- 0      # modify 2nd element
+a
+```
+
+
+You can apply following functions to get useful summaries of a vector:
+
+
+
+```{r echo=FALSE, out.width='80%'}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_01\\sum_stat.png')
+```
+
+<div style="margin-bottom:30px;">
+</div>
+
+For examples:
+
+```{r}
+sum(a)        # sums the values in the vector 
+length(a)     # number of the values in the vector 
+mean (a)      # the average of the values in the vector 
+var (a)       # the sample variance of the values 
+sd(a)         # the standard of deviations of the values  
+max(a)        # the largest value in the vector  
+min(a)        # the smallest number in the vector 
+median(a)     # the sample median 
+summary(a)    # summary statistics
+quantile(a)   # quantile
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+
+**Matrices**
+
+In R, matrix is a two dimensional data structure, which is similar to vector but additionally contains the dimension attribute. All columns in a matrix must have the same mode (numeric, character, etc.) and the same length. 
+
+Matrix can be created using the **matrix()** function.Dimension of the matrix can be defined by passing appropriate value for arguments **nrow** and **ncol**
+
+
+```{r}
+# 4 x 4 matrix
+matrix(1:16, nrow = 4, ncol = 4)
+```
+
+
+You can create matrix with row and column names:
+
+```{r}
+# create a vector
+cells=c(1,26,24,68,35,68,73,18,2,56,4,5,34,21,24,20)
+# names of column rows
+cnames = c("C1","C2","C3","C4") 
+# names of two rows
+rnames = c("R1","R2","R3","R4") 
+# Create a  4 x 4 matrix name as Z
+z= matrix(cells,
+          nrow=4,
+          ncol=4,
+          byrow=TRUE,
+          dimnames=list(rnames,cnames))
+z
+```
+
+You can extract  rows, columns or elements of matrix using following commands:
+
+
+```{r}
+z[,4]          # 4th column of matrix
+z[3,]          # 3rd row of matrix
+z[2:4,1:3]     # rows 2,3,4 of columns 1,2,3
+```
+
+
+Summary statistics of a column or any row can be calculate
+
+
+```{r}
+summary(z[,3]) #  summary statistics of the 3 column of matrix
+summary(z[2,]) #  summary statistics of the 2 rows     
+summary(z)     # summary statistics of each column
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+**Data-frame**
+
+A data frame is little different than a matrix. In data frame different,  columns can have different modes (numeric, character, factor, etc.). 
+
+```{r}
+ID = c(1,2,3,4)    # create a vector of ID coloumn 
+Landuse = c("Grassland","Forest", "Arable", "Urban") # create a text vector 
+settlement  = c (FALSE, FALSE, FALSE, TRUE) # creates a logical vector
+pH   = c(6.6,4.5, 6.8, 7.5) # create a numerical vector
+my.data=data.frame(ID,Landuse,settlement,pH) # create a data frame
+my.data
+
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+**List**
+
+Lists are the collection of R objects which contain elements of different types like ??? numbers, strings, vectors and another list inside it. A list can also contain a matrix or a function as its elements.
+
+In R, a list is created by placing all the items (elements) inside a  bracket ( ), separated by commas.
+
+```{r}
+# Create a list containing strings, numbers, vectors and a logical values.
+my.list <- list("Blue", "Green", "Red", c(21,32,11), TRUE, 51.23, 119.1)
+print(my.list)
+```
+
+
+Elements of the list can be accessed by the index of the element in the list. In case of named lists it can also be accessed using the names.
+
+
+```{r}
+# Access the first element of the list.
+print(my.list[1])
+# Access the 4th element. As it is also a list, all its elements will be printed.
+print(my.list[4])
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+**Arrays**
+
+Arrays are the R data objects which can store data in more than two dimensions.
+
+```{r}
+# Create two vectors of different lengths.
+vector1 <- c(2,4,3)
+vector2 <- c(9,11,10,12,14,11)
+# Take these vectors as input to the array.
+result <- array(c(vector1,vector2),dim = c(3,3,2))
+print(result)
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+**Factor**
+
+Factors are the data objects which are used to categorize the data and store it as levels
+
+```{r}
+# Create a vector as input.
+Landuse = c("Grassland","Forest", "Arable", "Urban") # create a text vector 
+print(Landuse)
+print(is.factor(Landuse))
+# Apply the factor function
+factor.data <- factor(Landuse)
+print(factor.data)
+print(is.factor(factor.data))
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+**Sorting**
+
+```{r}
+soil =c("S1","S2", "S3", "S4", "S5", "S6","S7", "S8","S9","S10","S11","S12") # create a text vector
+pH = c(5.2,6.0,6.6,5.6,4.7,5.2,5.7, 5.9,5.3,6.8,6.2,5.8)                     # create numerical vector
+SOC = c(1.2,3.0,1.6,2.6,2.7,1.2,1.7, 2.9,2.3,1.8,2.2,1.8)                     # create numerical vector
+pH.data= data.frame(soil, pH,SOC)                                                # create a data frame       
+head(pH.data)
+```
+
+
+```{r}
+# attach pH.data
+attach(pH.data)
+# sort by pH
+newdata.1 <-pH.data[order(pH),]
+# sort by pH and SOC
+newdata.2 <- pH.data[order(pH, SOC),]
+#sort by pH (ascending) and SOC (descending)
+newdata.3 <- pH.data[order(pH, -SOC),] 
+
+head(newdata.1)
+head(newdata.2)
+head(newdata.3)
+# dettach pH data
+detach(pH.data)
+```
+
+<div style="margin-bottom:2px;">
+</div>
+
+**Rounding**
+
+In R, various types  of rounding (rounding up, rounding down, rounding to the nearest integer) can be done easily. 
+
+
+```{r}
+floor(5.7)  # greatest integer less than' function 
+ceiling(5.7)  # the 'next integer' function is ceilling
+round(5.7)   # rounded to 6  
+round(5.4)   # rounded to 5   
+```
+
+
+<div style="margin-bottom:30px;">
+</div>
+
+### **Importing/Exporting  Data in R**
+
+**Set working directory**
+
+
+If we want to read files from a specific location or write files to a specific location, first, we will need to set working directory in R. You can set a new working directory using **setwd()** function.
+
+
+```{r}
+# Define working directory
+#setwd("F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_01")  
+# or
+#setwd("F:/Spatial_Data_Processing_and_Analysis_R/Data/DATA_01")
+```
+
+
+The files under in a directory can check using following command using **dir()** function 
+
+
+```{r}
+# dir()
+```
+
+
+R support a variety file types  to read or import into R or write or export from R. 
+
+
+The data could be found [here]https://www.dropbox.com/s/s5lwsb8jt1cbocs/DATA_01.7z?dl=0). 
+
+
+***Read/Import file into R**
+** Read a Text File
+
+The easiest form of data to import into R is a simple text file, and this will often be acceptable for problems of small or medium scale. The primary function to import from a text file is read.table. 
+
+
+```{r}
+# data.txt = read.table("F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_01//test_data.txt", header=T)   # read txt files
+```
+
+
+**Comma Delimited Text File**
+
+The sample data can be in comma separated values (CSV) format. Each cell inside such data file is separated by a special character, which usually is a comma, although other characters can be used as well.
+
+```{r}
+data.csv =  read.csv("F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_01//test_data.csv", header=T)     # read csv files
+```
+
+** Excel**
+
+One of the best ways to read an Excel file is to export it to a comma delimited file and import it using the method above. Alternatively, we can use the **xlsx** package to access Excel files. The first row should contain variable/column names. 
+
+```{r}
+#install.packages("xlsx") # Install "xlsx" package
+# library(xlsx)            # Load xlsx package
+# data.xls <- read.xlsx("F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_01//test_data.xlsx", 1)  # read xlsx file
+```
+
+
+**Export  file from R** 
+
+
+```{r}
+# Write CSV file
+# write.csv(data.csv , "F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_01//test_data.csv", row.names = FALSE)
+```
+
+
+<div style="margin-bottom:30px;">
+</div>
+
+**Getting Information on a Dataset**
+
+List the objects in the working environment
+
+```{r}
+# ls()
+```
+
+
+List the variables in the data
+
+```{r}
+#names(data.txt)
+names(data.csv)
+#names(data.xls)
+```
+
+Structure of data
+
+```{r}
+str(data.csv) 
+```
+
+Levels  of a factor
+
+```{r}
+levels(data.csv$var)
+```
+
+Print first 10 rows of data
+
+```{r}
+head(data.csv, n=10)
+```
+
+Print last 5 rows of mydata
+
+```{r}
+tail(data.csv, n=5)
+```
+
+
+
+**Some Important R-packages Statistical and Spatial Data Analysis**
+
+**Utility and data manipulation** 
+
+* [tidyverse](https://www.tidyverse.org/):  collection of R packages designed for data science 
+* [data.table](https://cran.r-project.org/web/packages/data.table/data.table.pdf): Fast aggregation of large data 
+* [dplyr](https://cran.r-project.org/web/packages/dplyr/dplyr.pdf): A Grammar of Data Manipulation
+* [plyr](https://cran.r-project.org/web/packages/plyr/plyr.pdf): Tools for Splitting, Applying and Combining Data 
+* [classInt](https://cran.r-project.org/web/packages/classInt/classInt.pdf): Choose Univariate Class Intervals 
+* [RODBC](https://cran.r-project.org/web/packages/RODBC/RODBC.pdf): ODBC Database Access 
+* [sqldf](https://cran.r-project.org/web/packages/sqldf/sqldf.pdf): Perform SQL Selects on R Data Frames 
+* [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/RPostgreSQL.pdf): R Interface to the 'PostgreSQL' Database System
+* [snow](https://cran.r-project.org/web/packages/snow/snow.pdf): Support for simple parallel computing in R
+* [doParalle](ftp://cran.r-project.org/pub/R/web/packages/doParallel/doParallel.pdf): Foreach Parallel Adaptor for the 'parallel' Package
+* [devtools](https://cran.r-project.org/web/packages/devtools/devtools.pdf): Collection of package development tools
+* [rJava](ftp://cran.r-project.org/pub/R/web/packages/rJava/rJava.pdf):Low-Level R to Java Interface
+
+**Plotting and Mapping**
+
+* [ggplot2](https://cran.r-project.org/web/packages/ggplot2/ggplot2.pdf): An Implementation of the Grammar of Graphics 
+* [RColorBrewer](https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf): ColorBrewer Palettes (making customize color palettes)
+* [latticeExtra](https://cran.r-project.org/web/packages/latticeExtra/latticeExtra.pdf) : Extra Graphical Utilities Based on Lattice
+* [tmap](https://cran.r-project.org/web/packages/tmap/tmap.pdf): Thematic Maps
+* [ggmap](https://cran.r-project.org/web/packages/ggmap/ggmap.pdf): extends the plotting package ggplot2 for maps
+* [rasterVis](https://cran.r-project.org/web/packages/rasterVis/rasterVis.pdf):Visualization Methods for Raster Data
+* [corrplot](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html): graphical display of a correlation matrix, confidence interval
+
+**Advanced statistical analysis and Mechine Learning Packages**
+
+* [agricoale](https://cran.r-project.org/web/packages/agricolae/agricolae.pdf):Statistical Procedures for Agricultural Research
+* [MASS](https://cran.r-project.org/web/packages/MASS/MASS.pdf): Support Functions and Datasets for Venables and Ripley's MASS 
+* [nlme](https://cran.r-project.org/web/packages/nlme/nlme.pdf): Linear and Nonlinear Mixed Effects Models 
+* [lme4](https://cran.r-project.org/web/packages/lme4/lme4.pdf ): Linear Mixed-Effects Models using 'Eigen' and S4 
+* [lmerTest](https://cran.r-project.org/web/packages/lmerTest/index.html ): Tests in Linear Mixed Effects Models 
+* [caret](http://topepo.github.io/caret/index.html): A set of functions that attempt to streamline the process for creating predictive models 
+* [caretEnsemble](https://cran.r-project.org/web/packages/caretEnsemble/vignettes/caretEnsemble-intro.html): A package for making ensembles of caret models
+* [H20](https://cran.r-project.org/web/packages/h2o/h2o.pdf): R interface for 'H2O', the scalable open source machine learning platform 
+* [keras](https://keras.rstudio.com/): a high-level neural networks 'API' with 
+
+**Spatial data**
+
+* [sp](https://cran.r-project.org/web/packages/sp/sp.pdf): Classes and Methods for Spatial Data 
+* [sf](https://cran.r-project.org/web/packages/sf/index.html):Support for simple features, a standardized way to encode spatial vector data 
+* [rgdal](https://cran.r-project.org/web/packages/rgdal/rgdal.pdf): Bindings for the Geospatial Data Abstraction Library 
+* [raster](https://cran.r-project.org/web/packages/raster/raster.pdf): Geographic Data Analysis and Modeling 
+* [maptools](https://cran.r-project.org/web/packages/maptools/maptools.pdf): Tools for Reading and Handling Spatial Objects 
+* [maps](https://cran.r-project.org/web/packages/maps/maps.pdf): Draw Geographical Maps 
+* [rgeos](https://cran.r-project.org/web/packages/rgeos/rgeos.pd): Interface to Geometry Engine - Open Source (GEOS)
+* [rgrass7](https://cran.r-project.org/web/packages/rgrass7/rgrass7.pdf) : Interface Between GRASS 7 Geographical Information System and R 
+* [plotGoogleMaps](https://cran.r-project.org/web/packages/plotGoogleMaps/plotGoogleMaps.pdf): Plot Spatial or Spatio-Temporal Data Over Google Maps 
+* [landsat](https://cran.r-project.org/web/packages/landsat/landsat.pdf) : Radiometric and topographic correction of satellite imagery
+* [RStoolbox](https://cran.r-project.org/web/packages/RStoolbox/RStoolbox.pdf): Tools for Remote Sensing Data Analysis 
+* [wrspathrow](https://cran.r-project.org/web/packages/wrspathrow/wrspathrow.pdf): Contains functions for working with the Worldwide Reference System (WRS) 1 and 2 systems used by NASA
+* [ncdf4](https://cran.r-project.org/web/packages/ncdf4/ncdf4.pdf):Interface to Unidata netCDF (Version 4 or Earlier) Format Data
+* [RNetCDF](https://cran.r-project.org/web/packages/RNetCDF/RNetCDF.pdf):nterface to NetCDF Datasets
+* [PCICt](https://cran.r-project.org/web/packages/PCICt/PCICt.pdf):implementation of POSIXct Work-Alike for 365 and 360 Day Calendars  
+* [gstat](https://cran.r-project.org/web/packages/gstat/gstat.pdf): Spatial and Spatio-Temporal Geostatistical Modelling, Prediction and Simulation 
+* [spdep](https://cran.r-project.org/web/packages/spdep/spdep.pdf): Spatial Dependence: Weighting Schemes, Statistics and Models 
+* [automap](https://cran.fhcrc.org/web/packages/automap/automap.pdf): Automatic interpolation package 
+* [GSIF](https://cran.r-project.org/web/packages/GSIF/GSIF.pdf): Global Soil Information Facilities - Geostatistical Modelling  with Secondary variables 
+* [GWmodel](https://cran.r-project.org/web/packages/GWmodel/GWmodel.pdf):Geographically-Weighted Models 
+* [dismo](https://cran.r-project.org/web/packages/dismo/dismo.pdf): Species Distribution Modeling
+
+
+**Installation of R-packages** 
+
+If the R program has already been installed, the installation of any 'package' can be done directly from the console of R through internet or from local drive. It is better to install through the internet. Detail installation steps can be found [here](http://jtleek.com/modules/01_DataScientistToolbox/02_09_installingRPackages/#7) 
+
+
+```{r,eval=F, echo=T}
+
+# Utility and data manipulation 
+
+install.packages(c(
+    "tidyvers",
+    "data.table",
+    "dplyr",
+    "plyr",
+    "classInt", 
+    "RODBC", 
+    "sqldf", 
+    "RPostgreSQL",
+    "snow",
+    "doParallel",
+    "devtools",
+    "rJava"
+    )) 
+
+# Plotting and Mapping
+
+install.packages(c(
+    "ggplot2",
+    "RColorBrewer", 
+    "latticeExtra",
+    "ggmap",
+    "tmap",
+    "rasterVis",
+    "corrplot",
+    )) 
+
+# Advanced statistical analysis
+
+install.packages(c(
+    "agricoale",
+    "MASS", 
+    "nlme", 
+    "lme4", 
+    "lmerTest"
+    ))  
+
+# Spatial data
+
+install.packages(c(
+    "sp",
+    "rgdal", 
+    "raster", 
+    "maptools", 
+    "maps",
+    "regeos", 
+    "rgrass7",
+    "plotGoogleMaps",  
+    "landsat", 
+    "RStoolbox",
+    "rgeos",
+    "wrspathrow",
+    "ncdf4"
+    "RNetCDF",
+    "PCICt", 
+    "spdep", 
+    "gstat",
+    "automap",
+    "GSIF",
+    "GWmodel"
+     ))
+```
+
+
+
+
+```{r}
+rm(list = ls())
+```
+
+

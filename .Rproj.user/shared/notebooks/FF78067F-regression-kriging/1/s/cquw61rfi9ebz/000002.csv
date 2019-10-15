@@ -1,0 +1,97 @@
+"0","library(plyr)"
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:plyr’:
+
+    arrange, count, desc, failwith, id, mutate, rename, summarise, summarize
+
+"
+"2","The following object is masked from ‘package:nlme’:
+
+    collapse
+
+"
+"2","The following object is masked from ‘package:splancs’:
+
+    tribble
+
+"
+"2","The following object is masked from ‘package:gridExtra’:
+
+    combine
+
+"
+"2","The following objects are masked from ‘package:raster’:
+
+    intersect, select, union
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(gstat)"
+"0","library(raster)"
+"0","library(ggplot2)"
+"0","library(car)"
+"2","Loading required package: carData
+"
+"2","package ‘carData’ was built under R version 3.5.2"
+"2","
+Attaching package: ‘car’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    recode
+
+"
+"2","The following objects are masked from ‘package:spatstat’:
+
+    bc, ellipse
+
+"
+"0","library(classInt)"
+"0","library(RStoolbox)"
+"2","package ‘RStoolbox’ was built under R version 3.5.2"
+"0","library(caret)"
+"2","package ‘caret’ was built under R version 3.5.2"
+"2","Loading required package: lattice
+"
+"2","
+Attaching package: ‘lattice’
+
+"
+"2","The following object is masked from ‘package:spatstat’:
+
+    panel.histogram
+
+"
+"0","library(caretEnsemble)"
+"2","
+Attaching package: ‘caretEnsemble’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    autoplot
+
+"
+"0","library(doParallel)"
+"2","package ‘doParallel’ was built under R version 3.5.2"
+"2","Loading required package: foreach
+"
+"2","Loading required package: iterators
+"
+"2","Loading required package: parallel
+"
+"0","library(gridExtra)"

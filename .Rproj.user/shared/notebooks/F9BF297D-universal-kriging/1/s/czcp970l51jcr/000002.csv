@@ -1,0 +1,3 @@
+"0","trend<-krige(SOC.bc~x+y, train, grid, model=NULL)"
+"1","[ordinary or weighted least squares prediction]
+"

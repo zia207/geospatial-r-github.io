@@ -1,0 +1,3 @@
+"0","point<-point.mf %>% "
+"0","  select(x,y,Class_ID, B2, B3, B4, B5, B6,B7,B8,B8A,B11,B12) %>% "
+"0","  filter(Class_ID >0) "

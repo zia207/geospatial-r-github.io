@@ -1,0 +1,2 @@
+"0","y <- ""Class"""
+"0","x <- setdiff(names(train), y)"

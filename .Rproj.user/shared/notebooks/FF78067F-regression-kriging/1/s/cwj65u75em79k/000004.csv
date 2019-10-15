@@ -1,0 +1,21 @@
+"0","library(plyr)"
+"0","library(dplyr)"
+"0","library(gstat)"
+"0","library(raster)"
+"0","library(ggplot2)"
+"0","library(car)"
+"0","library(classInt)"
+"0","library(RStoolbox)"
+"0","library(caret)"
+"0","library(caretEnsemble)"
+"2","
+Attaching package: ‘caretEnsemble’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    autoplot
+
+"
+"0","library(doParallel)"
+"0","library(gridExtra)"

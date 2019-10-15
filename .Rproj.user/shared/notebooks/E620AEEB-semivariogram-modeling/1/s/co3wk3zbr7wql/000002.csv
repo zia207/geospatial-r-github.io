@@ -1,0 +1,6 @@
+"0","plot(variogram(SOC ~ 1, train, "
+"0","               alpha = c(30, 120),"
+"0","               cutoff = 600000),  "
+"0","               main = ""Directional Variograms, SOC"","
+"0","               sub = ""Azimuth 30N (left), 120N (right)"", "
+"0","               pch = 20, col = ""blue"")"

@@ -1,0 +1,6 @@
+"0","UK.pred<-rasterFromXYZ(as.data.frame(UK)[, c(""x"", ""y"", ""UK.pred"")])"
+"2","no non-missing arguments to min; returning Inf"
+"2","no non-missing arguments to max; returning -Inf"
+"0","UK.var<-rasterFromXYZ(as.data.frame(UK)[, c(""x"", ""y"", ""UK.var"")])"
+"2","no non-missing arguments to min; returning Inf"
+"2","no non-missing arguments to max; returning -Inf"

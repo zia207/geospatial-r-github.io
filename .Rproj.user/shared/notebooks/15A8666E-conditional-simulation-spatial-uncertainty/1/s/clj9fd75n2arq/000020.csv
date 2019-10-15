@@ -1,0 +1,2 @@
+"0","lines(variogramLine(fit.variogram(v,  m.f), "
+"0","maxdist = max(v$dist)), col = ""red"",  lwd=1.0)"

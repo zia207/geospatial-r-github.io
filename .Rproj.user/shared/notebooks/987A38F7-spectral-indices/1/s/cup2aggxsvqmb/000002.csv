@@ -1,0 +1,4 @@
+"0","BLUE<- raster(paste0(dataFolder,""//Landsat8//Landsat8_PROCESSED//_B2_sre.tif""))"
+"0","RED<- raster(paste0(dataFolder,""//Landsat8//Landsat8_PROCESSED//_B4_sre.tif""))"
+"0","NIR<- raster(paste0(dataFolder,""//Landsat8//Landsat8_PROCESSED//_B5_sre.tif""))"
+"0","SWRI<- raster(paste0(dataFolder,""//Landsat8//Landsat8_PROCESSED//_B6_sre.tif""))"

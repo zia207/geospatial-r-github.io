@@ -1,0 +1,182 @@
+---
+title: "eXtreme Gradient Boosting - Supervised Image Classification"
+---
+
+<div style="margin-bottom:40px;">
+</div>
+
+In this lesson we will learn about **Extreme Gradient Boosting (XGBoost)**.  **XGBoost** has recently been dominating applied machine learning and Kaggle  competitions for structured or tabular data . XGBoost is an implementation of gradient boosted decision trees, which are designed for speed and performance. Technically it is one kind of Gradient boosting for regression and classification problems by ensemble of weak prediction models sequentially , with each new model attempting to correct for the deficiencies in the previous model.
+
+
+Before training, you will need to install “xgboost” in R
+
+```{r}
+#install.packages("xgboost")
+```
+
+#### Load R packages 
+
+```{r message=F, warning=F}
+library(rgdal)        # spatial data processing
+library(raster)       # raster processing
+library(plyr)         # data manipulation 
+library(dplyr)        # data manipulation 
+library(RStoolbox)    # plotting spatial data 
+library(RColorBrewer) # color
+library(ggplot2)      # plotting
+library(sp)           # spatial data
+library(caret)        # machine laerning
+library(doParallel)   # Parallel processing
+```
+
+
+<div style="margin-bottom:20px;">
+</div>
+
+The data could be available for download from [here](https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0).
+
+<div style="margin-bottom:20px;">
+</div>
+
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//"
+```
+
+
+#### Load data
+
+```{r}
+train.df<-read.csv(paste0(dataFolder,".\\Sentinel_2\\train_data.csv"), header = T)
+test.df<-read.csv(paste0(dataFolder,".\\Sentinel_2\\test_data.csv"), header = T)
+```
+
+#### Start foreach to parallelize for model fitting
+
+```{r}
+mc <- makeCluster(detectCores())
+registerDoParallel(mc)
+```
+
+
+#### Tunning prameters
+
+```{r message=F, warning=F}
+myControl <- trainControl(method="repeatedcv", 
+                          number=3, 
+                          repeats=2,
+                          returnResamp='all', 
+                          allowParallel=TRUE)
+```
+
+
+#### Parameter for Tree Booster
+
+In the grid, each algorithm parameter can be specified as a vector of possible values . These vectors combine to define all the possible combinations to try. 
+
+
+```{r}
+tune_grid <- expand.grid(nrounds = 200,           # the max number of iterations
+                        max_depth = 5,            # depth of a tree 
+                        eta = 0.05,               # control the learning rate
+                        gamma = 0.01,             # minimum loss reduction required
+                        colsample_bytree = 0.75,  # subsample ratio of columns when constructing each tree
+                        min_child_weight = 0,     # minimum sum of instance weight (hessian) needed in a child 
+                        subsample = 0.5)          # subsample ratio of the training instance
+
+```
+
+
+####  Train xgbTree model
+
+We will use the **train()** function from the of caret package with the “method” parameter **“xgbTree”** wrapped from the **XGBoost** package.
+
+```{r message=F, warning=F}
+set.seed(849)
+fit.xgb<- train(as.factor(Landuse)~B2+B3+B4+B4+B6+B7+B8+B8A+B11+B12, 
+                data=train.df,
+                method = "xgbTree",
+                metric= "Accuracy",
+                preProc = c("center", "scale"), 
+                trControl = myControl,
+                tuneGrid = tune_grid,
+                tuneLength = 10
+                )
+fit.xgb
+```
+
+#### Stop cluster
+
+```{r}
+stopCluster(mc)
+```
+
+#### Confusion Matrix - train data
+
+```{r message=F, warning=F}
+p1<-predict(fit.xgb, train.df, type = "raw")
+confusionMatrix(p1, train.df$Landuse)
+```
+
+
+#### Confusion Matrix - test data
+
+```{r message=F, warning=F}
+p2<-predict(fit.xgb, test.df, type = "raw")
+confusionMatrix(p2, test.df$Landuse)
+```
+
+
+#### Predition at grid location
+
+
+```{r message=F, warning=F}
+# read grid CSV file
+grid.df<-read.csv(paste0(dataFolder,".\\Sentinel_2\\prediction_grid_data.csv"), header = T) 
+# Preddict at grid location
+p3<-as.data.frame(predict(fit.xgb, grid.df, type = "raw"))
+# Extract predicted landuse class
+grid.df$Landuse<-p3$predict  
+# Import lnaduse ID file 
+ID<-read.csv(paste0(dataFolder,".\\Sentinel_2\\Landuse_ID.csv"), header=T)
+# Join landuse ID
+grid.new<-join(grid.df, ID, by="Landuse", type="inner") 
+# Omit missing values
+grid.new.na<-na.omit(grid.new)                                                            
+```
+
+
+#### Convert to raster 
+
+```{r message=F, warning=F}
+x<-SpatialPointsDataFrame(as.data.frame(grid.new.na)[, c("x", "y")], data = grid.new.na)
+r <- rasterFromXYZ(as.data.frame(x)[, c("x", "y", "Class_ID")])
+```
+
+#### Plot Landuse Map: 
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=6.5,message=F, warning=F}
+# Color Palette
+myPalette <- colorRampPalette(c("light grey","burlywood4", "forestgreen","light green", "dodgerblue"))
+# Plot Map
+LU<-spplot(r,"Class_ID", main="Supervised Image Classification: eXtreme Gradient Boosting" , 
+      colorkey = list(space="right",tick.number=1,height=1, width=1.5,
+              labels = list(at = seq(1,4.8,length=5),cex=1.0,
+              lab = c("Road/parking/pavement" ,"Building", "Tree/buses", "Grass", "Water"))),
+              col.regions=myPalette,cut=4)
+LU
+```
+
+
+#### Write raster
+
+```{r}
+# writeRaster(r, filename = paste0(dataFolder,".\\Sentinel_2\\XGB_Landuse.tiff"), "GTiff", overwrite=T)
+```
+
+
+
+```{r}
+rm(list = ls())
+```

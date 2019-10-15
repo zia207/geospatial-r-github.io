@@ -1,0 +1,237 @@
+---
+title: "Co-Kriging"
+---
+
+
+Co-kriging (CK) is an extension of ordinary kriging in which additional observed variables (know as co-variate which are often correlated with the variable of interest) are used to improve the precision of the interpolation of the variable of interest. Unlike regression and universal kriging, Co-Kriging does not require that the secondary information is available at all prediction locations. The co-variable may be measured at the same points as the target (co-located samples), at other points, or both. The most common application of co-kriging is when the co-variable is cheaper to measure than the target variable. 
+
+
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\cokriging.png')
+```
+
+
+In this excersice first we will explore relation between SOC and other environmental co-variates such as elevation, NDVI, TPI, and then we will select one variable that would show highest relationship with SOC. This variable will be used  for cokriging of SOC.  The soil organic carbon data (train and test data set) that we have created before is available for download [here](https://www.dropbox.com/s/0fnrtmanl5lnkws/DATA_07.7z?dl=0). 
+
+
+#### Load package 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(spatstat)
+library(dismo)
+library(fields)
+library(gridExtra)
+library(Hmisc)
+```
+
+#### Load Data
+
+The soil organic carbon data (train and test data set) that we have created before is available for download [here](https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0). 
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+```
+
+
+```{r}
+train<-read.csv(paste0(dataFolder,"train_data.csv"), header= TRUE) 
+state<-shapefile(paste0(dataFolder,"GP_STATE.shp"))
+grid<-read.csv(paste0(dataFolder, "GP_prediction_grid_data.csv"), header= TRUE) 
+```
+
+
+First,  we will create a data.frame with SOC and continuous environmental data. Then, we will use **rcorr()**  function of **Hmisc** package. We will use Box-Cox transformed SOC for correlation anaysis.
+
+#### Power transformation
+
+```{r}
+powerTransform(train$SOC)
+```
+
+```{r}
+SOC.bc<-bcPower(train$SOC, 0.2523339)
+train$SOC.bc<-bcPower(train$SOC, 0.2523339)
+```
+
+
+#### Correlation matrix
+
+```{r}
+# create a data.frame
+co.var <- train[, c(11:19)]
+df.cor<-cbind(SOC.bc,co.var )
+# Corelation matrix
+cor.matrix <- rcorr(as.matrix(df.cor))
+cor.matrix
+```
+
+
+### Variogram Modeling of co-regionalisation or Corss-Varoigram
+
+
+From correlation analysis, it is observed that only **NDVI** shows the highest correlation with SOC (r = 0.63, p-value < 0.001), So will use NDVI for co-kriging. We first model the spatial structure of the target variable (SOC), the co-variable (NDVI) and its covariance with the target variable (SOC). This is called a **co-regionalisation**. It is an extension of the theory of a single regionalism variable used for ordinary kriging. The direct and cross-variograms must be modeled together, with some restrictions to ensure that the resulting CK system can be solved. Cross-variogram (per pair of regionalised variables) is calculated using following equation: 
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\crossvariogram.png')
+```
+
+
+Before variogram modeling. first. we have to define x & y variables to coordinates
+
+```{r}
+coordinates(train) = ~x+y
+coordinates(grid) = ~x+y
+```
+
+
+#### Direct Varoigram of Target Variables (SOC)
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 5,message=F, warning=F}
+# Variogram
+v.soc<-variogram(SOC.bc~ 1, data = train, cloud=F)
+# Intial parameter set by eye esitmation
+m.soc<-vgm(1.5,"Exp",400000,0.5)
+# least square fit
+m.f.soc<-fit.variogram(v.soc, m.soc)
+p1<-plot(v.soc, pl=F, model=m.f.soc, main= "SOC")
+```
+
+
+#### Direct Varoigram of Variogram Modeling of Co-Variables (NDVI)
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 5,message=F, warning=F}
+# Variogram
+v.ndvi<-variogram(NDVI~ 1, data = train, cloud=F)
+# Intial parameter set by eye esitmation
+m.ndvi<-vgm(1.5,"Exp",40000,0.5)
+# least square fit
+m.f.ndvi<-fit.variogram(v.ndvi, m.ndvi)
+p2<-plot(v.ndvi, pl=F, model=m.f.ndvi, main="NDVI")
+```
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 8,message=F, warning=F}
+grid.arrange(p1, p2, ncol = 2)  # Multiplot 
+```
+
+
+#### Cross-Variogram
+
+For modeling Cross-Varoigram,  We have to fit models to both the direct and cross-variograms simultaneously with  same shape and range, but may have different partial sills and nuggets.
+
+For modeling of Cross-Varoigram in R, we have to build the **gstat** model sequentially, using the **gstat** method.  First we have to build a **gstat** structure for target (SOC) and covariates (NDVI). Then,  add we will fit variogram models to the **gstat** object.  
+
+
+```{r}
+g <- gstat(NULL, id = "SOC", form = SOC.bc ~ 1, data=train)
+g <- gstat(g, id = "NDVI", form = NDVI ~ 1, data=train)
+```
+
+
+Mow display the two direct variograms and one cross-variogram
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=6, fig.width= 7,message=F, warning=F}
+v.cross <- variogram(g)
+plot(v.cross, pl=F)
+```
+
+
+
+We will add variogram models to the gstat object and fit a them using the linear model of co-regionalisation. By filling all the frames with one model (using the fill.all = T argument), these conditions are automatically met.
+
+
+```{r}
+#g <- gstat(g, id = "SOC", model = m.f.soc, fill.all=T)
+g <- gstat(g, id = "SOC", model = m.f.soc, fill.all=T)
+g
+```
+
+
+
+Now we fit all three variograms together, ensuring they lead to a positive definite co-kriging system. For this we use the fit.lmc method (“fit linear model of co-regionalization”). This takes the initial estimate, fits all the variograms, and then each of the partial sills is adjusted (by least squares) to the closest value that will result in a positive definite matrices.
+
+
+```{r}
+g <- fit.lmc(v.cross, g)
+g
+```
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=6, fig.width= 7,message=F, warning=F}
+plot(variogram(g), model=g$model)
+```
+
+
+#### Co-Kriging Prediction at grid locations
+
+The wrapper method **krige()**that was used for OK can only be used for univariate kriging; here we have to  use the **predict()** function. This takes a gstat object as the first argument and the prediction points data frame as the second argument
+
+```{r}
+CK <- predict(g, grid)
+summary(CK)
+```
+
+
+#### Back transformation 
+
+We will  back transformation using  transformation parameters that have used Box-cos transformation
+
+```{r}
+k1<-1/0.2523339                                   
+CK$CK.pred <-((CK$SOC.pred *0.2523339+1)^k1)
+CK$CK.var <-((CK$SOC.var *0.2523339+1)^k1)
+summary(CK)
+```
+
+
+#### Convert to raster
+
+```{r message=F, warning=F}
+CK.pred<-rasterFromXYZ(as.data.frame(CK)[, c("x", "y", "CK.pred")])
+CK.var<-rasterFromXYZ(as.data.frame(CK)[, c("x", "y", "CK.var")])
+```
+
+#### Plot predicted SOC and OK Error
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=8}
+p3<-ggR(CK.pred, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("CK Predicted SOC")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+p4<-ggR(CK.var, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("blue",  "green","yellow", "orange"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("CK Predition Variance")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(p3,p4, ncol = 2)  # Multiplot 
+```
+
+
+Above plots show the interpolated map of soil SOC with associated error at each prediction grid. CK predicted map shows global pattern and hot spot locations of SOC concentration. The kriging variance is higher in unsampled locations, since variance depends on geometry of the sampling locations with lower variance near sampling locations. 
+

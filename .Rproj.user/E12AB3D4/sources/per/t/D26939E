@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415971578.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1772408563",
+    "id" : "D26939E",
+    "lastKnownWriteTime" : 1549461669,
+    "last_content_update" : 1549461669470,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/indicator-kriging.Rmd",
+    "project_path" : "indicator-kriging.Rmd",
+    "properties" : {
+        "cursorPosition" : "337,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

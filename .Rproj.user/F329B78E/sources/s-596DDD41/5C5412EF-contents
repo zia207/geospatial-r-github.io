@@ -1,0 +1,315 @@
+---
+title: "Deterministic Methods for Spatial Interpolation"
+---
+
+
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri(file.path(R.home("doc"), "html", "logo.jpg")), 
+               alt = 'logo', 
+               style = 'position:absolute; top:-0.5; right:0; padding:10px;')
+```
+
+
+
+Deterministic interpolation techniques, also known as exact interpolator, predict values from measured points, based on either the extent of similarity (inverse distance weighted) or the degree of smoothing (radial basis functions). This kind of interpolation techniques usually predict a value that is identical to the measured value at a sampled location without documenting potential error or error is assumed to be negligible.  
+
+Global techniques calculate predictions using the entire dataset (Polynomial Trend Surfac).  Local techniques calculate predictions from the measured points within neighborhoods, which are smaller spatial areas within the larger study area. 
+
+In this excercise we will explore following deterministic methods to predict Soil Organic C: 
+
+
+* [Polynomial Trend Surface](#polynomial-trend-surface)
+
+* [Proximity Analysis-Thiessen Polygons](#proximity-analysis-thiessen-polygons) 
+
+* [Nearest Neighbour Interpolation](#nearest-neighbour-interpolation)
+ 
+* [Inverse Distance Weighted Interpolation](#inverse-distance-weighted-interpolation)
+
+* [Thin Plate Spline](#thin-plate-spline)
+
+
+
+
+
+#### Load package: 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(spatstat)
+library(dismo)
+library(fields)
+```
+
+
+#### Load Data
+
+The soil organic carbon data (train and test data set) that we have created in previous lesson is avilable for download [here](https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0). 
+
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+```
+
+
+```{r}
+train<-read.csv(paste0(dataFolder,"train_data.csv"), header= TRUE) 
+state<-shapefile(paste0(dataFolder,"GP_STATE.shp"))
+grid<-read.csv(paste0(dataFolder, "GP_prediction_grid_data.csv"), header= TRUE) 
+```
+
+
+```{r}
+p.grid<-grid[,2:3]
+```
+
+#### Define coordinates
+
+```{r}
+coordinates(train) = ~x+y
+coordinates(grid) = ~x+y
+gridded(grid) <- TRUE 
+```
+
+
+### Polynomial Trend Surface
+
+
+Polynomial trend surfaces analysis is the most widely used global interpolation techniques where data is fitted with a least square equation (linear or quadratic equation), and then, interpolate surface is created based on this equation. The nature of the resulting surface is controlled by the order of the polynomial.
+
+#### Linear fit
+
+To fit a first order polynomial model:  
+SOC =intercept + aX+ bY   (X = x coordinates, Y= y- coordinates) 
+
+We will use  **krige()** function  og gstat **package**  without the geographic coordinates specified. It will perform  **ordinary or weighted least squares prediction** 
+
+
+```{r}
+model.lm<-krige(SOC ~ x + y, train, grid)
+summary(model.lm)
+```
+
+##### Plot map 
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=4.5}
+spplot(model.lm ,"var1.pred",
+       main= "1st Order Trend Surface")
+```
+
+####  Quadratic Fit
+
+To fit a second order polynomial model: 
+
+SOC =  x + y + I(x*y) + I(x^2) + I(y^2)
+
+
+```{r}
+model.quad<-krige(SOC ~ x + y + I(x*y) + I(x^2) + I(y^2), train, grid)
+summary(model.quad)
+```
+
+##### Plot map 
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=4.5}
+spplot(model.quad ,"var1.pred",
+       main= "2nd Order Trend Surface")
+```
+
+
+### Proximity Analysis-Thiessen Polygons
+
+Thiessen polygons is the simplest interpolation method by which we can assign  values at all unsampled locations considering the value of the closest sampled location. This way we can  define boundaries of an area that is closest to each point relative to all other points. [They are mathematically defined by the perpendicular bisectors of the lines between all points](https://www.ian-ko.com/ET_GeoWizards/UserGuide/thiessenPolygons.htm). 
+
+
+The Thiessen polygons can be created using 's ***dirichlet()** function of **spatstat**  or **voronoi()** function of  **dismo** package in R
+
+Here, we  will apply **voronoi** function of **dismo** package
+
+Before creating thiessen polygons, we have to create a **SpatialPointsDataFrame**  
+
+
+```{r}
+df<-as.data.frame(train)
+##  define coordinates
+xy <- df[,8:9]
+SOC<-as.data.frame(df[,10])
+names(SOC)[1]<-"SOC"
+# Convert to spatial point
+SPDF <- SpatialPointsDataFrame(coords = xy, data=SOC) 
+```
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 4.5,message=F, warning=F}
+v <- voronoi(SPDF)
+plot(v)
+```
+
+Plot looks not good, lets confind into GP state boundary.
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=4.5}
+# disslove inter-state boundary
+bd <- aggregate(state)
+# apply intersect fuction to clip
+v.gp <- raster::intersect(v, bd)
+```
+
+Now we plot the maps
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 4.5,message=F, warning=F}
+spplot(v.gp, 'SOC',
+       main= "Thiessen polygons (Voronoi)",
+       col.regions=rev(get_col_regions()))
+```
+
+
+Now will convert this Voronoi polygon to raster (10 km x 10 km) 
+
+
+```{r}
+r <- raster(bd, res=10000)
+vr <- rasterize(v.gp, r, 'SOC')
+```
+
+
+#### Plot map 
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=4.5}
+ggR(vr, geom_raster = TRUE) +
+  scale_fill_gradientn("SOC", colours = c("orange", "yellow", "green",  "blue","sky blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("Thiessen polygons (Voronoi) of SOC")+
+   theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+### Nearest Neighbour Interpolation
+
+Here we do nearest neighbour interpolation considering multiple (5) neighbours.
+
+We will use the **gstat** package to interpolate SOC using Nearest Neighbour Interpolation. First we fit a model ( ~1 means)  "intercept only" using krige() function.  In the case of spatial data, that would be only 'x' and 'y' coordinates are used. We set the maximum number of points to 5, and the "inverse distance power" idp to zero, such that all five neighbors are equally weighted. 
+
+
+```{r}
+nn <- krige(SOC ~ 1, train, grid, nmax=5, set=list(idp = 0))
+```
+
+
+#### Convert to raster
+
+```{r}
+nn.na<-na.omit(nn)
+nn.pred<-rasterFromXYZ(as.data.frame(nn)[, c("x", "y", "var1.pred")])
+```
+
+
+#### Plot Nearest Neighbour predicted SOC 
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=4.5}
+ggR(nn.pred, geom_raster = TRUE) +
+  scale_fill_gradientn("SOC", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("Nearest Neighbour\n Predicted SOC")+
+   theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+### Inverse Distance Weighted Interpolation
+
+
+**Inverse distance weighted (IDW)** is one of the most commonly used **non-statistical** method for spatial interpolation based on an assumption that things that are close to one another are more alike than those that are farther apart, and each measured point has a local influence that diminishes with distance. It gives greater weights to points closest to the prediction location, and the weights diminish as a function of distance. The factors that affect the accuracy of IWD are the value of the power parameter and size and the number of the neighbor. 
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\IDW.png')
+```
+
+
+We will use the **gstat** package to interpolate SOC using IDW. First we fit a model ( ~1 means)  "intercept only" using krige() function.  In the case of spatial data, that would be only 'x' and 'y' coordinates are used. 
+
+
+```{r}
+IDW<- krige(SOC ~ 1, train, grid)
+summary(IDW)
+```
+
+
+#### Convert to raster
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=4.5}
+idw.na<-na.omit(idw)
+IDW.pred<-rasterFromXYZ(as.data.frame(IDW)[, c("x", "y", "var1.pred")])
+```
+
+
+#### Plot IDW predicted SOC 
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=4.5}
+ggR(IDW.pred, geom_raster = TRUE) +
+  scale_fill_gradientn("SOC", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("Inverse Distance Weighted (IDW)\n Predicted SOC")+
+   theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+### Thin Plate Spline
+
+Thin Plate Splines are used to produce approximations to given data in more than one dimension.  These are analogous to the cubic splines in one dimension. We can fits a thin plate spline surface to irregularly spaced spatial data. 
+
+ We use **Tps()** function of **field** package to create thin plate spline surface
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 4.5,message=F, warning=F}
+m <- Tps(coordinates(train), train$SOC)
+tps <- interpolate(r, m)  
+plot(tps)
+tps <- raster::mask(tps,bd) # mask out 
+```
+
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=4.5}
+ggR(tps, geom_raster = TRUE) +
+  scale_fill_gradientn("SOC", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("Thin Plate Spline\n Predicted SOC")+
+   theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+

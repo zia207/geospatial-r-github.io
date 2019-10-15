@@ -1,0 +1,36 @@
+---
+title: "Geographically Weighted Models"
+---
+
+<div style="margin-bottom:30px;">
+</div>
+
+When data are not described well by some global model, but data explain better a suitably localized calibration, in this case, geographical weighted (GW) model, non-stationary spatial statistics, applies to describe local variability of data. For founding localized models at target locations, a moving window weighting technique. Outputs of GW models provide a useful exploratory tool into the nature of the spatial data heterogeneity. Many of these GW models are included in the R (R Core Team 2014) package [GWmodel](https://www.jstatsoft.org/article/view/v063i17). We will follow examples describe in   **GWmodel: An R Package for Exploring Spatial Heterogeneity Using Geographically Weighted Models** with lung cancer mortality data. 
+
+<div style="margin-bottom:30px;">
+</div>
+
+
+* [Geographically Weighted Summary Statistics](geographically-weighted-summary-statistics.html)
+    
+* [Geographically Weighted Principal Components Analysis](geographically-weighted-principal-components-analysis.html)
+    
+* [Geographically Weighted Regression Analysis](geographically-weighted-regression.html)
+
+<div style="margin-bottom:30px;">
+</div>
+
+**Distance matrix, kernel and bandwidth** 
+
+A fundamental element in GW modelling is the spatial weighting function (Fotheringham et al. 2002) that quantifies (or sets) the spatial relationship or spatial dependency between the observed variables. There are three key elements in building this weighting matrix: 
+
+* the type of distance, 
+
+* the kernel function and 
+
+* its bandwidth.
+
+
+
+
+

@@ -1,0 +1,24 @@
+"0","writeRaster(lsat_sref, raster(paste0(dataFolder,"".//Landsat8//Landsat8_PROCESSED//"", names(lsat_sref), bylayer=T, overwrite=TRUE, format=""GTiff"")))"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","Error in .local(.Object, ...) : 
+
+"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","the condition has length > 1 and only the first element will be used"
+"2","Error in .rasterObjectFromFile(x, band = band, objecttype = ""RasterLayer"",  : 
+  Cannot create a RasterLayer object from this file. (file does not exist)
+"

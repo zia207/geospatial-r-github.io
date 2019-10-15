@@ -1,0 +1,255 @@
+---
+title: "Green Ground Cover (GC) from  UAV Images"
+---
+
+<div style="margin-bottom:40px;">
+</div>
+
+Ground Cover or FCover is the percentage of green plant material that covers the surface. Monitoring FCover on crop fields indicates the rate of crop development and vigor.  A relationship exists between fCover, NDVI, and LAI (Li et al., 2015; Richter et al., 2012; Shang et al., 2014). In most cases, however, this relationship is highly non-linear. FCover also provides a measure of the susceptibility to erosion. Crops with high fCover at early developmental stages intercept incident radiation and rainfall better, thereby increasing soil shading and decreasing soil evaporation. This can also be used to estimate irrigation requirements. [Maas  &  Rajan (2008)](http://dx.doi.org/10.2134/agrojnl2007.0140)] propossed a procedure that was developed to estimate GC of field crops from digital number (DN) of red and near-infrared (NIR) bands of Landsat satellite image. The processed method is the ratio of the perpendicular vegetation index (PVI) value calculated for an image pixel to the PVI value corresponding to full vegetation canopy. 
+
+<div style="margin-bottom:20px;">
+</div>
+
+In this exercise, we will show how to calculate the ground cover of a wheat field from very high-resolution multi-spectral images in Bangladesh.  Images were acquired by Unmanned aerial vehicle (UAV) in February 2015 under [STAR project](https://www.stars-project.org/en/about-us/the-stars-project/) funded by Gates Foundation. We will use reflectance of NIR and red bands to calculate Perpendicular Vegetation Index and ground cover. The data could be available for download [here](https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0).
+
+This lesson we will cover following: 
+
+* [Bare Soil Line](#bare-soil-line)
+
+* [Perpendicular Vegetation Index](#perpendicular-vegetation-index)
+
+* [Ground Cover](#ground-cover)
+
+* [Weighted Difference Vegetation Index](#weighted-difference-vegetation-index)
+
+<div style="margin-bottom:30px;">
+</div>
+
+#### Load  pacakges
+
+```{r}
+library(raster)
+library(rgdal)
+library(landsat)
+library(sp)
+library(RColorBrewer)
+library(RStoolbox)   # Image analysis
+library(ggplot2)
+```
+
+#### Load Data
+
+<div style="margin-bottom:20px;">
+</div>
+
+The data could be available for download from [here](https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0).
+
+<div style="margin-bottom:20px;">
+</div>
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//"
+```
+
+
+```{r}
+s=stack(paste0(dataFolder,".\\UAV\\multi_bwh_mc_20150212.tif"))
+```
+
+#### Plot RGB Maps
+
+```{r,echo=TRUE,fig.align='center',fig.height=5.5, fig.width=5,message=F, warning=F}
+p1<-ggRGB(s, r=5, g=2, b=3, stretch = "lin")+
+theme(axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.title.y=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank())+
+  ggtitle("UAV's False Color Vegetation of Wheat Field\n (R= NIR, G= Red,  B=Green)")
+p1
+```
+
+#### Load Red and NIR Bands
+
+```{r}
+b2.DN<-subset(s, 2) # Red bands
+b5.DN<-subset(s, 5) # NIR bands
+```
+
+```{r}
+b2=na.omit(b2.DN)
+b5=na.omit(b5.DN)
+```
+
+#### Convert Raster to SpatialGridDataFrame
+
+```{r}
+red = as(b2, "SpatialGridDataFrame") # red band
+nir = as(b5, "SpatialGridDataFrame") # NIR band
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Bare Soil Line
+
+The soil line is a linear relationship between the reflectance of the NIR and the Red  bands for bare soil, is derived: 
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center"}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\equ_bare_soil.png")
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+By plotting the value of the NIR in each pixel versus that of the Red one, a triangleshaped plot, as shown in the below left panel. In this plot, soil’s reflectance is a straight line,  which indicates the line where the vegetation begins Vegetation increase significantly in the NIR but descends in the  Red regions.
+
+<div style="margin-bottom:20px;">
+</div>
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\baressoil.png")
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+Now we will calculate Bare Soil Line (BSL) and  maximum vegetation point  with **BSL()** of **landsat** package. This method allows to calcualte soil line in two method: **"quantile"** or **"minimum"**. The quantile method takes the lowest set of points, those with a NIR/red ratio less than the llimit-th quantile. The minimum value method takes the lowest NIR value for each level of red.
+
+```{r}
+bsl<- BSL(red, nir,method = "minimum") # minimum method
+```
+
+```{r}
+list(bsl) # see the list of output
+```
+
+```{r}
+a1 =bsl$BSL[[2]] # slope of BSL
+a0 =bsl$BSL[[1]] # intercept of BSL
+```
+
+```{r}
+Slope = round(a1,3)
+Intercept = round(a0,3)
+```
+
+```{r,echo=TRUE,fig.align='center',fig.height=4.5, fig.width=5,message=F, warning=F}
+plot(as.vector(as.matrix(red)), as.vector(as.matrix(nir)),
+   main="Bare Soil Line", 
+   xlab="RED-band", ylab="NIR-band", xlim=c(0,255), ylim=c(0,255),
+   pch=19, cex=0.7, col="grey")
+   abline(bsl$BSL, col="red") # regresion line 
+   points(bsl$top[1], bsl$top[2], col="green", cex=2, pch=16) # plot miximum vegetation point
+  text(150, 65,"a1",pos=4)
+  text(165, 65,"=",pos=4)
+  text(175, 65,Slope,pos=4)
+  text(150, 50,"a0",pos=4)
+  text(165, 50,"=",pos=4)
+  text(175, 50,Intercept,pos=4)
+```
+
+
+### Perpendicular Vegetation Index
+
+
+Perpendicular Vegetation Index (PVI) any point calculated as:
+
+
+```{r echo=FALSE, out.width='50%', fig.align="center"}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\PVI.png")
+```
+
+
+Where, in which a1 and a0 are the slope and intercept, respectively, of the bare soil line. 
+
+ 
+```{r}
+a2= (1+a1^2)^0.5 # nominator of the  equations 
+# PVI
+PVI = (b5 - a1*b2- a0)/a2
+PVI[PVI < 0.000] <- 0.000
+PVI[PVI > 100.001] <- 100
+PVI.1<-PVI/100
+```
+
+#### Plot Perpendicular Vegetation Index (PVI) 
+
+```{r,echo=TRUE,fig.align='center',fig.height=5.5, fig.width=5,message=F, warning=F}
+ggR(PVI.1, geom_raster = TRUE) +
+    scale_fill_gradientn("PVI", 
+    colours = c("red", "yellow", "green", "green4"))+
+    ggtitle("Perpendicular Vegetation Index (PVI)")
+```
+
+
+PVI associated with full vegetation canopy (PV1-FC):
+
+
+```{r echo=FALSE, out.width='50%', fig.align="center"}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\PVI_FC.png")
+```
+
+
+```{r}
+# NIR and Red values at full Grouncover
+FC.b2 = bsl$top[[1]]  # Red value at Full ground cover 
+FC.b5 = bsl$top[[2]]  # NIR value at Full ground cover 
+PVI.FC = (FC.b5 -(a1*FC.b2) - a0)/a2
+PVI.FC 
+```
+
+### Ground Cover
+
+An approximate value of GC associated with any point can be calculated as the ratio of PVI and PVI-FC of corressponding full canopy:  
+
+
+```{r echo=FALSE, out.width='50%', fig.align="center"}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\GC.png")
+```
+
+
+
+```{r}
+# Calculate fraction of GC 
+GC = PVI/PVI.FC
+# Omit value greater than 1 and lower than 0 
+GC[GC > 1.00001] <- 1
+GC[GC < 0] <- 0
+```
+
+#### Plot Ground Cover
+
+```{r,echo=TRUE,fig.align='center',fig.height=5.5, fig.width=5,message=F, warning=F}
+ggR(GC, geom_raster = TRUE) +
+    scale_fill_gradientn("GC", 
+    colours = c("red", "yellow", "green", "green4"))+
+    ggtitle("Green Vegetation Cover (GC)")
+```
+
+
+### Weighted Difference Vegetation Index
+
+```{r}
+# WDVI = NIR - (a1 * red)
+WDVI=b5/255-(a1*b2/255)
+WDVI[WDVI > 1] <-1
+WDVI[WDVI < 0.000] <- 0.000
+```
+
+#### Plot Weighted Vegetation Index
+
+```{r,echo=TRUE,fig.align='center',fig.height=5.5, fig.width=5,message=F, warning=F}
+ggR(WDVI, geom_raster = TRUE) +
+    scale_fill_gradientn("WDVI", 
+    colours = c("red", "yellow", "green", "green4"))+
+    ggtitle("Weighted Vegetation Index (WDVI)")
+```
+
+
+```{r}
+rm(list = ls())
+```

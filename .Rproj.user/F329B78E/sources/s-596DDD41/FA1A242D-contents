@@ -1,0 +1,25 @@
+---
+title: "Assessing the Quality of Spatial Predictions"
+---
+
+
+The accuracy of spatial interpolation or predictive models is critical as it determines the quality of the interpolated values. It is less easy to develop spatial prediction models than accuracy assessment of spatial prediction which, however, remains unknown in general. 
+
+
+Diagnostic measures of quality of spatial prediction are:  **mean error (ME), mean absolute error (MAE), root mean square error (RMSE)** and **Mean Squared Deviation Ratio (MSDR)** of residuals with kriging variance can be calculated as:
+
+
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\Error.png')
+```
+
+
+In this Lesson, we will evaluate quality of ordinary kriging prediction using following three methods: 
+
+
+* [Cross-validation](cross-validation.html)
+      
+* [Validation with an Independent Dataset](validation-independent-dataset.html)
+      
+* [Conditional Simulation for Spatial Uncertinity](conditional-simulation-spatial-uncertinity)

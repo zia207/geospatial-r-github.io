@@ -1,0 +1,9 @@
+"0","set.seed(130)"
+"0","nsim=10"
+"0","sim.as<-krige(As.bc~1,mf,grid,model=m.f, nmax=50, nsim = nsim)"
+"1","drawing 10 GLS realisations of beta...
+"
+"2","Covariance matrix singular at location [509574,2.47401e+006,0]: skipping..."
+"1","[using conditional Gaussian simulation]
+"
+"2","Covariance matrix singular at location [691022,2.73949e+006,0]: skipping..."

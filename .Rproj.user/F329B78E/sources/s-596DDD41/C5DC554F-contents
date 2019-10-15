@@ -1,0 +1,175 @@
+---
+title: "Cross-validation"
+---
+
+Cross-validation is a resampling procedure used to evaluate models on a limited data sample. It is better than residuals evaluation. Two major types of cross-validation techniques are usually use for model evaluation:  1) K-fold cross validation and 2) Leave-one-out cross validation.
+
+In **K-fold cross validation**, The data set is randomly divided into a test and training set k different times, and model evolution is repeated k times.  Each time, one of the k subsets is used as the test set and the other k-1 subsets are put together to form a training set. Then the average error across all k trials is computed. A variant of this method is to randomly divide the data into a test and training set k different times. 
+
+In **Leave-one-out cross validation**, K is equal to N, the number of data points in the set. The model is trained on all the data except for one point and a prediction is made for that point.  Eventually model  predict at each observation point separately, using all the other observations and e average error is computed and used to evaluate the model. 
+
+
+#### Load package 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(spatstat)
+library(dismo)
+library(fields)
+library(gridExtra)
+```
+
+
+#### Load data
+
+The soil organic carbon data (train and test data set) that we have created before is available for download [here](https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0). 
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+```
+
+
+```{r}
+train<-read.csv(paste0(dataFolder,"train_data.csv"), header= TRUE) 
+```
+
+
+#### Data Transformation
+
+Power Transform uses the maximum likelihood-like approach of Box and Cox (1964) to select a transformation of a univariate or multivariate response for normality. First we have to calculate appropriate **transformation parameters** using **powerTransform()** function of **car** package and then use this parameter to transform the data using **bcPower()** function.  
+
+```{r}
+powerTransform(train$SOC)
+```
+
+```{r}
+train$SOC.bc<-bcPower(train$SOC, 0.2523339)
+```
+
+
+#### Define coordinates
+
+```{r}
+coordinates(train) = ~x+y
+```
+
+
+#### Variogram Modeling
+
+```{r}
+# Variogram
+v<-variogram(SOC.bc~ 1, data = train, cloud=F)
+# Intial parameter set by eye esitmation
+m<-vgm(1.5,"Exp",40000,0.5)
+# least square fit
+m.f<-fit.variogram(v, m)
+m.f
+```
+
+
+### K-fold cross valiadtion
+
+We will evaluate the model with  k-fold cross validation. We will use **krige.cv()** function
+
+
+```{r}
+cv<-krige.cv(SOC.bc ~ 1,
+         train,              # data
+         model = m.f,        # fitted varigram model 
+         nfold=10)           # five-fold cross validation
+```
+
+```{r}
+summary(cv)
+```
+
+
+#### Residuals plot
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=6,message=F, warning=F}
+bubble(cv, zcol = "residual", maxsize = 2.0,  main = "K-fold Cross-validation residuals")
+```
+
+
+
+```{r}
+# Mean Error (ME)
+ME<-round(mean(cv$residual),3)
+# Mean Absolute Error
+MAE<-round(mean(abs(cv$residual)),3)
+# Root Mean Squre Error (RMSE)
+RMSE<-round(sqrt(mean(cv$residual^2)),3)
+# Mean Squared Deviation Ratio (MSDR)
+MSDR<-mean(cv$residual^2/cv$var1.var)
+
+ME
+MAE
+RMSE
+MSDR
+```
+
+### Actual vs. predicted values: linear regression
+
+Another way to compare actual vs. predicted values is by a linear regression between them. Ideally, this would be a 1:1 line: intercept is 0 (no bias) and the slope is set at 1 (gain is equal). 
+
+
+```{r}
+lm.cv <- lm(cv$var1.pred ~ cv$observed)
+summary(lm.cv)
+```
+
+#### 1:1 Plot
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=5,message=F, warning=F}
+plot(cv$observed, cv$var1.pred,main=list("K-fold Cross Validation",cex=1),
+   sub = "1:1 line red, regression green",
+   xlab = "Observed Box-COX SOC",
+   ylab = "Predicted Box-COX SOC", 
+   cex.axis=.6,
+   xlim = c(-2,6), 
+   ylim =c(-2,6), 
+   pch = 21, 
+   cex=1)
+abline(0, 1, col="red")
+abline(lm.cv, col = "green")
+```
+
+
+### Leave-one-out cross validation
+
+
+```{r}
+cv.LOOCV<-krige.cv(SOC.bc ~ 1,
+         train,           # data
+         model = m.f)    # fitted varigram model 
+```
+
+```{r}
+summary (cv.LOOCV)
+```
+
+```{r}
+# Mean Error (ME)
+ME.LOOCV<-round(mean(cv.LOOCV$residual),3)
+# Mean Absolute Error
+MAE.LOOCV<-round(mean(abs(cv.LOOCV$residual)),3)
+# Root Mean Squre Error (RMSE)
+RMSE.LOOCV<-round(sqrt(mean(cv.LOOCV$residual^2)),3)
+# Mean Squared Deviation Ratio (MSDR)
+MSDR.LOOCV<-mean(cv.LOOCV$residual^2/cv$var1.var)
+
+ME.LOOCV
+MAE.LOOCV
+RMSE.LOOCV
+MSDR.LOOCV
+```
+
+

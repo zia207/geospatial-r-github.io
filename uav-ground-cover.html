@@ -180,7 +180,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,7 +349,7 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
-      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
 </li>
@@ -408,18 +408,9 @@ $(document).ready(function () {
 </div>
 <div id="load-pacakges" class="section level4">
 <h4>Load pacakges</h4>
-<pre class="r"><code>library(raster)</code></pre>
-<pre><code>## Loading required package: sp</code></pre>
-<pre class="r"><code>library(rgdal)</code></pre>
-<pre><code>## rgdal: version: 1.3-3, (SVN revision 759)
-##  Geospatial Data Abstraction Library extensions to R successfully loaded
-##  Loaded GDAL runtime: GDAL 2.2.3, released 2017/11/20
-##  Path to GDAL shared files: C:/Program Files/Microsoft/R Open/R-3.5.1/library/rgdal/gdal
-##  GDAL binary built with GEOS: TRUE 
-##  Loaded PROJ.4 runtime: Rel. 4.9.3, 15 August 2016, [PJ_VERSION: 493]
-##  Path to PROJ.4 shared files: C:/Program Files/Microsoft/R Open/R-3.5.1/library/rgdal/proj
-##  Linking to sp version: 1.3-1</code></pre>
-<pre class="r"><code>library(landsat)
+<pre class="r"><code>library(raster)
+library(rgdal)
+library(landsat)
 library(sp)
 library(RColorBrewer)
 library(RStoolbox)   # Image analysis
@@ -571,6 +562,7 @@ WDVI[WDVI &lt; 0.000] &lt;- 0.000</code></pre>
     colours = c(&quot;red&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;green4&quot;))+
     ggtitle(&quot;Weighted Vegetation Index (WDVI)&quot;)</code></pre>
 <p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-24-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>rm(list = ls())</code></pre>
 </div>
 </div>
 

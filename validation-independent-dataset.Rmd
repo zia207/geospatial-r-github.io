@@ -1,0 +1,161 @@
+---
+title: "Validation with an Independent Data Set"
+---
+
+<div style="margin-bottom:40px;">
+</div>
+
+This section we use SOC data at 89 test locations to validate ordinary kriging prediction from  386 training  data. Since we will not  use the 89 points of the test data set either to fit the model or to predict, these are an independent test of the model. We can compare the predictions to the actual values.
+
+
+#### Load package 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(spatstat)
+library(dismo)
+library(fields)
+library(gridExtra)
+```
+
+
+#### Load data
+
+The soil organic carbon data (train and test data set) that we have created before is available for download from [here](https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0). 
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+```
+
+
+```{r}
+train<-read.csv(paste0(dataFolder,"train_data.csv"), header= TRUE) 
+test<-read.csv(paste0(dataFolder,"test_data.csv"), header= TRUE) 
+```
+
+
+#### Data Transformation
+
+Power Transform uses the maximum likelihood-like approach of Box and Cox (1964) to select a transformation of a univariate or multivariate response for normality. First we have to calculate appropriate **transformation parameters** using **powerTransform()** function of **car** package and then use this parameter to transform the data using **bcPower()** function.  
+
+```{r}
+powerTransform(train$SOC)
+powerTransform(test$SOC)
+```
+
+```{r}
+train$SOC.bc<-bcPower(train$SOC, 0.2523339)
+test$SOC.bc<-bcPower(test$SOC, 0.3379903)
+```
+
+
+#### Define coordinates
+
+```{r}
+coordinates(train) = ~x+y
+coordinates(test) = ~x+y
+```
+
+
+#### Variogram Modeling
+
+```{r}
+# Variogram
+v<-variogram(SOC.bc~ 1, data = train, cloud=F)
+# Intial parameter set by eye esitmation
+m<-vgm(1.5,"Exp",40000,0.5)
+# least square fit
+m.f<-fit.variogram(v, m)
+m.f
+```
+
+
+### Prediction at test locations
+
+We will evaluate the model with  k-fold cross validation. We will use **krige.cv()** function
+
+
+```{r}
+val<-krige(SOC.bc ~ 1,
+         train,        
+         test,
+         model = m.f)
+```
+
+```{r}
+summary(val)
+```
+
+#### Calculate the Residuals
+
+
+```{r}
+test$SOC.pred<-val$var1.pred
+test$SOC.var<-val$var1.var
+test$residual<-(test$SOC.bc-test$SOC.pred)
+```
+
+#### Residuals plot
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=6,message=F, warning=F}
+bubble(test, zcol = "residual", maxsize = 2.0,  main = "Residuals at Test Data")
+```
+
+
+### Error
+
+```{r}
+# Mean Error (ME)
+ME<-round(mean(test$residual),3)
+# Mean Absolute Error
+MAE<-round(mean(abs(test$residual)),3)
+# Root Mean Squre Error (RMSE)
+RMSE<-round(sqrt(mean(test$residual^2)),3)
+# Mean Squared Deviation Ratio (MSDR)
+MSDR<-mean(test$residual^2/test$SOC.var)
+
+ME
+MAE
+RMSE
+MSDR
+```
+
+### Actual vs. predicted values: linear regression
+
+Another way to compare actual vs. predicted values is by a linear regression between them. Ideally, this would be a 1:1 line: intercept is 0 (no bias) and the slope is set at 1 (gain is equal). 
+
+
+```{r}
+lm.val <- lm(test$SOC.pred ~ test$SOC.bc)
+summary(lm.val)
+```
+
+#### 1:1 Plot
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=5,message=F, warning=F}
+plot(test$SOC.bc, test$SOC.pred,main=list("Validation at Test Locations",cex=1),
+   sub = "1:1 line red, regression green",
+   xlab = "Observed Box-COX SOC",
+   ylab = "Predicted Box-COX SOC", 
+   cex.axis=.6,
+   xlim = c(-2,6), 
+   ylim =c(-2,6), 
+   pch = 21, 
+   cex=1)
+abline(0, 1, col="red")
+abline(lm.val, col = "green")
+```
+
+
+
+```{r}
+rm(list = ls())
+```

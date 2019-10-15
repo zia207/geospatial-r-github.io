@@ -1,0 +1,17 @@
+---
+title: "Spatial Statistics - Introduction"
+---
+
+“The GIS dictionary (Wade and Sommer, 2006) define spatial statistics as “the field of study concerning statistical methods that use space and spatial relationships (such as distance, area, volume, length, height, orientation, centrality and/or other spatial characteristics of data) directly in their mathematical computations. Spatial statistics are used for a variety of different types of analyses, including pattern analysis, shape analysis, surface modeling and surface prediction, spatial regression, statistical comparisons of spatial datasets, statistical modeling and prediction of spatial interaction, and more. The many types of spatial statistics include descriptive, inferential, exploratory, geostatistical, and econometric statistics.”
+
+Spatial analysis includes a variety of techniques, many still in their early development, using different analytic approaches and applied in fields as diverse as astronomy, with its studies of the placement of galaxies in the cosmos, to chip fabrication engineering, with its use of "place and route" algorithms to build complex wiring structures. In a more restricted sense, spatial analysis is the technique applied to structures at the human scale, most notably in the analysis of geographic data [(Wikipedia, 2018)](https://en.wikipedia.org/wiki/Spatial_analysis). 
+
+The four major branches of Spatial Statistics are: 
+
+* [Spatial autocorrelation](spatial-autocorrelation.html)
+
+* [Spatial or local regression](spatial-regression.html)
+
+* [Spatial interpolation](spatial-interpolation.html)
+
+* Spatial stratified heterogeneity https://cran.r-project.org/web/packages/GD/vignettes/GD.html 

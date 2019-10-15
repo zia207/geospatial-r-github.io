@@ -1,0 +1,652 @@
+---
+title: "Regression Kriging"
+---
+<div style="margin-bottom:40px;">
+</div>
+
+
+Regression kriging (RK) mathematically equivalent to the universal kriging or kriging with external drift, where auxiliary predictors are used directly to solve the kriging weights.  Regression kriging combines a regression model with simple kriging of the regression residuals. The experimental variogram of residuals is first computed and modeled, and then simple kriging (SK) is applied to the residuals to give the spatial prediction of the residuals. 
+
+
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\RK.png')
+```
+
+ <div style="margin-bottom:20px;">
+</div>
+
+ In this exerciser we will use following regression model for regression kriging of SOC: 
+
+
+* [Generalized Linear Model](#generalized-linear-model)
+
+* [Random Forest](#random-forest)
+
+* [Meta Ensemble Machine Learning](#meta-ensemble-machine-learning)
+
+<div style="margin-bottom:20px;">
+</div>
+
+We will use **caret** package for regression and **gstat** for geo-statistical modeling. 
+
+
+#### Load package 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(caret)
+library(caretEnsemble)
+library(doParallel)
+library(gridExtra)
+```
+
+#### Load Data
+
+The soil organic carbon data (train and test data set) could be found [here](https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0).  
+
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+```
+
+```{r}
+train<-read.csv(paste0(dataFolder,"train_data.csv"), header= TRUE) 
+state<-shapefile(paste0(dataFolder,"GP_STATE.shp"))
+grid<-read.csv(paste0(dataFolder, "GP_prediction_grid_data.csv"), header= TRUE) 
+```
+
+
+First,  we will create a data.frame with SOC and continuous environmental data.
+
+#### Power transformation
+
+```{r}
+powerTransform(train$SOC)
+```
+
+```{r}
+train$SOC.bc<-bcPower(train$SOC, 0.2523339)
+```
+
+#### Create dataframes
+
+```{r}
+# train data
+train.xy<-train[,c(1,24,8:9)]
+train.df<-train[,c(1,24,11:21)]
+# grid data
+grid.xy<-grid[,c(1,2:3)]
+grid.df<-grid[,c(4:14)]
+#  define response & predictors
+RESPONSE<-train.df$SOC.bc
+train.x<-train.df[3:13]
+```
+
+
+#####  Define coordinates
+
+```{r}
+coordinates(train.xy) = ~x+y
+coordinates(grid.xy) = ~x+y
+```
+
+
+#### Start foreach to parallelize for model fitting
+
+```{r}
+mc <- makeCluster(detectCores())
+registerDoParallel(mc)
+```
+
+
+#### Set control parameter
+
+```{r}
+myControl <- trainControl(method="repeatedcv", 
+                          number=10, 
+                          repeats=5,
+                          allowParallel = TRUE)
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Generalized Linear Model
+
+
+The Generalized Linear Model (GLM) is a flexible generalization of ordinary linear regression that allows for response variables that have error distribution models other than a normal distribution. 
+
+First will fit the GLM model with a comprehensive environmental co-variate, Then,  we will compute and model the variogram of the of residuals of the GLM model and then simple kriging (SK) will be  applied to the residuals to estimate the spatial prediction of the residuals (regional trend). Finally, GLM  regression predicted results, and the SK kriged residuals will be added to estimate the interpolated soil organic C. 
+
+#### Fit Generalized Linear Model (GLM)
+
+```{r message=F, warning=F}
+set.seed(1856)
+GLM<-train(train.x,
+           RESPONSE,
+           method = "glm",
+           trControl=myControl,
+           preProc=c('center', 'scale'))
+print(GLM)
+```
+
+
+#### Variogram modeling of GLM residuals 
+
+First, we have to extract the residuals of RF model, we will use **resid()** function to get residuals of RF model
+
+
+```{r message=F, warning=F}
+# Extract residuals
+train.xy$residuals.glm<-resid(GLM)
+# Variogram
+v.glm<-variogram(residuals.glm~ 1, data = train.xy,cutoff=300000, width=300000/15)
+# Intial parameter set by eye esitmation
+m.glm<-vgm(0.15,"Exp",40000,0.05)
+# least square fit
+m.f.glm<-fit.variogram(v.glm, m.glm)
+m.f.glm
+```
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 4.5,message=F, warning=F}
+#### Plot varigram and fitted model:
+plot(v.glm, pl=F, 
+     model=m.f.glm,
+     col="black", 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main="Variogram and Fitted Model\n Residuals of GLM model",
+     xlab="Distance (m)",
+     ylab="Semivariance")
+```
+
+
+#### GLM Prediction at grid location
+
+```{r}
+grid.xy$GLM <- predict(GLM, grid.df)
+```
+
+
+##### Simple Kriging Prediction of GLM residuals at grid location
+
+```{r}
+SK.GLM<-krige(residuals.glm~ 1, 
+              loc=train.xy,        # Data frame
+              newdata=grid.xy,     # Prediction location
+              model = m.f.glm,     # fitted varigram model
+              beta = 0)            # residuals from a trend; expected value is 0     
+```
+
+
+#### Kriging prediction (SK + Regression Prediction)
+
+```{r}
+grid.xy$SK.GLM<-SK.GLM$var1.pred
+# Add RF predicted + SK preedicted residuals
+grid.xy$RK.GLM.bc<-(grid.xy$GLM+grid.xy$SK.GLM)
+```
+
+
+#### Back transformation 
+
+We for back transformation we use transformation parameters
+
+```{r}
+k1<-1/0.2523339                                   
+grid.xy$RK.GLM <-((grid.xy$RK.GLM.bc *0.2523339+1)^k1)
+summary(grid.xy)
+```
+
+
+#### Convert to raster
+
+```{r message=F, warning=F}
+GLM<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "GLM")])
+SK.GLM<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "SK.GLM")])
+RK.GLM.bc<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "RK.GLM.bc")])
+RK.GLM.SOC<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "RK.GLM")])
+```
+
+#### Plot predicted SOC 
+
+```{r,echo=TRUE,fig.align='center',fig.height=3.5, fig.width=12}
+glm1<-ggR(GLM, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("GLM Predicted (BoxCox)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+glm2<-ggR(SK.GLM, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("SK GLM Residuals (BoxCox)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+glm3<-ggR(RK.GLM.bc, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("RK-GLM Predicted (BoxCox)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+glm4<-ggR(RK.GLM.SOC, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("RK-GLM Predicted (mg/g)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(glm1,glm2,glm3,glm4, ncol = 4)  # Multiplot 
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Random Forest
+
+
+Random forests, based on the assemblage of multiple iterations of decision trees, have become a major data analysis tool that performs well in comparison to single iteration classification and regression tree analysis [Heidema et al., 2006]. Each tree is made by bootstrapping of the original data set which allows for robust error estimation with the remaining test set, the so-called Out-Of-Bag (OOB) sample. The excluded OOB samples are predicted from the bootstrap samples and by combining the OOB predictions from all trees. The RF algorithm can outperform linear regression, and unlike linear regression, RF has no requirements considering the form of the probability density function of the target variable [Hengl et al., 2015; Kuhn and Johnson, 2013]. One major disadvantage of RF is that it is difficult to interpret the relationships between the response and predictor variables. However, RF allows estimation of the importance of variables as measured by the mean decrease in prediction accuracy before and after permuting OOB variables. The difference between the two are then averaged over all trees and normalized by the standard deviation of the differences (Ahmed et al., 2017).
+
+First, will fit the RF model with a comprehensive environmental co-variate, Then,  we will compute and model the variogram of the of residuals of the RF model and then simple kriging (SK) will be  applied to the residuals to estimate the spatial prediction of the residuals (regional trend). Finally, RF  regression predicted results, and the SK kriged residuals will be added to estimate the interpolated soil organic C. 
+
+
+#### Fit Random Forest  Model (RF)
+
+```{r message=F, warning=F}
+set.seed(1856)
+mtry <- sqrt(ncol(train.x))             # number of variables randomly sampled as candidates at each split.
+tunegrid.rf <- expand.grid(.mtry=mtry)
+RF<-train(train.x,
+           RESPONSE,
+           method = "rf",
+           trControl=myControl,
+           tuneGrid=tunegrid.rf,
+           ntree= 100,
+           preProc=c('center', 'scale'))
+print(RF)
+```
+
+
+#### Variogram modeling of RF residuals 
+
+First, we have to extract the residuals of RF model, we will use **resid()** function to get residuals of RF model
+
+
+```{r message=F, warning=F}
+# Extract residials
+train.xy$residuals.rf<-resid(RF)
+# Variogram
+v.rf<-variogram(residuals.rf~ 1, data = train.xy)
+# Intial parameter set by eye esitmation
+m.rf<-vgm(0.15,"Exp",40000,0.05)
+# least square fit
+m.f.rf<-fit.variogram(v.rf, m.rf)
+m.f.rf
+```
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 4.5,message=F, warning=F}
+#### Plot varigram and fitted model:
+plot(v.rf, pl=F, 
+     model=m.f.rf,
+     col="black", 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main="Variogram and Fitted Model\n Residuals of RF model",
+     xlab="Distance (m)",
+     ylab="Semivariance")
+```
+
+
+#### Prediction at grid location
+
+```{r}
+grid.xy$RF <- predict(RF, grid.df)
+```
+
+
+##### Simple Kriging Prediction of RF residuals at grid location
+
+```{r}
+SK.RF<-krige(residuals.rf~ 1, 
+              loc=train.xy,        # Data frame
+              newdata=grid.xy,     # Prediction location
+              model = m.f.rf,      # fitted varigram model
+              beta = 0)            # residuals from a trend; expected value is 0     
+```
+
+#### Kriging prediction (SK+Regression)
+
+```{r}
+grid.xy$SK.RF<-SK.RF$var1.pred
+# Add RF predicted + SK preedicted residuals
+grid.xy$RK.RF.bc<-(grid.xy$RF+grid.xy$SK.RF)
+```
+
+
+#### Back transformation 
+
+We for back transformation we use transformation parameters
+
+```{r}
+k1<-1/0.2523339                                   
+grid.xy$RK.RF <-((grid.xy$RK.RF.bc *0.2523339+1)^k1)
+summary(grid.xy)
+```
+
+#### Convert to raster
+
+```{r message=F, warning=F}
+RF<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "RF")])
+SK.RF<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "SK.RF")])
+RK.RF.bc<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "RK.RF.bc")])
+RK.RF.SOC<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "RK.RF")])
+```
+
+#### Plot predicted SOC 
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=3.5, fig.width=12}
+rf1<-ggR(RF, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("RF Predicted (BoxCox)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+rf2<-ggR(SK.RF, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("SK RF Residuals (BoxCox)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+rf3<-ggR(RK.RF.bc, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("RK-RF Predicted (BoxCox)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+rf4<-ggR(RK.RF.SOC, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("RK-RF Predicted (mg/g)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(rf1,rf2,rf3,rf4, ncol = 4)  # Multiplot 
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Meta Ensemble Machine Learning 
+
+Ensemble machine learning methods use multiple learning algorithms to obtain better predictive performance than could be obtained from any of the constituent learning algorithms. Many of the popular modern machine learning algorithms are ensembles. For example, Random Forest and Gradient Boosting Machine are both ensemble learners.  However, **stacked generalization or stacking or Supper Learning** (Wolpert, 1992) that introduces the concept of a meta learner that ensemble or combined several strong, diverse sets of machine learning models together to get better prediction. In this modeling approach, each base level models are trained first, then the meta-model is trained on the outputs of the base level models. The base level models often consist of different learning algorithms and therefore stacking ensembles are often heterogeneous.  
+
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\metaModel.png')
+```
+
+
+
+We will built a random forest (RF)  regression model by stacking of GLM and RF regression models (sub-models) to predict  SOC.
+
+
+#### Create a model list
+
+```{r}
+algorithmList <- c("glm","rf")
+```
+
+#### Fit all models
+
+We will use **caretList()** function  of **caretEnsemble** package to fit all models
+
+```{r message=F, warning=F,results="hide"}
+set.seed(1856)
+models<-caretList(train.x, RESPONSE,
+                  methodList=algorithmList,
+                  trControl=myControl,
+                  preProc=c('center', 'scale')) 
+```
+
+#### Performance of sub-models
+
+```{r}
+results.all <- resamples(models)
+cv.models<-as.data.frame(results.all[2])
+summary(results.all)
+```
+
+#### Plot K-fold Cross Validation results (MAE, RMSE, R2)
+
+```{r, warning=FALSE, fig.width = 8, fig.height = 5}
+dotplot(results.all, 
+        scales =list(x = list(relation = "free")),
+        panelRange =T,  conf.level = 0.9, 
+        between = list(x = 2))
+```
+
+
+#### Combine several predictive models via stacking
+
+We will use **caretStack()** function with  **"method"** parameter **"rf"** for random forest regression model
+
+```{r message=F, warning=F}
+stackControl <- trainControl(method="repeatedcv", 
+                             number=10, 
+                             repeats=5, 
+                             savePredictions=TRUE)
+set.seed(1856)
+stack.rf <- caretStack(models, 
+                       method="rf",
+                       trControl=stackControl)
+```
+
+#### Ensemble results
+
+```{r}
+stack.rf.cv<-stack.rf$ens_model$resample
+stack.rf.results<-print(stack.rf)
+```
+
+#### Variogram modeling of residuals 
+
+Now, we will calculate  residuals of RF model since **resid()** function does not work here.
+
+```{r}
+train.xy$REG.SOC.bc<-predict(stack.rf,train.x)
+train.xy$residuals.stack<-(train.xy$SOC.bc-train.xy$REG.SOC.bc)
+```
+
+
+```{r message=F, warning=F}
+# Variogram
+v.stack<-variogram(residuals.stack~ 1, data = train.xy)
+# Intial parameter set by eye esitmation
+m.stack<-vgm(0.15,"Exp",40000,0.05)
+# least square fit
+m.f.stack<-fit.variogram(v.stack, m.stack)
+m.f.stack
+```
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 4.5,message=F, warning=F}
+#### Plot varigram and fitted model:
+plot(v.stack, pl=F, 
+     model=m.f.stack,
+     col="black", 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main="Variogram and Fitted Model\n Residuals of meta-Ensemble model",
+     xlab="Distance (m)",
+     ylab="Semivariance")
+```
+
+
+#### Prediction at grid location
+
+```{r}
+grid.xy$stack <- predict(stack.rf, grid.df)
+```
+
+
+##### Simple Kriging Prediction of RF residuals at grid location
+
+```{r}
+SK.stack<-krige(residuals.stack~ 1, 
+              loc=train.xy,        # Data frame
+              newdata=grid.xy,     # Prediction location
+              model = m.f.stack,    # fitted varigram model
+              beta = 0)            # residuals from a trend; expected value is 0     
+```
+
+#### Kriging prediction (SK+Regression)
+
+```{r}
+grid.xy$SK.stack<-SK.stack$var1.pred
+# Add RF predicted + SK preedicted residuals
+grid.xy$RK.stack.bc<-(grid.xy$stack+grid.xy$SK.stack)
+```
+
+
+#### Back transformation 
+
+We for back transformation we use transformation parameters
+
+```{r}
+k1<-1/0.2523339                                   
+grid.xy$RK.stack <-((grid.xy$RK.stack.bc *0.2523339+1)^k1)
+summary(grid.xy)
+```
+
+#### Convert to raster
+
+```{r message=F, warning=F}
+stack<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "stack")])
+SK.stack<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "SK.stack")])
+RK.stack.bc<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "RK.stack.bc")])
+RK.stack.SOC<-rasterFromXYZ(as.data.frame(grid.xy)[, c("x", "y", "RK.stack")])
+```
+
+#### Plot predicted SOC 
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=3.5, fig.width=15}
+s1<-ggR(stack, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("Meta-Ensemble Predicted (BoxCox)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+s2<-ggR(SK.stack, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("SK Meta-Ensemble Residuals (BoxCox)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+s3<-ggR(RK.stack.bc, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("RK-Meta-Ensemble Predicted (BoxCox)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+s4<-ggR(RK.stack.SOC, geom_raster = TRUE) +
+  scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("RK-Meta-Ensemble Predicted (mg/g)")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(s1,s2,s3,s4, ncol = 4)  # Multiplot 
+```
+
+
+```{r}
+rm(list = ls())
+```
+

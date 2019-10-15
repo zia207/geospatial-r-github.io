@@ -1,0 +1,7 @@
+"0","cancer<-read.csv(paste0(dataFolder, ""Lung_cancer_1998_2012.csv""), stringsAsFactors = FALSE, check.names=FALSE)"
+"0","poverty<-read.csv(paste0(dataFolder, ""POVERTY_1998_2012.csv""), stringsAsFactors = FALSE, check.names=FALSE)"
+"0","smoking<-read.csv(paste0(dataFolder, ""SMOKING_1998_2012.csv""), stringsAsFactors = FALSE, check.names=FALSE)"
+"0","PM25<-read.csv(paste0(dataFolder, ""PM25_1998_2012.csv""), stringsAsFactors = FALSE, check.names=FALSE)"
+"0","NO2<-read.csv(paste0(dataFolder, ""NO2_1998_2012.csv""), stringsAsFactors = FALSE, check.names=FALSE)"
+"0","SO2<-read.csv(paste0(dataFolder, ""SO2_1998_2012.csv""), stringsAsFactors = FALSE, check.names=FALSE)"
+"0","pop<-read.csv(paste0(dataFolder, ""POP_1998_2012.csv""), stringsAsFactors = FALSE, check.names=FALSE)"

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571179035814.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2379819254",
+    "id" : "52621B63",
+    "lastKnownWriteTime" : 1549424077,
+    "last_content_update" : 1549424077,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/about.Rmd",
+    "project_path" : "about.Rmd",
+    "properties" : {
+        "cursorPosition" : "23,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 28,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

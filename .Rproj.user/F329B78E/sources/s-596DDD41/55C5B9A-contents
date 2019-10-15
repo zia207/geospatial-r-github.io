@@ -1,0 +1,74 @@
+---
+title: "Table of Content"
+---
+
+
+
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri(file.path(R.home("doc"), "html", "logo.jpg")), 
+               alt = 'logo', 
+               style = 'position:absolute; top:-0.5; right:0; padding:10px;')
+```
+
+
+
+
+* [Getting Started Spatial Data Processing in R](getting-startted-spatial-data.html)
+
+* [Reading and Writing Spatial Data](read-write-spatial-data.html)
+
+    - Vector data
+    - Raster data
+
+* [Map Projection and Coordinate Reference Systems](map-projection-coordinate-reference-systems.html)
+
+    - Geographic coordinate system (GCS) 
+    - Projected coordinate system
+    - Coordinate Reference System in R 
+
+* [Geoprocessing of Vector data](geoprocessing-vector-data.html)
+
+    - Clipping
+    - Union
+    - Dissolve
+    - Intersect
+    - Erase
+    - Convex Hull
+    - Buffer
+
+* [Working with Spatial Point Data](working-with-spatial-point-data.html)
+
+    - Create a Spatial Point Data Frame
+    - Extract Environmental Covariates to SPDF  
+    - Create a Prediction Grid 
+    - Exploratory Data Analysis
+    - Plot Data on Web Map
+
+* [Working with Spatial Polygon Data](working-with-spatial-polygon.html)
+
+    - Data Processing
+    - Visualization
+    - Animation of Time Series Data
+    
+* [Working with Raster Data](working-with-raster-data.html)
+
+    - Basic Raster Operation
+    - Clipping
+    - Reclassification
+    - Focal Statistics
+    - Raster Algebra
+    - Aggregation 
+    - Resample 
+    - Mosaic
+    - Convert Raster to Point Data
+    - Convert Point Data to Raster
+    - Raster Stack and Raster Brick
+    - Digital Terrain Modeling
+        - Slope
+        - Aspect
+        - Hillshade
+        - Terrain Ruggedness Index
+        - Topographic Position Index
+        - Roughness
+        - Curvature
+        - Flow Direction

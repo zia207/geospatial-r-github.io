@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544152747287.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "345511C9",
+    "lastKnownWriteTime" : 1544154136,
+    "last_content_update" : 1544154136517,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/ground-truth-data-processing.Rmd",
+    "project_path" : "ground-truth-data-processing.Rmd",
+    "properties" : {
+        "cursorPosition" : "190,10",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 35,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

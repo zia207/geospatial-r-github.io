@@ -1,0 +1,2 @@
+"0","print(bubble(cv, zcol = ""residual"", maxsize = 2.0,  main = ""OK Cross-validation residuals"","
+"0","sub = ""SOC (mg/g)""))"

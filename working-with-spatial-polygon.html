@@ -180,7 +180,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,7 +349,7 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
-      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
 </li>
@@ -463,14 +463,14 @@ state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))</code></p
 </div>
 <div id="calculate-country-centriods" class="section level4">
 <h4>Calculate Country Centriods</h4>
-<pre class="r"><code>centroids = gCentroid(county,byid=TRUE)</code></pre>
+<pre class="r"><code>cent = gCentroid(county,byid=TRUE)</code></pre>
 <pre class="r"><code>plot(state, main=&quot;County Centriods&quot;)
-points(centroids,pch=1, cex=0.5, col=&quot;red&quot;)</code></pre>
+points(cent,pch=1, cex=0.5, col=&quot;red&quot;)</code></pre>
 <p><img src="working-with-spatial-polygon_files/figure-html/unnamed-chunk-6-1.png" width="336" style="display: block; margin: auto;" /></p>
 </div>
 <div id="convert-contriods-to-spdf" class="section level4">
 <h4>Convert contriods to SPDF</h4>
-<pre class="r"><code>XY.centriods&lt;-as.data.frame(centroids)
+<pre class="r"><code>XY.centriods&lt;-as.data.frame(cent)
 str(XY.centriods)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    666 obs. of  2 variables:
 ##  $ x: num  1056524 1653442 1633708 1584049 1735811 ...
@@ -479,17 +479,17 @@ str(XY.centriods)</code></pre>
 <div id="calculate-mean-of-all-variables" class="section level4">
 <h4>Calculate Mean of All variables</h4>
 <p>We will create a data frame 15 years (1998-2012) mean all variables, and will this data in spatial statistics lesson.</p>
-<pre class="r"><code>mean&lt;-read.csv(paste0(dataFolder, &quot;FIPS_COUNTY_ATLANTIC_COUNTY.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
-mean$x&lt;-XY.centriods$x
-mean$y&lt;-XY.centriods$y
-mean$pop&lt;-apply(pop[2:16],1,mean,na.rm=TRUE)
-mean$cancer&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
-mean$poverty&lt;-apply(poverty[2:16],1,mean,na.rm=TRUE)
-mean$smoking&lt;-apply(smoking[2:16],1,mean,na.rm=TRUE)
-mean$PM25&lt;-apply(PM25[2:16],1,mean,na.rm=TRUE)
-mean$NO2&lt;-apply(NO2[2:16],1,mean,na.rm=TRUE)
-mean$SO2&lt;-apply(SO2[2:16],1,mean,na.rm=TRUE)
-head(mean)</code></pre>
+<pre class="r"><code>avg&lt;-read.csv(paste0(dataFolder, &quot;FIPS_COUNTY_ATLANTIC_COUNTY.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+avg$x&lt;-XY.centriods$x
+avg$y&lt;-XY.centriods$y
+avg$pop&lt;-apply(pop[2:16],1,mean,na.rm=TRUE)
+avg$cancer&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
+avg$poverty&lt;-apply(poverty[2:16],1,mean,na.rm=TRUE)
+avg$smoking&lt;-apply(smoking[2:16],1,mean,na.rm=TRUE)
+avg$PM25&lt;-apply(PM25[2:16],1,mean,na.rm=TRUE)
+avg$NO2&lt;-apply(NO2[2:16],1,mean,na.rm=TRUE)
+avg$SO2&lt;-apply(SO2[2:16],1,mean,na.rm=TRUE)
+head(avg)</code></pre>
 <pre><code>##    FIPS       x       y       pop   cancer   poverty  smoking     PM25
 ## 1 13111 1056524 1376613 116485.00 71.87066 15.920000 27.93333 11.75533
 ## 2 42115 1653442 2267301 194008.40 58.85177 12.220000 26.96667  9.02600
@@ -504,21 +504,21 @@ head(mean)</code></pre>
 ## 4 3.6219333 0.118371127
 ## 5 1.6327333 0.006404368
 ## 6 1.6258000 0.138780485</code></pre>
-<pre class="r"><code>write.csv(mean, paste0(dataFolder, &quot;data_atlantic_1998_2012.csv&quot;), row.names=FALSE)</code></pre>
+<pre class="r"><code>write.csv(avg, paste0(dataFolder, &quot;data_atlantic_1998_2012.csv&quot;), row.names=FALSE)</code></pre>
 </div>
 <div id="calculate-confidence-ci-95-ci-alpha-.05.-of-mean" class="section level4">
 <h4>Calculate confidence CI (95% CI, alpha = .05. ) of Mean</h4>
 <p>Now we will create a data frame with mean, standard and calculate of confidence intervals</p>
-<pre class="r"><code>n=15
-df=15-1
+<pre class="r"><code>numb=15
+dof=15-1
 cancer.stat&lt;-read.csv(paste0(dataFolder, &quot;FIPS_COUNTY_ATLANTIC_COUNTY.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
-cancer.stat$mean&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
-cancer.stat$sd&lt;-apply(cancer[2:16],1,sd,na.rm=TRUE)
-cancer.stat$mse&lt;- qt(.95,df)*cancer.stat$sd/sqrt(10)
-cancer.stat$upper&lt;-cancer.stat$mean + cancer.stat$mse
-cancer.stat$lower&lt;-cancer.stat$mean - cancer.stat$mse 
+cancer.stat$avg&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
+cancer.stat$std&lt;-apply(cancer[2:16],1,sd,na.rm=TRUE)
+cancer.stat$mse&lt;- qt(.95,dof)*cancer.stat$std/sqrt(10)
+cancer.stat$upper&lt;-cancer.stat$avg + cancer.stat$mse
+cancer.stat$lower&lt;-cancer.stat$avg - cancer.stat$mse 
 head(cancer.stat)</code></pre>
-<pre><code>##    FIPS     mean       sd      mse    upper    lower
+<pre><code>##    FIPS      avg      std      mse    upper    lower
 ## 1 13111 71.87066 2.564211 1.428202 73.29886 70.44246
 ## 2 42115 58.85177 3.058839 1.703697 60.55547 57.14807
 ## 3 42075 60.67665 2.315031 1.289415 61.96607 59.38724
@@ -538,14 +538,14 @@ SPOLY.DF&lt;-merge(county,cancer.stat, by=&quot;FIPS&quot;)</code></pre>
 <pre class="r"><code>polys&lt;- list(&quot;sp.lines&quot;, as(state, &quot;SpatialLines&quot;), col=&quot;grey&quot;, lwd=.8,lty=1)
 col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;)
 
-at.break = classIntervals(cancer.stat$mean, n = 20, style = &quot;quantile&quot;)$brks
-round(quantile(cancer.stat$mean, probs=seq(0,1, by=0.05)),1)</code></pre>
+at.break = classIntervals(cancer.stat$avg, n = 20, style = &quot;quantile&quot;)$brks
+round(quantile(cancer.stat$avg, probs=seq(0,1, by=0.05)),1)</code></pre>
 <pre><code>##    0%    5%   10%   15%   20%   25%   30%   35%   40%   45%   50%   55% 
 ##  39.3  50.8  55.2  59.2  60.8  62.4  63.7  65.2  66.9  68.2  69.3  70.8 
 ##   60%   65%   70%   75%   80%   85%   90%   95%  100% 
 ##  72.3  73.5  75.1  77.2  79.3  81.1  84.4  90.8 120.4</code></pre>
 <pre class="r"><code>spplot(SPOLY.DF, 
-       c(&quot;mean&quot;, &quot;lower&quot;, &quot;upper&quot;), 
+       c(&quot;avg&quot;, &quot;lower&quot;, &quot;upper&quot;), 
        names.attr = c(&quot;Mean&quot;,&quot;Lower&quot;, &quot;Upper&quot;),
        main = &quot;Mean and 90% CI of Lung Cancer Mortality Rate (1998-2012)\n
              (death per 100,000)&quot;,
@@ -630,10 +630,8 @@ saveGIF(
                           &quot;75&quot;, &quot;&quot;, &quot;&quot;, &quot;&gt; 92&quot;, &quot;&quot;, &quot;&quot;))),
                  col.regions=col.palette(100)))}, 
   ani.width = 500, ani.height = 700, interval = .5, clean = TRUE, outdir = getwd())</code></pre>
-<div class="figure">
-<img src="FIGURE_Cancer_ATLANTIC.gif" />
-
-</div>
+<p><img src="FIGURE_Cancer_ATLANTIC.gif" /></p>
+<pre class="r"><code>rm(list = ls())</code></pre>
 </div>
 </div>
 

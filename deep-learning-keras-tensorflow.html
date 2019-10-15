@@ -180,7 +180,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,7 +349,7 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
-      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
 </li>
@@ -550,9 +550,9 @@ summary(model)</code></pre>
 <h4>Evaluate the model</h4>
 <pre class="r"><code>score &lt;- model %&gt;% evaluate(test, testtarget, batch_size = 100)
 cat(&#39;Test loss:&#39;, score[[1]], &#39;\n&#39;)</code></pre>
-<pre><code>## Test loss: 0.5191764</code></pre>
+<pre><code>## Test loss: 0.5202049</code></pre>
 <pre class="r"><code>cat(&#39;Test accuracy:&#39;, score[[2]], &#39;\n&#39;)</code></pre>
-<pre><code>## Test accuracy: 0.9245915</code></pre>
+<pre><code>## Test accuracy: 0.924801</code></pre>
 </div>
 <div id="prediction-confusion-matrix---test-data" class="section level4">
 <h4>Prediction &amp; confusion matrix - test data</h4>
@@ -562,10 +562,10 @@ cat(&#39;Test loss:&#39;, score[[1]], &#39;\n&#39;)</code></pre>
 table(testtarget,class.test)</code></pre>
 <pre><code>##           class.test
 ## testtarget    0    1    2    3    4
-##          0  974   88   39    4    0
-##          1   69  777   41    2    0
-##          2   55   13 1532   21    0
-##          3    0    0   26  964    0
+##          0  995   90   16    4    0
+##          1   80  773   34    2    0
+##          2   66   12 1514   29    0
+##          3    0    0   24  966    0
 ##          4    0    0    2    0  167</code></pre>
 </div>
 <div id="predicted-class-probability" class="section level4">

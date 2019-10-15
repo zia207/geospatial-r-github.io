@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541537201734.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D70E2DB7",
+    "lastKnownWriteTime" : 1544458198,
+    "last_content_update" : 1544458198591,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/semivariogram-modeling.Rmd",
+    "project_path" : "semivariogram-modeling.Rmd",
+    "properties" : {
+        "cursorPosition" : "21,0",
+        "ignored_words" : "variogram,semivariance,semivariogram,dataset,autocorrelation,anisotropy,variograms,semivarince,kriging,microscale,gstat,stationarity,skewness,Wilk,univariate,geostatistical,http,rcompanion,Nh\n",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

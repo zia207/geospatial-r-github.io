@@ -1,0 +1,316 @@
+---
+title: "Landsat 8 Image Processing & Visualization"
+---
+<div style="margin-bottom:40px;">
+</div>
+
+In this lesson, we will use a Landsat 8 image of the Finger Lakes region in New York State, which acquired on September 27, 2016.  We will use the R-package **RStoolbox** to do the Landsat image processing and analysis, such as calculating spectral indices and performing principal component transformation, texture analysis, unsupervised and supervised classification and fractional cover analyses.
+
+<div style="margin-bottom:20px;">
+</div>
+
+This Lesson will cover:
+
+* [RGB image comparison](#rgb-image-comparison)
+
+* [Pan Sharpening or Image Fusion](#pan-sharpening-or-image-fusion)
+
+* [Radiometric Calibration and Atmospheric Correction](#radiometric-calibration-and-atmospheric-correction)
+
+
+<div style="margin-bottom:50px;">
+</div>
+
+
+#### Load packages:
+
+```{r message=F, warning=F}
+library (raster) 	   # raster data
+library(rasterVis)	 # raster visualisation 	
+library(sp)          # spatial data processing			
+library(rgdal)       # spatial data processing      
+library(RStoolbox)   # Image analysis
+library(ggplot2)     # plotting
+library(gridExtra)
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+The data could be available for download from [here](https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0).
+
+<div style="margin-bottom:20px;">
+</div>
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//"
+```
+
+
+#### Import metadata file (*.MTL):
+
+```{r}
+mtlFile =paste0(dataFolder,".//Landsat8//Landsat8_RAW//LC08_L1TP_016030_20160927_20170220_01_T1_MTL.txt") # 	metadata file
+metaData= readMeta(mtlFile)	# read metadata file
+summary(metaData)
+```
+
+
+#### Import bands 1,2,3,4,5,6 and 7: 
+
+```{r message=F, warning=F}
+bandList <- paste0(dataFolder,".\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B", 1:7, ".tif")
+s <- stack(bandList)
+names(s) <- c("B1","B2", "B3", "B4","B5", "B6", "B7")
+s
+```
+
+####  Plot all Bands
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=6,message=F, warning=F}
+plot(s)
+```
+
+#### Histogram of Bands
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=5,message=F, warning=F}
+hist(s)
+```
+
+
+### RGB image comparison
+
+Below are some common band combinations in RGB comparisons for Landsat Landsat 8
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\RGB_comp.png")
+```
+
+
+#### Natural Color Image:
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=5}
+p1<-ggRGB(s, r=4, g=3, b=2, stretch = "lin")+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  ggtitle("Natural Color\n (R= Red, G= Green, B= Blue)")
+p1
+```
+
+#### False Color Image (Vegetation):
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=5}
+p2<-ggRGB(s, r=5, g=4, b=3, stretch = "lin")+
+theme(axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.title.y=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank())+
+  ggtitle("False Color Vegetation\n (R= NIR, G= Red,  B=Green)")
+p2
+```
+
+#### False Color Image (Urban):
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=5}
+p3<-ggRGB(s, r=7, g=6, b=4, stretch = "lin")+
+theme(axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.title.y=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank())+
+  ggtitle("False Color Urban\n (R= SWIR1, G= SWIR2,  B=Red)")
+```
+
+
+Let's plot all maps side by side, for this, you have to use following function
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=9}
+grid.arrange(p1, p2, p3, nrow = 1)
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Pan Sharpening or Image Fusion
+
+Pan Sharpening is shorthand for “Panchromatic sharpening”. It means using a high resolution panchromatic (single band) image to “sharpen” a multispectral image. We will use **panSharpen()** function in **RSToolbox** package on three channel RGB images.
+
+
+```{r}
+# red (30 m)
+b4 <- raster(paste0(dataFolder,".\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B4.TIF")) 
+# green (30 m)
+b2 <- raster(paste0(dataFolder,".\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B2.TIF")) 
+# blue (30 m)
+b3 <- raster(paste0(dataFolder,".\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B3.TIF")) 
+# Band 8 Pan (15 m)
+pan <- raster(paste0(dataFolder,".\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B8.TIF"))    
+```
+
+```{r}
+# raster stack
+s.rgb <- stack(b4,b3,b2)
+names(s.rgb) <- c("B4","B2", "B3")
+```
+
+```{r}
+# Pan Sharpening
+img_pan <- panSharpen(s.rgb, 
+                      pan, 
+                      r = "layer.1", 
+                      g = "layer.2",
+                      b = "layer.3", 
+                      method = "pca",
+                      norm=TRUE)
+# Plot pab image
+p4<-ggRGB(img_pan, stretch="lin")+ 
+theme(axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.title.y=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank())+
+  ggtitle("Pansharpened\n (PCA)")
+p4
+```
+
+Lets, plot original and pan sharpened map side by side
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=7}
+grid.arrange(p1, p4, nrow = 1)
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+
+### Radiometric Calibration and Atmospheric Correction
+
+The Landsat8 products are delivered in 16-bit unsigned integer format (0-65535) which can be re-scaled to the **Top Of Atmosphere (TOA)** reflectance and/or radiance using radiometric re-scaling coefficients provided in the metadata file (MTL file). The MTL file also contains the thermal constants needed to convert TIRS data to the at satellite brightness temperature.
+
+To implement radiometric calibration, we will complete the following processing steps using the radCor() function in RStoolbox:
+
+* Conversion of DN values to spectral radiance at the sensor
+
+* Conversion of spectral radiance to reflectance at sensor
+
+* Atmospheric correction and conversion of sensor reflectance to surface reflectance
+
+First, we will create a layer stack based on metadata file:
+
+
+```{r}
+lsat=stackMeta(mtlFile)		# stack landsat bands 
+summary(lsat)				      # summary of each band
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+#### Conversion of DN values at spectral radiance at the sensor
+
+
+At-sensor spectral radiance (also called top-of-atmosphere radiance) is the amount of energy received by the sensor per second per steradian (sr) per square meter.  To convert the processing raw digital number (DN) to spectral radiance we will use radCor() function in RStoolbox.  There are four methods available for doing this conversion: **rad, apref, sdos, dos, costz**.  
+
+* rad   - Radiance
+* apref - Apparent reflectance (top-of-atmosphere reflectance)
+* dos   - Dark object subtraction following Chavez (1989)
+* costz -	Dark object subtraction following Chavez (1996)
+* sdos  - Simple dark object subtraction. Classical DOS, Lhaze must be estimated for each band separately.
+
+The gain (G) and bias or intercept (I ) are different for each band and are provided in the Landsat header file. For Landsat 8, a linear equation is used to convert from DN to radiance (L): 
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\Equa.png")
+```
+
+
+```{r message=F, warning=F}
+lsat_tra <- radCor(lsat, 	# landsat stack
+	metaData = metaData,	  # metadata (MTL file) 
+	method = "rad")		      # convert DN to radiance
+lsat_tra
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+#### Conversion of spectral radiance to reflectance at sensor
+
+When spectral radiance values are compared within and between sensors, variations occur frequently because of difference in sun-target-sensor configurations. Hence, these data are often converted to **Top of Atmosphere (TOA)** or at sensor reflectance. It eliminates effect of different solar zenith angles at the time of image acquisition, minimizes the solar radiance band differences occurring between different sensors and accounts for differences in the Earth-Sun distance.
+
+
+```{r message=F, warning=F}
+lsat_tre<- radCor(lsat, 	   # landsat stack
+	metaData = metaData,	     # metadata 
+	method = "apref")		       # convert DN top-of-atmosphere reflectance
+lsat_tre
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+#### Atmospheric correction and Conversion of sensor reflectance to surface reflectance 
+
+TOA reflectance does not take into account any atmospheric effects and it is simply a ratio of the at-sensor radiance with the incoming radiance from the sun, where the distance and angle of the sensor to the target are considered.  
+It is assumed that any radiation originating from dark pixels is due to atmospheric haze and not the reflectance of the surface.  The haze values are estimates of path radiance, which can be subtracted in a dark object subtraction (DOS) procedure.  Atmospheric haze affects almost exclusively the visible wavelength range.  Therefore, typically, you’d only want to estimate haze in blue, green and red bands, but occasionally also in the NIR band. The atmospheric correction methods (sdos, dos and costz) apply to the optical (solar) region of the spectrum and do not affect the thermal band. 
+The dark object subtraction approach relies on the estimation of atmospheric haze based on dark pixels.  Dark pixels are assumed to have zero reflectance, hence the name. It is then assumed further that any radiation originating from such dark pixels is due to atmospheric haze and not to the reflectance of the surface itself.
+For Dark Object Subtraction (DOS), we use the estimateHaze() function to estimate the digital number (DN) pixel value for dark objects in the visible wavelength range, and then use the values to convert sensor reflectance to surface reflectance.
+
+
+For **Dark Object Subtraction (DOS)**, first we have to estimate  the digital number (DN) pixel value of dark objects for the visible wavelength range using **estimateHaze()** function, then use these values convert sensor reflectance to surface reflectance
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=6, fig.width=6}
+# Automatic haze estimation
+hazeDN <- estimateHaze(lsat, # raster object
+	hazeBands = 2:5,		       # haze band B2,B3, B4 and B5  
+	plot = TRUE,		           # display hisgram and haze values
+	darkProp=0.01)		         # Proportion of pixels estimate haze
+```
+
+
+
+The following methods are available in **radCor()** function: 
+
+* dos   -  Dark object subtraction following Chavez (1989)
+* costz - Dark object subtraction following Chavez (1996)
+* sdos  - Simple dark object subtraction. Classical DOS, Lhaze must be estimated for each band separately.
+
+
+We will convert the DN to values to surface reflectance using using the function **radCor()** with estimated haze and the simple dark object subtraction, **sdos**, argument.
+
+
+```{r message=F, warning=F}
+lsat_sref <- radCor(lsat,	    # raster object  
+	metaData = metaData,	      # metadata 
+	method = "sdos",		        # Simple dark object subtraction
+	hazeValues = hazeDN,	      # haze value 
+	hazeBands = 2:5,		        # Bands corresponding to hazeValues
+	atmosphere = "veryClear")	  # Atmospheric characteristics
+lsat_sref
+```
+<div style="margin-bottom:20px;">
+</div>
+
+##### Write a multi-band raster:
+
+```{r message=F, warning=F}
+writeRaster(lsat_sref, filename=(paste0(dataFolder,".//Landsat8//Landsat8_PROCESSED//multi.tif")), bylayer=F, overwrite=TRUE, format="GTiff")
+```
+
+
+```{r}
+rm(list = ls())
+```
+

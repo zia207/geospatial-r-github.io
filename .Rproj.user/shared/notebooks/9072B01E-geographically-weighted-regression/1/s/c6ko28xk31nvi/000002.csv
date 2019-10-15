@@ -1,0 +1,23 @@
+"0","library(GWmodel)      ## GW models"
+"0","library(spgwr)        ## GW models"
+"2","NOTE: This package does not constitute approval of GWR
+as a method of spatial analysis; see example(gwr)
+"
+"0","library(spdep)        ## Spatial autocorrelation"
+"0","library(gstat)        ## Geostatistics"
+"0","library(RColorBrewer) ## Visualization"
+"0","library(classInt)     ## Class intervals"
+"0","library(raster)       ## spatial data"
+"0","library(gridExtra)    # Multiple plot"
+"0","library(ggplot2)      # Multiple plot"
+"0","library(latticeExtra) # advance ploting function"
+"2","
+Attaching package: ‘latticeExtra’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    layer
+
+"
+"0","library(RStoolbox)    # advance raster ploting function"

@@ -1,0 +1,159 @@
+---
+title: "Geographically Weighted Principal Components Analysis (GWPCA)"
+---
+
+<div style="margin-bottom:40px;">
+</div>
+
+Principal components analysis (PCA) is commonly used to explain the covariance structure of a (high-dimensional) multivariate data set using only a few components (i.e., provide a low-dimensional alternative). The components are linear combinations of the original variables and provide a better understanding of sources of variation and structure of the data. In geographical settings, standard PCA, in which the components do not depend on location, may be replaced with a GWPCA (Fotheringham et al. 2002; Lloyd 2010a; Harris et al. 2011a), to account for spatial heterogeneity in the structure of the multivariate data. In doing so, GW PCA can identify regions where assuming the same underlying structure in all locations is inappropriate or over-simplistic. GW PCA can assess: (i) how (effective) data dimensionality varies spatially and (ii) how the original variables influence each spatially-varying component. 
+
+
+#### Load R packages
+
+
+```{r message=F, warning=F}
+library(GWmodel)      ### GW models
+library(sp)           ## Data management
+library(spdep)        ## Spatial autocorrelation
+library(gstat)        ## Geostatistics
+library(RColorBrewer) ## Visualization
+library(classInt)     ## Class intervals
+library(raster)       ## spatial data
+library(gridExtra)    # Multiple plot
+library(ggplot2)      # Multiple plot
+```
+
+
+#### Load Data
+
+The spatial polygon of lung cancer mortality rate and envrionmental data could be found [here](https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0). 
+
+```{r message=F, warning=F}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+COUNTY<-shapefile(paste0(dataFolder,"COUNTY_ATLANTIC.shp"))
+state<-shapefile(paste0(dataFolder,"STATE_ATLANTIC.shp"))
+df<-read.csv(paste0(dataFolder,"data_atlantic_1998_2012.csv"), header=T)
+```
+
+#### Create a data frame
+
+```{r}
+df[5] <- lapply(df[5], as.numeric) # Cancer data to numeric
+SPDF<-merge(COUNTY,df, by="FIPS")
+names(SPDF)
+```
+
+
+```{r}
+polys<- list("sp.lines", as(state, "SpatialLines"), col="grey", lwd=.8,lty=1)
+col.palette<-colorRampPalette(c("blue",  "sky blue", "green","yellow", "red"),space="rgb",interpolate = "linear")
+```
+
+#### Create a data frame for PCA
+
+```{r}
+mf <- SPDF[, c(17:21)] 
+names(mf)
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### PCA
+
+First we will PCA with  scaled data of somoking, poverty PM25, NO2 and SO2. 
+
+```{r}
+data.scaled <- scale(as.matrix(mf@data[, 1:5]))
+pca <- princomp(data.scaled, cor = FALSE)
+(pca$sdev^2 / sum(pca$sdev^2)) * 100
+pca$loadings
+```
+
+<div style="margin-bottom:40px;">
+</div>
+
+### GW PCA
+
+#### Create a data-frame with scaled data  
+
+```{r}
+coords <- as.matrix(cbind(SPDF$x.x, SPDF$y.y))
+scaled.spdf <- SpatialPointsDataFrame(coords, as.data.frame(data.scaled ))
+```
+
+
+```{r message=F, warning=F}
+bw.gw.pca <- bw.gwpca(scaled.spdf, vars = colnames(scaled.spdf@data), k = 5, robust = FALSE, adaptive = TRUE)
+bw.gw.pca
+```
+
+
+```{r}
+gw.pca<- gwpca(scaled.spdf, vars = colnames(scaled.spdf@data), bw=bw.gw.pca, k = 5, robust = FALSE, adaptive = TRUE)
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Visualized and interpreted GWPCA output
+
+
+(1) how data dimensionality varies spatially and 
+
+(2) how the original variables influence the components.
+
+For the former, the spatial distribution of local PTV for say, the frst two components can be mapped.
+
+<div style="margin-bottom:40px;">
+</div>
+
+
+```{r}
+# function for calculation pproportion of variance 
+prop.var <- function(gwpca.obj, n.components) {
+            return((rowSums(gwpca.obj$var[, 1:n.components]) /rowSums(gwpca.obj$var)) * 100)
+                                   }
+```
+
+```{r}
+var.gwpca <- prop.var(gw.pca, 3)
+mf$var.gwpca <- var.gwpca
+```
+
+```{r,fig.align='center',fig.height=7, fig.width=5}
+mypalette.4 <- brewer.pal(8, "YlGnBu")
+spplot(mf, "var.gwpca", key.space = "right",
+       col.regions = mypalette.4, cuts = 7, 
+       sp.layout =list(polys),
+       col="transparent",
+       main = "Percent Total Variation for Local components 1 to 3")
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+We can next visualize how each of the eight variables locally influence a given component, by mapping the `winning variable' with the highest absolute loading. 
+
+
+```{r}
+loadings.pc1 <- gw.pca$loadings[, , 1]
+win.item = max.col(abs(loadings.pc1))
+mf$win.item <- win.item
+```
+
+
+```{r,fig.align='center',fig.height=7, fig.width=5}
+mypalette.4 <- c("lightpink", "blue", "grey", "purple",  "green")
+spplot(mf, "win.item", key.space = "right",
+      col.regions = mypalette.4, at = c(1, 2, 3, 4, 5),
+      main = "Winning variable: highest \n abs. loading on local Comp.1",
+      sp.layout =list(polys))
+```
+
+
+
+```{r}
+rm(list = ls())
+```

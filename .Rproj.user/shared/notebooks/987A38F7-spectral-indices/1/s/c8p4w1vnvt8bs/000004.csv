@@ -1,0 +1,5 @@
+"0","NDWI=(NIR - SWIR1)/(NIR + SWIR1)"
+"0","ggR(NDWI, geom_raster = TRUE) +"
+"0","   	scale_fill_gradientn(""MNDWI"", "
+"0","	colours = c(""blue"", ""green"", ""yellow"", ""red""))+"
+"0","   	ggtitle(""Normalized Difference Water Index (NDWI)"")"

@@ -1,0 +1,162 @@
+---
+title: "Support Vector Machines (SVMs)- Supervised Image Classification"
+---
+
+<div style="margin-bottom:40px;">
+</div>
+
+**Support Vector Machines (SVMs)** are supervised learning algorithms used mostly for classification problems. SVM models apply non-linear functions to select the best relationship between the response variable and predictors by introducing kernels functions  that map the independent variables to higher dimensional feature spaces . This approach typically leads to a better generalization of the chosen model on out-of-sample data . The principle behind an SVM classifier  algorithm is to separate data into different classes using a hyperplane. The goal in choosing a hyperplane is to maximize the distance from the hyperplane to the nearest data point of either class . These nearest data points are known as Support Vectors.
+
+
+<div style="margin-bottom:42px;">
+</div>
+
+#### Load R packages 
+
+```{r message=F, warning=F}
+library(caret)        # machine laerning
+library(kernlab)      # support vector machine
+library(rgdal)        # spatial data processing
+library(raster)       # raster processing
+library(plyr)         # data manipulation 
+library(dplyr)        # data manipulation 
+library(RStoolbox)    # ploting spatial data 
+library(RColorBrewer) # color
+library(ggplot2)      # ploting
+library(sp)           # spatial data
+library(doParallel)   # Parallel processing
+```
+
+
+<div style="margin-bottom:20px;">
+</div>
+
+The data could be available for download from [here](https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0).
+
+<div style="margin-bottom:20px;">
+</div>
+
+
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//"
+```
+
+
+#### Load data
+
+```{r}
+train.df<-read.csv(paste0(dataFolder,".\\Sentinel_2\\train_data.csv"), header = T)
+test.df<-read.csv(paste0(dataFolder,".\\Sentinel_2\\test_data.csv"), header = T)
+```
+
+#### Start foreach to parallelize for model fitting
+
+```{r}
+mc <- makeCluster(detectCores())
+registerDoParallel(mc)
+```
+
+
+#### Tunning prameters
+
+```{r message=F, warning=F}
+myControl <- trainControl(method="repeatedcv", 
+                          number=3, 
+                          repeats=2,
+                          returnResamp='all', 
+                          allowParallel=TRUE)
+```
+
+####  Train SVM model
+
+We will use the train() function from the **caret** package with “method” parameter “**svmRadial**” (Radial Based Kernel based classification) wrapped  from the **Kernlab** package. 
+
+```{r message=F, warning=F}
+set.seed(849)
+fit.svm <- train(as.factor(Landuse)~B2+B3+B4+B4+B6+B7+B8+B8A+B11+B12, 
+                data=train.df,
+                method = "svmRadial",
+                metric= "Accuracy",
+                preProc = c("center", "scale"), 
+                trControl = myControl
+                )
+fit.svm 
+```
+
+#### Stop cluster
+
+```{r}
+stopCluster(mc)
+```
+
+#### Confusion Matrix - train data
+
+```{r}
+p1<-predict(fit.svm, train.df, type = "raw")
+confusionMatrix(p1, train.df$Landuse)
+```
+
+
+#### Confusion Matrix - test data
+
+```{r}
+p2<-predict(fit.svm, test.df, type = "raw")
+confusionMatrix(p2, test.df$Landuse)
+```
+
+
+#### Predition at grid location
+
+
+```{r message=F, warning=F}
+# read grid CSV file
+grid.df<-read.csv(paste0(dataFolder,".\\Sentinel_2\\prediction_grid_data.csv"), header = T) 
+# Preddict at grid location
+p3<-as.data.frame(predict(fit.svm, grid.df, type = "raw"))
+# Extract predicted landuse class
+grid.df$Landuse<-p3$predict  
+# Import lnaduse ID file 
+ID<-read.csv(paste0(dataFolder,".\\Sentinel_2\\Landuse_ID.csv"), header=T)
+# Join landuse ID
+grid.new<-join(grid.df, ID, by="Landuse", type="inner") 
+# Omit missing values
+grid.new.na<-na.omit(grid.new)                                                            
+```
+
+
+#### Convert to raster 
+
+```{r message=F, warning=F}
+x<-SpatialPointsDataFrame(as.data.frame(grid.new.na)[, c("x", "y")], data = grid.new.na)
+r <- rasterFromXYZ(as.data.frame(x)[, c("x", "y", "Class_ID")])
+```
+
+#### Plot Landuse Map: 
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=6.5,message=F, warning=F}
+# Color Palette
+myPalette <- colorRampPalette(c("light grey","burlywood4", "forestgreen","light green", "dodgerblue"))
+# Plot Map
+LU<-spplot(r,"Class_ID", main="Supervised Image Classification: svmRadial" , 
+      colorkey = list(space="right",tick.number=1,height=1, width=1.5,
+              labels = list(at = seq(1,4.8,length=5),cex=1.0,
+              lab = c("Road/parking/pavement" ,"Building", "Tree/buses", "Grass", "Water"))),
+              col.regions=myPalette,cut=4)
+LU
+```
+
+
+#### Write raster
+
+```{r}
+# writeRaster(r, filename = paste0(dataFolder,".\\Sentinel_2\\SVM_Landuse.tiff"), "GTiff", overwrite=T)
+```
+
+
+
+
+```{r}
+rm(list = ls())
+```

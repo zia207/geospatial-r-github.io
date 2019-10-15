@@ -1,0 +1,3 @@
+"0","sorted.models <- model.sort.gwr(model.sel, numVars = length(PREDICTORS),ruler.vector = model.sel[[2]][,2])"
+"0","model.list <- sorted.models[[1]]"
+"0","model.view.gwr(RESPONSE, PREDICTORS, model.list = model.list)"

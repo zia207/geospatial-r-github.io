@@ -1,0 +1,245 @@
+---
+title: "Ordinary Kriging"
+---
+
+
+Ordinary kriging (OK) is the most widely used kriging method. It is a linear unbiased estimators since error mean is equal to zero. In OK, local mean is filtered from the linear estimator by forcing the kriging weights to sum to 1. The OK is usually preferred to simple kriging because it requires neither knowledge nor stationarity of mean over the entire area.   
+
+
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\OK.png')
+```
+
+
+We will cover following  steps in this exercise:
+
+* [Data Transformation](#data-transformation)
+* [Variogram Modeling](#variogram-modeling)
+* [Point or Punctual Kriging](#point-or-punctual-kriging)
+* [Block Kriging](#block-kriging)
+
+
+
+Before Kriging, first we have to calculate semivariogram of SOC and fitted the model. Then we apply **krige()* function of **gstat** package.  
+
+#### Load package: 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(spatstat)
+library(dismo)
+library(fields)
+library(gridExtra)
+```
+
+
+#### Load Data
+
+The soil organic carbon data (train and test data set) that we have created before is available for download [here](https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0). 
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+```
+
+```{r}
+train<-read.csv(paste0(dataFolder,"train_data.csv"), header= TRUE) 
+grid<-read.csv(paste0(dataFolder, "GP_prediction_grid_data.csv"), header= TRUE)
+```
+
+
+### Data Transformation
+
+Power Transform uses the maximum likelihood-like approach of Box and Cox (1964) to select a transformation of a univariate or multivariate response for normality. First we have to calculate appropriate **transformation parameters** using **powerTransform()** function of **car** package and then use this parameter to transform the data using **bcPower()** function.  
+
+```{r}
+powerTransform(train$SOC)
+```
+
+```{r}
+train$SOC.bc<-bcPower(train$SOC, 0.2523339)
+```
+
+
+First. we have to define x & y variables to coordinates
+
+```{r}
+coordinates(train) = ~x+y
+coordinates(grid) = ~x+y
+```
+
+
+### Variogram Modeling
+
+```{r}
+# Variogram
+v<-variogram(SOC.bc~ 1, data = train, cloud=F)
+# Intial parameter set by eye esitmation
+m<-vgm(1.5,"Exp",40000,0.5)
+# least square fit
+m.f<-fit.variogram(v, m)
+m.f
+```
+
+
+#### Plot varigram and fitted model
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 4.5,message=F, warning=F}
+#### Plot varigram and fitted model:
+plot(v, pl=F, 
+     model=m.f,
+     col="black", 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main="Variogram and Fitted Model\n Box-Cox Transformed SOC",
+     xlab="Distance (m)",
+     ylab="Semivariance")
+```
+
+
+### Point or Punctual Kriging
+
+Ordinary point kriging is one of the simplest forms of kriging. In general, point kriging [estimate the value of a point from a set of nearby sample values using kriging.](https://www.mindat.org/glossary/point_kriging) 
+
+**krige()** function in **gstat** package use for simple, ordinary or universal kriging (sometimes called external drift kriging), kriging in a local neighborhood, point kriging or kriging of block mean values (rectangular or irregular blocks), and conditional (Gaussian or indicator) simulation equivalents for all kriging varieties, and function for inverse distance weighted interpolation. For multivariate prediction.
+
+
+```{r}
+OK<-krige(SOC.bc~1, 
+              loc= train,        # Data frame
+              newdata=grid,      # Prediction grid
+              model = m.f)       # fitted varigram model
+summary(OK)
+```
+
+
+#### Back transformation 
+
+We will  back transformation using  transformation parameters that have used Box-cos transformation
+
+```{r}
+k1<-1/0.2523339                                   
+OK$OK.pred <-((OK$var1.pred *0.2523339+1)^k1)
+OK$OK.var <-((OK$var1.var *0.2523339+1)^k1)
+summary(OK)
+```
+
+
+#### Convert to raster
+
+```{r message=F, warning=F}
+OK.pred<-rasterFromXYZ(as.data.frame(OK)[, c("x", "y", "OK.pred")])
+OK.var<-rasterFromXYZ(as.data.frame(OK)[, c("x", "y", "OK.var")])
+```
+
+#### Plot predicted SOC and OK Error
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=8}
+p1<-ggR(OK.pred, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("OK Predicted SOC")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+p2<-ggR(OK.var, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("blue",  "green","yellow", "orange"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("OK Predition Variance")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(p1,p2, ncol = 2)  # Multiplot 
+```
+
+
+Above plots show the interpolated map of soil SOC with associated error at each prediction grid. OK predicted map shows global pattern and hot spot locations of SOC concentration. The kriging variance is higher in unsampled locations, since variance depends on geometry of the sampling locations with lower variance near sampling locations. This kriging variance also depends on co variance model but independent of data values. 
+
+
+
+### Block Kriging
+
+Block Kriging is similar to the point kriging. Block kriging, which estimates averaged values over gridded “blocks” rather than single points. These blocks often have smaller prediction errors than are seen for individual points. The kriged estimate for a block centered will usually be quite similar to the kriged estimate for a on the point, however, the prediction is a block average, which smooths out local extremes and the short-range variability (within a block) is removed, so the kriging variances are lower than for point  OK.
+
+
+Like point kriging, We can use **krige()** function with one additional argument: **block**, which gives the dimensions of the block as a list. For the usual case of a 2D block (surface area), this is a list of two dimensions (which are usually, but not necessarily the same).
+
+
+
+```{r message=F, warning=F}
+OK.block <- krige(SOC.bc ~ 1, 
+                 loc =  train, 
+                 newdata = grid, 
+                 model = m.f, 
+                 block = c(50000, 50000)) # 50 km x 50 km
+```
+
+#### Back transormation
+
+```{r}
+k1<-1/0.2523339                                   
+OK.block$SOC.pred <-((OK.block$var1.pred *0.2523339+1)^k1)
+OK.block$SOC.var <-((OK.block$var1.var *0.2523339+1)^k1)
+```
+
+
+#### Convert to raster
+
+```{r}
+SOC.block.pred<-rasterFromXYZ(as.data.frame(OK.block)[, c("x", "y", "SOC.pred")])
+SOC.block.var<-rasterFromXYZ(as.data.frame(OK.block)[, c("x", "y", "SOC.var")])
+```
+
+#### Plot map
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=8}
+
+# Predicted values
+p3<-ggR(SOC.block.pred, geom_raster = TRUE) +
+scale_fill_gradientn("SOC", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("OK-Block Predicted SOC")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+# Error
+p4<-ggR(SOC.block.var, geom_raster = TRUE) +
+scale_fill_gradientn("SOC", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("OK-Block Variance")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(p3,p4, ncol = 2)  # Multiplot 
+```

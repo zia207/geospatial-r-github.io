@@ -1,0 +1,2 @@
+"0","coordinates(grid.xy) <- ~x+y"
+"0","gridded(grid.xy) <- TRUE"

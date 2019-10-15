@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415703128.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2643372143",
+    "id" : "C0C67618",
+    "lastKnownWriteTime" : 1548188050,
+    "last_content_update" : 1548188050,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/geographically-weighted-models.Rmd",
+    "project_path" : "geographically-weighted-models.Rmd",
+    "properties" : {
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

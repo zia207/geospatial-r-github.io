@@ -1,0 +1,5 @@
+"0","# Calculate fraction of GC "
+"0","GC = PVI/PVI.FC"
+"0","# Omit value greater than 1 and lower than 0 "
+"0","GC[GC > 1.00001] <- 1"
+"0","GC[GC < 0] <- 0"

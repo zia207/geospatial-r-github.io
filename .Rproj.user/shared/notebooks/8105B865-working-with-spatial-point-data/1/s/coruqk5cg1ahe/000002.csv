@@ -1,0 +1,5 @@
+"0","# convert to a data-frame"
+"0","point.df<-as.data.frame(SPDF.PROJ)"
+"0","# Rename "
+"0","colnames(point.df)[9] <- ""x"""
+"0","colnames(point.df)[10] <- ""y"""

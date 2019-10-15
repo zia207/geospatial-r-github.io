@@ -1,0 +1,64 @@
+---
+title: "Geostatistical Interpolation"
+---
+
+
+Spatial interpolation using **geostatistical** techniques has been widely used to map environmental variables.  Geostatistics relies on on the concept of **random function**, whereby the set of unknown values is considered as a set of spatially dependent random variables. The random function concepts allows to account for structures in the spatial variation of the attributes. Unlike the deterministic interpolation approaches, geostatistics assumes that all values in a domain are the result of a random process with dependence.  At any particular location, the uncertainty of attribute value is estimated from a set of possible outcomes of the random variable at that location. This way we can model the uncertainty of spatial prediction over the entire study area. 
+
+
+The main steps involved in geostatistical interpolation model are:
+
+1.	Examining the data (distribution, trends, directional components, outliers)
+2.	Calculating the empirical semivariogram or covariance values
+3.	Fitting a model to the empirical values.
+4.	Generating the matrices of kriging equations.
+5.	Solving them to obtain a predicted value and the error (uncertainty) associated with it for each location in the output surface.
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center",fig.cap=paste("Work Flow Geostatistical Interpolation (Source: http://pro.arcgis.com/en/pro-app/help/analysis/geostatistical-analyst/the-geostatistical-workflow.htm )")}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\Flow_Chart.png')
+```
+
+
+Geostatistics is widely used in many areas of science and engineering, for example: 
+
+* To quantify mineral resources in **mining industry**
+
+* Pollution mapping and risk assessment in the **environmental sciences**
+
+* **Digital mapping **of soil variables
+
+* Prediction of temperatures, rainfall, and associated variables (such as acid rain) in  **meteorological applications**
+
+* **In the area of public health** 
+
+
+
+
+We will cover following area in Geostatistical Interpolation section: 
+   
+* [Semivariogram Modeling](semivariogram-modeling.html)
+        
+* [Kriging](kriging.html)
+       
+    - [Ordinary Kriging](ordinary-kriging.html)
+    
+    - [Universal Kriging](universal-kriging.html)
+ 
+    - [Co-kriging](cokriging.html)
+
+    - [Regression Kriging](regression-kriging.html)
+  
+        Generalized Linear Model
+
+        Random Forest
+
+        Extreme Gradient Boosting
+
+        Meta-Ensemble Machine Learning
+        
+    - [Indicator Kriging](indicator-kriging.html)
+        
+      
+
+

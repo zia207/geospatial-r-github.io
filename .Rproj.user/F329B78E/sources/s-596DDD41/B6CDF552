@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544129970002.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B6CDF552",
+    "lastKnownWriteTime" : 1544461422,
+    "last_content_update" : 1544461422441,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/map-projection-coordinate-reference-systems.Rmd",
+    "project_path" : "map-projection-coordinate-reference-systems.Rmd",
+    "properties" : {
+        "cursorPosition" : "13,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 22,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,5 @@
+"0","# disslove inter-state boundary"
+"0","bd <- aggregate(state)"
+"0","# apply intersect fuction to clip"
+"0","v.gp <- raster::intersect(v, bd)"
+"2","non identical CRS"

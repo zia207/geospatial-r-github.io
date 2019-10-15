@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415663516.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2512202850",
+    "id" : "9A65359A",
+    "lastKnownWriteTime" : 1547768532,
+    "last_content_update" : 1549415678598,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/deterministic-methods-for-spatial-interpolation.Rmd",
+    "project_path" : "deterministic-methods-for-spatial-interpolation.Rmd",
+    "properties" : {
+        "cursorPosition" : "43,17",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

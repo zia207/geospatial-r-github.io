@@ -1,0 +1,586 @@
+---
+title: "Working with Spatial Point Data"
+---
+
+
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri(file.path(R.home("doc"), "html", "logo.jpg")), 
+               alt = 'logo', 
+               style = 'position:absolute; top:-0.5; right:0; padding:10px;')
+```
+
+
+
+
+In this section, we will learn how to integrated a different types of spatial data and create a data frame for spatial interpolation. This excessive consists of six major steps:
+
+* [Create a Spatial Point Data Frame](#create-a-spatial-point-data-frame)
+
+* [Extract Environmental Covariates to SPDF](#extract-environmental-covariates-to-spdf)  
+
+* [Create a Prediction Grid](#create-a-prediction-grid) 
+
+* [Exploratory Data Analysis](#exploratory-data-analysis)
+
+* [Plot Data on Web Map](#plot-data-on-web-map)
+
+* [Data Split](#data-split)
+
+
+
+#### Load R-packages
+
+```{r message=F, warning=F}
+library(RColorBrewer)   # Create couston color plate
+library(classInt)       # create class interval of data
+library(raster)         # spatial data
+library(latticeExtra)   # advance ploting function
+library(Hmisc)          # for correlation matrix
+library(corrplot)       # create nice looking orrelation matrix plot
+library(ggplot2)        # create box-jitter plot
+library(plyr)           # data manupulation
+library(corrplot)       # Plot correlation matix
+library(dplyr)          # data  manipulation
+library(ggmap)          # advance mapping
+library(plotGoogleMaps) # plot data on Google Map
+```
+
+
+#### Load Data
+
+We will use following spatial data  to create  the data frame.  The data can be download from [here](https://www.dropbox.com/s/dok9aece9kcydh5/DATA_05.7z?dl=0). 
+
+* **Soil sampling locations (GP_GPS.CSV)**: This file contains coordinates of 473 soil sampling sites in **Colorado, Kansas, New Mexico, and Wyoming**. The soil samples were collected by United States Geological Survey (USGS) throughout the A horizon with sampling densities of 1 sample per ~1600 km2 [Smith et al., 2011].
+
+
+* **Soil organic carbon (SOC) (GP_SOC_data.csv)**: SOC concentration of these 473 sites. The concentration of SOC was predicted by means of mid-infrared (MIR) spectroscopy and partial least squares regression (PLSR) analysis described previously [Janik et al., 2007; Ahmed et al., 2017].  
+
+* **Raster data**: DEM (ELEV), slope, aspect, topographic position index (TPI), mean annual air temperature (MAT), mean annual precipitation (MAP), soil texture (Silt+Clay), Fire Regime Groups(FRG), Normalized Difference Vegetation Index (NDVI), and land cover (NLCD) and soil erodibility factor (K_factor). This data has downloaded from  [here](https://daac.ornl.gov/NACP/guides/SOC_Stocks_Great_Plains.html) and detail description of the data can be found in [**Assessing soil carbon vulnerability in the Western USA by geospatial modeling of pyrogenic and particulate carbon stocks**](https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2016JG003488). For training purpose, all raster was re-sampled to 10 km x 10 km grid size.  
+
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_05//"
+```
+
+
+```{r,collapse = TRUE}
+ID<-read.csv(paste0(dataFolder,"GP_ID.csv"), header= TRUE)          # id file
+gps<-read.csv(paste0(dataFolder, "GP_GPS.csv"), header= TRUE)       # data file
+data<-read.csv(paste0(dataFolder,"GP_SOC_data.csv"), header= TRUE)  # GPS coordinates
+```
+
+
+### Create a Spatial Point Data Frame
+
+Data  contains three attributes: **ID, longitude and latitude**  in **decimal degree (DD)** format of soil sampling location. If you have GPS coordinates as degrees (d), minutes (m), and seconds (s) format,you need to convert to DD using below formula:  
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_06\\Pic1.png')
+```
+
+
+####  Merge Data 
+
+We will merge ID, GPS and data objects using  **merge()** function by a common ID  
+
+```{r}
+# merge two data.frames
+df_01 <- merge(ID,gps, by="ID")    # join GPS coordinates with state and county ID
+df <- merge(df_01,data,by="ID")    # join data
+head(df)
+```
+
+
+#### Create a Spatial point dataframe (SPDF)
+
+Now we will create a Spatial Point data frame using **SpatialPointsDataFrame()** function of **sp** package, First you have to define xy-coordinates of the data frame
+
+
+```{r}
+##  define coordinates
+xy <- df[,c(6,7)]
+# Convert to spatial point
+SPDF <- SpatialPointsDataFrame(coords = xy, data=df) 
+str(SPDF)
+```
+
+#### Define projection
+
+We will define current CRS (WGS 84) before re-project it to **Albers Equal Area Conic NAD1983"   
+
+```{r,collapse = TRUE}
+proj4string(SPDF) = CRS("+proj=longlat +ellps=WGS84")  # WGS 84
+proj4string(SPDF)
+```
+
+
+We will copy projection parameters (Albers Equal Area Conic NAD1983) from state boundary file and use it to re-project the SPDF file
+
+```{r,collapse = TRUE}
+state<-shapefile(paste0(dataFolder, "GP_STATE.shp"))
+albers<-proj4string(state)
+albers
+```
+
+
+```{r,collapse = TRUE}
+# Reprojection
+SPDF.PROJ<- spTransform(SPDF,	      # Input SPDF
+		                  albers)     # new projection     		
+# Check project 
+proj4string(SPDF.PROJ)
+# Write as a ESRI shape file
+shapefile(SPDF.PROJ, paste0(dataFolder, "GP_Data_PROJ.shp"),overwrite=TRUE)
+```
+
+#### Plot the data
+
+```{r,echo=TRUE, fig.align='center',fig.height=5, fig.width=10}
+par(mfrow=c(1,2))
+plot(SPDF, main="WGS 1984", pch=20, cex =0.2)
+plot(state, add=T)
+plot(SPDF.PROJ, main="Albers Equal Area Conic", pch=20, cex=0.2)
+plot(state, add=T)
+par(mfrow=c(1,1))
+```
+
+#### Convert SPDF to a dataframe
+
+Now we will create a new  CSV files with data and projected-coordinates (meter)
+
+```{r}
+# convert to a data-frame
+point.df<-as.data.frame(SPDF.PROJ)
+# Rename 
+colnames(point.df)[9] <- "x"
+colnames(point.df)[10] <- "y"
+```
+
+
+### Extract Environmental Covariates to SPDF
+
+Now, we will extract raster values to SPDF data frame the Characterize the sampling locations with a comprehensive set of environmental data. First, you have to create a list of raster and then stack them with **stack()** function. 
+
+
+#### Create a raster list
+
+```{r,echo=TRUE, fig.align='center',fig.height=6, fig.width=8}
+glist <- list.files(path=paste0(dataFolder, ".//RASTER"),pattern='.tif$',full.names=T)
+s<- stack(glist)
+plot(s)
+```
+
+
+#### Extract  raster values to SPDF
+
+We will use **extract()** function from **raster** package, but **extract()** will be show some error since it is  conflicting with another package, so we use  **raster::extract** function. 
+
+
+```{r}
+vals<-raster::extract(s,
+              SPDF.PROJ,
+              df=TRUE,
+              method="simple")
+point.vals<-cbind(point.df,vals)
+```
+
+
+Since, NLCD and FRG are categorical class raster, you need to add their class description into data frame.
+
+
+```{r}
+# Load ID files
+NLCD.ID<-read.csv(paste0(dataFolder,"NLCD_ID.csv"), header= TRUE)         
+FRG.ID<-read.csv(paste0(dataFolder,"FRG_ID.csv"), header= TRUE) 
+# Join ID 
+mf.01 <- merge(point.vals,NLCD.ID,  by="NLCD", type="inner")  
+mf.02 <- merge(mf.01,FRG.ID,  by="FRG",type="inner") 
+# Delete column 3 (extra ID)
+mf.02<- mf.02[, -3]  
+# re-arrange the data-frame (use dplyr::select)
+mf<-mf.02 %>% 
+  dplyr::select(ID,STATE_ID,STATE,FIPS,COUNTY,Longitude,Latitude,x,y,SOC,
+         ELEV,Aspect,Slope,TPI,K_Factor,MAP,MAT,NDVI,Slit_Clay,NLCD,FRG,NLCD_DES,FRG_DES) 
+head(mf)
+# Write as CSV file
+write.csv(mf, paste0(dataFolder,"GP_all_data.csv"), row.names=F)
+```
+
+
+
+### Create a Prediction Grid
+
+
+```{r}
+# First, we will create an empty point data frame, will ELEV raster
+DEM<-raster(paste0(dataFolder, ".//RASTER//ELEV.tif"))
+grid.point <- data.frame(rasterToPoints(DEM))
+# Remove DEM column, just keep x & y
+grid.point$ELEV<-NULL
+# define co-ordinates and projection
+coordinates(grid.point) <- ~x + y
+projection(grid.point) <- albers
+# Extract values to grid.point
+df.grid<- raster::extract(s, grid.point, df=TRUE, method='simple')
+grid<-cbind(as.data.frame(grid.point),df.grid)
+grid.na<-na.omit(grid)
+write.csv(grid.na, paste0(dataFolder, "GP_prediction_grid_data.csv"), row.names=F)
+head(grid)
+```
+
+
+
+### Exploratory data analysis  
+
+In statistics, exploratory data analysis (EDA) is an approach to analyzing data sets to summarize their main characteristics, often with visual methods. A statistical model can be used or not, but primarily EDA is for seeing what the data can tell us beyond the formal modeling or hypothesis testing task. Exploratory data analysis was promoted by John Tukey to encourage statisticians to explore the data, and possibly formulate hypotheses that could lead to new data collection and experiments. EDA is different from initial data analysis (IDA), which focuses more narrowly on checking assumptions required for model fitting and hypothesis testing, and handling missing values and making transformations of variables as needed. EDA encompasses IDA (Source: [Wikipedia](https://en.wikipedia.org/wiki/Exploratory_data_analysis) )
+
+
+
+#### Summary statistics
+
+```{r}
+summary(mf$SOC)
+```
+
+#### Quantile
+
+```{r}
+quantile(mf$SOC)
+```
+
+#### Histogram with base R function
+
+```{r, warning=FALSE, fig.width = 5, fig.height = 4.5,fig.align='center'}
+hist(mf$SOC, 
+     main="Histogram of Soil OC",
+     xlab= "Soil OC (mg C/g)")
+```
+
+
+
+You can save this figure as a high resolution tif file in your working directory
+
+```{r,eval=F, echo=T}
+windows(width=5, height=4.5)
+tiff( file="FIGURE_01_HISTOGRAM_SOC.tif", 
+width=5, height=4.5,units = "in", pointsize = 12, res=300,
+restoreConsole = TRUE,compression =  "lzw")
+
+hist(mf$SOC, 
+     main= "Histogram of Soil OC",
+     xlab= "Soil OC (mg C/g)")
+dev.off()
+```
+
+#### Quantile-Quantile (QQ) plot  
+
+```{r, warning=FALSE, fig.width = 5, fig.height = 4.5,fig.align='center'}
+qqnorm(mf$SOC, pch = 1,main= "")                # produces a normal QQ plot of the variable
+qqline(mf$SOC, col = "steelblue", lwd = 2)      # adds a reference line
+```
+
+####  Correlation SOC with environmental data
+
+First you have to create a data.frame with SOC and continuous environmental data. Then, we will use **rcorr()**  function of **Hmisc** package. The output of this function will produce following:
+** r : the correlation matrix 
+** n : the matrix of the number of observations used in analyzing each pair of variables 
+** P : the p-values corresponding to the significance levels of correlations. 
+
+
+```{r}
+# Create a data frame with SOC and continous environmental data 
+df.cor <- mf[, c(10:19)]
+# head(df.cor)
+head(df.cor)
+# create a correlation matrix
+cor.matrix <- rcorr(as.matrix(df.cor))
+cor.matrix
+```
+
+
+You can create a graphical display of a correlation matrix  using the function **corrplot()** of **corrplot** package. The function **corrplot()** takes the correlation matrix as the first argument. The second argument (**type="upper"**) is used to display only the upper triangular of the correlation matrix. The correlation matrix is reordered according to the correlation coefficient using **"hclust"** method. 
+
+
+```{r, warning=FALSE, fig.width = 6, fig.height = 6,fig.align='center'}
+# Insignificant correlations are leaved blank
+corrplot(cor.matrix$r, type="upper", order="hclust", 
+         main="", cex.lab = 0.5,
+         p.mat = cor.matrix$P, sig.level = 0.05, insig = "blank")
+```
+
+In this plot, correlation coefficients are colored according to the value. Correlation matrix can be also reordered according to the degree of association between variables. Positive correlations are displayed in blue and negative correlations in red color. Color intensity and the size of the circle are proportional to the correlation coefficients. In the right side of the correlogram, the legend color shows the correlation coefficients and the corresponding colors. The correlations with p-value > 0.05 are considered as insignificant. In this case the correlation coefficient values are leaved blank.
+
+
+####  Variability of SOC  in relation  to  NLCD landuse (NLCD) and Fire  Regime Group (FRG)
+
+Now we explore how SOC values varied with NLCD, TSP and FRG. We will perform following tasks:
+
+* Box-Jitter plot
+* Barplot and Summary stat by NLCD, TSP & FRG
+
+
+#### Box-Jitter plot
+
+We will ggplot package to create Box-Jitter plots to  explore variability of SOC with NLCD, TSP and FRG. First we will created a data.frame with this variables.
+
+```{r}
+df.cat <- mf[, c(10, 22:23)]
+head(df.cat)
+```
+
+#### NLCD
+
+```{r, warning=FALSE, fig.width = 7, fig.height = 5,fig.align='center'}
+rgb.palette <- colorRampPalette(c("red","yellow","green", "blue"),
+space = "rgb")
+
+ggplot(df.cat, aes(y=SOC, x=NLCD_DES)) +
+  geom_point(aes(colour=SOC),size = I(1.7),
+             position=position_jitter(width=0.05, height=0.05)) +
+  geom_boxplot(fill=NA, outlier.colour=NA) +
+  labs(title="")+
+  theme_bw() +
+  coord_flip()+
+  theme(axis.line = element_line(colour = "black"),
+        # plot.title = element_text(hjust = 0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.text.y=element_text(size=12,vjust = 0.5, hjust=0.5, colour='black'),
+        axis.text.x = element_text(size=12))+
+  scale_colour_gradientn(name="SOC (mg C/g)", colours =rgb.palette(10))+
+  theme(legend.text = element_text(size = 10),legend.title = element_text(size = 12))+
+  labs(y="SOC", x = "")+ 
+  ggtitle("Variability of SOC in relation to NLCD")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+
+#### FRG
+
+```{r, warning=FALSE, fig.width = 7.5, fig.height = 5,fig.align='center'}
+rgb.palette <- colorRampPalette(c("red","yellow","green", "blue"),
+space = "rgb")
+
+ggplot(df.cat, aes(y=SOC, x=FRG_DES)) +
+  geom_point(aes(colour=SOC),size = I(1.7),
+             position=position_jitter(width=0.05, height=0.05)) +
+  geom_boxplot(fill=NA, outlier.colour=NA) +
+  labs(title="")+
+  theme_bw() +
+  coord_flip()+
+  theme(axis.line = element_line(colour = "black"),
+        # plot.title = element_text(hjust = 0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.text.y=element_text(size=12,vjust = 0.5, hjust=0.5, colour='black'),
+        axis.text.x = element_text(size=12))+
+  scale_colour_gradientn(name="SOC (mg C/g)", colours =rgb.palette(10))+
+  theme(legend.text = element_text(size = 10),legend.title = element_text(size = 12))+
+  labs(y="SOC", x = "")+
+  ggtitle("Variabilty of SOC in relation to FGR")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+####  Barplot and Summary statistics grouped by NLCD & FRG
+
+Before creating barplots, we are going to calculate summary statistics SOC by NLCD and FRG.  We will **ddply()** function from **plyr** package. For standard error of mean, we will use following function:  
+
+```{r}
+# Standard error
+SE <- function(x){
+  sd(x)/sqrt(length(x))
+}
+```
+
+
+```{r}
+# NLCD
+NLCD.SOC<-ddply(df.cat,~NLCD_DES, summarise, mean=mean(SOC),median=median(SOC),
+      sd=sd(SOC), min=min(SOC), max=max(SOC),se=SE(SOC))
+
+# FRG
+FRG.SOC<-ddply(df.cat,~FRG_DES, summarise, mean=mean(SOC),median=median(SOC),
+      sd=sd(SOC), min=min(SOC), max=max(SOC),se=SE(SOC))
+```
+
+#### Barplot - NLCD  
+
+```{r, warning=FALSE, fig.width = 7.5, fig.height = 5,fig.align='center'}
+ggplot(NLCD.SOC, aes(x=NLCD_DES, y=mean)) + 
+  geom_bar(stat="identity", position=position_dodge(),width=0.5, fill="steelblue") +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.2,
+   position=position_dodge(.9))+
+   labs(title="")+
+  theme_bw() +
+  coord_flip()+
+  theme(axis.line = element_line(colour = "black"),
+        # plot.title = element_text(hjust = 0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.text.y=element_text(size=12,vjust = 0.5, hjust=0.5, colour='black'),
+        axis.text.x = element_text(size=12))+
+  labs(y="SOC (mg C/g)", x = "")+
+  ggtitle("Mean±SE of SOC grouped by NLCD")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Barplot FRG  
+
+```{r, warning=FALSE, fig.width = 7.5, fig.height = 5,fig.align='center'}
+ggplot(FRG.SOC, aes(x=FRG_DES, y=mean)) + 
+  geom_bar(stat="identity", position=position_dodge(),width=0.5, fill="steelblue") +
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.2,
+   position=position_dodge(.9))+
+   labs(title="")+
+  theme_bw() +
+  coord_flip()+
+  theme(axis.line = element_line(colour = "black"),
+        # plot.title = element_text(hjust = 0.5),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.text.y=element_text(size=12,vjust = 0.5, hjust=0.5, colour='black'),
+        axis.text.x = element_text(size=12))+
+  labs(y="SOC (mg C/g)", x = "")+
+  ggtitle("Mean±SE of SOC grouped by FRG")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+#### Spatial Variability of SOC
+
+We will use **levelplot()** function to create a map in quantile scale to explore spatial pattern of SOC. 
+
+
+```{r, warning=FALSE, fig.width = 6, fig.height = 6,fig.align='center'}
+# Define class intervel (20 quantile)
+at = classIntervals(mf$SOC, n = 20, style = "quantile")$brks
+round(quantile(mf$SOC, probs=seq(0,1, by=0.05)),1) # use for custom color key
+
+# Create a color palette
+rgb.palette.col <- colorRampPalette(c("red","yellow", "green", "blue"),space = "rgb")
+
+# Crate a Figure 
+soc<-levelplot(SOC~x+y, mf,cex=0.8,
+              aspect = "iso",
+              main= "Spatial Variability of SOC (mg C/g)",
+              xlab="", ylab="",  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col="grey",lwd=0.5)),
+              col.regions=rgb.palette.col (20),at=at,
+              colorkey=list(space="right",width=1.5,at=1:21,labels=list(cex=1.2,at=1:21,
+              labels=c("","","<2.9", "","","5.6","","","","","10.5","","","","","17.8", "","",">29.6","",""))),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col="grey30")
+              },)
+soc
+```
+
+
+
+```{r,eval=F, echo=T}
+# Save as 
+windows(width=6, height=6)
+tiff(file=paste0(dataFolder,"FIGURE_SOC_OBSERVED_Col.tif"), 
+width=6, height=6,units = "in", pointsize = 12, res=600,
+restoreConsole = T,bg="transparent")
+print(soc)
+dev.off()
+```
+
+#### County Mean
+
+```{r}
+# Load County Shape file
+county<-shapefile(paste0(dataFolder,"GP_COUNTY.shp"))
+# County mean
+FIPS.SOC<-ddply(mf,~FIPS, summarise, mean=mean(SOC))
+# Join to County shape files
+county.soc<-merge(county,FIPS.SOC, by="FIPS")
+```
+
+
+```{r, warning=FALSE, fig.width = 6, fig.height = 6,fig.align='center'}
+spplot(county.soc,"mean",
+       main="County Mean of SOC (mg C/g)")
+```
+
+
+###  Plot Data on Web Map
+
+We use **ggmap** package to visualize data on Map
+
+
+```{r message=F, warning=F, fig.width = 7, fig.height = 7,fig.align='center'}
+us <- c(left = -125, bottom = 25.75, right = -67, top = 49)
+map <- get_stamenmap(us, zoom = 5, maptype = "toner-lite")
+ggmap(map)
+```
+
+```{r message=F, warning=F,  fig.width = 5, fig.height = 5,fig.align='center'}
+qmplot(Longitude, Latitude, data = df, maptype = "toner-lite", color = I("red"))
+```
+
+
+### Data split
+
+The data set (n = 471) will be randomly split into 368 (80%) calibration data, which will be  used for model development and 101 (20%) validation data which will  used for evaluating the prediction models. For data splitting, we will use [**Stratified Random Sampling**]( https://www.investopedia.com/terms/stratified_random_sampling.asp)  algorithms.
+
+```{r}
+mf$NLCD<-as.factor(mf$NLCD)
+mf$FRG<-as.factor(mf$FRG)
+```
+
+
+```{r}
+tr_prop = 0.80
+# training data
+train = ddply(mf, .(NLCD,FRG),function(., seed) { set.seed(seed); .[sample(1:nrow(.), trunc(nrow(.) * tr_prop)), ] }, seed = 101)
+# Validation data (20% of data)
+test = ddply(mf,  .(NLCD,FRG), 
+            function(., seed) { set.seed(seed); .[-sample(1:nrow(.), trunc(nrow(.) * tr_prop)), ] }, seed = 101)
+```
+
+```{r}
+write.csv(train, paste0(dataFolder,"train_data.csv"), row.names=F)
+write.csv(test, paste0(dataFolder,"test_data.csv"), row.names=F)
+```
+
+
+#### Map Training and test data set 
+
+
+```{r}
+bound<-shapefile(paste0(dataFolder,"GP_STATE.shp"))
+at = classIntervals(mf$SOC, n = 20, style = "quantile")$brks
+round(quantile(mf$SOC, probs=seq(0,1, by=0.05)),1)
+coordinates(test)<-~x+y
+rgb.palette.col <- colorRampPalette(c("red","yellow", "green", "blue"),space = "rgb")
+```
+
+```{r,collapse = TRUE,fig.align='center',fig.height=5, fig.width=6}
+levelplot(SOC~x+y, mf,cex=0.6,
+              aspect = "iso",main= "Training (clossed) & Test (open) Data",
+              xlab="", ylab="",  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col="grey",lwd=0.5)),
+              col.regions=rgb.palette.col (20),at=at,
+              colorkey=list(space="right",width=1.2,at=1:21,labels=list(cex=1.2,at=1:21,
+              labels=c("","","< 1.2","" ,"","2.8","","","","","4.9","","","","","8.6","","",">13.4","",""))),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.points(test, col="black", cex=1.2,pch=21)
+              sp.polygons(bound,lty=1,lwd=0.5,col="grey30")
+              },)   
+```
+
+
+

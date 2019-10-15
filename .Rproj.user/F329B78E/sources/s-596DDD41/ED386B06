@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544316356245.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "ED386B06",
+    "lastKnownWriteTime" : 1544451258,
+    "last_content_update" : 1544451258,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/spatial-interpolation.Rmd",
+    "project_path" : "spatial-interpolation.Rmd",
+    "properties" : {
+        "cursorPosition" : "6,101",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 43,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

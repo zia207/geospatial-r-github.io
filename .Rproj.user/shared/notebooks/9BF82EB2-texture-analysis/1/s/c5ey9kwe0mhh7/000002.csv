@@ -1,0 +1,20 @@
+"0","library (raster) 	    # raster data"
+"0","library(rasterVis)	  # raster visualisation 	"
+"2","Loading required package: latticeExtra
+"
+"2","
+Attaching package: ‘latticeExtra’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    layer
+
+"
+"0","library(sp)			      # Spatial data"
+"0","library(rgdal)        # sptaial data "
+"0","library(RStoolbox)    # Image analysis"
+"0","library(ggplot2)      # advance plotting"
+"0","library(glcm)         # texture analysis"
+"2","Error in library(glcm) : there is no package called â€˜glcmâ€™
+"

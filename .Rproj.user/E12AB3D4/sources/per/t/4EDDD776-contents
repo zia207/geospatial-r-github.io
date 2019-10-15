@@ -1,0 +1,30 @@
+---
+title: "Image Classification"
+---
+<div style="margin-bottom:40px;">
+</div>
+
+
+In this lesson we will learn about image classification.  Image classification extracts class information from a multiband raster image and creates a new class raster which can be used to create thematic maps. There are two types of classification: supervised and unsupervised.
+
+[**Unsupervised Classification**](unsupervised-classification.html)
+
+In unsupervised classification, pixels are grouped or clustered based on the reflectance properties of pixels. There are different types of image clustering algorithms available such as K-means and ISODATA. The unsupervised image classification technique is commonly used when no training data exist. First, we define class numbers for generating clusters and assign classes in cluster.   k-means is one of the simplest unsupervised learning algorithms used for clustering. The procedure assumes that the number of clusters (assume k clusters) is fixed prior and then uses a simple technique  to classify a given data set  into clusters. The user is required to define k centers, one for each cluster.  These centers should be chosen with care, since choosing different center locations causes different results.
+
+[**Supervised Classification**](supervised-classification.html)
+
+Supervised classification uses the spectral signatures obtained from training samples to classify an image. Typically, it involves 3 steps: defining a training area, generating a signature file, and classification.   For land cover classification, first you must select representative samples for each land cover class to develop a training and validation data set. Then you can use these data to train and validate  different kinds of classification algorithm. We can then predict land cover classes in the entire image. The most common supervised classification algorithms are maximum likelihood, minimum-distance classification and decision tree-based (such random forest (RF)), and support vector machine (SVM).
+
+Supervised Classification is broadly classified as either Pixel-based or Object-based classification
+
+**Pixel-based classification**
+
+In pixel-based classification, which is the traditional approach, individual image pixels are analyzed by their spectral information. Various methods are then used in pixel-based classification to classify images (e.g., Maximum-likelihood, Minimum-distance-to-mean, and Minimum--distance etc.)
+
+**Object-based classification**
+
+Object-based image analysis (OBIA) is one of several approaches developed to overcome the limitations of the pixel-based approaches.  It incorporates spectral, textural and contextual information to identify thematic classes in an image. The first step in OBIA is to segment the image into homogeneous objects. The term “object” here stands for a contiguous cluster of pixels. Segmentation is based on pre-defined parameters like compactness, shape, and scale, derived from real-world knowledge of the features that one wants to identify (Mason et al. 1988).  In crop mapping, for instance, this will require understanding of the size and shape of farm fields in the area of interest.  In a second step, each object (segment) is classified on the basis of one or more statistical properties of the contained pixels. This means that all pixels within a segment are assigned to one class.
+
+
+
+

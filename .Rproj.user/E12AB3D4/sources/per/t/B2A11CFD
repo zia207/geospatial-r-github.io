@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549416153748.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "958016506",
+    "id" : "B2A11CFD",
+    "lastKnownWriteTime" : 1549461910,
+    "last_content_update" : 1549461910453,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/support-vector-machine.Rmd",
+    "project_path" : "support-vector-machine.Rmd",
+    "properties" : {
+        "cursorPosition" : "162,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 19,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

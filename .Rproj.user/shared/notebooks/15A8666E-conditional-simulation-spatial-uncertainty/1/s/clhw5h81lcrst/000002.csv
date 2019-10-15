@@ -1,0 +1,3 @@
+"0","col <- colorRampPalette(c(""red"" ,""yellow"",""green"",""blue"",""sky blue""),space = ""rgb"")"
+"0","spplot(grid.xy, c(4:5), sp.layout=list(bound), col.regions=col(20),"
+"0","       names.attr = c(""Ordinary Kriging"", ""E-type Estimates""))"

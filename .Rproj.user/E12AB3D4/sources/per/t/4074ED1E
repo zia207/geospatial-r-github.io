@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415708941.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3702482254",
+    "id" : "4074ED1E",
+    "lastKnownWriteTime" : 1549456328,
+    "last_content_update" : 1549456328447,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/geographically-weighted-principal-components-analysis.Rmd",
+    "project_path" : "geographically-weighted-principal-components-analysis.Rmd",
+    "properties" : {
+        "cursorPosition" : "159,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

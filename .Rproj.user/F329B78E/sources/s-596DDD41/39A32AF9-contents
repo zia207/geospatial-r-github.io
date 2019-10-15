@@ -1,0 +1,179 @@
+---
+title: "Getting Startted with Spatial Data in R"
+---
+
+
+```{r, echo=FALSE}
+htmltools::img(src = knitr::image_uri(file.path(R.home("doc"), "html", "logo.jpg")), 
+               alt = 'logo', 
+               style = 'position:absolute; top:-0.5; right:0; padding:10px;')
+```
+
+
+**What is R?** 
+
+[R](https://www.r-project.org/) is an open-source environment for statistical computing and visualization. It is based on the S language developed at Bell Laboratories in the 1980's, and is the product of an active movement among statisticians for a powerful, programmable, portable, and open computing environment, applicable to the most complex and sophisticated problems, as well as "routine" analysis, without any restrictions on access or use.
+
+**Download and Installation R**
+
+The R can download from the [R project](www.r-project.org ) of a repository CRAN or you can install [Microsoft R Open](https://mran.microsoft.com/download). Detail Installation steps of Microsoft R Open in different operating systems can be found [here](https://mran.microsoft.com/documents/rro/installation).   
+
+
+**Download and Installation R-Studio**
+
+[RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. Click here to see more RStudio features.RStudio is available in open source and commercial editions and runs on the desktop (Windows, Mac, and Linux) or in a browser connected to RStudio Server or RStudio Server Pro (Debian/Ubuntu, RedHat/CentOS, and SUSE Linux)](https://www.rstudio.com/products/RStudio/).
+
+First, you have to download RStudio according to your operating system from [here](https://www.rstudio.com/products/rstudio/download/) 
+For windows user, and just run the installation file and it normally detects your latest installed R version automatically. If you want to do some extra configuration, you need follow  some steps which can be found [here](http://www.dummies.com/programming/r/how-to-install-and-configure-rstudio/)
+
+For Linux user, use following commands in terminal:
+
+* $ sudo apt-get install gdebi-core
+* $ wget https://download1.rstudio.org/rstudio-xenial-1.1.383-amd64.deb
+* $ sudo gdebi rstudio-xenial-1.1.383-amd64
+* $ rm rstudio-xenial-1.1.383-amd64
+
+
+
+**R Packages** 
+
+Packages are collections of R functions, data, and compiled code in a well-defined format. The directory where packages are stored is called the library. For this training, we need several R-packages.
+
+**Some Important R-packages**
+
+**Utility and data manipulation** 
+
+* [tidyverse](https://www.tidyverse.org/):  collection of R packages designed for data science 
+* [data.table](https://cran.r-project.org/web/packages/data.table/data.table.pdf): Fast aggregation of large data 
+* [dplyr](https://cran.r-project.org/web/packages/dplyr/dplyr.pdf): A Grammar of Data Manipulation
+* [plyr](https://cran.r-project.org/web/packages/plyr/plyr.pdf): Tools for Splitting, Applying and Combining Data 
+* [classInt](https://cran.r-project.org/web/packages/classInt/classInt.pdf): Choose Univariate Class Intervals 
+* [RODBC](https://cran.r-project.org/web/packages/RODBC/RODBC.pdf): ODBC Database Access 
+* [sqldf](https://cran.r-project.org/web/packages/sqldf/sqldf.pdf): Perform SQL Selects on R Data Frames 
+* [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/RPostgreSQL.pdf): R Interface to the 'PostgreSQL' Database System
+* [snow](https://cran.r-project.org/web/packages/snow/snow.pdf): Support for simple parallel computing in R
+* [doParalle](ftp://cran.r-project.org/pub/R/web/packages/doParallel/doParallel.pdf): Foreach Parallel Adaptor for the 'parallel' Package
+* [devtools](https://cran.r-project.org/web/packages/devtools/devtools.pdf): Collection of package development tools
+* [rJava](ftp://cran.r-project.org/pub/R/web/packages/rJava/rJava.pdf):Low-Level R to Java Interface
+
+**Plotting and Mapping**
+
+* [ggplot2](https://cran.r-project.org/web/packages/ggplot2/ggplot2.pdf): An Implementation of the Grammar of Graphics 
+* [RColorBrewer](https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf): ColorBrewer Palettes (making customize color palettes)
+* [latticeExtra](https://cran.r-project.org/web/packages/latticeExtra/latticeExtra.pdf) : Extra Graphical Utilities Based on Lattice
+* [tmap](https://cran.r-project.org/web/packages/tmap/tmap.pdf): Thematic Maps
+* [ggmap](https://cran.r-project.org/web/packages/ggmap/ggmap.pdf): extends the plotting package ggplot2 for maps
+* [rasterVis](https://cran.r-project.org/web/packages/rasterVis/rasterVis.pdf):Visualization Methods for Raster Data
+* [corrplot](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html): graphical display of a correlation matrix, confidence interval
+
+**Advanced statistical analysis and Mechine Learning Packages**
+
+* [agricoale](https://cran.r-project.org/web/packages/agricolae/agricolae.pdf):Statistical Procedures for Agricultural Research
+* [MASS](https://cran.r-project.org/web/packages/MASS/MASS.pdf): Support Functions and Datasets for Venables and Ripley's MASS 
+* [nlme](https://cran.r-project.org/web/packages/nlme/nlme.pdf): Linear and Nonlinear Mixed Effects Models 
+* [lme4](https://cran.r-project.org/web/packages/lme4/lme4.pdf ): Linear Mixed-Effects Models using 'Eigen' and S4 
+* [lmerTest](https://cran.r-project.org/web/packages/lmerTest/index.html ): Tests in Linear Mixed Effects Models 
+* [caret](http://topepo.github.io/caret/index.html): A set of functions that attempt to streamline the process for creating predictive models 
+* [caretEnsemble](https://cran.r-project.org/web/packages/caretEnsemble/vignettes/caretEnsemble-intro.html): A package for making ensembles of caret models
+* [H20](https://cran.r-project.org/web/packages/h2o/h2o.pdf): R interface for 'H2O', the scalable open source machine learning platform 
+* [keras](https://keras.rstudio.com/): a high-level neural networks 'API' with 
+
+**Spatial data**
+
+* [sp](https://cran.r-project.org/web/packages/sp/sp.pdf): Classes and Methods for Spatial Data 
+* [sf](https://cran.r-project.org/web/packages/sf/index.html):Support for simple features, a standardized way to encode spatial vector data 
+* [rgdal](https://cran.r-project.org/web/packages/rgdal/rgdal.pdf): Bindings for the Geospatial Data Abstraction Library 
+* [raster](https://cran.r-project.org/web/packages/raster/raster.pdf): Geographic Data Analysis and Modeling 
+* [maptools](https://cran.r-project.org/web/packages/maptools/maptools.pdf): Tools for Reading and Handling Spatial Objects 
+* [maps](https://cran.r-project.org/web/packages/maps/maps.pdf): Draw Geographical Maps 
+* [rgeos](https://cran.r-project.org/web/packages/rgeos/rgeos.pd): Interface to Geometry Engine - Open Source (GEOS)
+* [rgrass7](https://cran.r-project.org/web/packages/rgrass7/rgrass7.pdf) : Interface Between GRASS 7 Geographical Information System and R 
+* [plotGoogleMaps](https://cran.r-project.org/web/packages/plotGoogleMaps/plotGoogleMaps.pdf): Plot Spatial or Spatio-Temporal Data Over Google Maps 
+* [landsat](https://cran.r-project.org/web/packages/landsat/landsat.pdf) : Radiometric and topographic correction of satellite imagery
+* [RStoolbox](https://cran.r-project.org/web/packages/RStoolbox/RStoolbox.pdf): Tools for Remote Sensing Data Analysis 
+* [wrspathrow](https://cran.r-project.org/web/packages/wrspathrow/wrspathrow.pdf): Contains functions for working with the Worldwide Reference System (WRS) 1 and 2 systems used by NASA
+* [ncdf4](https://cran.r-project.org/web/packages/ncdf4/ncdf4.pdf):Interface to Unidata netCDF (Version 4 or Earlier) Format Data
+* [RNetCDF](https://cran.r-project.org/web/packages/RNetCDF/RNetCDF.pdf):nterface to NetCDF Datasets
+* [PCICt](https://cran.r-project.org/web/packages/PCICt/PCICt.pdf):implementation of POSIXct Work-Alike for 365 and 360 Day Calendars  
+* [gstat](https://cran.r-project.org/web/packages/gstat/gstat.pdf): Spatial and Spatio-Temporal Geostatistical Modelling, Prediction and Simulation 
+* [spdep](https://cran.r-project.org/web/packages/spdep/spdep.pdf): Spatial Dependence: Weighting Schemes, Statistics and Models 
+* [automap](https://cran.fhcrc.org/web/packages/automap/automap.pdf): Automatic interpolation package 
+* [GSIF](https://cran.r-project.org/web/packages/GSIF/GSIF.pdf): Global Soil Information Facilities - Geostatistical Modelling  with Secondary variables 
+* [GWmodel](https://cran.r-project.org/web/packages/GWmodel/GWmodel.pdf):Geographically-Weighted Models 
+* [dismo](https://cran.r-project.org/web/packages/dismo/dismo.pdf): Species Distribution Modeling
+
+
+**Installation of R-packages** 
+
+If the R program has already been installed, the installation of any 'package' can be done directly from the console of R through internet or from local drive. It is better to install through the internet. Detail installation steps can be found [here](http://jtleek.com/modules/01_DataScientistToolbox/02_09_installingRPackages/#7) 
+
+
+```{r,eval=F, echo=T}
+
+# Utility and data manipulation 
+
+install.packages(c(
+    "tidyvers",
+    "data.table",
+    "dplyr",
+    "plyr",
+    "classInt", 
+    "RODBC", 
+    "sqldf", 
+    "RPostgreSQL",
+    "snow",
+    "doParallel",
+    "devtools",
+    "rJava"
+    )) 
+
+# Plotting and Mapping
+
+install.packages(c(
+    "ggplot2",
+    "RColorBrewer", 
+    "latticeExtra",
+    "ggmap",
+    "tmap",
+    "rasterVis",
+    "corrplot",
+    )) 
+
+# Advanced statistical analysis
+
+install.packages(c(
+    "agricoale",
+    "MASS", 
+    "nlme", 
+    "lme4", 
+    "lmerTest"
+    ))  
+
+# Spatial data
+
+install.packages(c(
+    "sp",
+    "rgdal", 
+    "raster", 
+    "maptools", 
+    "maps",
+    "regeos", 
+    "rgrass7",
+    "plotGoogleMaps",  
+    "landsat", 
+    "RStoolbox",
+    "rgeos",
+    "wrspathrow",
+    "ncdf4"
+    "RNetCDF",
+    "PCICt", 
+    "spdep", 
+    "gstat",
+    "automap",
+    "GSIF",
+    "GWmodel"
+     ))
+```
+
+
+

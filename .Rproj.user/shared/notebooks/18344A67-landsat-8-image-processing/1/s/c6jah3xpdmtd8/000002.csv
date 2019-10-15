@@ -1,0 +1,8 @@
+"0","p3<-ggRGB(s, r=7, g=6, b=4, stretch = ""lin"")+"
+"0","theme(axis.title.x=element_blank(),"
+"0","      axis.text.x=element_blank(),"
+"0","      axis.ticks.x=element_blank(),"
+"0","      axis.title.y=element_blank(),"
+"0","      axis.text.y=element_blank(),"
+"0","      axis.ticks.y=element_blank())+"
+"0","  ggtitle(""False Color Urban\n (R= SWIR1, G= SWIR2,  B=Red)"")"

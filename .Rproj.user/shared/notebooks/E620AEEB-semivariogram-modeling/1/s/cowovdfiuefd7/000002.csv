@@ -1,0 +1,1 @@
+"0","v.map<-variogram(SOC ~ 1, train, map = TRUE, cutoff=600000, width=600000/17)"

@@ -1,0 +1,243 @@
+---
+title: "Conditional Simulation for Spatial Uncertinity"
+---
+
+
+This kriging prediction map smooth out local details of spatial distribution of the attribute under study, with small values being overestimated while large values are underestimated especially in area with low sampling density (Isaaks and Srivastava 1989).  Conditional sequential Gaussian simulation (CSGS) techniques, unlike kriging, produce a better picture of reality and eliminate the unrealistic smoothing with focusing on the reproduction of global statistics or the semivariogram model in addition to honoring of original data values (Goovaerts 1997).  The set of alternative realizations generated with CSGS provides a degree of uncertainty about the spatial prediction,  which usually uses to draw reliable probability map of the variables under study (Goovaerts 1997). The CSGS is thus increasingly preferred to kriging for characterization of uncertainty for decision and risk analysis rather producing the best unbiased prediction of un-sampled location as is done with kriging  (Deutsch and Journel 1998). 
+
+
+In this exercise will use ground water arsenic (As) concentration data for Bangladesh from [British Geological Survey](http://www.bgs.ac.uk/research/groundwater/health/arsenic/Bangladesh/data.html).  The data-base contains hydro-chemical data of the survey of 3534 boreholes from 61 of the 64 districts of Bangladesh. ).  About 27.7% and 2.5% of the sampled wells had As concentration less than the instrumental detection limit of 0.5 u/L for hydride generation-atomic fluorescence spectrometry and 6.0 ug/L for hydride generation- ICP- AES, respectively. Samples that have As concretion below detection limits, we assigned values of half the equipment detection limits (0.25 or 3.0 ug/l). 
+
+
+The data  is available for download [here](https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0). 
+
+
+
+#### Load package: 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(rasterVis)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(gridExtra)
+```
+
+
+#### Load Data
+
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+```
+
+
+```{r}
+df<-read.csv(paste0(dataFolder,"bgs_geochemical.csv"), header= TRUE) 
+grid<-read.csv(paste0(dataFolder,"bd_grid.csv"), header= TRUE) 
+bd<-shapefile(paste0(dataFolder,"BD_Banladesh_BUTM.shp")) 
+```
+
+
+### Create a SPDF
+
+All sampling locations are in Geographical co-ordinates system, so we need convert the data in a projected coordinate system (Albers Equal Area Conic NAD1983)
+
+```{r}
+##  define coordinates
+xy <- df[,c(4,5)]
+# Convert to spatial point
+SPDF <- SpatialPointsDataFrame(coords = xy, data=df) 
+# Define projection
+proj4string(SPDF) = CRS("+proj=longlat +ellps=WGS84")  # WGS 84
+# Change projection 
+BUTM<-proj4string(bd)              # extract projection information
+SPDF.PROJ<- spTransform(SPDF,	     # Input SPDF
+		                  BUTM)       # projection  
+```
+
+
+
+```{r}
+# convert to a data-frame
+point.df<-as.data.frame(SPDF.PROJ)
+# Rename (last two column)
+colnames(point.df)[35] <- "x"
+colnames(point.df)[36] <- "y"
+mf<-point.df[,c(35:36,7,15,23)]
+head(mf)
+```
+
+
+
+### Data Transformation
+
+Power Transform uses the maximum likelihood-like approach of Box and Cox (1964) to select a transformation of a univariate or multivariate response for normality. First we have to calculate appropriate **transformation parameters** using **powerTransform()** function of **car** package and then use this parameter to transform the data using **bcPower()** function.  
+
+```{r}
+powerTransform(mf$As)
+```
+
+```{r}
+mf$As.bc<-bcPower(mf$As, -0.0696154 )
+```
+
+
+First. we have to define x & y variables to coordinates
+
+```{r}
+coordinates(mf) = ~x+y
+coordinates(grid) = ~x+y
+```
+
+
+### Variogram Modeling
+
+```{r}
+# Variogram
+v<-variogram(As.bc~ 1, data = mf, cloud=F)
+# Intial parameter set by eye esitmation
+m<-vgm(1.5,"Exp",40000,0.5)
+# least square fit
+m.f<-fit.variogram(v, m)
+m.f
+
+```
+
+
+#### Plot varigram and fitted model
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 4.5,message=F, warning=F}
+#### Plot varigram and fitted model:
+plot(v, pl=F, 
+     model=m.f,
+     col="black", 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main="Variogram and Fitted Model\n Box-Cox Transformed As",
+     xlab="Distance (m)",
+     ylab="Semivariance")
+```
+
+### Conditional simulation
+
+The **krige()** method can also do conditional simulations. It requires one optional argument: **nsim**, the number of conditional simulations
+
+
+```{r}
+set.seed(130)
+nsim=10
+sim.as<-krige(As.bc~1,mf,grid,model=m.f, nmax=50, nsim = nsim)
+```
+
+
+
+```{r}
+# Back transformation
+
+k.sas<-1/0.26
+for(i in 1:length(sim.sas@data)){sim.sas@data[[i]] <- (((sim.sas[[i]]*0.26+1)^k.sas))}
+sim.data.sas<-as.data.frame(sim.sas)
+```
+
+
+
+
+```{r}
+sgs.was$q2.sgs<-apply(as.data.frame(sgs.was)[3:1002],1,stats::quantile,probs = 0.2,na.rm=TRUE)
+sgs.was$qL.sgs<-apply(as.data.frame(sgs.was)[3:1002],1,stats::quantile,probs = 0.25,na.rm=TRUE)
+sgs.was$q5.sgs<-apply(as.data.frame(sgs.was)[3:1002],1,stats::quantile,probs = 0.5,na.rm=TRUE)
+sgs.was$qU.sgs<-apply(as.data.frame(sgs.was)[3:1002],1,stats::quantile,probs = 0.75,na.rm=TRUE)
+sgs.was$q8.sgs<-apply(as.data.frame(sgs.was)[3:1002],1,stats::quantile,probs = 0.8,na.rm=TRUE)
+```
+
+
+
+```{r}
+min.sgs<-apply(sgs.was[3:1002],2,min,na.rm=TRUE)  
+Q2.sgs<-apply(sgs.was[3:1002],2,stats::quantile,probs = 0.2,na.rm=TRUE)
+Q8.sgs<-apply(sgs.was[3:1002],2,stats::quantile,probs = 0.8,na.rm=TRUE)
+medians.sgs <-apply(sgs.was[3:1002],2,stats::quantile,probs = 0.5,na.rm=TRUE)
+sgs.sum<-cbind(Q2.sgs, medians.sgs,Q8.sgs)
+summary(sgs.sum)
+write.csv(sgs.sum, "sgs_sum.csv")
+```
+
+
+
+```{r}
+# Plot Statistics
+##################
+
+windows(width=4, height=4)
+tiff( file="I:/Paper_Zia/Spatial_Variability/Paper_2_Final/Output/FIG/Fig_SIM_SUMMARY.tif", 
+width=4, height=4,units = "in", pointsize = 12, res=1600, bg = "white",
+restoreConsole = TRUE,compression =  "lzw")
+par(cex.axis=.7, mex=.6, cex.lab=.7)
+
+# (a) SGS
+
+plot(min.sgs, ylim=c(0,0.5), ylab=list("Water As (mg/L)", cex=0.8), 
+     xlab = list("No. of realizations",cex=0.7), col="white",
+cex=.8,cex.axis = 0.7, cex.lab=.7, main="")
+lines(medians.sgs,lty=1,pch=NULL,lwd=0.5, col="blue")
+lines(medians.sis,lty=1,pch=NULL,lwd=0.5, col="red")
+lines(Q2.sgs, lty=1,pch=NULL,lwd=0.5, col="blue")
+lines(Q2.sis, lty=1,pch=NULL,lwd=0.5, col="red")
+lines(Q8.sgs, lty=1,pch=NULL,lwd=0.5, col="blue")
+lines(Q8.sis, lty=1,pch=NULL,lwd=0.5, col="red")
+abline(h = q2.ik, lty=4, col="red")
+abline(h = q8.ik, lty=4, col="red")
+abline(h = median.ik, lty=4, col="red")
+abline(h = q2.data, lty=1,lwd=2)
+abline(h = q8.data, lty=1, lwd=2)
+abline(h = median.data, lty=1,lwd=2)
+abline(h = q2.ok, lty=4, col="blue")
+abline(h = q8.ok, lty=4, col="blue")
+abline(h = median.ok, lty=4, col="blue")
+
+```
+
+
+
+```{r}
+# observed variograms
+
+v.d2<-variogram(d2~1,data=tala.d, cressie=F,cutoff=10000, width=10000/20)
+plot(v.d2, pl=F, pch=19, cex=1, col="Black")
+m.v.d2<-vgm(0.15,"Sph",3000,0.05)
+(m.v.f.d2<-fit.variogram(v.d2, m.v.d2,fit.method = 7))
+plot(v.d2, pl=F, model=m.v.f.d2,col="black", cex=1, lwd=0.5,lty=1,pch=19,
+xlab="Distance (m)",ylab="Semivariance")
+
+#----------------------------
+
+# (a) SGS-2nd decile
+
+plot(v.d2$gamma ~ v.d2$dist, xlim = c(0, max(v.d2$dist) * 1.05),
+ylim = c(0, 0.3), pch = 19, col = "black",cex=.3,
+cex.axis = 0.5, cex.lab=.5, xlab = list("Distance (m)",cex=.5), ylab =list("Semivariance",cex=.5),
+main=list("(a) sGs: 2nd decile (0.0.06 mg As/L)",cex=.5))
+for(i in 1:2) {
+   sg.d2=paste("sim",i,sep="")
+   fg.d2 = as.formula(paste(sg.d2, "~1"))
+   vg.d2 = variogram(fg.d2, sgs.d2, cutoff=10000, width=10000/20)
+   lines(variogramLine(fit.variogram(vg.d2, m.v.f.d2),
+   maxdist = max(v.d2$dist)),lty=3, col = "grey")
+}
+points(v.d2$gamma ~ v.d2$dist,pch = 19, col = "black",cex=.3)
+lines(variogramLine(fit.variogram(v.d2,  m.v.f.d2), 
+maxdist = max(v.d2$dist)), col = "black",  lwd=1.0)
+
+dev.off()
+```
+

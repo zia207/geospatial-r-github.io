@@ -1,0 +1,512 @@
+---
+title: "Map Projection and Coordinate Reference Systems"
+---
+
+<div style="margin-bottom:40px;">
+</div>
+
+The **coordinate reference system (CRS)** or **spatial reference system (SRS)** is a coordinate based system used to locate features on the earth. 
+
+**Map projections** is a systematic transformation a location on the surface of the earth or a portion of the earth (sphere or an ellipsoid)  into on a plane (flat piece of paper or computer screen). 
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Map Projection (Source: (https://www.statcan.gc.ca/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm)")}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_03\\Pic0.png')
+```
+
+<div style="margin-bottom:30px;">
+</div>
+
+We will cover following topics: 
+
+* [Geographic coordinate system (GCS)](#geographic-coordinate-system-(gcs)) 
+
+    * [The World Geodetic system 84](#the-world-geodetic-system-84) 
+    
+* [Projected coordinate system](#projected-coordinate-system)
+
+    * [Universal Transverse Mercator](#universal-transverse-mercator)
+    
+    * [Albers Equal Area Conic](#albers-equal-area-conic)
+    
+* [Coordinate Reference System in R](#coordinate-reference-system-in-r) 
+
+    * [Vector data](#vector-data)
+    
+    * [Raster data](#raster-data)
+
+<div style="margin-bottom:30px;">
+</div>
+
+### Geographic coordinate system (GCS)  
+
+Geographic coordinate systems use latitude and longitude to measure and locate feature on the globe. The GCS defines a position as a function of direction and distance from a center point of the globe,  where the units of measurement are degrees. Any location on earth can be referenced by a point with longitude and latitude coordinates. For example, below figure shows a geographic coordinate system where a location is represented by the coordinate's longitude 80 degree East and latitude 55 degree North.
+ 
+```{r echo=FALSE, out.width='30%', fig.align="center",fig.cap=paste("A Geographic coordinate system. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)")} 
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_03\\Pic1.png')
+```
+
+The equidistant lines that run east and west each have a constant latitude value called **parallels**. The **equator** is the largest circle and divides the earth in half. It is equal in distance from each of the poles, and the value of this latitude line is zero. Locations north of the equator has positive latitudes that range from **0 to +90 degrees**, while locations south of the equator have negative latitudes that range from **0 to -90 degrees**.
+
+```{r echo=FALSE, out.width='30%', fig.align="center",fig.cap=paste("Latitude lines. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)")} 
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_03\\Pic2.png')
+```
+
+The lines that run through north and south each have a constant longitude value and form circles of the same size around the earth known as  **meridians**. The **prime meridian** is the line of longitude that defines the origin (zero degrees) for longitude coordinates. One of the most commonly used prime meridian locations is the line that passes through Greenwich, England. Locations east of the prime meridian up to its antipodal meridian (the continuation of the prime meridian on the other side of the globe) have positive longitudes ranging from **0 to +180 degrees**. Locations west of the prime meridian has negative longitudes ranging from **0 to -180 degrees**.
+ 
+```{r echo=FALSE, out.width='30%', fig.align="center",fig.cap=paste("Longitude lines. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)")} 
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_03\\Pic3.png')
+```
+
+The latitude and longitude lines cover the globe to form a grid that know as a **graticule**. The point of origin of the graticule is (0,0), where the equator and the prime meridian intersect. The equator is the only place on the graticule where the linear distance corresponding to one degree latitude is approximately equal the distance corresponding to one degree longitude. Because the longitude lines converge at the poles, the distance between two meridians is different at every parallel.   
+
+<div style="margin-bottom:30px;">
+</div>
+
+### The World Geodetic system 84
+
+The most recent  geographic coordinate system is the World Geodetic system 84 also known as **WGS 1984 or  EPSG:4326** (EPSG- European Petroleum Survey Group).  It consists of a standard coordinate system, spheroidal reference (the datum or reference ellipsoid) and raw altitude.    
+
+**The parameters of WGS84:**   
+
+```{r}
+# GEOGCS["WGS 84",  
+#    DATUM["WGS_1984",  
+#      SPHEROID["WGS 84",6378137,298.257223563,  
+#            AUTHORITY["EPSG","7030"]],  
+#            AUTHORITY["EPSG","6326"]],  
+#      PRIMEM["Greenwich",0,  
+#      AUTHORITY["EPSG","8901"]],  
+#    UNIT["degree",0.01745329251994328,  
+#      AUTHORITY["EPSG","9122"]],  
+#    AUTHORITY["EPSG","4326"]]  
+```
+
+<div style="margin-bottom:30px;">
+</div>
+
+### Projected coordinate system   
+
+A projected coordinate system provide mechanisms to project maps of the earth's spherical surface onto a two-dimensional Cartesian coordinate (x,y coordinates) plane. Projected coordinate systems are referred to as **map projections**. This approach is useful where accurate distance, angle, and area measurements are needed. The term 'projection' is often used interchangeably with projected coordinate systems.
+
+Commonly use projected coordinate systems include:
+
+* [Universal Transverse Mercator](#universal-transverse-mercator)
+  
+* [Albers Equal Area Conic](#albers-equal-area-conic)
+
+
+#### Universal Transverse Mercator  
+
+The most widely used  two-dimensional Cartesian coordinate system is the **Universal Transverse Mercator (UTM)**  system which represents  a horizontal position on the globe and can be used to identify positions without having to know their vertical location on the 'y' axis. The UTM system is not a single map projection.  It represents the earth as sixty  different zones, each composed of six-degree longitudinal bands, with a secant transverse Mercator projection in each. The UTM system divides the Earth between 80 S and 84 N latitude into 60 zones, each 6 of longitude in width. Zone 1 covers longitude 180 to 174 W; zone numbering increases eastward to zone 60, which covers longitude 174  to 180?. 
+ 
+```{r echo=FALSE, out.width='40%', fig.align="center",fig.cap=paste("UTM zones.(Source: https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system)")} 
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_03\\Pic4.png')
+```
+
+The Universal Transverse Mercator grid that covers the conterminous 48 United States comprises 10 zones, from Zone 10 on the west coast through Zone 19 in New England [USGS, 2001](https://pubs.usgs.gov/fs/2001/0077/report.pdf).The New York State  falls in zones **17N (EPSG 26917)** and **zone 18N (EPSG: 26918)** with North American Datum  1983 (NAD83). 
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center",fig.cap=paste("UTM zones of conterminous 48 United States. (Source: https://pubs.usgs.gov/fs/2001/0077/report.pdf)")}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_03\\pic5.png')
+```
+
+**__The standard Parameters of UTM Zone 17N__**:  
+
+```{r}
+# PROJCS["NAD83 / UTM zone 17N",
+#    GEOGCS["NAD83",
+#        DATUM["North_American_Datum_1983",
+#            SPHEROID["GRS 1980",6378137,298.257222101,
+#                AUTHORITY["EPSG","7019"]],
+#            AUTHORITY["EPSG","6269"]],
+#        PRIMEM["Greenwich",0,
+#            AUTHORITY["EPSG","8901"]],
+#        UNIT["degree",0.01745329251994328,
+#            AUTHORITY["EPSG","9122"]],
+#        AUTHORITY["EPSG","4269"]],
+#    UNIT["metre",1,
+#        AUTHORITY["EPSG","9001"]],
+#    PROJECTION["Transverse_Mercator"],
+#    PARAMETER["latitude_of_origin",0],
+#    PARAMETER["central_meridian",-81],
+#    PARAMETER["scale_factor",0.9996],
+#    PARAMETER["false_easting",500000],
+#    PARAMETER["false_northing",0],
+#    AUTHORITY["EPSG","26917"],
+#    AXIS["Easting",EAST],
+#    AXIS["Northing",NORTH]]
+
+```
+
+**PROJ4 format**  
+
+```{r}
+# +proj=utm +zone=17 +ellps=GRS80 +datum=NAD83 +units=m +no_defs 
+```
+
+**ESRI .PROJ format**  
+
+```{r}
+# WGS_1984_UTM_Zone_17N
+# WKID: 32617 Authority: EPSG
+
+# Projection: Transverse_Mercator
+# False_Easting: 500000.0
+# False_Northing: 0.0
+# Central_Meridian: -81.0
+# Scale_Factor: 0.9996
+# Latitude_Of_Origin: 0.0
+# Linear Unit: Meter (1.0)
+
+# Geographic Coordinate System: GCS_WGS_1984
+# Angular Unit: Degree (0.0174532925199433)
+# Prime Meridian: Greenwich (0.0)
+# Datum: D_WGS_1984
+#  Spheroid: WGS_1984
+#    Semimajor Axis: 6378137.0
+#    Semiminor Axis: 6356752.314245179
+#    Inverse Flattening: 298.257223563
+```
+
+**__The Standard Parameters of UTM Zone 18N__**:  
+
+```{r}
+# PROJCS["NAD83 / UTM zone 18N",
+#    GEOGCS["NAD83",
+#        DATUM["North_American_Datum_1983",
+#            SPHEROID["GRS 1980",6378137,298.257222101,
+#                AUTHORITY["EPSG","7019"]],
+#            AUTHORITY["EPSG","6269"]],
+#        PRIMEM["Greenwich",0,
+#            AUTHORITY["EPSG","8901"]],
+#        UNIT["degree",0.01745329251994328,
+#            AUTHORITY["EPSG","9122"]],
+#        AUTHORITY["EPSG","4269"]],
+#    UNIT["metre",1,
+#        AUTHORITY["EPSG","9001"]],
+#    PROJECTION["Transverse_Mercator"],
+#    PARAMETER["latitude_of_origin",0],
+#    PARAMETER["central_meridian",-75],
+#    PARAMETER["scale_factor",0.9996],
+#    PARAMETER["false_easting",500000],
+#    PARAMETER["false_northing",0],
+#    AUTHORITY["EPSG","26918"],
+#    AXIS["Easting",EAST],
+#    AXIS["Northing",NORTH]]
+```
+
+**PROJ4 format**  
+
+```{r}
+# +proj=utm +zone=18 +ellps=GRS80 +datum=NAD83 +units=m +no_defs 
+```
+
+**ESRI .PROJ format**  
+
+```{r}
+# NAD_1983_2011_UTM_Zone_18N
+# WKID: 6347 Authority: EPSG
+
+# Projection: Transverse_Mercator
+# False_Easting: 500000.0
+# False_Northing: 0.0
+# Central_Meridian: -75.0
+# Scale_Factor: 0.9996
+# Latitude_Of_Origin: 0.0
+# Linear Unit: Meter (1.0)
+
+# Geographic Coordinate System: GCS_WGS_1984
+# Angular Unit: Degree (0.0174532925199433)
+# Prime Meridian: Greenwich (0.0)
+# Datum: D_WGS_1984
+#  Spheroid: WGS_1984
+#    Semimajor Axis: 6378137.0
+#    Semiminor Axis: 6356752.314245179
+#    Inverse Flattening: 298.257223563
+```
+
+<div style="margin-bottom:30px;">
+</div> 
+
+#### Albers Equal Area Conic  
+
+Albers Equal Area Conic projection system uses two standard parallels to reduce the distortion of shape in the region between the standard parallels. This projection is best suited for area  extending in an east-to-west orientation like the conterminous United States. Used for the conterminous United States, normally using 29-30 and 45-30 as the two standard parallels. For this projection, the maximum scale distortion for the 48 states of the conterminous United States  is 1.25 percent.  
+
+```{r echo=FALSE, out.width='40%', fig.align="center",fig.cap=paste("Albers Equal Area Conic. (Source: http://www.georeference.org/doc/albers_conical_equal_area.htm)")}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_03\\Pic6.png')
+```
+
+**__The Standard Parameters of Albers Equal Area Conic NAD1983 (ESRI:102003)__**:  
+
+```{r}
+# PROJCS["USA_Contiguous_Albers_Equal_Area_Conic",
+#    GEOGCS["GCS_North_American_1983",
+#        DATUM["North_American_Datum_1983",
+#            SPHEROID["GRS_1980",6378137,298.257222101]],
+#        PRIMEM["Greenwich",0],
+#        UNIT["Degree",0.017453292519943295]],
+#    PROJECTION["Albers_Conic_Equal_Area"],
+#    PARAMETER["False_Easting",0],
+#    PARAMETER["False_Northing",0],
+#    PARAMETER["longitude_of_center",-96],
+#    PARAMETER["Standard_Parallel_1",29.5],
+#    PARAMETER["Standard_Parallel_2",45.5],
+#    PARAMETER["latitude_of_center",37.5],
+#    UNIT["Meter",1],
+#    AUTHORITY["EPSG","102003"]]
+```
+
+**PROJ4 format**  
+
+```{r}
+# +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs 
+```
+
+**ESRI .PRJ format**   
+
+```{r}
+# USA_Contiguous_Albers_Equal_Area_Conic
+# WKID: 102003 Authority: Esri
+
+# Projection: Albers
+# False_Easting: 0.0
+# False_Northing: 0.0
+# Central_Meridian: -96.0
+# Standard_Parallel_1: 29.5
+# Standard_Parallel_2: 45.5
+# Latitude_Of_Origin: 37.5
+# Linear Unit: Meter (1.0)
+
+# Geographic Coordinate System: GCS_North_American_1983
+# Angular Unit: Degree (0.0174532925199433)
+# Prime Meridian: Greenwich (0.0)
+# Datum: D_North_American_1983
+#  Spheroid: GRS_1980
+#  Semimajor Axis: 6378137.0
+#  Semiminor Axis: 6356752.314140356
+#  Inverse Flattening: 298.257222101 
+```
+
+<div style="margin-bottom:30px;">
+</div>
+
+###  Coordinate Reference System in R 
+
+In this exercise, we will learn how to check and define CRS and projection of **vector** and **raster** data in R. This is a very important step for working with geospatial data with different projection systems from different sources.    
+
+
+#### R Packages
+
+* [rgdal](https://cran.r-project.org/web/packages/rgdal/rgdal.pdf): Bindings for the Geospatial Data Abstraction Library 
+* [raster](https://cran.r-project.org/web/packages/raster/raster.pdf): Geographic Data Analysis and Modeling 
+
+
+#### Load R-packages  
+
+You need to load **raster**, and **rgdal**  packages. Use **library ()** functions to load them in R.
+
+```{r message=F, warning=F}
+library(raster)		
+library (rgdal)
+library(sf)
+library(maptools)
+```
+
+
+#### Load Data
+
+
+ We will use following data set which could be found [here](https://www.dropbox.com/s/ql5xijvvxjxsogj/DATA_03.7z?dl=0).
+
+* New York State county shape file (polygon: NY_County_GCS) 
+* 90 m SRTM DEM of Onondaga county, New York State (raster: Onondaga_DEM.tif) 
+
+Before reading the data from a local drive, you need to define a working directory from where you want to read or to write data. We will use **setwd()** function to create a working directory. Or we can define a path for data outside of our working directory from where we can read files. In this case, we will use **paste0(path, "file name")** 
+
+```{r,eval=F, echo=T}
+#### Set working directory
+# setwd("~//map_projection_coordinate_reference_systems")
+```
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03//"
+```
+
+<div style="margin-bottom:30px;">
+</div>   
+
+
+###  Vector data    
+
+We will use  New York State County Shape file (NY_County_GCS.shp) to check, define projection. We will use **shapefile()** function of raster package to load Vector data in R. 
+
+poly.GCS<-readShapePoly(paste0(dataFolder, "NY_County_GCS.shp"))
+
+```{r,collapse = TRUE,fig.align='center',fig.height=5, fig.width=10}
+county.GCS<-readShapePoly(paste0(dataFolder, "NY_County_GCS.shp"))
+plot(county.GCS,  main="NYS County")
+```
+
+You notice that **.prj**  file is not associated with this shape file. We can check further with **proj4string()** function.       
+
+```{r}
+proj4string(county.GCS)
+```
+
+We know that county shape file is in geographic coordinate system. We can check it coordinates system with **summary()** function.       
+
+```{r}
+summary(county.GCS)
+```
+
+You notice that county shape file read as **SpatialPolygonsDataFrame** in R,  and it's x-coordinates range from -79.76333 to -71.85588, and y-coordinates range from 40.49909 and 45.01100 and CRS  has not been be defined yet (**Is projected: NA and proj4string : [NA]**) and  **.PRJ** file is missing. So you need to define its current CRS (**WGS 1984 or  EPSG:4326**) before you do any further analyses like re-projection etc. We use either of following function to define it's CRS.    
+
+
+```{r,collapse = TRUE}
+proj4string(county.GCS) = CRS("+proj=longlat +ellps=WGS84")
+# or
+proj4string(county.GCS) <- CRS("+init=epsg:4326")
+```
+
+A  new CRS, **WGS 1984** has  assigned to county shape file. You can check it again with **summary()** or **str()** functions.     
+
+```{r}
+summary (county.GCS)
+#str(county.GCS)
+```
+
+
+However, you need to save the file  to  make it permanent. We will use  **writeOGR()** function of **rgdal** package or **shapefile()** function of raster package to save it. It is a good practice to write a file with it's current CRS. After running this function, you can see a file named **NY_County_GCS.prj** has created in your working directory. 
+
+```{r,collapse = TRUE}
+dsn="F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_03"
+
+writeOGR(county.GCS, 		               # input spatial data
+	dsn=dsn, 			                   # output working directory
+	"NY_County_GCS",	                   # output spatial data
+	driver="ESRI Shapefile",	           # define output file as ESRI shapefile
+	overwrite=TRUE)		                   # write on existing file, if exist
+# or
+shapefile(county.GCS, paste0(dataFolder,"NY_County_GCS.shp"), overwrite=TRUE)
+```
+
+
+#### Reprojection    
+
+The **spTransform** function provide transformation between datum(s) and conversion between projections (also known as projection and/or re-projection) from one specified coordinate reference system to another. For simple projection, when no **+datum** tags are used, datum projection does not occur. When datum transformation is required, the **+datum** tag should be present with a valid value both in the CRS of the object to be transformed, and in the target CRS. In general **+datum=** is to be preferred to **+ellps=**, because the datum always fixes the ellipsoid, but the ellipsoid never fixes the datum. 
+
+We will transform county shape file to WGS 1984 to **Albers Equal Area Conic NAD1983**.
+
+##### Projection parameter of Albers Equal Area Conic NAD1983
+
+```{r}
+# "+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs"
+```
+
+
+```{r}
+# Create a new CRS
+usa_albers = CRS("+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+# define new projection
+county.PROJ<- spTransform(county.GCS,	    # Input data
+		          usa_albers)		        # desire projected CRS as EPSG spatial reference, but you have to use **esri**  
+```
+
+Now, check it CRS again.   
+
+```{r}
+summary(county.PROJ)
+```
+
+We notice that x and y -coordinates converted from degree-decimal to meter and ** Is projected: TRUE**. Now plot  WWGS 1984 and Albers projected map site by site.   
+
+```{r,echo=TRUE, fig.align='center',fig.height=5, fig.width=10}
+par(mfrow=c(1,2))
+plot(county.GCS, main="WGS 1984")
+plot(county.PROJ, main="Albers Equal Area Conic")
+par(mfrow=c(1,1))
+```
+
+We can save (write) this file  as an ESRI shape  with **writeOGR()**  or **shapefile()** function  for future use.   
+
+```{r,collapse = TRUE}
+writeOGR(county.PROJ,		                  # input spatial data 
+		dsn=dsn,			                  # working directory 
+		"NY_County_PROJ",	                  # output spatial data 
+		driver="ESRI Shapefile",              # define output as ESRI shape file
+	  overwrite=TRUE)		                  # write on existing file, if exist
+# or
+shapefile(county.PROJ, paste0(dataFolder,"NY_County_PROJ.shp"),overwrite=TRUE)	
+```
+
+<div style="margin-bottom:30px;">
+</div>
+
+### Raster Data  
+
+This exercise you will learn how to projection transformation of will be done of raster data. In this exercise, we will use SRTM 90 digital Elevation Model New York State which was downloaded from [CGIAR-CSI](http://www.cgiar-csi.org/data/srtm-90m-digital-elevation-database-v4-1). We will re-project it from WSG84 coordinate to Albers Equal Area Conic NAD83 projection system.  In R, you can re-project a single or multiple raster in a batch mode.   
+
+#### Projection of a Single Raster  
+
+First, we will re-project one tile of NY DEM raster data (~/NY_DEM_TILES/NY_DEM0.tif) from WGS 1984 CRS to Albers Equal Area Conic projection system. You can load DEM raster in R using **raster()** function of **raster** package. If you want to check raster attribute, just simple type r-object name of this raster or use **crs()** function.  
+
+```{r,fig.align='center',collapse = TRUE}
+DEM.GCS<-raster(paste0(dataFolder,"Onondaga_DEM.tif"))
+DEM.GCS
+# Or
+crs(DEM.GCS)
+```
+
+You notice that CRS of this DEM has already been defined as **WGS 84**. Now, we will project from **WGS 84** to **Albers Equal Area Conic NAD83**. We will use **projectRaster()** function with proj.4 projection description of **Albers Equal Area Conic NAD83**. Be patient, it will take a while to project this DEM data. 
+
+```{r message=F, warning=F,fig.align='center'}
+DEM.PROJ<-projectRaster(DEM.GCS, crs=usa_albers) 
+DEM.PROJ
+```
+
+```{r,echo=TRUE, fig.align='center',fig.height=5, fig.width=8}
+par(mfrow=c(1,2))
+plot(DEM.GCS, main="WGS 1984")
+plot(DEM.PROJ, main="Albers Equal Area Conic")
+par(mfrow=c(1,1))
+```
+
+Now we will save this projected raster using **writeRaster()** function of raster package    
+
+```{r}
+writeRaster(DEM.PROJ,                                      # Input raster
+            paste0(dataFolder,"NY_DEM0_PROJ.tiff"),        # output folder and output raster
+            "GTiff",                                       # output raster file extension
+             overwrite=TRUE)                               # write on existing file, if exist 
+```
+
+#### Batch Projection of Multiple Raster      
+
+In this exercise  will project four tiles of DEM raster in a loop. First, we will create a list of raster using **list.files()** function and then will create output raster using **gsub()** function  
+
+```{r,collapse = TRUE}
+# Input raster list
+DEM.input <- list.files(path= paste0(dataFolder,".//DEM_TILES"),pattern='.TIF$',full.names=T)   
+DEM.input
+# Output raster 
+DEM.output <- gsub("\\.TIF$", "_PROJ.TIF", DEM.input)  
+DEM.output
+```
+    
+We will define proj.4 projection description of **Albers Equal Area Conic NAD83** as a mew projection and run **projectRaster()** functioning in a loop     
+
+```{r message=F, warning=F}
+# Define a new projection
+newproj <- "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs"
+# Reprojection and write raster
+for (i in 1:4){
+    r <- raster(DEM.input[i])
+    PROJ <- projectRaster(r, crs=newproj, method = 'bilinear', filename = DEM.output[i], overwrite=TRUE)
+}
+```
+
+
+```{r}
+rm(list = ls())
+```

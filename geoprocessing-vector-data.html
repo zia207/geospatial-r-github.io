@@ -180,7 +180,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,7 +349,7 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
-      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
 </li>
@@ -746,6 +746,7 @@ SLDF.buffer&lt;-gBuffer(SLDF, width=100)</code></pre>
 <h4>Buffering of Point data</h4>
 <pre class="r"><code>SPDF.buffer &lt;- gBuffer(SPDF, width=20*1000, byid=TRUE) # 20 km buffer</code></pre>
 <p><img src="geoprocessing-vector-data_files/figure-html/unnamed-chunk-37-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>rm(list = ls())</code></pre>
 </div>
 </div>
 

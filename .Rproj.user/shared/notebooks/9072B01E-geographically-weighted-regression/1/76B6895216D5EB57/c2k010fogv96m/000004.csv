@@ -1,0 +1,9 @@
+"0","gwpr.res <- ggwr.basic(cancer ~ poverty+smoking+PM25+NO2+SO2, "
+"0","                 data = SP.mf,"
+"0","                      family = ""poisson"","
+"0","                      bw =  gwpr.bw, "
+"0","                      kernel = ""bisquare"", "
+"0","                      adaptive = TRUE,"
+"0","                      dMat = DM)"
+"2","Error in gw.weight.bis.ad(vdist, bw) : object 'gwpr.bw' not found
+"

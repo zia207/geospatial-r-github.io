@@ -1,0 +1,5 @@
+"0","vals<-raster::extract(s,"
+"0","              SPDF.PROJ,"
+"0","              df=TRUE,"
+"0","              method=""simple"")"
+"0","point.vals<-cbind(point.df,vals)"

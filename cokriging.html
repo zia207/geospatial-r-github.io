@@ -180,7 +180,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,7 +349,7 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
-      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
 </li>
@@ -412,7 +412,7 @@ library(Hmisc)</code></pre>
 </div>
 <div id="load-data" class="section level4">
 <h4>Load Data</h4>
-<p>The soil organic carbon data (train and test data set) that we have created before is available for download <a href="https://www.dropbox.com/s/oi7ac2eusnjpafz/DATA_08.7z?dl=0">here</a>.</p>
+<p>The soil organic carbon data (train and test data set) that we have created before is available for download <a href="https://www.dropbox.com/sh/vpd01sg9i9goa6r/AADft85Qtpu10dnI-AdigD25a?dl=0">here</a>.</p>
 <pre class="r"><code># Define data folder
 dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;</code></pre>
 <pre class="r"><code>train&lt;-read.csv(paste0(dataFolder,&quot;train_data.csv&quot;), header= TRUE) 
@@ -654,6 +654,7 @@ scale_fill_gradientn(&quot;&quot;, colours = c(&quot;blue&quot;,  &quot;green&qu
 grid.arrange(p3,p4, ncol = 2)  # Multiplot </code></pre>
 <p><img src="cokriging_files/figure-html/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>Above plots show the interpolated map of soil SOC with associated error at each prediction grid. CK predicted map shows global pattern and hot spot locations of SOC concentration. The kriging variance is higher in unsampled locations, since variance depends on geometry of the sampling locations with lower variance near sampling locations.</p>
+<pre class="r"><code>rm(list = ls())</code></pre>
 </div>
 </div>
 

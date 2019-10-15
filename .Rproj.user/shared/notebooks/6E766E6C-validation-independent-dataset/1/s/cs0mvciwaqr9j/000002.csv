@@ -1,0 +1,6 @@
+"0","val<-krige(SOC.bc ~ 1,"
+"0","         train,        "
+"0","         test,"
+"0","         model = m.f)"
+"1","[using ordinary kriging]
+"

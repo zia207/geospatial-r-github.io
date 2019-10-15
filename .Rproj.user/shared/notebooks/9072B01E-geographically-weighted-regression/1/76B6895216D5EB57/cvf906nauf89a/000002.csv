@@ -1,0 +1,2 @@
+"0","polys<- list(""sp.lines"", as(state, ""SpatialLines""), col=""grey"", lwd=.8,lty=1)"
+"0","col.palette<-colorRampPalette(c(""blue"",  ""sky blue"", ""green"",""yellow"", ""red""),space=""rgb"",interpolate = ""linear"")"

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415607303.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3426682297",
+    "id" : "35344CD8",
+    "lastKnownWriteTime" : 1548209062,
+    "last_content_update" : 1548209062,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/assessing-quality-spatial-predictions.Rmd",
+    "project_path" : "assessing-quality-spatial-predictions.Rmd",
+    "properties" : {
+        "cursorPosition" : "20,33",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

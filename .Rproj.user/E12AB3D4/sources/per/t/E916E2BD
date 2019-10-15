@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415819478.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "193231040",
+    "id" : "E916E2BD",
+    "lastKnownWriteTime" : 1549456447,
+    "last_content_update" : 1549456447057,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/geoprocessing-vector-data.Rmd",
+    "project_path" : "geoprocessing-vector-data.Rmd",
+    "properties" : {
+        "cursorPosition" : "379,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

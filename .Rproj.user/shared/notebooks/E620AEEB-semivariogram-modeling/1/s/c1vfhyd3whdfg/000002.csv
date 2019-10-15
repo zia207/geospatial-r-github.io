@@ -1,0 +1,4 @@
+"0","# Intial parameter set by eye esitmation"
+"0","m.bc<-vgm(1.5,""Exp"",40000,0.5)  # Exponential model"
+"0","# least square fit"
+"0","m.f.bc<-fit.variogram(v.bc, m.bc)"

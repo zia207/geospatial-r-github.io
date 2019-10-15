@@ -1,0 +1,7 @@
+"0","ws <- include.self(wr)"
+"0","lstws <- nb2listw(ws, style='B')"
+"0","Gis <- localG(SPDF$cancer, lstws)"
+"0","Gscuts <- cut(Gis, 5)"
+"0","Gscutsi <- as.integer(Gscuts)"
+"0","cols <- rev(gray(seq(0,1,.2)))"
+"0","plot(SPDF, col=cols[Gscutsi])"

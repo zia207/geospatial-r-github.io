@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544151546818.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EBFCA112",
+    "lastKnownWriteTime" : 1544153923,
+    "last_content_update" : 1544153923254,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/unsupervised-classification.Rmd",
+    "project_path" : "unsupervised-classification.Rmd",
+    "properties" : {
+        "cursorPosition" : "13,27",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 34,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

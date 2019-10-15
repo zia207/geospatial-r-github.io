@@ -1,0 +1,1 @@
+"0","writeRaster(unC_05$map, filename=paste0(dataFolder,"".\\Sentinel_2\\K_mean_UnSuper.tif""), format=""GTiff"", overwrite=TRUE)"

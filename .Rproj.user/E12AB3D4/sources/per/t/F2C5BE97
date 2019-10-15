@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549416167375.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2766992218",
+    "id" : "F2C5BE97",
+    "lastKnownWriteTime" : 1549461982,
+    "last_content_update" : 1549461982675,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/uav-ground-cover.Rmd",
+    "project_path" : "uav-ground-cover.Rmd",
+    "properties" : {
+        "cursorPosition" : "255,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 20,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

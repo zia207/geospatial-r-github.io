@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549416023425.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2181596070",
+    "id" : "65B92AB2",
+    "lastKnownWriteTime" : 1549461784,
+    "last_content_update" : 1549461784791,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/naive-bayes.Rmd",
+    "project_path" : "naive-bayes.Rmd",
+    "properties" : {
+        "cursorPosition" : "160,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 14,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

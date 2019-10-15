@@ -1,0 +1,4 @@
+"0","plot(v.map, col.regions = bpy.colors(64),"
+"0","     main=""Variogram Map"","
+"0","     xlab=""x"","
+"0","     ylab=""y"")"

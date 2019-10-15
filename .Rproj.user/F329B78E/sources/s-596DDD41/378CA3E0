@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544278576135.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "378CA3E0",
+    "lastKnownWriteTime" : 1544462026,
+    "last_content_update" : 1544462026173,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/working-with-spatial-polygon.Rmd",
+    "project_path" : "working-with-spatial-polygon.Rmd",
+    "properties" : {
+        "cursorPosition" : "81,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 26,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,1 @@
+"0","v.cut<-variogram(SOC ~ 1, train, cutoff=500000, width=500000/20)"

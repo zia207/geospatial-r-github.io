@@ -1,0 +1,3 @@
+"0","grid.xy$SK.RF<-SK.RF$var1.pred"
+"0","# Add RF predicted + SK preedicted residuals"
+"0","grid.xy$RK.RF.bc<-(grid.xy$RF+grid.xy$SK.RF)"

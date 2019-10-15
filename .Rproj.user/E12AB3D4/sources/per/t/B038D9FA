@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549461789286.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1687955261",
+    "id" : "B038D9FA",
+    "lastKnownWriteTime" : 1549461799,
+    "last_content_update" : 1549461799639,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/ordinary-kriging.Rmd",
+    "project_path" : "ordinary-kriging.Rmd",
+    "properties" : {
+        "cursorPosition" : "263,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 47,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

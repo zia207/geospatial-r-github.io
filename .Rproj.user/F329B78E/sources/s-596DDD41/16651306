@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541123534859.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "16651306",
+    "lastKnownWriteTime" : 1544128399,
+    "last_content_update" : 1544128399779,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/remote-sensing-in-r.Rmd",
+    "project_path" : "remote-sensing-in-r.Rmd",
+    "properties" : {
+        "cursorPosition" : "12,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

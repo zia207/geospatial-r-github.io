@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541520285583.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6AB88760",
+    "lastKnownWriteTime" : 1544124225,
+    "last_content_update" : 1544124225697,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/geostatistical-methods-for-spatial-interpolation.Rmd",
+    "project_path" : "geostatistical-methods-for-spatial-interpolation.Rmd",
+    "properties" : {
+        "cursorPosition" : "49,51",
+        "ignored_words" : "Geostatistics,geostatistics,geostatistical\n",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

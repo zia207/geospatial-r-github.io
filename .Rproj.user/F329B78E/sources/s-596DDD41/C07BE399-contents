@@ -1,0 +1,92 @@
+---
+title: "Data Processing"
+---
+
+
+
+As an integral component of risk assessment, spatial interpolation techniques for predicting values at unsampled locations has been widely used to map environmental variables for identifying geographic areas for targeting of management interventions. The spatial interpolation methods can be largely classified into three broad groups: **deterministic or non-geostatistical methods** (e.g., inverse distance squared: IDS), **stochastic or geostatistical methods** (e.g., ordinary kriging: OK) and **Geogpahically Weighted Regression (local regression)**.  All methods rely on the similarity of nearby sample points to create the surface
+
+This section we will provide an overview of brief theory behind deterministic, geostatistical, and local regression interpolation techniques and we will explore these methods through example in R. 
+
+
+Before start, the data set (n = 471) will be randomly split into 368 (80%) calibration data, which will be  used for model development and 101 (20%) validation data which will  used for evaluating the prediction models. For data splitting, we will use [**Stratified Random Sampling**]( https://www.investopedia.com/terms/stratified_random_sampling.asp)  algorithms. 
+
+The data is available for download [here](https://www.dropbox.com/s/0fnrtmanl5lnkws/DATA_07.7z?dl=0).
+
+#### Load package: 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(raster)
+library(RColorBrewer)
+library(classInt)
+library(latticeExtra)
+```
+
+Before reading the data from a local drive, you need to define a working directory from where you want to read or to write data. We will use **setwd()** function to create a working directory. Or we can define a path for data outside of our working directory from where we can read files. In this case, we will use **paste0(path, "file name")** 
+
+```{r,eval=F, echo=T}
+#### Set working directory
+# setwd("~//sspatial_interpolation")
+```
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_07\\"
+```
+
+```{r}
+mf<-read.csv(paste0(dataFolder,"GP_all_data.csv"), header= TRUE) 
+```
+
+#### **Data split**
+
+```{r}
+mf$NLCD<-as.factor(mf$NLCD)
+mf$FRG<-as.factor(mf$FRG)
+```
+
+
+```{r}
+tr_prop = 0.80
+# training data
+train = ddply(mf, .(NLCD,FRG),function(., seed) { set.seed(seed); .[sample(1:nrow(.), trunc(nrow(.) * tr_prop)), ] }, seed = 101)
+# Validation data (20% of data)
+test = ddply(mf,  .(NLCD,FRG), 
+            function(., seed) { set.seed(seed); .[-sample(1:nrow(.), trunc(nrow(.) * tr_prop)), ] }, seed = 101)
+```
+
+```{r}
+write.csv(train, paste0(dataFolder,"train_data.csv"), row.names=F)
+write.csv(test, paste0(dataFolder,"test_data.csv"), row.names=F)
+```
+
+
+#### **Map Training and test data set** 
+
+
+```{r}
+bound<-shapefile(paste0(dataFolder,"GP_STATE.shp"))
+at = classIntervals(mf$SOC, n = 20, style = "quantile")$brks
+round(quantile(mf$SOC, probs=seq(0,1, by=0.05)),1)
+coordinates(test)<-~x+y
+rgb.palette.col <- colorRampPalette(c("red","yellow", "green", "blue"),space = "rgb")
+```
+
+```{r,collapse = TRUE,fig.align='center',fig.height=5, fig.width=6}
+levelplot(SOC~x+y, mf,cex=0.6,
+              aspect = "iso",main= "Training (clossed) & Test (open) Data",
+              xlab="", ylab="",  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col="grey",lwd=0.5)),
+              col.regions=rgb.palette.col (20),at=at,
+              colorkey=list(space="right",width=1.2,at=1:21,labels=list(cex=1.2,at=1:21,
+              labels=c("","","< 1.2","" ,"","2.8","","","","","4.9","","","","","8.6","","",">13.4","",""))),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.points(test, col="black", cex=1.2,pch=21)
+              sp.polygons(bound,lty=1,lwd=0.5,col="grey30")
+              },)   
+```
+

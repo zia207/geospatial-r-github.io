@@ -1,0 +1,10 @@
+{
+    "dialog-state" : {
+        "caseSensitive" : false,
+        "filePatterns" : [
+        ],
+        "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R",
+        "query" : "rate",
+        "regex" : false
+    }
+}

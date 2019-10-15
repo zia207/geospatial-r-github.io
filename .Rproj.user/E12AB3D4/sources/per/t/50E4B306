@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1549415390950.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "160368149",
+    "id" : "50E4B306",
+    "lastKnownWriteTime" : 1571178765,
+    "last_content_update" : 1571178765475,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/cokriging.Rmd",
+    "project_path" : "cokriging.Rmd",
+    "properties" : {
+        "cursorPosition" : "32,15",
+        "scrollLine" : "18"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

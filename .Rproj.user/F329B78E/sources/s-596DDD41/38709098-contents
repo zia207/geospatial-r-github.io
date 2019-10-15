@@ -1,0 +1,22 @@
+---
+title: "Supervised Classification"
+---
+
+
+Supervised classification uses the spectral signatures obtained from training samples to classify an image. Typically, it involves 3 steps: defining a training area, generating a signature file, and classification.   For land cover classification, first you must select representative samples for each land cover class to develop a training and validation data set. Then you can use these data to train and validate  different kinds of classification algorithm. We can then predict land cover classes in the entire image. The most common supervised classification algorithms are maximum likelihood, support vector machine (SVM),  minimum-distance classification and decision tree-based such random forest (RF).
+
+
+We will use following machine learning algorithms for supervised classification:
+
+
+* [Random Forest](random-forest.html)
+        
+* [Support Vector Machine](support-vector-machine.html)
+
+* [Naive Bayes](naive-bayes.html)
+        
+* [eXBoost](exboost.html)
+        
+* [Deep Learning-H20](deep-learning-h2o.html)
+        
+* [Deep Learning-Keras/TensorFolow](deep-learning-Kersa-tensorflow.html)

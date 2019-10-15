@@ -1,0 +1,170 @@
+---
+title: "Texture Analysis"
+---
+
+
+Texture is one of the most important characteristics dealt with during image interpretation and classification. Texture analysis has been successfully applied to forestry and vegetation studies using a variety of remote sensing data (Asner et al., 2002; Franklin et al., 2000) and radar images (Costa, 2004; Hess et al., 2003). The **Gray Level Co-occurrence Matrix (GLCM)** is one of the most widely used methods to compute second order texture measures.  This method considers the spatial relationships between two pixels at a time which are called the the reference and the neighbor pixel. The neighbor pixel can be to the East (0), North-East (45), North (90), or North-West (135) of the reference pixel.  For a more detail, please see [here](https://prism.ucalgary.ca/handle/1880/51900).
+
+The data is avilable for download [here](https://www.dropbox.com/s/kcc7jsxirmhlnzz/DATA_08.7z?dl=0).  
+
+* [Texture Analysis](#texture-analysis)
+
+* [Principal Componet Analysis of Texture Bands](#principal-componet-analysis-of-texture-bands) 
+
+
+#### Load packages
+
+```{r message=F, warning=F}
+library (raster) 	   # raster data
+library(rasterVis)	 # raster visualisation 	
+library(sp)			
+library(rgdal)      
+library(RStoolbox)  # Image analysis
+library(ggplot2)
+library(glcm)      # texture analysis
+```
+
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_08//"
+```
+
+#### Load bands
+
+```{r}
+RED<- raster(paste0(dataFolder,"//Landsat8//Landsat8_PROCESSED//_B4_sre.tif"))
+NIR<- raster(paste0(dataFolder,"//Landsat8//Landsat8_PROCESSED//_B5_sre.tif"))
+```
+
+
+## Texture Analysis
+
+We will use **glcm** package to calculate following eight texture statistics of RED and NIR bands derived from grey-level co-occurrence matrices
+
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_08\\Texture.png")
+```
+
+
+#### Red Band Texture
+
+```{r}
+glcm.red <- glcm(RED,
+                   window = c(7, 7),
+                   shift=list(c(0,1), c(1,1), c(1,0), c(1,-1)), 
+                   statistics = c("mean",
+                                  "variance",
+                                  "homogeneity",
+                                  "contrast",
+                                  "entropy", 
+                                  "dissimilarity",
+                                  "second_moment", 
+                                  "correlation"))
+glcm.red
+```
+
+
+```{r  fig.height=5, fig.width=8, fig.align="center"}
+plot(glcm.red)
+     #main= "GLCM Texture of Red Band")
+```
+
+
+#### NIR Band texture
+
+```{r}
+glcm.nir <- glcm(NIR,
+                   window = c(7, 7),
+                   shift=list(c(0,1), c(1,1), c(1,0), c(1,-1)), 
+                   statistics = c("mean",
+                                  "variance",
+                                  "homogeneity",
+                                  "contrast",
+                                  "entropy", 
+                                  "dissimilarity",
+                                  "second_moment", 
+                                  "correlation"))
+```
+
+
+```{r  fig.height=5, fig.width=8, fig.align="center"}
+plot(glcm.nir)
+```
+
+
+#### Write all texture bands 
+
+```{r}
+writeRaster(glcm.red, paste0(dataFolder,  ".//Landsat8//Texture//"),  paste0("RED_", names(glcm.nir)), bylayer=T, overwrite=TRUE, format="GTiff")
+writeRaster(glcm.nir, paste0(dataFolder, ".//Landsat8//Texture//"),  paste0("NIR_", names(glcm.nir)), bylayer=T, overwrite=TRUE, format="GTiff")
+```
+
+#### Write multiband raster
+
+```{r}
+writeRaster(glcm.red, filename=paste0(dataFolder,".//Landsat8//Texture//RED_Texture_multi.tif"), bylayer=F, overwrite=TRUE, format="GTiff")
+writeRaster(glcm.nir, filename=paste0(dataFolder,".//Landsat8//Texture//NIR_Texture_multi.tif"), bylayer=F, overwrite=TRUE, format="GTiff")
+```
+
+
+
+### Principal Componet Analysis of Texture Bands 
+
+
+In order to reduce the redundancy in the texture bands and  to determine appropriate texture features, it is neceassry to do principle component analyses (PCA)  to the all  texture images. We will use **rasterPCA()** faction of **RSToolbox** to calculates R-mode PCA for RasterBricks or RasterStacks and returns a RasterBrick with multiple layers of PCA scores.
+
+
+
+```{r,message=F, warning=F}
+r<-stack(glcm.red,glcm.nir)  # stack PC raster of red and NIR bands (total raster 8 x 2 = 16)
+r
+```
+
+
+#### Develop PCA model
+
+```{r,message=F, warning=F}
+r1<-scale(r)        # scale the data
+r1[is.na(r1)] <- 0  # define zero  all miising vaalues
+rpc <- rasterPCA(r1, nComp=4)
+summary(rpc$model)
+```
+
+
+#### Extact firs 4 PCs from the model
+
+Since, the fist four PCs exlain 90% variabilty of these 16 texture, we will extract  these 4 components only. 
+
+```{r}
+PC1<-rpc$map$PC1
+PC2<-rpc$map$PC2
+PC3<-rpc$map$PC3
+PC4<-rpc$map$PC4
+```
+
+
+#### Write PCA raster
+
+```{r}
+writeRaster(PC1, filename = paste0(dataFolder,".\\Landsat8\\PCA\\PC1_Texture.tiff"), "GTiff", overwrite=T)
+writeRaster(PC2, filename = paste0(dataFolder,".\\Landsat8\\PCA\\PC2_Texture.tiff"), "GTiff", overwrite=T)
+writeRaster(PC3, filename = paste0(dataFolder,".\\Landsat8\\PCA\\PC3_Texture.tiff"), "GTiff", overwrite=T)
+writeRaster(PC4, filename = paste0(dataFolder,"\\Landsat8\\PCA\\PC4_Texture.tiff"), "GTiff", overwrite=T)
+```
+
+
+
+#### Plot PCs
+
+```{r message=F, warning=F, fig.height=6, fig.width=6, fig.align="center"}
+if(require(gridExtra)){
+  plots <- lapply(1:4, function(x) ggR(rpc$map, x, geom_raster = TRUE))
+  grid.arrange(plots[[1]],plots[[2]], plots[[3]], plots[[4]],ncol=2)
+}
+```
+
+
+
+

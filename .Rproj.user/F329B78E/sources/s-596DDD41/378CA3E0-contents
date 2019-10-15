@@ -1,0 +1,403 @@
+---
+title: "Working With Spatial Polygon Data"
+---
+
+
+
+In this lesson, we will show important techniques polygon data processing and visualization in R.  
+
+This lesson will cover following two sections: 
+
+* [Data Processing](#data-processing)
+
+* [Visualization](#visualization) 
+
+
+ 
+#### Load Packages
+
+```{r message=F, warning=F}
+library(sp)
+library(rgeos)
+library(rgdal)
+library(lattice)
+library(latticeExtra)
+library(RColorBrewer)
+library(maptools)
+library(maps)
+library(ggplot2) 
+library(lubridate) 
+library(fields) # for tim.colors
+library(caTools) # for write.gif
+library(raster)
+library(classInt)
+library(stringr)
+library(data.table)
+library(gridExtra)
+```
+
+
+#### Load Data
+
+We will use following data set covering Atlantic Region in USA. We will process all data and join with county shape file of this region and create a spatial polygon data frame for futher analys. The dataset can be download from [here](https://www.dropbox.com/s/b1y2khevwlhv7ic/DATA_06.7z?dl=0).  
+
+### Age Adjusted Lung & Bronchus Cancer Mortality Rates by County
+
+Age Adjusted Lung & Cancer Mortality Rates from 1992 t0 2012 by county was obtained from [Institute for Health Metrics and Evaluation (IHME)](http://ghdx.healthdata.org/us-data). The rate was estimated using spatially explicit Bayesian mixed effects regression models for both males and females [(Mokdad et al., 2016)](https://jamanetwork.com/journals/jama/fullarticle/2598772). The model incorporated 7 covariates, such as  proportion of the adult population that graduated high school, the proportion of the population that is Hispanic, the proportion of the population that is black, the proportion of the population that is a race other than black or white, The proportion of a county that is contained within a state or federal Native American reservation, the median household income, and the population density.  
+
+### Age-standardized Cigarette Smoking (%) Prevalence by County
+
+Age-standardized cigarette smoking (%) prevalence by County estimated from the [Behavioral Risk Factor Surveillance System (BRFSS)](https://www.cdc.gov/brfss/index.html) survey data [(Dwyer-Lindgren et al., 2014)](https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-12-5).  The prevalence (%) were estimated by logistic hierarchical mixed effects regression models, stratified by sex. All estimates were age-standardized following the age structure of the 2000 census. The uncertainty of the prevalence estimates was assessed using simulation methods.
+
+### Age-standardized Poverty Rate by County 
+
+Cunty-level poverty data (% population below poverty level)  are from US Census [Small Area Income and Poverty Estimates (SAIPE)](https://www.census.gov/programs-surveys/saipe/about.html) Program. Income and poverty rate were estimated by combining survey data with population estimates and administrative records. 
+
+
+### Particulate Matter (PM2.5)
+
+Annual mean PM2.5 from 1998 to 2012 were modeled from aerosol optical depth from multiple satellite ([Multiangle Imaging Spectro Radiometer](https://www-misr.jpl.nasa.gov/), [MODIS Dark Target](https://darktarget.gsfc.nasa.gov/products/land-10), [MODIS and SeaWiFS Deep Blue](https://deepblue.gsfc.nasa.gov/science), [MODIS MAIAC](https://ladsweb.modaps.eosdis.nasa.gov/api/v1/productGroupPage/name=maiac))  products  and validated by ground-based PM2.5 monitoring sites [(Aaron van Donkelaar et al., 2016)](https://pubs.acs.org/doi/abs/10.1021/acs.est.5b05833).  All raster grid of PM2.5 were resampled at 2.5 km x 2 km grid size using [Empirical Bayesian Kriging](http://desktop.arcgis.com/en/arcmap/10.3/guide-books/extensions/geostatistical-analyst/what-is-empirical-bayesian-kriging-.htm) in ArcPython - Geostatistical Tool [(ESRI, 2017)](https://www.esri.com/en-us/home)). County population weighted mean for each year were calculated from the population data. 
+
+
+### Nitrogen dioxide (NO2)
+
+Annual mean ambient NO2 Concentrations estimated from three satellite instruments, such as  [Global Ozone Monitoring Experiment (GOME)](https://earth.esa.int/web/guest/missions/esa-operational-eo-missions/ers/instruments/gome),  [Scanning Imaging Absorption Spectrometer for Atmospheric Chartography (SCIAMACHY)](https://www.sciencedirect.com/science/article/pii/009457659400278T) and [GOME-2](http://www.ospo.noaa.gov/Products/atmosphere/gome/gome-A.html) satellite  in combination with chemical transport model [(Gedders et al., (2016)](https://ehp.niehs.nih.gov/1409567/). All raster grid of PM2.5 were resampled at 2.5 km x 2 km grid size using [Empirical Bayesian Kriging](http://desktop.arcgis.com/en/arcmap/10.3/guide-books/extensions/geostatistical-analyst/what-is-empirical-bayesian-kriging-.htm) in ArcPython - Geostatistical Tool [(ESRI, 2017)](https://www.esri.com/en-us/home)). County population weighted mean for each year were calculated from the population data.
+
+
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_06//"
+```
+
+
+```{r}
+cancer<-read.csv(paste0(dataFolder, "Lung_cancer_1998_2012.csv"), stringsAsFactors = FALSE, check.names=FALSE)
+poverty<-read.csv(paste0(dataFolder,"POVERTY_1998_2012.csv"), stringsAsFactors = FALSE, check.names=FALSE)
+smoking<-read.csv(paste0(dataFolder,"SMOKING_1998_2012.csv"), stringsAsFactors = FALSE, check.names=FALSE)
+PM25<-read.csv(paste0(dataFolder,"PM25_1998_2012.csv"), stringsAsFactors = FALSE, check.names=FALSE)
+NO2<-read.csv(paste0(dataFolder,"NO2_1998_2012.csv"), stringsAsFactors = FALSE, check.names=FALSE)
+```
+\pagebreak
+
+
+### Data Processing
+
+#### Extract Centriod from County Shape file
+
+```{r,echo=TRUE,fig.align='center',fig.height=6, fig.width=4,fig.fullwidth=TRUE}
+county<-shapefile(paste0(dataFolder,"COUNTY_ATLANTIC.shp"))
+centroids = gCentroid(county,byid=TRUE)
+plot(county)
+points(centroids,pch=1, cex=0.4, col="green")
+```
+
+#### Convert SPDF  (centriod) to a dataframe
+
+```{r}
+XY.centriods<-as.data.frame(centroids)
+str(XY.centriods)
+```
+
+
+#### Mean data (1998-2012)
+
+
+```{r}
+avg<-read.csv(paste0(dataFolder,"FIPS_COUNTY_ATLANTIC_COUNTY.csv"), header=TRUE)
+avg$x<-XY.centriods$x
+avg$y<-XY.centriods$y
+avg$cancer<-apply(cancer[2:16],1,mean,na.rm=TRUE)
+avg$poverty<-apply(poverty[2:16],1,mean,na.rm=TRUE)
+avg$smoking<-apply(smoking[2:16],1,mean,na.rm=TRUE)
+avg$PM25<-apply(PM25[2:16],1,mean,na.rm=TRUE)
+avg$NO2<-apply(NO2[2:16],1,mean,na.rm=TRUE)
+head(avg)
+```
+
+#### Standard Deviation data (1998-2012)
+
+```{r}
+std<-read.csv(paste0(dataFolder,"FIPS_COUNTY_ATLANTIC_COUNTY.csv"), header=TRUE)
+std$x<-XY.centriods$x
+std$y<-XY.centriods$y
+std$cancer<-apply(cancer[2:16],1,sd,na.rm=TRUE)
+std$poverty<-apply(poverty[2:16],1,sd,na.rm=TRUE)
+std$smoking<-apply(smoking[2:16],1,sd,na.rm=TRUE)
+std$PM25<-apply(PM25[2:16],1,sd,na.rm=TRUE)
+std$NO2<-apply(NO2[2:16],1,sd,na.rm=TRUE)
+head(std)
+```
+
+#### 50th Quantile (1998-2012)- Median
+
+```{r}
+q50<-read.csv(paste0(dataFolder,"FIPS_COUNTY_ATLANTIC_COUNTY.csv"), header=TRUE)
+q50$x<-XY.centriods$x
+q50$y<-XY.centriods$y
+q50$cancer<-apply(cancer[2:16],1,stats::quantile,probs = 0.50,na.rm=TRUE)
+q50$poverty<-apply(poverty[2:16],1,stats::quantile,probs = 0.50,na.rm=TRUE)
+q50$smoking<-apply(smoking[2:16],1,stats::quantile,probs = 0.50,na.rm=TRUE)
+q50$PM25<-apply(PM25[2:16],1,stats::quantile,probs = 0.50,na.rm=TRUE)
+q50$NO2<-apply(NO2[2:16],1,stats::quantile,probs = 0.50,na.rm=TRUE)
+head(q50)
+```
+
+#### 10th Quantile (1998-2012)
+
+```{r}
+q10<-read.csv(paste0(dataFolder,"FIPS_COUNTY_ATLANTIC_COUNTY.csv"), header=TRUE)
+q10$x<-XY.centriods$x
+q10$y<-XY.centriods$y
+q10$cancer<-apply(cancer[2:16],1,stats::quantile,probs = 0.10,na.rm=TRUE)
+q10$poverty<-apply(poverty[2:16],1,stats::quantile,probs = 0.10,na.rm=TRUE)
+q10$smoking<-apply(smoking[2:16],1,stats::quantile,probs = 0.10,na.rm=TRUE)
+q10$PM25<-apply(PM25[2:16],1,stats::quantile,probs = 0.10,na.rm=TRUE)
+q10$NO2<-apply(NO2[2:16],1,stats::quantile,probs = 0.10,na.rm=TRUE)
+head(q10)
+```
+
+#### 90th Quantile (1998-2012)
+
+```{r}
+q90<-read.csv(paste0(dataFolder,"FIPS_COUNTY_ATLANTIC_COUNTY.csv"), header=TRUE)
+q90$x<-XY.centriods$x
+q90$y<-XY.centriods$y
+q90$cancer<-apply(cancer[2:16],1,stats::quantile,probs = 0.90,na.rm=TRUE)
+q90$poverty<-apply(poverty[2:16],1,stats::quantile,probs = 0.90,na.rm=TRUE)
+q90$smoking<-apply(smoking[2:16],1,stats::quantile,probs = 0.90,na.rm=TRUE)
+q90$PM25<-apply(PM25[2:16],1,stats::quantile,probs = 0.90,na.rm=TRUE)
+q90$NO2<-apply(NO2[2:16],1,stats::quantile,probs = 0.90,na.rm=TRUE)
+head(q90)
+```
+
+
+#### Merge data with county shape file
+
+```{r}
+mean.spdf <- merge(county,avg, by='FIPS')    # mean
+sd.spdf <-  merge(county,std, by='FIPS')     # sd
+q50.spdf <- merge(county,q50, by='FIPS')     # median
+q10.spdf <- merge(county,q10, by='FIPS')     # q10
+q90.spdf <- merge(county,q90, by='FIPS')     # q90
+```
+
+
+#### Write data
+
+We use will use median data for in spatial Statistics section. 
+
+```{r}
+write.csv(q50, paste0(dataFolder, "median_data.csv"), row.names = F)
+shapefile(q50.spdf, paste0(dataFolder, "median_data.shp"), overwrite=T)
+```
+\pagebreak
+
+
+
+### Visualization 
+
+```{r}
+state<-shapefile(paste0(dataFolder,"STATE_ATLANTIC.shp"))
+state <- list("sp.lines", as(state, "SpatialLines"), col="grey50", lwd=.7,lty=3)
+myPalette <- colorRampPalette(c("cadetblue", "yellow","red", "firebrick4"))
+myPalette.1 <- colorRampPalette(c("blue", "green","yellow","red"))
+```
+
+
+### Age Adjusted Lung & Bronchus Cancer Mortality Rates by County (death per 100,000)
+
+
+```{r,echo=TRUE,fig.align='center',fig.cap="Lung & Bronchus Cancer Mortality Rate (death per 100,1000)",fig.width=8, fig.height=6,fig.fullwidth=TRUE}
+
+cancer.p1<-spplot(mean.spdf,"cancer",
+       col.regions=myPalette(20),
+       col="transparent",
+       sp.layout=list(state),
+       colorkey=list(space="right",height=1, width=0.7),
+       main= list("Mean", cex=0.7))
+cancer.p2<-spplot(sd.spdf,"cancer",
+       col.regions=myPalette(20),
+       col="transparent",
+       sp.layout=list(state),
+       colorkey=list(space="right",height=1, width=0.8),
+       main=list("Standard Deviation", cex=0.7))
+cancer.p3<-spplot(q10.spdf,"cancer",
+       col.regions=myPalette(20),
+       col="transparent",
+       sp.layout=list(state),
+       colorkey=list(space="right",height=1, width=0.8),
+       main=list("10th Quantile",cex=.7))
+cancer.p4<-spplot(q50.spdf,"cancer",
+       col.regions=myPalette(20),
+       col="transparent",
+       sp.layout=list(state),
+       colorkey=list(space="right",height=1, width=0.8),
+       main=list("Median",cex=0.7))
+cancer.p5<-spplot(q90.spdf,"cancer",
+       col.regions=myPalette(20),
+       col="transparent",
+       sp.layout=list(state),
+       colorkey=list(space="right",height=1, width=0.8),
+       main=list("90th Quantile",cex=0.7))
+grid.arrange(cancer.p1,cancer.p2,cancer.p3,cancer.p4,cancer.p5, nrow = 1)
+```
+
+\pagebreak
+
+
+### Age-standardized Cigarette Smoking (%) Prevalence by County
+
+
+```{r,echo=TRUE,fig.align='center',fig.cap="Cigarette Smoking (%) Prevalence",fig.width=8, fig.height=6,fig.fullwidth=TRUE}
+smoking.p1<-spplot(mean.spdf,"smoking",
+                  col.regions=myPalette.1(20),
+                  col="transparent",
+                  sp.layout=list(state),
+                  colorkey=list(space="right",height=1, width=0.7),
+                  main= list("Mean", cex=0.7))
+smoking.p2<-spplot(sd.spdf,"smoking",
+                  col.regions=myPalette.1(20),
+                  col="transparent",
+                  sp.layout=list(state),
+                  colorkey=list(space="right",height=1, width=0.8),
+                  main=list("Standard Deviation", cex=0.7))
+smoking.p3<-spplot(q10.spdf,"smoking",
+                  col.regions=myPalette.1(20),
+                  col="transparent",
+                  sp.layout=list(state),
+                  colorkey=list(space="right",height=1, width=0.8),
+                  main=list("10th Quantile",cex=.7))
+smoking.p4<-spplot(q50.spdf,"smoking",
+                  col.regions=myPalette.1(20),
+                  col="transparent",
+                  sp.layout=list(state),
+                  colorkey=list(space="right",height=1, width=0.8),
+                  main=list("Median",cex=0.7))
+smoking.p5<-spplot(q90.spdf,"smoking",
+                  col.regions=myPalette.1(20),
+                  col="transparent",
+                  sp.layout=list(state),
+                  colorkey=list(space="right",height=1, width=0.8),
+                  main=list("90th Quantile",cex=0.7))
+grid.arrange(smoking.p1,smoking.p2,smoking.p3,smoking.p4,smoking.p5, nrow = 1)
+```
+\pagebreak
+
+
+
+### Age-standardized Poverty Rate (%) by County 
+
+
+```{r,echo=TRUE,fig.align='center',fig.cap="Poverty Rate (%) ",fig.width=8, fig.height=6,fig.fullwidth=TRUE}
+poverty.p1<-spplot(mean.spdf,"poverty",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.7),
+                   main= list("Mean", cex=0.7))
+poverty.p2<-spplot(sd.spdf,"poverty",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("Standard Deviation", cex=0.7))
+poverty.p3<-spplot(q10.spdf,"poverty",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("10th Quantile",cex=.7))
+poverty.p4<-spplot(q50.spdf,"poverty",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("Median",cex=0.7))
+poverty.p5<-spplot(q90.spdf,"poverty",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("90th Quantile",cex=0.7))
+grid.arrange(poverty.p1,poverty.p2,poverty.p3,poverty.p4,poverty.p5, nrow = 1)
+```
+
+\pagebreak
+
+
+### Particulate Matter (PM2.5)
+
+
+```{r,echo=TRUE,fig.align='center',fig.cap="Particulate Matter (PM2.5) ",fig.width=8, fig.height=6,fig.fullwidth=TRUE}
+PM25.p1<-spplot(mean.spdf,"PM25",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.7),
+                   main= list("Mean", cex=0.7))
+PM25.p2<-spplot(sd.spdf,"PM25",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("Standard Deviation", cex=0.7))
+PM25.p3<-spplot(q10.spdf,"PM25",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("10th Quantile",cex=.7))
+PM25.p4<-spplot(q50.spdf,"PM25",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("Median",cex=0.7))
+PM25.p5<-spplot(q90.spdf,"PM25",
+                   col.regions=myPalette.1(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("90th Quantile",cex=0.7))
+grid.arrange(PM25.p1,PM25.p2,PM25.p3,PM25.p4,PM25.p5, nrow = 1)
+```
+\pagebreak
+
+
+### Nitrogen dioxide (NO2)
+
+
+```{r,echo=TRUE,fig.align='center',fig.cap="Nitrogen dioxide (NO2) ",fig.width=8, fig.height=6,fig.fullwidth=TRUE}
+NO2.p1<-spplot(mean.spdf,"NO2",
+                   col.regions=myPalette(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.7),
+                   main= list("Mean", cex=0.7))
+NO2.p2<-spplot(sd.spdf,"NO2",
+                   col.regions=myPalette(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("Standard Deviation", cex=0.7))
+NO2.p3<-spplot(q10.spdf,"NO2",
+                   col.regions=myPalette(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("10th Quantile",cex=.7))
+NO2.p4<-spplot(q50.spdf,"NO2",
+                   col.regions=myPalette(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("Median",cex=0.7))
+NO2.p5<-spplot(q90.spdf,"NO2",
+                   col.regions=myPalette(20),
+                   col="transparent",
+                   sp.layout=list(state),
+                   colorkey=list(space="right",height=1, width=0.8),
+                   main=list("90th Quantile",cex=0.7))
+grid.arrange(NO2.p1,NO2.p2,NO2.p3,NO2.p4,NO2.p5, nrow = 1)
+```

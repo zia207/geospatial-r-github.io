@@ -1,0 +1,5 @@
+"0","mypalette.4 <- c(""lightpink"", ""blue"", ""grey"", ""purple"",  ""green"")"
+"0","spplot(mf, ""win.item"", key.space = ""right"","
+"0","      col.regions = mypalette.4, at = c(1, 2, 3, 4, 5),"
+"0","      main = ""Winning variable: highest \n abs. loading on local Comp.1"","
+"0","      sp.layout =list(polys))"

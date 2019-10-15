@@ -1,0 +1,34 @@
+"0","library(caret)        # machine laerning"
+"0","library(randomForest) # Random Forest"
+"2","randomForest 4.6-14
+"
+"2","Type rfNews() to see new features/changes/bug fixes.
+"
+"2","
+Attaching package: ‘randomForest’
+
+"
+"2","The following object is masked from ‘package:gridExtra’:
+
+    combine
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    margin
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    combine
+
+"
+"0","library(rgdal)        # spatial data processing"
+"0","library(raster)       # raster processing"
+"0","library(plyr)         # data manipulation "
+"0","library(dplyr)        # data manipulation "
+"0","library(RStoolbox)    # ploting spatial data "
+"0","library(RColorBrewer) # color"
+"0","library(ggplot2)      # ploting"
+"0","library(sp)           # spatial data"
+"0","library(doParallel)   # Parallel processing"

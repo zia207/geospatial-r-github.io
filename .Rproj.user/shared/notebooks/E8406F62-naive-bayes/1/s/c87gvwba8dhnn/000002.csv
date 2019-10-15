@@ -1,0 +1,5 @@
+"0","myControl <- trainControl(method=""repeatedcv"", "
+"0","                          number=3, "
+"0","                          repeats=2,"
+"0","                          returnResamp='all', "
+"0","                          allowParallel=TRUE)"

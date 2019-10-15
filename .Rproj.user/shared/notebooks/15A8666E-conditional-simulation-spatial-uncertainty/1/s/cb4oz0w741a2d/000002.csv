@@ -1,0 +1,77 @@
+"0","library(plyr)"
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:plyr’:
+
+    arrange, count, desc, failwith, id, mutate, rename, summarise, summarize
+
+"
+"2","The following objects are masked from ‘package:raster’:
+
+    intersect, select, union
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(gstat)"
+"0","library(raster)"
+"0","library(rasterVis)"
+"2","Loading required package: lattice
+"
+"2","Loading required package: latticeExtra
+"
+"2","Loading required package: RColorBrewer
+"
+"0","library(ggplot2)"
+"2","Need help getting started? Try the cookbook for R: http://www.cookbook-r.com/Graphs/
+"
+"2","
+Attaching package: ‘ggplot2’
+
+"
+"2","The following object is masked from ‘package:latticeExtra’:
+
+    layer
+
+"
+"0","library(car)"
+"2","Loading required package: carData
+"
+"2","
+Attaching package: ‘car’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    recode
+
+"
+"0","library(classInt)"
+"2","Loading required package: spData
+"
+"2","To access larger datasets in this package, install the spDataLarge package with:
+`install.packages('spDataLarge', repos='https://nowosad.github.io/drat/', type='source'))`
+"
+"0","library(RStoolbox)"
+"0","library(gridExtra)"
+"2","
+Attaching package: ‘gridExtra’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    combine
+
+"
+"0","library(animation)"

@@ -1,0 +1,269 @@
+---
+title: "Deep Neural Network - Supervised Image Classification in H20 R"
+---
+
+
+**Deep Neural Networks (or Deep Dearning)** is based on a multi-layer, feed-forward artificial neural network that is trained with stochastic gradient descent using back-propagation. The network can contain many hidden layers consisting of neurons with activation functions. Advanced features such as adaptive learning rate, rate annealing, momentum training, dropout, L1 or L2 regularization, checkpointing, and grid search enable high predictive accuracy. Each computer node trains a copy of the global model parameters on its local data with multi-threading (asynchronously) and contributes periodically to the global model via model averaging across the network.
+
+In this tutorial will show how to implement a Deep Neural Network for pixel based supervised classification of Sentinel-2 multispectral images using the [H20](http://h2o-release.s3.amazonaws.com/h2o/rel-lambert/5/docs-website/Ruser/Rinstall.html) package in R.
+
+
+[H2O is an open source, in-memory, distributed, fast, and scalable machine learning and predictive analytics platform that allows you to build machine learning models on big data and provides easy productionalization of those models in an enterprise environment](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html). It's core code is written in Java and can read data in parallel from a distributed cluster and also from local culster. H2O allows access to all the capabilities of H2O from an external program or script via JSON over HTTP. The Rest API is used by H2O's [web interface (Flow UI)](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html), [R binding (H2O-R)](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html), and [Python binding (H2O-Python)](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html). Requirement and installation steps in  R can be found [here](http://h2o-release.s3.amazonaws.com/h2o/rel-wheeler/2/index.html).
+
+First, we will split the “point_data” into a training set (75% of the data), a validation set (12%) and a test set (13%) data.  The validation data set will be used to optimize the model parameters during the training process. The model’s performance will be tested with the test data set. Finally, we will predict landuse clasess onusing a grid data set.The data is avilable for download [here](https://www.dropbox.com/s/kcc7jsxirmhlnzz/DATA_08.7z?dl=0). 
+
+**Tuning and Optimizations parameters:** 
+
+* Four hidden layers with 200 neurons and Rectifier Linear (ReLU) as an activation function for the of neurons.
+
+* The default stochastic gradient descent function will be used to optimize different objective functions and to minimize the training loss.
+
+* To reduce the generalization error and the risk of over-fitting of the model, we will use set low values for L1 and L2 regularizations.
+
+* The model will be cross validated with 10 folds with stratified sampling
+* The model will be run with 100 epochs.
+
+
+More details about the of Tuning and Optimizations parameters of the H20 Deep Neural Network for supervised classification can be found [here](http://docs.h2o.ai/h2o-tutorials/latest-stable/tutorials/deeplearning/index.html)
+
+
+#### Load packages 
+
+```{r message=F, warning=F}
+library(rgdal)         # spatial data processing
+library(raster)        # raster processing
+library(plyr)          # data manipulation 
+library(dplyr)         # data manipulation 
+library(RStoolbox)     # ploting raster data 
+library(ggplot2)       # plotting 
+library(RColorBrewer)  # Color
+library(sp)            # Spatial data
+library(ggplot2)       # Plotting
+```
+
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_08//"
+```
+
+
+#### Load point and grid data
+
+```{r}
+point<-read.csv(paste0(dataFolder,".\\Sentinel_2\\point_data.csv"), header = T)
+grid<-read.csv(paste0(dataFolder,".\\Sentinel_2\\prediction_grid_data.csv"), header = T)
+```
+
+##### Creat data frames  
+
+```{r}
+point.data<-cbind(point[c(3:13)])
+grid.data<-grid[c(4:13)]
+grid.xy<-grid[c(3,1:2)]
+```
+
+#### Install H2O
+
+```{r}
+#install.packages("h20")
+```
+
+#### Start and Initialize  H20 local cluster
+
+```{r message=F, warning=F,results="hide"}
+library(h2o)
+localH2o <- h2o.init(nthreads = -1, max_mem_size = "50G") # 50g memory of my computer
+```
+
+#### Import data to H2O cluster
+
+```{r message=F, warning=F,results="hide"}
+df<-  as.h2o(point.data)
+grid<- as.h2o(grid.data)
+```
+
+#### Split data into train, validation and test dataset
+
+```{r}
+splits <- h2o.splitFrame(df, c(0.75,0.125), seed=1234)
+train  <- h2o.assign(splits[[1]], "train.hex") # 75%
+valid  <- h2o.assign(splits[[2]], "valid.hex") # 12%
+test   <- h2o.assign(splits[[3]], "test.hex")  # 13%
+```
+
+#### Create response and features data sets
+
+```{r message=F, warning=F,results="hide"}
+y <- "Class"
+x <- setdiff(names(train), y)
+```
+
+### Deep Learning Model
+
+```{r message=F, warning=F,results="hide"}
+dl_model <- h2o.deeplearning(
+              model_id="Deep_Learning",                  # Destination id for this model
+              training_frame=train,                      # Id of the training data frame
+              validation_frame=valid,                    # Id of the validation data frame 
+              x=x,                                       # a vector predictor variable
+              y=y,                                       # name of reponse vaiables
+              standardize=TRUE,                          # standardize the data
+              score_training_samples=0,                  # training set samples for scoring (0 for all)
+              activation = "RectifierWithDropout",       # Activation function
+              score_each_iteration = TRUE,              
+              hidden = c(200,200,200,200),               # 4 hidden layers, each of 200 neurons
+              hidden_dropout_ratios=c(0.2,0.1,0.1,0),    # for improve generalization
+              stopping_tolerance = 0.001,                # tolerance for metric-based stopping criterion
+              epochs=10,                                # the dataset should be iterated (streamed)
+              adaptive_rate=TRUE,                        # manually tuned learning rate
+              l1=1e-6,                                   # L1/L2 regularization, improve generalization
+              l2=1e-6,
+              max_w2=10,                                 # helps stability for Rectifier
+              nfolds=10,                                 # Number of folds for K-fold cross-validation
+              fold_assignment="Stratified",              # Cross-validation fold assignment scheme
+              keep_cross_validation_fold_assignment = TRUE,
+              seed=125,
+              reproducible = TRUE,
+              variable_importances=T
+        ) 
+```
+
+####  Model Summary
+
+```{r}
+summary(dl_model)
+#capture.output(print(summary(dl_model)),file =  "DL_summary_model_01.txt")
+```
+
+#### Mean error
+
+```{r}
+h2o.mean_per_class_error(dl_model, train = TRUE, valid = TRUE, xval = TRUE)
+```
+
+#### Scoring history
+
+```{r}
+scoring_history<-dl_model@model$scoring_history
+scoring_history
+#write.csv(scoring_history, "scoring_history_model_02.csv")
+```
+
+####  Plot the classification error 
+
+```{r, warning=FALSE, fig.width = 5, fig.height = 5}
+plot(dl_model,
+     timestep = "epochs",
+     metric = "classification_error")
+```
+
+#### Plot logloss 
+
+```{r, warning=FALSE, fig.width = 5, fig.height = 5}
+plot(dl_model,
+     timestep = "epochs",
+     metric = "logloss")
+```
+
+#### Cross-validation  Error
+
+```{r, warning=FALSE, fig.width = 5, fig.height = 5}
+# Get the CV models from the deeplearning model object` object
+cv_models <- sapply(dl_model@model$cross_validation_models, 
+                    function(i) h2o.getModel(i$name))
+# Plot the scoring history over time
+plot(cv_models[[1]], 
+     timestep = "epochs", 
+     metric = "classification_error")
+```
+
+####  Cross validation result
+
+```{r}
+print(dl_model@model$cross_validation_metrics_summary%>%.[,c(1,2)])
+#capture.output(print(dl_model@model$cross_validation_metrics_summary%>%.[,c(1,2)]),file =  "DL_CV_model_01.txt")
+```
+
+#### Model performance with Test data set
+#### Compare the training error with the validation and test set errors
+
+```{r}
+h2o.performance(dl_model, newdata=train)     ## full train data
+h2o.performance(dl_model, newdata=valid)     ## full validation data
+h2o.performance(dl_model, newdata=test)     ## full test data
+
+#capture.output(print(h2o.performance(dl_model,test)),file =  "test_data_model_01.txt")
+```
+
+#### Confusion matrix
+
+```{r message=F, warning=F,results="hide"}
+train.cf<-h2o.confusionMatrix(dl_model)
+print(train.cf)
+valid.cf<-h2o.confusionMatrix(dl_model,valid=TRUE)
+print(valid.cf)
+test.cf<-h2o.confusionMatrix(dl_model,test)
+print(test.cf)
+#write.csv(train.cf, "CFM_train_model_01.csv")
+#write.csv(valid.cf, "CFM_valid_model_01.csv")
+#write.csv(test.cf, "CFM_test_moldel_01.csv")
+```
+
+#### Grid Prediction
+
+```{r message=F, warning=F,results="hide"}
+g.predict = as.data.frame(h2o.predict(object = dl_model, newdata = grid))
+```
+
+#### Stop h20 cluster
+
+```{r}
+h2o.shutdown(prompt=FALSE)
+```
+
+#### Extract Prediction Class
+
+
+```{r message=F, warning=F}
+# Extract predicted landuse class
+grid.xy$Class<-g.predict$predict  
+# Import lnaduse ID file 
+ID<-read.csv(paste0(dataFolder,".\\Sentinel_2\\Landuse_ID.csv"), header=T)
+# Join landuse ID
+grid.new<-join(grid.xy, ID, by="Class", type="inner") 
+# Omit missing values
+grid.new.na<-na.omit(grid.new)                                                            
+```
+
+
+#### Convert to raster and write
+
+```{r}
+x<-SpatialPointsDataFrame(as.data.frame(grid.new.na)[, c("x", "y")], data = grid.new.na)
+r <- rasterFromXYZ(as.data.frame(x)[, c("x", "y", "Class_ID")])
+```
+
+
+#### Plot map
+
+```{r,echo=TRUE,fig.align='center',fig.height=5, fig.width=6.5,message=F, warning=F}
+# Create color palette
+myPalette <- colorRampPalette(c("light grey","burlywood4", "forestgreen","light green", "dodgerblue"))
+# Plot Map
+LU<-spplot(r,"Class_ID", main="Supervised Image Classification: Deep Learning-H20" , 
+      colorkey = list(space="right",tick.number=1,height=1, width=1.5,
+              labels = list(at = seq(1,4.8,length=5),cex=1.0,
+              lab = c("Road/parking/pavement" ,"Building", "Tree/buses", "Grass", "Water"))),
+              col.regions=myPalette,cut=4)
+LU
+```
+
+
+#### Write raster
+
+```{r}
+writeRaster(r, filename = paste0(dataFolder,".\\Sentinel_2\\DNN_H20_Landuse.tiff"), "GTiff", overwrite=T)
+```
+
+

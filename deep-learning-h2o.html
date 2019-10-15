@@ -180,7 +180,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Geospatial Data Science</a>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,7 +349,7 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
-      <a href="dnn-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
 </li>
@@ -644,18 +644,18 @@ x &lt;- setdiff(names(train), y)</code></pre>
 ## 
 ## Scoring History: 
 ##              timestamp          duration training_speed   epochs
-## 1  2019-02-05 22:42:19         0.000 sec                 0.00000
-## 2  2019-02-05 22:42:37  3 min 34.592 sec   1006 obs/sec  1.00000
-## 3  2019-02-05 22:42:53  3 min 50.764 sec   1119 obs/sec  2.00000
-## 4  2019-02-05 22:43:09  4 min  6.072 sec   1183 obs/sec  3.00000
-## 5  2019-02-05 22:43:24  4 min 21.950 sec   1208 obs/sec  4.00000
-## 6  2019-02-05 22:43:38  4 min 35.628 sec   1259 obs/sec  5.00000
-## 7  2019-02-05 22:43:52  4 min 49.338 sec   1297 obs/sec  6.00000
-## 8  2019-02-05 22:44:05  5 min  2.929 sec   1331 obs/sec  7.00000
-## 9  2019-02-05 22:44:19  5 min 16.138 sec   1359 obs/sec  8.00000
-## 10 2019-02-05 22:44:32  5 min 29.277 sec   1381 obs/sec  9.00000
-## 11 2019-02-05 22:44:45  5 min 42.278 sec   1401 obs/sec 10.00000
-## 12 2019-02-05 22:44:58  5 min 55.167 sec   1419 obs/sec 11.00000
+## 1  2019-10-15 18:44:19         0.000 sec                 0.00000
+## 2  2019-10-15 18:44:37  3 min 25.928 sec   1056 obs/sec  1.00000
+## 3  2019-10-15 18:44:53  3 min 42.052 sec   1147 obs/sec  2.00000
+## 4  2019-10-15 18:45:07  3 min 56.659 sec   1221 obs/sec  3.00000
+## 5  2019-10-15 18:45:21  4 min 10.270 sec   1284 obs/sec  4.00000
+## 6  2019-10-15 18:45:36  4 min 24.924 sec   1305 obs/sec  5.00000
+## 7  2019-10-15 18:45:49  4 min 37.840 sec   1348 obs/sec  6.00000
+## 8  2019-10-15 18:46:02  4 min 50.726 sec   1380 obs/sec  7.00000
+## 9  2019-10-15 18:46:14  5 min  3.508 sec   1409 obs/sec  8.00000
+## 10 2019-10-15 18:46:27  5 min 15.886 sec   1436 obs/sec  9.00000
+## 11 2019-10-15 18:46:39  5 min 28.416 sec   1458 obs/sec 10.00000
+## 12 2019-10-15 18:46:52  5 min 40.711 sec   1477 obs/sec 11.00000
 ##    iterations       samples training_rmse training_logloss training_r2
 ## 1           0      0.000000                                           
 ## 2           1  18034.000000       0.30807          0.31402     0.92909
@@ -915,6 +915,7 @@ LU</code></pre>
 <div id="write-raster" class="section level4">
 <h4>Write raster</h4>
 <pre class="r"><code># writeRaster(r, filename = paste0(dataFolder,&quot;.\\Sentinel_2\\DNN_H20_Landuse.tiff&quot;), &quot;GTiff&quot;, overwrite=T)</code></pre>
+<pre class="r"><code>rm(list = ls())</code></pre>
 </div>
 </div>
 

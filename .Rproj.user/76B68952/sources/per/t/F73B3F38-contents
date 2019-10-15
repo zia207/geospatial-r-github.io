@@ -1,0 +1,206 @@
+---
+title: "Universal Kriging"
+---
+<div style="margin-bottom:40px;">
+</div>
+
+
+Universal Kriging (UK) is a variant of the Ordinary Kriging under non-stationary condition where mean differ in a deterministic way in different locations (trend or drift), while only the variance is constant.The trend can fitted range from local (immediate neighborhood) to global (whole area) This second-order stationarity ("weak stationarity") is often a pertinent assumption with environmental exposures. In UK, usually first trend is calculated  as a function of the coordinates and then the variation in what is left over (the residuals) as a random field is added to trend for making final prediction. 
+
+
+UK model the value of a variable at location as the sum of a regional non-stationary trend and a local spatially-correlated random component, the residuals from the regional trend. 
+
+
+
+```{r echo=FALSE, out.width='60%', fig.align="center"}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\UK.png')
+```
+
+
+#### Load package 
+
+```{r message=F, warning=F}
+library(plyr)
+library(dplyr)
+library(gstat)
+library(raster)
+library(ggplot2)
+library(car)
+library(classInt)
+library(RStoolbox)
+library(spatstat)
+library(dismo)
+library(fields)
+library(gridExtra)
+```
+
+
+#### Load Data
+
+The soil organic carbon data (train and test data set) could be found [here](https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0).  
+
+
+```{r}
+# Define data folder
+dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+```
+
+
+```{r}
+train<-read.csv(paste0(dataFolder,"train_data.csv"), header= TRUE) 
+test<-read.csv(paste0(dataFolder,"test_data.csv"), header= TRUE) 
+state<-shapefile(paste0(dataFolder,"GP_STATE.shp"))
+grid<-read.csv(paste0(dataFolder, "GP_prediction_grid_data.csv"), header= TRUE) 
+```
+
+
+### Data Transformation
+
+Power Transform uses the maximum likelihood-like approach of Box and Cox (1964) to select a transformation of a univariate or multivariate response for normality. First we have to calculate appropriate **transformation parameters** using **powerTransform()** function of **car** package and then use this parameter to transform the data using **bcPower()** function.  
+
+```{r}
+powerTransform(train$SOC)
+```
+
+```{r}
+train$SOC.bc<-bcPower(train$SOC, 0.2523339)
+```
+
+
+First. we have to define x & y variables to coordinates
+
+```{r}
+coordinates(train) = ~x+y
+coordinates(grid) = ~x+y
+```
+
+
+
+First, we will compute and visualize a first-order trend surface using **krige()** function. 
+
+
+```{r}
+trend<-krige(SOC.bc~x+y, train, grid, model=NULL)
+```
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=4,message=F, warning=F}
+trend.r<-rasterFromXYZ(as.data.frame(trend)[, c("x", "y", "var1.pred")])
+ggR(trend.r, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("Global Trend of BoxCox-SOC")+
+   theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+### Variogram Modeling
+
+In UK, the semivariances  are based on the residuals, not the original data, because the random part of the spatial structure applies only to these residuals. The model parameters for the residuals will usually be very different from the original variogram model (often: lower sill, shorter range), since the global trend has taken out some of the variation and the long-range structure. In **gstat**, we can compute residual varoigram directly, if we provide an appropriate model formula; you do not have to compute the residuals manually. 
+
+We use the variogram method and specify the spatial dependence with the formula SOC.bc ~ x+y (as opposed to SOC.bc ~ 1 in the ordinary variogram). This has the same meaning as in the lm (linear regression) model specification: the SOC  concentration is to be predicted using Ist order trend; then the residuals are to be modeled spatially. 
+
+
+```{r}
+# Variogram
+v<-variogram(SOC.bc~ x+y, data = train, cloud=F)
+# Intial parameter set by eye esitmation
+m<-vgm(1.5,"Exp",40000,0.5)
+# least square fit
+m.f<-fit.variogram(v, m)
+m.f
+```
+
+
+#### Plot Residuals varigram and Fitted model
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width= 4.5,message=F, warning=F}
+#### Plot varigram and fitted model:
+plot(v, pl=F, 
+     model=m.f,
+     col="black", 
+     cex=0.9, 
+     lwd=0.5,
+     lty=1,
+     pch=19,
+     main="Variogram of Residuals",
+     xlab="Distance (m)",
+     ylab="Semivariance")
+```
+
+
+### Kriging Prediction
+
+
+**krige()** function in **gstat** package use for simple, ordinary or universal kriging (sometimes called external drift kriging), kriging in a local neighborhood, point kriging or kriging of block mean values (rectangular or irregular blocks), and conditional (Gaussian or indicator) simulation equivalents for all kriging varieties, and function for inverse distance weighted interpolation. For multivariate prediction.
+
+
+```{r}
+UK<-krige(SOC.bc~x+y, 
+              loc= train,        # Data frame
+              newdata=grid,      # Prediction grid
+              model = m.f)       # fitted varigram model
+summary(UK)
+```
+
+
+#### Back transformation 
+
+We will  back transformation using  transformation parameters that have used Box-cos transformation
+
+```{r}
+k1<-1/0.2523339                                   
+UK$UK.pred <-((UK$var1.pred *0.2523339+1)^k1)
+UK$UK.var <-((UK$var1.var *0.2523339+1)^k1)
+summary(UK)
+```
+
+
+#### Convert to raster
+
+```{r message=F, warning=F}
+UK.pred<-rasterFromXYZ(as.data.frame(UK)[, c("x", "y", "UK.pred")])
+UK.var<-rasterFromXYZ(as.data.frame(UK)[, c("x", "y", "UK.var")])
+```
+
+#### Plot predicted SOC and OK Error
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=8}
+p1<-ggR(UK.pred, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("UK Predicted SOC")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+p2<-ggR(UK.var, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("blue",  "green","yellow", "orange"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("UK Predition Variance")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(p1,p2, ncol = 2)  # Multiplot 
+```
+
+
+Above plots show the interpolated map of soil SOC with associated error at each prediction grid. OK predicted map shows global pattern and hot spot locations of SOC concentration. The kriging variance is higher in unsampled locations, since variance depends on geometry of the sampling locations with lower variance near sampling locations. This kriging variance also depends on co variance model but independent of data values. 
+
+
+

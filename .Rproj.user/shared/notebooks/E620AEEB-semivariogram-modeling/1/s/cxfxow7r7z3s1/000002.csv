@@ -1,0 +1,2 @@
+"0","plot(v, pl=F, model=m.sph.f,col=""black"", cex=1, lwd=0.5,lty=1,pch=20,"
+"0","     main=""Variogram models - Spherical"",xlab=""Distance (m)"",ylab=""Semivariance"")"

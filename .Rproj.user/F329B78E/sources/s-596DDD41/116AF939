@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544317024605.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "116AF939",
+    "lastKnownWriteTime" : 1544317060,
+    "last_content_update" : 1544317060552,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/spatial-regression.Rmd",
+    "project_path" : "spatial-regression.Rmd",
+    "properties" : {
+        "cursorPosition" : "3,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 45,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

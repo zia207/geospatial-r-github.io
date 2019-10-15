@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1548289825553.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "317300834",
+    "id" : "9CFC7D83",
+    "lastKnownWriteTime" : 1548198235,
+    "last_content_update" : 1548198235,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/index.Rmd",
+    "project_path" : "index.Rmd",
+    "properties" : {
+        "cursorPosition" : "20,592",
+        "ignored_words" : "geospatial,geoinformatics\n",
+        "scrollLine" : "14"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

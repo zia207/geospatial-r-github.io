@@ -1,0 +1,7 @@
+"0","tune_grid <- expand.grid(nrounds = 200,           # the max number of iterations"
+"0","                        max_depth = 5,            # depth of a tree "
+"0","                        eta = 0.05,               # control the learning rate"
+"0","                        gamma = 0.01,             # minimum loss reduction required"
+"0","                        colsample_bytree = 0.75,  # subsample ratio of columns when constructing each tree"
+"0","                        min_child_weight = 0,     # minimum sum of instance weight (hessian) needed in a child "
+"0","                        subsample = 0.5)          # subsample ratio of the training instance"

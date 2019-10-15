@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1542305663570.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "722742F2",
+    "lastKnownWriteTime" : 1544459944,
+    "last_content_update" : 1544459944724,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/regression-kriging.Rmd",
+    "project_path" : "regression-kriging.Rmd",
+    "properties" : {
+        "cursorPosition" : "48,0",
+        "ignored_words" : "geo,kriging,variogram\n",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

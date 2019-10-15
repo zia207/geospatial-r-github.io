@@ -1,0 +1,22 @@
+---
+title: "Spatial Autocorrelation"
+---
+
+
+Spatial autocorrelation measures the degree of correlation to itself through space (Cliff and Ord 1973, 1981). Tests of spatial autocorrelation examine the independency of observed value of a variable in relation to values of that variable at neighboring locations. Spatial autocorrelation can be positive or negative.
+
+**Positive spatial autocorrelation** indicates that similar values appear close to each other, or cluster, in space. 
+
+**Negative spatial autocorrelation** occurs when dissimilar values occur near one another. 
+
+**Null spatial autocorrelation** indicates that the spatial pattern is random. 
+
+Classic spatial autocorrelation statistics include:
+
+* Moran's I , 
+
+* Geary's C , 
+
+* Getis's G  
+
+* standard deviational ellipse

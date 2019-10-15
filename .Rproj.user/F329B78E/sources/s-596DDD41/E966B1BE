@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544195845762.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "E966B1BE",
+    "lastKnownWriteTime" : 1544195894,
+    "last_content_update" : 1544195894292,
+    "path" : "F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/random-forest.Rmd",
+    "project_path" : "random-forest.Rmd",
+    "properties" : {
+        "cursorPosition" : "5,988",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 39,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

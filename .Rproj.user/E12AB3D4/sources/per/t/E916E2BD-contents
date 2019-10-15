@@ -1,0 +1,379 @@
+---
+title: "Geoprocessing of Vector Data"
+---
+
+<div style="margin-bottom:40px;">
+</div>
+
+Geo-processing is a GIS operation used to manipulate spatial data. 
+
+In this exercise we will learn following Geo-processing operations of vector data in R. 
+
+  * [Clipping](#clipping)
+
+  *	[Union](#union)
+
+  *	[Dissolve](#dissolve)
+
+  *	[Intersect](#intersect)
+
+  *	[Erase](#erase)
+
+  *	[Convex Hull](#convex-hull)
+
+  *	[Buffer](#buffer)
+
+<div style="margin-bottom:20px;">
+</div>
+
+#### R Packages
+
+* [rgdal](https://cran.r-project.org/web/packages/rgdal/rgdal.pdf): Bindings for the Geospatial Data Abstraction Library 
+* [raster](https://cran.r-project.org/web/packages/raster/raster.pdf): Geographic Data Analysis and Modeling 
+* [sf](https://cran.r-project.org/web/packages/sf/index.html):Support for simple features, a standardized way to encode spatial vector data 
+* [maptools](https://cran.r-project.org/web/packages/maptools/maptools.pdf): Tools for Reading and Handling Spatial Objects 
+* [rgeos](https://cran.r-project.org/web/packages/rgeos/rgeos.pd): Interface to Geometry Engine - Open Source (GEOS)
+
+
+#### Load packages
+
+```{r message=F, warning=F}
+# load packages
+library(raster)		
+library (rgdal)
+library(rgeos)
+library(maptools)
+library(sf)
+```
+
+
+#### Load Data
+
+We will use following data set, and data could available for download from [here](https://www.dropbox.com/s/kawkzluyv9d6qes/DATA_04.7z?dl=0).  
+
+* US State  shape file (US_STATE.shp) 
+* US County shape file (US_County.shp)
+* Point Shape File of soil sampling locations (CO_SOC_data.shp) 
+* Line shape file (Ononda_Street_PROJ.shp)
+* Boundary of Yellow Stone National Park (Yellow_Stone.shp)
+
+
+Before reading the data from a local drive, you need to define a working directory from where you want to read or to write data. We will use **setwd()** function to create a working directory. Or we can define a path for data outside of our working directory from where we can read files. In this case, we will use **paste0(path, "file name")** 
+
+```{r,eval=F, echo=T}
+#### Set working directory
+# setwd("~//geoprocessing-vector-data")
+```
+
+```{r}
+# Define data folder
+dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_04//"
+```
+
+#### Load US State & County Shape files
+
+```{r}
+US.STATE<-shapefile(paste0(dataFolder,"US_STATE.shp"))
+US.COUNTY<-shapefile(paste0(dataFolder,"US_COUNTY.shp"))
+```
+
+#### Plot them site by site
+
+```{r,echo=TRUE, fig.align='center',fig.height=5, fig.width=10}
+# Map US state and county
+par(mfrow=c(1,2))
+plot(US.STATE, main="US State")
+plot(US.COUNTY, main="US County")
+par(mfrow=c(1,1))
+```
+
+#### Extracting a variable name (State name)
+
+```{r}
+# Extracting a variable  (state name)
+US.STATE$STATE
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Clipping
+
+Clipping  spatial data is a basic GIS task. For vector data, it involves removing unwanted features outside of an area of interest. For example, you might want to do some geospatial modeling  covering a area in New York state, but  we  may have data for USA, in this case you need to apply clipping function  to remove area  outside of  the New York State. It acts like a cookie cutter to cut out a piece of one feature class using one or more of the features in another feature class.
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
+knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_04\\Clip.png")
+```
+
+In R,  you can do this  several ways with different R packages. In this exercise, we will clip out other state or counties from US State and County polygon shape files, expect our area of interest (for example New York). 
+
+
+The most useful function to  select a area of interest from any  spatial data is R-base function **subset()** (although it wrap with other packages).
+
+```{r}
+# NY state boundary
+NY.STATE <- subset(US.STATE, STATE=="New York")
+# NY county
+NY.COUNTY <- subset(US.COUNTY, STATE=="New York")
+NY.COUNTY
+shapefile(NY.STATE, paste0(dataFolder,"NY_STATE_BD.shp"), overwrite=TRUE)
+```
+
+After sub setting, you notice that **NY.COUNT** retains both  geometry and attribute information of parent polygon
+
+```{r,echo=TRUE, fig.align='center',fig.height=5, fig.width=10}
+# Map NY state boundary and county polygon
+par(mfrow=c(1,2))
+plot(NY.STATE, main="NY State")
+plot(NY.COUNTY, main="NY County")
+par(mfrow=c(1,1))
+```
+
+You can select multiple States using following **subset()** function
+
+```{r}
+GP.STATE<-subset(US.STATE,STATE=="Colorado" | STATE=="Kansas" | STATE=="New Mexico"| STATE=="Wyoming")
+```
+
+```{r,echo=TRUE, fig.align='center',fig.height=5, fig.width=6}
+plot(GP.STATE, main="States  of  CO, KA, NY & WY")
+```
+
+**gIntersection()** function of **rgeos** package is also able to clip out undesirable area 
+
+```{r}
+# Clip US county shape file with NY State boundary
+clip_01 <- gIntersection(NY.STATE, US.COUNTY, byid = TRUE, drop_lower_td = TRUE) 
+clip_01
+```
+
+
+```{r,echo=TRUE, fig.align='center',fig.height=5, fig.width=10}
+plot(clip_01, main= "Clip with gIntersection")
+```
+
+
+However, the clipped output with **gIntersection()** function no longer contains a data frame because the gIntersection doesn't know which data frame items to save in to the new object. This means we must add them back in manually, but even this is relatively straight-forward. 
+
+The **intersect()** function of **raster** package works like **subset** function
+
+```{r}
+clip_02 <- intersect(NY.STATE, US.COUNTY)
+clip_02
+```
+
+```{r,echo=TRUE, fig.align='center',fig.height=5, fig.width=10}
+plot(clip_02, main="Clip with intersect")
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Union
+
+**Union** combines two or multiple spatial objects and a create new features where geometry and attributes of input features retain. 
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Union")}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_04\\Union.png')
+```
+
+We will use state boundary of  CO, AK, NY and WY to create a new feature class using **union()** function of raster package or **spRbind** function of **maptools** package. The shape files of these states are located in **~\GP_STATE** sub-directory of the working directory. We read these files one by one one using **shapefile()** function of raster package or create a list of these files and then apply **union** function function raster package or  
+
+```{r}
+# Load four shapefiles of four states
+CO<-shapefile(paste0(dataFolder,".\\GP_STATE\\CO_STATE_BD.shp"))
+KS<-shapefile(paste0(dataFolder,".\\GP_STATE\\KS_STATE_BD.shp"))
+NM<-shapefile(paste0(dataFolder,".\\GP_STATE\\NM_STATE_BD.shp"))
+WY<-shapefile(paste0(dataFolder,".\\GP_STATE\\WY_STATE_BD.shp"))
+```
+
+Now we will generate a simple plot to show the spatial location of the these features, before applying **union()** function or **spRbind()**function, However, neither **union()** or **spRbind()** function can not join more than tow polygons at a time. So, you have to union polygons one by one. 
+
+```{r}
+# Union CO & KA
+union_01<-union(CO,KS)
+# Add NM
+union_02<-union(union_01, NM)
+# Add WY
+union_03<-union(union_02,WY)
+# now check 
+union_03@data
+```
+
+
+```{r, collapse=TRUE,echo=FALSE, fig.height=5, fig.width=5, fig.align="center"}
+plot(union_03, main="Spatial Union of CO, KA, NM & WY")
+```
+
+
+You can union hundreds of spatial polygons in a folder with similar geometry and attribute table using **spRbind** function of **maptools** package or **union()** function in a loop. First, you have to create a list these shape files using list.files() function, then use **for loop**  to read all the  files using **readORG()**  function and then  assign new feature IDs using **spChFIDs()** function of **sp** package, and finally apply **spRbind()** or **union()**to all files to union them. It is better to use **spRbind** function to union several polygons since  it  binds attribute data row wise.          
+
+
+```{r}
+# create a list of file 
+files <- list.files(path=paste0(dataFolder, ".//GP_STATE"),pattern="*.shp$", recursive=TRUE,full.names=TRUE) # Create a list files
+print(files)
+uid<-1
+
+# Get polygons from first file 
+GP.STATE<- readOGR(files[1],gsub("^.*/(.*).shp$", "\\1", files[1]))
+n <- length(slot(GP.STATE, "polygons"))
+GP.STATE <- spChFIDs(GP.STATE, as.character(uid:(uid+n-1)))
+uid <- uid + n
+
+# mapunit polygon: combin remaining  polygons with first polygoan
+for (i in 2:length(files)) {
+     temp.data <- readOGR(files[i], gsub("^.*/(.*).shp$", "\\1",files[i]))
+     n <- length(slot(temp.data, "polygons"))
+     temp.data <- spChFIDs(temp.data, as.character(uid:(uid+n-1)))
+     uid <- uid + n
+     #poly.data <- union(poly.data,temp.data)
+     GP.STATE <- spRbind(GP.STATE,temp.data)
+}
+GP.STATE@data
+```
+
+```{r, collapse=TRUE,echo=FALSE, fig.height=5, fig.width=5, fig.align="center"}
+plot(GP.STATE,main="Spatial Union of CO, KA, NM & WY")
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Dissolve
+
+**Dissolve** aggregate features based on the attribute. It is an important tools  that we may need to perform regularly in spatial data processing. 
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Disslove")}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_04\\Dissolve.png')
+```
+
+
+In R, this is can be a bit involved, but I found easiest way to do dissolving features of a polygon in [NECAS site](https://www.nceas.ucsb.edu/scicomp/usecases/PolygonDissolveOperationsR#Part2). We will dissolve **GP.STATE**  polygon data that we have created before. We will use **unionSpatialPolygons()** function of **maptols** package.   
+
+```{r}
+# Centriods of polygona
+lps <- getSpPPolygonsLabptSlots(GP.STATE)
+IDOneBin <- cut(lps[,1], range(lps[,1]), include.lowest=TRUE)
+GP.DISSOLVE_01   <- unionSpatialPolygons(GP.STATE,IDOneBin)
+```
+
+```{r, collapse=TRUE,echo=FALSE, fig.height=5, fig.width=5, fig.align="center"}
+plot(GP.DISSOLVE_01, main="Dissolved State Boundary")
+```
+
+
+You can also use **aggregate()** function of **raster** package which aggregate a SpatialPolygon* object, optionally by combining polygons that have the same attributes for one or more variables. 
+
+```{r}
+GP.DISSOLVE_02 <- aggregate(GP.STATE)
+```
+
+```{r, collapse=TRUE,echo=FALSE, fig.height=5, fig.width=5, fig.align="center"}
+plot(GP.DISSOLVE_02, main="Dissolved State Boundary - aggregate()")
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Intersect 
+
+**Intersect** computes a geometric of common area of two feature classes. 
+
+
+```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Intersect")}
+knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_04\\Intersect.png')
+```
+
+We will use Yellow Stone National Park boundary shape file to find out its location in US states. The shape file of US national park was downloaded from [here](https://catalog.data.gov/data set/national-park-boundariesf0a4c/resource/a601d033-f08e-4430-91f2-674f12109bf6?inner_span=True).  
+
+
+```{r}
+park<-shapefile(paste0(dataFolder,"Yellow_Stone.shp"))
+# Apply intersect fuction  
+park.state<- intersect(US.STATE, park)
+head(park.state)
+```
+
+```{r, collapse=TRUE,echo=FALSE, fig.height=5, fig.width=5, fig.align="center"}
+{plot(park.state, col=rainbow(3))
+text(coordinates(park.state)[,1], coordinates(park.state)[,2], paste("",park.state$STATE.1,sep="-"))}
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Erase
+
+**Erase()** function in **raster** package erase parts of a SpatialPolygons or SpatialLines object with a SpatialPolygons object
+
+```{r}
+# Erase KS from  GO.STATE shpae files
+GP.3.STATE<-erase(GP.STATE, KS)
+```
+
+```{r, collapse=TRUE,echo=FALSE, fig.height=5, fig.width=5, fig.align="center"}
+plot(GP.3.STATE, main="State of CO, Mn & WY")
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Convex Hull
+
+The **convex hull** or ***convex envelope** or **convex closure*** of a set spatial point data frame. 
+
+```{r}
+# Import point shape file
+SPDF<-shapefile(paste0(dataFolder,"CO_SOC_data.shp"))
+# get coordinates
+xy<-coordinates(SPDF)
+# Create convex hull
+CH.DF <- chull(xy)
+# Closed polygona
+coords <- xy[c(CH.DF, CH.DF[1]), ] 
+```
+
+```{r, collapse=TRUE,echo=FALSE, fig.height=5, fig.width=5, fig.align="center"}
+ # Plot
+{plot(xy, pch=19)
+lines(coords, col="red")}
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+### Buffer
+
+Buffering creates an envelope of space around selected features in a vector data. It is  sometimes referred to as a zone of a specified distance around a polygon, line, or point feature. Buffering is often used for proximity analysis. In this section, we will create 400 m buffer zones around the road network and soil  sampling points of CO. Such a buffer could be used later on to examine the extent of farmland or sampling points within the buffer, etc. We will use a small part of road-network of Ononda County to create 100 m buffer around them. we use use **gBuffer()** function in **rgeos** package
+
+#### Buffering of Polylines
+
+```{r}
+SLDF<-shapefile(paste0(dataFolder, "Ononda_Street_PROJ.shp"))
+SLDF.buffer<-gBuffer(SLDF, width=100)
+```
+
+```{r, collapse=TRUE,echo=FALSE, fig.height=5, fig.width=5, fig.align="center"}
+plot(SLDF.buffer, main="100 m Buffer")
+plot(SLDF,add=TRUE, col="red")
+```
+
+#### Buffering of Point data
+
+```{r}
+SPDF.buffer <- gBuffer(SPDF, width=20*1000, byid=TRUE) # 20 km buffer
+```
+
+```{r, collapse=TRUE,echo=FALSE, fig.height=5, fig.width=5, fig.align="center"}
+plot(SPDF.buffer, cex=1.5, main = "20 km Buffer")
+plot(SPDF,add=TRUE, col="red",cex=0.5,pch=21)
+```
+
+
+
+```{r}
+rm(list = ls())
+```

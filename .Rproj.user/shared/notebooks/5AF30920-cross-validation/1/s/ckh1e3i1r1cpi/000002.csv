@@ -1,0 +1,1 @@
+"0","train<-read.csv(paste0(dataFolder,""train_data.csv""), header= TRUE) "
