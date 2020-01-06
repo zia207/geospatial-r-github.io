@@ -1,2 +1,0 @@
-"0","par(mfrow=c(1,2))"
-"0","plot(SPDF, main=""WGS 1984"", pch=20, cex =0.2)"

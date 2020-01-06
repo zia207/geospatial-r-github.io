@@ -1,7 +1,0 @@
-"0","for(i in 1:10) {"
-"0","   sg.v=paste(""sim"",i,sep="""")"
-"0","   fg.v = as.formula(paste(sg.v, ""~1""))"
-"0","   vg.v = variogram(fg.v, sim.soc)"
-"0","   lines(variogramLine(fit.variogram(vg.v, m.f),"
-"0","   maxdist = max(v$dist)),lty=3, col = ""grey"")"
-"0","}"

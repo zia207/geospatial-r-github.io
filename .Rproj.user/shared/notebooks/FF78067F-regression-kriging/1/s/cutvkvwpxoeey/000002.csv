@@ -1,4 +1,0 @@
-"0","myControl <- trainControl(method=""repeatedcv"", "
-"0","                          number=10, "
-"0","                          repeats=5,"
-"0","                          allowParallel = TRUE)"

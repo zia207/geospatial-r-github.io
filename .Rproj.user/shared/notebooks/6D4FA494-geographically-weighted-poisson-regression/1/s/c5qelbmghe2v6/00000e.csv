@@ -1,0 +1,1 @@
+"0","grid.arrange(est_smok, est_pov,est_pm25,est_no2, est_so2,ncol= 5, heights = c(30,6), top = textGrob(""Local Estimates"",gp=gpar(fontsize=25)))"

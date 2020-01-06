@@ -1,1 +1,0 @@
-"0","writeRaster(r, filename = paste0(dataFolder,"".\\Sentinel_2\\RF_Landuse.tiff""), ""GTiff"", overwrite=T)"

@@ -1,3 +1,0 @@
-"0","writeRaster(lsat_sref, filename=(paste0(dataFolder,"".//Landsat8//Landsat8_PROCESSED//multi.tif"")), bylayer=F, overwrite=TRUE, format=""GTiff"")"
-"2","no non-missing arguments to min; returning Inf"
-"2","no non-missing arguments to max; returning -Inf"

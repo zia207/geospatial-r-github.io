@@ -1,4 +1,0 @@
-"0","splits <- h2o.splitFrame(df, c(0.75,0.125), seed=1234)"
-"0","train  <- h2o.assign(splits[[1]], ""train.hex"") # 75%"
-"0","valid  <- h2o.assign(splits[[2]], ""valid.hex"") # 12%"
-"0","test   <- h2o.assign(splits[[3]], ""test.hex"")  # 13%"

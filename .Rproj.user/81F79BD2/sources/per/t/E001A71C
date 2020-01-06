@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571690161557.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3886887698",
+    "id" : "E001A71C",
+    "lastKnownWriteTime" : 1572441584,
+    "last_content_update" : 1578335023625,
+    "path" : "E:/GitHub/geospatial-r-github/point-pattern-analysis.Rmd",
+    "project_path" : "point-pattern-analysis.Rmd",
+    "properties" : {
+        "cursorPosition" : "52,37",
+        "scrollLine" : "32",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 15,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

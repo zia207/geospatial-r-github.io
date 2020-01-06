@@ -1,2 +1,0 @@
-"0","train.xy$REG.SOC.bc<-predict(stack.rf,train.x)"
-"0","train.xy$residuals.stack<-(train.xy$SOC.bc-train.xy$REG.SOC.bc)"

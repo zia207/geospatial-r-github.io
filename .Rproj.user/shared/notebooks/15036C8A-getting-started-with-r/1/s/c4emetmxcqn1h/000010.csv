@@ -1,0 +1,4 @@
+"0","# Define working directory"
+"0","setwd(""~\\Data\\DATA_01"")  "
+"2","Error in setwd(""~\\Data\\DATA_01"") : cannot change working directory
+"

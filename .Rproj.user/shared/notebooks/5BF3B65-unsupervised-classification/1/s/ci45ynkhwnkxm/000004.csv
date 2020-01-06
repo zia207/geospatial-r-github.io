@@ -1,2 +1,0 @@
-"0","#s=stack(BLUE, GREEN, RED, NIR,SWIR1,SWIR2)"
-"0","multi=stack(paste0(dataFolder,"".\\Sentinel_2\\multi_bands.tif""))"

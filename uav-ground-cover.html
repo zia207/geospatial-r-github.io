@@ -193,7 +193,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -205,7 +205,7 @@ $(document).ready(function () {
       <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -226,7 +226,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
@@ -298,7 +298,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -460,7 +460,7 @@ nir = as(b5, &quot;SpatialGridDataFrame&quot;) # NIR band</code></pre>
 <div id="bare-soil-line" class="section level3">
 <h3>Bare Soil Line</h3>
 <p>The soil line is a linear relationship between the reflectance of the NIR and the Red bands for bare soil, is derived:</p>
-<p><img src="Image/PNG_FILE_08/equ_bare_soil.png" width="40%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/equ_bare_soil.png" width="40%" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -468,7 +468,7 @@ nir = as(b5, &quot;SpatialGridDataFrame&quot;) # NIR band</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
-<p><img src="Image/PNG_FILE_08/baressoil.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/baressoil.png" width="60%" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -506,7 +506,7 @@ Intercept = round(a0,3)</code></pre>
 <div id="perpendicular-vegetation-index" class="section level3">
 <h3>Perpendicular Vegetation Index</h3>
 <p>Perpendicular Vegetation Index (PVI) any point calculated as:</p>
-<p><img src="Image/PNG_FILE_08/PVI.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/PVI.png" width="50%" style="display: block; margin: auto;" /></p>
 <p>Where, in which a1 and a0 are the slope and intercept, respectively, of the bare soil line.</p>
 <pre class="r"><code>a2= (1+a1^2)^0.5 # nominator of the  equations 
 # PVI
@@ -522,7 +522,7 @@ PVI.1&lt;-PVI/100</code></pre>
     ggtitle(&quot;Perpendicular Vegetation Index (PVI)&quot;)</code></pre>
 <p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>PVI associated with full vegetation canopy (PV1-FC):</p>
-<p><img src="Image/PNG_FILE_08/PVI_FC.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/PVI_FC.png" width="50%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># NIR and Red values at full Grouncover
 FC.b2 = bsl$top[[1]]  # Red value at Full ground cover 
 FC.b5 = bsl$top[[2]]  # NIR value at Full ground cover 
@@ -534,7 +534,7 @@ PVI.FC </code></pre>
 <div id="ground-cover" class="section level3">
 <h3>Ground Cover</h3>
 <p>An approximate value of GC associated with any point can be calculated as the ratio of PVI and PVI-FC of corressponding full canopy:</p>
-<p><img src="Image/PNG_FILE_08/GC.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/GC.png" width="50%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Calculate fraction of GC 
 GC = PVI/PVI.FC
 # Omit value greater than 1 and lower than 0 

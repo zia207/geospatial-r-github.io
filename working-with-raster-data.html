@@ -193,7 +193,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -205,7 +205,7 @@ $(document).ready(function () {
       <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -226,7 +226,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
@@ -298,7 +298,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -650,7 +650,7 @@ spplot(ELEV.CO, main = &quot;Quantile of DEM (m)&quot;,
 <p>Focal statistics calculate for each input cell location a statistic (mean, sum etc) of the values within a specified neighborhood around it. Conceptually, on execution, the algorithm visits each cell in the raster and calculates the specified statistic with the identified neighborhood. The cell for which the statistic is being calculated is referred to as the processing cell. The value of the processing cell, as well as all the cell values in the identified neighborhood, is included in the neighborhood statistics calculation. The neighborhoods can overlap so that cells in one neighborhood may also be included in the neighborhood of another processing cell. (Source:<a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)</p>
 <p>To illustrate the neighborhood processing for Focal Statistics calculating a Sum statistic, consider the processing cell with a value of 5 in the following diagram. A rectangular 3 by 3 cell neighborhood shape is specified. The sum of the values of the neighboring cells (3 + 2 + 3 + 4 + 2 + 1 + 4 = 19) plus the value of the processing cell (5) equals 24 (19 + 5 = 24). So a value of 24 is given to the cell in the output raster in the same location as the processing cell in the input raster.</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_05/focal.png" alt="Focal Statistics(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/focal.png" alt="Focal Statistics(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
 <p class="caption">
 Focal Statistics(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)
 </p>
@@ -813,7 +813,7 @@ s</code></pre>
 <h4>Slope</h4>
 <p>The slope is an incline, or steepness, of a surface. The slope can be measured in degrees from horizontal (0-90), or percent slope (which is the rise divided by the run, multiplied by 100). A slope of 30 and 45 degrees equals 58 and 100 percent slope, respectively. As the slope angle approaches vertical (90 degrees), the percent slope approaches infinity. The slope for a cell in a raster is the steepest slope of a plane defined by the cell and its eight surrounding neighbors. (Source: ESRI online GIS Dictionary).</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_05/slope.png" alt="Slope(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/slope.png" alt="Slope(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
 <p class="caption">
 Slope(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)
 </p>
@@ -833,7 +833,7 @@ Slope(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#
 <h4>Aspect</h4>
 <p>The compass direction that a slope faces is most commonly measured from degrees north. The Aspect command provides a 32-bit float raster that ranges from 0° and 360°. This represents the azimuth (the angular distance from the north to south point of the horizon that can be transversed by a vertical circle that intersects the horizon, which represents the direction of an object from the observer) that slopes are facing. In other words, 0° means that the slope is facing North, 90° indicates East, 180° indicates a Southward facing, and 270° is to the west. This however requires that the top of your input raster is north oriented, as most are. Values found in between these ranges assume a mixture of cardinal directions, ex. 250 indicates a hillside with a Southeast facing aspect. The aspect value -9999 is generally used as the ‘nodata’ value to indicate use of an undefined aspect in areas lacking variation in topography, with slope=0. You can also make use of the legend to indicate the appropriate aspect for each hillside in your study area. The legend permits you to identify North (~ 0 or 360 degrees), South (~ 180 degrees), East (~270 degrees) or West (~90 degrees) facing slopes).</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_05/aspect.png" alt="Aspect(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/aspect.png" alt="Aspect(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
 <p class="caption">
 Aspect(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)
 </p>
@@ -852,7 +852,7 @@ Aspect(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html
 <h4>Hillshade</h4>
 <p><a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm">A hillshade is a grayscale 3D representation of the surface, with the sun’s relative position taken into account for shading the image. This function uses the altitude and azimuth properties to specify the sun’s position.</a></p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_05/hillshade.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/hillshade.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
 <p class="caption">
 Hill Shade(Source: <a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm" class="uri">http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm</a>)
 </p>
@@ -914,7 +914,7 @@ plot(ELEV.CO, col=rainbow(50, alpha=0.35), add=TRUE)</code></pre>
 <p>A Plan curve is the measurement of the rate at which a horizontal curve changes. Positive and negative values respectively indicate divergence and convergence of a particular slope. Highlight a divergent slope, negative values a convergent slope.</p>
 <p>A Profile curve is conversely a vertical measurement of the change of a slope. Positive values indicate convexity, while negative values represent concave profiles.</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_05/curveture.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/curveture.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
 <p class="caption">
 Hill Shade(Source: <a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm" class="uri">http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm</a>)
 </p>

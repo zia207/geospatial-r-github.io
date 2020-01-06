@@ -1,0 +1,6 @@
+"0","mypalette.4 <- brewer.pal(8, ""YlGnBu"")"
+"0","spplot(mf, ""var.gwpca"", key.space = ""right"","
+"0","       col.regions = mypalette.4, cuts = 7, "
+"0","       sp.layout =list(polys),"
+"0","       col=""transparent"","
+"0","       main = ""Percent Total Variation for Local components 1 to 3"")"

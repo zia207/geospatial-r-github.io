@@ -1,0 +1,2 @@
+"0","df_incident$Percentage <- df_incident$Total / sum(df_incident$Total)"
+"0","df_incident"

@@ -1,4 +1,0 @@
-"0","MSAVI = NIR + 0.5 - (0.5 * sqrt((2 * NIR + 1)^2 - 8 * (NIR - (2 * RED))))"
-"0","ggR(MSAVI, geom_raster = TRUE) +"
-"0","   scale_fill_gradientn(""MSAVI"", colours = c(""red"", ""yellow"", ""green"", ""blue""))+"
-"0","    ggtitle(""Modified Soil Adjusted Vegetation Index (MSAVI)"")"

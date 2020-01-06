@@ -1,0 +1,4 @@
+"0","city_gcs <- spTransform(city, CRS(""+proj=longlat +datum=WGS84""))"
+"0","city_gcs <- fortify(city_gcs)"
+"2","Regions defined for each Polygons
+"

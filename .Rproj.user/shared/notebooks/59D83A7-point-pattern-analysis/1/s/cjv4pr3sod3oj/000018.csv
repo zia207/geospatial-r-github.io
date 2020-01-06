@@ -1,0 +1,8 @@
+"0","plot <- ggplot(df_arrest_time_crime, aes(x = hour_of_day, y = day_of_week, fill = count)) +"
+"0","  geom_tile() +"
+"0","  facet_wrap(~ incident_type, nrow=2)+"
+"0","  # fte_theme() +"
+"0","  theme(axis.text.x = element_text(angle = 90, vjust = 0.6, size = 4))+"
+"0","  labs(x = ""Hour at Crime Committed"", y = ""Day of the Week"", title = ""Number of Cimes Committed  at City of Buffalo, 2018"") +"
+"0","  scale_fill_gradient(low = ""white"", high = ""#27AE60"")"
+"0"," plot"

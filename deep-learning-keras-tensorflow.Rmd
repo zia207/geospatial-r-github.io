@@ -1,8 +1,23 @@
 ---
-title: "Deep Neural Network Supervised Image Classification with Keras/TensorFlow"
+title: ''
 ---
-<div style="margin-bottom:40px;">
+
+<div style="margin-bottom:10px;">
 </div>
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\DNN_TensorFlow.png')
+```
+
+<div style="margin-bottom:30px;">
+</div>
+
+# Deep Neural Network Supervised Image Classification with Keras/TensorFlow
 
 [**Deep Neural Network**](http://neuralnetworksanddeeplearning.com/chap6.html) or [**Deep Dearning**](https://en.wikipedia.org/wiki/Deep_learning)is based on a multi-layer feed forward artificial neural network that is trained with stochastic gradient descent using back-propagation. The network can contain many hidden layers consisting of neurons with activation functions. Advanced features such as adaptive learning rate, rate annealing, momentum training, dropout, L1 or L2 regularization, check pointing, and grid search enable high predictive accuracy. Each compute node trains a copy of the global model parameters on its local data with multi-threading (asynchronously) and contributes periodically to the global model via model averaging across the network.
 
@@ -12,9 +27,9 @@ This tutorial  will show how to implement [Deep Neural Network](https://en.wikip
 
 * [NVIDIA GUP](https://developer.nvidia.com/cuda-gpus): First, you must make sure weather your computer is running with [NVIDIA® GPU](https://developer.nvidia.com/cuda-gpus) or not. Follow the instruction as described  [here](http://nvidia.custhelp.com/app/answers/detail/a_id/2040/~/identifying-the-graphics-card-model-and-device-id-in-a-pc)
 
-* [CUDA Toolkit v9.0](https://developer.nvidia.com/cuda-90-download-archive?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exelocal): If you have an NVIDIA® GPU in your system, you need to download and install [CUDA Toolkit  v9.0](https://developer.nvidia.com/cuda-90-download-archive?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exelocal). Detail installation steps can be found [here](http://nvidia.custhelp.com/app/answers/detail/a_id/2040/~/identifying-the-graphics-card-model-and-device-id-in-a-pc)
+* [CUDA® Toolkit](https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Windows&target_arch=x86_64): If you have an NVIDIA® GPU in your system, you need to download and install CUDA Toolkit  v10.0. Detail installation steps can be found [here](http://nvidia.custhelp.com/app/answers/detail/a_id/2040/~/identifying-the-graphics-card-model-and-device-id-in-a-pc)
 
-* [cuDNN v7.0](https://developer.nvidia.com/cudnn): The download the zip file version [cuDNN v7.0](https://developer.nvidia.com/cudnn) for your CUDA Toolkit v9.0.You need to extract the zip file and add the location where you extracted it to your system PATH.  Detail installation steps can be found here [here](F:\DeepLearning_tutorial\Satellite_Image_Calssification\h20_R_ImageCalssification\keras_R\Detail installation steps are described here). 
+* [cuDNN SDK 7.4.1](https://developer.nvidia.com/cudnn): The download the zip file version [cuDNN v7.0](https://developer.nvidia.com/cudnn) for your CUDA Toolkit v9.0.You need to extract the zip file and add the location where you extracted it to your system PATH.  Detail installation steps can be found here [here](F:\DeepLearning_tutorial\Satellite_Image_Calssification\h20_R_ImageCalssification\keras_R\Detail installation steps are described here). 
 
 Detail installation steps of Keras back-end GPU or CUP version of Tensorflow can be found [here](https://tensorflow.rstudio.com/keras/reference/install_keras.html).
 
@@ -30,20 +45,20 @@ library(dplyr)
 library(plyr)
 library(keras)         # karas api in R
 library(tfruns)        # Create and manage unique directories for each 'TensorFlow' training run. 
-library(tfestimators) # Interface to 'TensorFlow' Estimators 
+library(tfestimators)  # Interface to 'TensorFlow' Estimators 
 ```
 
 <div style="margin-bottom:20px;">
 </div>
 
-The data could be available for download from [here](https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0).
+The data could be available for download from [here](https://www.dropbox.com/s/a1pxx8we5r2p1zs/Data_RS_DNN.7z?dl=0).
 
 <div style="margin-bottom:20px;">
 </div>
 
 ```{r}
 # Define data folder
-dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//"
+dataFolder<-"D:/Dropbox/WebSite_Data/R_Data/Data_RS_DNN/"
 ```
 
 #### Load point and grid data
@@ -157,7 +172,7 @@ model %>% compile(
 ```{r message=F, warning=F}
 history<-model %>% fit(
   training, trainingtarget, 
-  epochs = 50, 
+  epochs = 10, 
   batch_size = 100, 
   shuffle = TRUE,
   validation_split = 0.2

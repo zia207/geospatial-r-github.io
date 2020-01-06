@@ -193,7 +193,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -205,7 +205,7 @@ $(document).ready(function () {
       <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -226,7 +226,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
@@ -298,7 +298,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -434,7 +434,7 @@ SWIR1&lt;- raster(paste0(dataFolder,&quot;//Landsat8//Landsat8_PROCESSED//_B6_sr
 <p>The <strong>Normalized Difference Vegetation Index (NDVI)</strong> is an index of plant “greenness” or photosynthetic activity, and is one of the most commonly used vegetation indices. Vegetation indices are based on the observation that different surfaces reflect different types of light differently. Photosynthetically active vegetation, in particular, absorbs most of the red light that hits it, while reflecting much of the near infrared light. Vegetation that is dead or stressed reflects more red light and less near infrared light. The biophysical interpretation of NDVI is the fraction of absorbed photosynthetically active radiation.</p>
 <p><strong>NDVI</strong> is calculated as:</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_08/NDVI.png" alt="Clipping" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/NDVI.png" alt="Clipping" width="40%" />
 <p class="caption">
 Clipping
 </p>
@@ -452,7 +452,7 @@ ggR(NDVI, geom_raster = TRUE) +
 <p>This index is similar to NDVI, but it suppresses the effects of pixels containing bare soil, by incorporating a canopy background adjustment factor, L, into the calculations. L is a function of vegetation density, which can be based on prior knowledge of vegetation amounts. In the absence of such knowledge, Huete (1988) suggests using a value of L=0.5 to account for first-order soil background variations. This index is best used in areas with relatively sparse vegetation where soil is visible through the canopy.</p>
 <p>** Soil Adjusted Vegetation Inde (SAVI)** is calculated as:</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_08/SAVI.png" alt="Clipping" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/SAVI.png" alt="Clipping" width="40%" />
 <p class="caption">
 Clipping
 </p>
@@ -470,7 +470,7 @@ ggR(SAVI, geom_raster = TRUE) +
 <p>The <strong>modified soil-adjusted vegetation index (MSAVI)</strong> addresses some of the limitations of the NDVI when applied to areas with a high degree of exposed soil surface. The problem with the original soil-adjusted vegetation index (SAVI) is that it required specifying the soil-brightness correction factor (L) through trial-and-error based on the amount of vegetation in the study area or using a “one size fits all” correction factor of 0.5 To more reliably and simply calculate a soil brightness correction factor, Qi et al. (1994a) developed MSAVI (Qi et al. 1994b).</p>
 <p><strong>MSAVI</strong> is calculated as:</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_08/MSAVI.png" alt="Clipping" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/MSAVI.png" alt="Clipping" width="40%" />
 <p class="caption">
 Clipping
 </p>
@@ -487,7 +487,7 @@ ggR(MSAVI, geom_raster = TRUE) +
 <p>The Enhanced Vegetation Index (EVI) was also developed to address some of the limitations of the NDVI. The EVI was developed for areas with high biomass, which cause a problem for the NDVI. It reduces the influence of atmospheric conditions on vegetation index values, and corrects for canopy background signals. Accordingly, EVI tends to be more sensitive than NDVI to plant canopy differences like leaf area index (LAI), canopy structure, and plant phenology.</p>
 <p>EVI is calculated as:</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_08/EVI.png" alt="Clipping" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/EVI.png" alt="Clipping" width="40%" />
 <p class="caption">
 Clipping
 </p>
@@ -514,7 +514,7 @@ ggR(EVI, geom_raster = TRUE) +
 <p>A two-band Enhanced Vegetation Index (EVI2) without the blue band reflectance has recently been developed as a proxy for the phenology, quantity, and activity of vegetation . EVI2 has several advantages over NDVI including the ability to resolve LAI differences for vegetation with different background soil reflectance values.</p>
 <p><strong>EVI2</strong> is calculated as:</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_08/EVI2.png" alt="Clipping" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/EVI2.png" alt="Clipping" width="40%" />
 <p class="caption">
 Clipping
 </p>
@@ -532,7 +532,7 @@ ggR(EVI2, geom_raster = TRUE) +
 <p>The NDWI index is designed for water body mapping. A water body has strong absorbability and low radiation in the visible to infrared range of wavelengths. Consequently, the green and Near Infra-red bands from remote sensing images are used in the calculation of the index. The NDWI can usually enhance the detection of water bodies</p>
 <p><strong>NDWI</strong> is calculated as:</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_08/NDWI.png" alt="Clipping" width="30%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/NDWI.png" alt="Clipping" width="30%" />
 <p class="caption">
 Clipping
 </p>

@@ -1,4 +1,0 @@
-"0","state<-shapefile(paste0(dataFolder,""GP_STATE.shp""))"
-"0","train<-read.csv(paste0(dataFolder,""train_data.csv""), header= TRUE) "
-"0","grid<-read.csv(paste0(dataFolder, ""GP_prediction_grid_data.csv""), header= TRUE)"
-"0","grid.xy<-grid[,1:3]"

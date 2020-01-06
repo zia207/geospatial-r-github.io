@@ -1,5 +1,0 @@
-"0","set.seed(25)"
-"0","unC_05 <- unsuperClass(multi,	# raster stack"
-"0","	nSamples = 100,	            # Number of random samples to draw to fit cluster map "
-"0","	nClasses= 5,		            # Number of classes	 "
-"0","	nStarts = 5)		            # Number of random starts for kmeans algorithm."

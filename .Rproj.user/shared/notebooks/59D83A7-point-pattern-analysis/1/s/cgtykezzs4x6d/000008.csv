@@ -1,0 +1,3 @@
+"0","df_incident <- as.data.frame(sort(table(df$incident_type),decreasing = TRUE))"
+"0","colnames(df_incident) <- c(""Incident_Type"", ""Total"")"
+"0","df_incident"

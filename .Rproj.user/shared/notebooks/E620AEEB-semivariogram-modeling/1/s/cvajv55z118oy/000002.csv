@@ -1,2 +1,0 @@
-"0","plot(v, pl=F, model=m.exp.f,col=""black"", cex=1, lwd=0.5,lty=1,pch=20,"
-"0","     main=""Variogram models - Exponential"",xlab=""Distance (m)"",ylab=""Semivariance"")"

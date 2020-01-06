@@ -1,0 +1,3 @@
+"0","loadings.pc1 <- gw.pca$loadings[, , 1]"
+"0","win.item = max.col(abs(loadings.pc1))"
+"0","mf$win.item <- win.item"

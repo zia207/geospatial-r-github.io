@@ -1,2 +1,0 @@
-"0","plot(v.cross, model = g.fit, xlab=""Distance (m)"", "
-"0","    ylab=""Semivariance"",col=""black"", pch=20)"

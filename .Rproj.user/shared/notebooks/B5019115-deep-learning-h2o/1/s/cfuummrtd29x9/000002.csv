@@ -1,2 +1,0 @@
-"0","point<-read.csv(paste0(dataFolder,"".\\Sentinel_2\\point_data.csv""), header = T)"
-"0","grid<-read.csv(paste0(dataFolder,"".\\Sentinel_2\\prediction_grid_data.csv""), header = T)"

@@ -1,3 +1,0 @@
-"0","df.county<-read.csv(paste0(dataFolder, ""mean_data.csv""), stringsAsFactors = FALSE, check.names=FALSE)"
-"0","county<-shapefile(paste0(dataFolder,""COUNTY_ATLANTIC.shp""))"
-"0","state<-shapefile(paste0(dataFolder,""STATE_ATLANTIC.shp""))"

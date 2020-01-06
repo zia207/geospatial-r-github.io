@@ -1,4 +1,0 @@
-"0","Gcuts <- cut(Gi, 5)"
-"0","Gcutsi <- as.integer(Gcuts)"
-"0","cols <- rev(gray(seq(0,1,.2)))"
-"0","plot(SPDF, col=cols[Gcutsi])"

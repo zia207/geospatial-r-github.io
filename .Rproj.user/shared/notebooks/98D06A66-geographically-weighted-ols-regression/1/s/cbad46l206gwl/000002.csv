@@ -1,0 +1,3 @@
+"0","grid$NDVI_slope<-g.soc$SDF$NDVI                   # Slope NDVI"
+"0","grid$ELEV_slope<-g.soc$SDF$ELEV                  # Slope Elevation "
+"0","grid$Intercept<-g.soc$SDF$'(Intercept)'           # Local Intercept"

@@ -1,5 +1,0 @@
-"0","plot(v$gamma ~ v$dist, xlim = c(0, max(v$dist) * 1.05),"
-"0","ylim=c(0,2),"
-"0","pch = 19, col = ""black"",cex=.5,"
-"0","cex.axis = 0.8, cex.lab=1, xlab = list(""Distance (m)"",cex=1), ylab =list(""Semivariance"",cex=1),"
-"0","main=list(""Semi-variogram of 100 Realizations"",cex=1))"

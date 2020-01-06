@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571415420340.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2227773000",
+    "id" : "CB6F2A21",
+    "lastKnownWriteTime" : 1571419553,
+    "last_content_update" : 1571419553655,
+    "path" : "E:/GitHub/geospatial-r-github/getting-started-with-r.Rmd",
+    "project_path" : "getting-started-with-r.Rmd",
+    "properties" : {
+        "cursorPosition" : "676,72",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 12,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

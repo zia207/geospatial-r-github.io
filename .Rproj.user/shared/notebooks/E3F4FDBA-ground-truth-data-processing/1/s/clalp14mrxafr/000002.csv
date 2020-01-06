@@ -1,4 +1,0 @@
-"0","poly <- shapefile(paste0(dataFolder, "".\\Sentinel_2\\GroundTruth_data.shp""))  "
-"2",".prj file is missing"
-"0","# define projection"
-"0","crs(poly) <- ""+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs"" "

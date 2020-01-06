@@ -1,8 +1,0 @@
-"0","wide.df<-read.csv(paste0(dataFolder, ""Lung_cancer_1998_2012.csv""), stringsAsFactors = FALSE, check.names=FALSE)"
-"0","# add id variable"
-"0","wide.df$id <- c(1:738) # total 738 counties"
-"0","# change name of first variable"
-"0","colnames(wide.df)[1] <- 'FIPS'"
-"0","# convert from wide to long"
-"0","long.df<- reshape2::melt(wide.df, id.vars=c(""FIPS"",""id""))"
-"0","head(long.df)"

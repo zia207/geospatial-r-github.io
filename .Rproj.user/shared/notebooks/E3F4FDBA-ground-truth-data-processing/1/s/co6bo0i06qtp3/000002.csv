@@ -1,3 +1,0 @@
-"0","multi=stack(paste0(dataFolder,"".\\Sentinel_2\\multi_bands.tif""))"
-"0","# rename the bands"
-"0","names(multi) <- c(""B2"", ""B3"",""B4"",""B5"",""B6"",""B7"",""B8"",""B8A"",""B11"",""B12"")"

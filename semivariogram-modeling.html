@@ -193,7 +193,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -205,7 +205,7 @@ $(document).ready(function () {
       <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -226,7 +226,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
@@ -298,7 +298,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -389,7 +389,7 @@ $(document).ready(function () {
 
 
 <p>Semivariogram is a function describing the degree of spatial correlation of a spatial random variable. In spatial modeling, semivariogram begins with a graph of the empirical semivariogram, which is the half of average squared difference between points separated by a distance. The semivariogram is calculated as:</p>
-<p><img src="Image/PNG_FILE_07/Vario.png" width="30%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/Vario.png" width="30%" style="display: block; margin: auto;" /></p>
 <p>Where, Nh is the number of pairs separated by vector h, vector h is lag distance, xi is the starting location and xi+h is the ending location. If y is only dependent on the length of lag distance but not its direction.</p>
 <p>The semivariogram is directly related to covariance function, which measure the strength of statistical correlation or similarity as a function of distance. Unlike covariance function function, the experimental semivariogram measures the average dissimilarity between data separated by distance by vector h (lag distance). The distances between pairs at which the average semivariogram is calculated are called <strong>lags</strong>.</p>
 <p>In this exercises we will cover:</p>
@@ -505,12 +505,12 @@ v</code></pre>
 <h3>Fitting Variogram Model</h3>
 <p>After the experimental variogram is computed, we usually observe semivarince in variogram plot and then select a reasonable model to fit a semivariogram curve to the empirical data. Least square method is applied to fit variogram in accordance with the principle of minimum variance estimate. The goal is to achieve the best fit, and also incorporate our knowledge of the phenomenon in the model. The model parameters will then be used in kriging predictions.</p>
 <p>There are several parameters can be calculated from fitted model. The height that the semivariogram reaches when it levels off or the value at which the model first flattens out is called the <strong>sill</strong>. It is often composed of two parts: <strong>nugget</strong> and <strong>partial sill</strong>. A discontinuity at the origin or the value at which the semi-variogram (almost) intercepts the y-value, called <strong>nugget</strong> effect. The nugget effect explains measurement error and microscale variation. The distance at which the sill first flattens out is call <strong>range</strong>. In <strong>gstat</strong> models the sill is specified as a <strong>partial sill</strong>, that is, the difference between the total sill and the nugget. This is also known as the <strong>structural sill</strong>.</p>
-<p><img src="Image/PNG_FILE_07/Fit.vario.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/Fit.vario.png" width="50%" style="display: block; margin: auto;" /></p>
 <p>There are several models available in <strong>gstat</strong> package to fit the variogram. We can see the forms of all the models in gstat with the <strong>show.vgms()</strong> function.</p>
 <pre class="r"><code>show.vgms()</code></pre>
 <p><img src="semivariogram-modeling_files/figure-html/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>The most common model of variogram mainly includes <strong>linear model, spherical model, exponential model, and Gaussian model</strong> and so on. The mathematical expressions of these models are as follows:</p>
-<p><img src="Image/PNG_FILE_07/Varo_model.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/Varo_model.png" width="60%" style="display: block; margin: auto;" /></p>
 <ul>
 <li><p>For the nugget effect model, the sill is reached as soon as h &gt; 0</p></li>
 <li><p>The spherical model reaches its sill at distance (actual range)</p></li>

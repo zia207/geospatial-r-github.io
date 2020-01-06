@@ -1,7 +1,0 @@
-"0","df<-as.data.frame(train)"
-"0","##  define coordinates"
-"0","xy <- df[,8:9]"
-"0","SOC<-as.data.frame(df[,10])"
-"0","names(SOC)[1]<-""SOC"""
-"0","# Convert to spatial point"
-"0","SPDF <- SpatialPointsDataFrame(coords = xy, data=SOC) "

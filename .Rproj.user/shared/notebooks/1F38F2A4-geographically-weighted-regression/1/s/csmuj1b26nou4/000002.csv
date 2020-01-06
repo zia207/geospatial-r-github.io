@@ -1,0 +1,3 @@
+"0","plot(sorted.models[[2]][,2], col = ""black"", pch = 20, lty = 5,"
+"0","    main = ""Alternative view of GWR model selection procedure"","
+"0","    ylab = ""AICc"", xlab = ""Model number"", type = ""b"")"

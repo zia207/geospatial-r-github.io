@@ -193,7 +193,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -205,7 +205,7 @@ $(document).ready(function () {
       <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -226,7 +226,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
@@ -298,7 +298,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -394,7 +394,7 @@ $(document).ready(function () {
 <p>The <strong>coordinate reference system (CRS)</strong> or <strong>spatial reference system (SRS)</strong> is a coordinate based system used to locate features on the earth.</p>
 <p><strong>Map projections</strong> is a systematic transformation a location on the surface of the earth or a portion of the earth (sphere or an ellipsoid) into on a plane (flat piece of paper or computer screen).</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_03/Pic0.png" alt="Map Projection (Source: (https://www.statcan.gc.ca/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm)" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_03/Pic0.png" alt="Map Projection (Source: (https://www.statcan.gc.ca/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm)" width="40%" />
 <p class="caption">
 Map Projection (Source: (<a href="https://www.statcan.gc.ca/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm" class="uri">https://www.statcan.gc.ca/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm</a>)
 </p>
@@ -426,21 +426,21 @@ Map Projection (Source: (<a href="https://www.statcan.gc.ca/pub/92-195-x/2011001
 <h3>Geographic coordinate system (GCS)</h3>
 <p>Geographic coordinate systems use latitude and longitude to measure and locate feature on the globe. The GCS defines a position as a function of direction and distance from a center point of the globe, where the units of measurement are degrees. Any location on earth can be referenced by a point with longitude and latitude coordinates. For example, below figure shows a geographic coordinate system where a location is represented by the coordinate’s longitude 80 degree East and latitude 55 degree North.</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_03/Pic1.png" alt="A Geographic coordinate system. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)" width="30%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_03/Pic1.png" alt="A Geographic coordinate system. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)" width="30%" />
 <p class="caption">
 A Geographic coordinate system. (Source: <a href="http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html" class="uri">http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html</a>)
 </p>
 </div>
 <p>The equidistant lines that run east and west each have a constant latitude value called <strong>parallels</strong>. The <strong>equator</strong> is the largest circle and divides the earth in half. It is equal in distance from each of the poles, and the value of this latitude line is zero. Locations north of the equator has positive latitudes that range from <strong>0 to +90 degrees</strong>, while locations south of the equator have negative latitudes that range from <strong>0 to -90 degrees</strong>.</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_03/Pic2.png" alt="Latitude lines. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)" width="30%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_03/Pic2.png" alt="Latitude lines. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)" width="30%" />
 <p class="caption">
 Latitude lines. (Source: <a href="http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html" class="uri">http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html</a>)
 </p>
 </div>
 <p>The lines that run through north and south each have a constant longitude value and form circles of the same size around the earth known as <strong>meridians</strong>. The <strong>prime meridian</strong> is the line of longitude that defines the origin (zero degrees) for longitude coordinates. One of the most commonly used prime meridian locations is the line that passes through Greenwich, England. Locations east of the prime meridian up to its antipodal meridian (the continuation of the prime meridian on the other side of the globe) have positive longitudes ranging from <strong>0 to +180 degrees</strong>. Locations west of the prime meridian has negative longitudes ranging from <strong>0 to -180 degrees</strong>.</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_03/Pic3.png" alt="Longitude lines. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)" width="30%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_03/Pic3.png" alt="Longitude lines. (Source: http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html)" width="30%" />
 <p class="caption">
 Longitude lines. (Source: <a href="http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html" class="uri">http://www.ibm.com/support/knowledgecenter/SSEPGG_10.1.0/com.ibm.db2.luw.spatial.topics.doc/doc/csb3022a.html</a>)
 </p>
@@ -480,14 +480,14 @@ Longitude lines. (Source: <a href="http://www.ibm.com/support/knowledgecenter/SS
 <h4>Universal Transverse Mercator</h4>
 <p>The most widely used two-dimensional Cartesian coordinate system is the <strong>Universal Transverse Mercator (UTM)</strong> system which represents a horizontal position on the globe and can be used to identify positions without having to know their vertical location on the ‘y’ axis. The UTM system is not a single map projection. It represents the earth as sixty different zones, each composed of six-degree longitudinal bands, with a secant transverse Mercator projection in each. The UTM system divides the Earth between 80 S and 84 N latitude into 60 zones, each 6 of longitude in width. Zone 1 covers longitude 180 to 174 W; zone numbering increases eastward to zone 60, which covers longitude 174 to 180?.</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_03/Pic4.png" alt="UTM zones.(Source: https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system)" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_03/Pic4.png" alt="UTM zones.(Source: https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system)" width="40%" />
 <p class="caption">
 UTM zones.(Source: <a href="https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system" class="uri">https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system</a>)
 </p>
 </div>
 <p>The Universal Transverse Mercator grid that covers the conterminous 48 United States comprises 10 zones, from Zone 10 on the west coast through Zone 19 in New England <a href="https://pubs.usgs.gov/fs/2001/0077/report.pdf">USGS, 2001</a>.The New York State falls in zones <strong>17N (EPSG 26917)</strong> and <strong>zone 18N (EPSG: 26918)</strong> with North American Datum 1983 (NAD83).</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_03/Pic5.png" alt="UTM zones of conterminous 48 United States. (Source: https://pubs.usgs.gov/fs/2001/0077/report.pdf)" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_03/Pic5.png" alt="UTM zones of conterminous 48 United States. (Source: https://pubs.usgs.gov/fs/2001/0077/report.pdf)" width="40%" />
 <p class="caption">
 UTM zones of conterminous 48 United States. (Source: <a href="https://pubs.usgs.gov/fs/2001/0077/report.pdf" class="uri">https://pubs.usgs.gov/fs/2001/0077/report.pdf</a>)
 </p>
@@ -590,7 +590,7 @@ UTM zones of conterminous 48 United States. (Source: <a href="https://pubs.usgs.
 <h4>Albers Equal Area Conic</h4>
 <p>Albers Equal Area Conic projection system uses two standard parallels to reduce the distortion of shape in the region between the standard parallels. This projection is best suited for area extending in an east-to-west orientation like the conterminous United States. Used for the conterminous United States, normally using 29-30 and 45-30 as the two standard parallels. For this projection, the maximum scale distortion for the 48 states of the conterminous United States is 1.25 percent.</p>
 <div class="figure" style="text-align: center">
-<img src="Image/PNG_FILE_03/Pic6.png" alt="Albers Equal Area Conic. (Source: http://www.georeference.org/doc/albers_conical_equal_area.htm)" width="40%" />
+<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_03/Pic6.png" alt="Albers Equal Area Conic. (Source: http://www.georeference.org/doc/albers_conical_equal_area.htm)" width="40%" />
 <p class="caption">
 Albers Equal Area Conic. (Source: <a href="http://www.georeference.org/doc/albers_conical_equal_area.htm" class="uri">http://www.georeference.org/doc/albers_conical_equal_area.htm</a>)
 </p>

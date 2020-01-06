@@ -1,0 +1,2 @@
+"0","gwss.pm25 <- gwss(SPDF,vars = c(""Rate"", ""PM25""),"
+"0","               kernel=""bisquare"", adaptive=TRUE, bw=48)"

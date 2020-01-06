@@ -1,1 +1,0 @@
-"0","data.txt = read.table(""F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_01//test_data.txt"", header=T)   # read txt files"

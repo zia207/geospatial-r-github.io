@@ -1,5 +1,0 @@
-"0","# Define data folder"
-"0","dataFolder<-""F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"""
-"0","COUNTY<-shapefile(paste0(dataFolder,""COUNTY_ATLANTIC.shp""))"
-"0","state<-shapefile(paste0(dataFolder,""STATE_ATLANTIC.shp""))"
-"0","df<-read.csv(paste0(dataFolder,""data_atlantic_1998_2012.csv""), header=T)"

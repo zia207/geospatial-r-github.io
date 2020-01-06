@@ -1,0 +1,5 @@
+"0","# Define data folder"
+"0","dataFolder<-""D:\\Dropbox\\WebSite_Data\\R_Data\\Data_Crime\\"""
+"0","df<-read.csv(paste0(dataFolder,""crime_data_2018.csv""), header = TRUE)"
+"0","city<-shapefile(paste0(dataFolder,""buffalo_city.shp""))"
+"0","crime_loc<-shapefile(paste0(dataFolder,""Crime_location_2018.shp""))"

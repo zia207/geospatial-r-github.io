@@ -1,0 +1,3 @@
+"0","df$NDVI_slope<-gwrG$SDF$NDVI      # Slope NDVI"
+"0","df$ELEV_slope<-gwrG$SDF$ELEV      # Slope Elevation "
+"0","df$R2<-gwrG$SDF$localR2           # Local R2"

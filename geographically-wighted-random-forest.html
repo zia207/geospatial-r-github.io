@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>geographically-wighted-random-forest.utf8</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div style="margin-bottom:10px;">
+
+</div>
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="geographically-weighted-random-forest-regression-gwrfr" class="section level1">
+<h1>Geographically Weighted Random Forest Regression (GWRFR)</h1>
+<p>“Geographical Random Forest (GRF) is a spatial analysis method using a local version of the Random Forest Regresson Model. It allows for the investigation of the existence of spatial non-stationarity, in the relationship between a dependent and a set of independent variables. The latter is possible by fitting a sub-model for each observation in space, taking into account the neighbouring observations. This technique adopts the idea of the Geographically Weighted Regression, Kalogirou (2003). The main difference between a tradition (linear) GWR and GRF is that we can model non-stationarity coupled with a flexible non-linear model which is very hard to overfit due to its bootstrapping nature, thus relaxing the assumptions of traditional Gaussian statistics. Essential it was designed to be a bridge between machine learning and geographical models, combining inferential and explanatory power. Additionally, it is suited for datasets with numerous predictors, due to the robust nature of the random forest algorithm in high dimensionality.”</p>
+<p>Geographical Weighted Random Forest (GRF) is based on the concept of spatially varying coefficient models (Fotheringham et al. 2003) where a global process becomes a decomposition of several local sub-models and can be used as a predictive and/or explanatory tool <a href="https://www.tandfonline.com/doi/full/10.1080/10106049.2019.1595177">(Geogoans et al, 2018)</a>.</p>
+<p>To implement the GRF we use a recently developed R package <strong>SpatialML</strong> (Kalogirou and Georganos 2018; “SpatialML.” R Foundation for Statistical Computing)</p>
+<div id="load-r-packages" class="section level5">
+<h5>Load R packages</h5>
+<pre class="r"><code>library(GWmodel)      ### GW models
+library(sp)           ## Data management
+library(spdep)        ## Spatial autocorrelation
+library(RColorBrewer) ## Visualization
+library(classInt)     ## Class intervals
+library(raster)       ## spatial data
+library(grid)         # plot
+library(gridExtra)    # Multiple plot
+library(ggplot2)      # Multiple plot
+library(gtable)
+library(SpatialML)    # Geographically weigted regression</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>The data could be found <a href="https://www.dropbox.com/s/sngfyskys1jwvet/Data_GWR.7z?dl=0">here</a>.</p>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;D:\\Dropbox\\WebSite_Data\\R_Data\\Data_GWR\\&quot;
+county&lt;-shapefile(paste0(dataFolder,&quot;COUNTY_ATLANTIC.shp&quot;))
+state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))
+df&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), header=T)</code></pre>
+</div>
+<div id="scale-co-variates" class="section level4">
+<h4>Scale co-variates</h4>
+<pre class="r"><code>df[, 5:9] = scale(df[, 5:9])</code></pre>
+</div>
+<div id="crossvalidation-of-bandwidth-for-geographically-weighted-rf-regression" class="section level3">
+<h3>Crossvalidation of bandwidth for Geographically weighted RF regression</h3>
+<p>Tthe local model of random forest uses same syntax used in the randomForest function of the R package randomForest. This is a string that is passed to the sub-models’ randomForest function. For more details look at the class formula.</p>
+<pre class="r"><code>Coords&lt;-df[ ,2:3]
+grf.model &lt;- grf(Rate ~ POV+SMOK+PM25+NO2+SO2, 
+           dframe=df, 
+           bw=40,              # a positive number, in the case of an &quot;adaptive kernel&quot; or a real in the case of a &quot;fixed kernel&quot;.
+           ntree=500,          # n integer referring to the number of trees to grow for each of the local random forests.
+           kernel=&quot;adaptive&quot;,  # he kernel to be used in the regression. Options are &quot;adaptive&quot; or &quot;fixed&quot;.
+           forests = TRUE,     # a option to save and export (TRUE) or not (FALSE) all the local forests
+           coords=Coords)      # a numeric matrix or data frame of two columns giving the X,Y coordinates of the observations</code></pre>
+</div>
+<div id="global-variable-importnace" class="section level3">
+<h3>Global Variable Importnace</h3>
+<pre class="r"><code>grf.model$Global.Model$importance </code></pre>
+<pre><code>##       %IncMSE IncNodePurity
+## POV  38.76613      19719.63
+## SMOK 72.63104      30393.29
+## PM25 16.67705      11847.61
+## NO2  26.58366      16538.74
+## SO2  17.12622      12072.80</code></pre>
+</div>
+<div id="global-mean-mse-of-500-tree" class="section level3">
+<h3>Global Mean MSE of 500 tree</h3>
+<pre class="r"><code>mean(grf.model$Global.Model$mse)</code></pre>
+<pre><code>## [1] 66.40956</code></pre>
+</div>
+<div id="global-mean-r2-of-500-tree" class="section level3">
+<h3>Global Mean R2 of 500 tree</h3>
+<pre class="r"><code>mean(grf.model$Global.Model$rsq)</code></pre>
+<pre><code>## [1] 0.5437904</code></pre>
+</div>
+<div id="local-model-summary-and-goodness-of-fit-statistics-training-and-oob" class="section level3">
+<h3>Local Model Summary and goodness of fit statistics (training and OOB)</h3>
+<pre class="r"><code>grf.model$LocalModelSummary</code></pre>
+<pre><code>## $l.IncMSE
+##            Min      Max      Mean      StD
+## POV  -5.914213 15.85308  4.634047 4.601986
+## SMOK -5.962427 21.46248 11.591109 5.786405
+## PM25 -6.299668 14.60851  4.922689 3.995632
+## NO2  -5.467337 15.81189  5.314007 4.182360
+## SO2  -4.370045 13.71092  4.309744 3.458409
+## 
+## $l.IncNodePurity
+##           Min      Max     Mean      StD
+## POV  134.5841 2781.652 696.6469 394.9578
+## SMOK 137.2348 3406.479 975.1391 551.2890
+## PM25 141.5919 1721.042 622.7996 279.9274
+## NO2  150.8549 2172.585 644.3434 311.9908
+## SO2  141.6357 2436.053 607.0374 300.6673
+## 
+## $l.RSS.OOB
+## [1] 43292.69
+## 
+## $l.r.OOB
+## [1] 0.5534458
+## 
+## $l.RSS.Pred
+## [1] 10018.42
+## 
+## $l.r.Pred
+## [1] 0.8966623</code></pre>
+</div>
+<div id="local-feature-importance-incmse" class="section level3">
+<h3>Local feature importance (IncMSE)</h3>
+<pre class="r"><code>county@data$incMSE.SMOK=grf.model$Local.Pc.IncMSE$SMOK
+county@data$incMSE.POV=grf.model$Local.Pc.IncMSE$POV
+county@data$incMSE.PM25=grf.model$Local.Pc.IncMSE$PM25
+county@data$incMSE.NO2=grf.model$Local.Pc.IncMSE$NO2
+county@data$incMSE.SO2=grf.model$Local.Pc.IncMSE$SO2</code></pre>
+<div id="plot-local-feature-importance-incmse" class="section level4">
+<h4>Plot local feature importance (IncMSE)</h4>
+<pre class="r"><code>polys&lt;- list(&quot;sp.lines&quot;, as(state, &quot;SpatialLines&quot;), col=&quot;grey&quot;, lwd=.8,lty=1)
+col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;)</code></pre>
+<pre class="r"><code>col.palette.t&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;,&quot;pink&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;) 
+
+smok&lt;-spplot(county,&quot;incMSE.SMOK&quot;, main = &quot;Smoking&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))
+
+pov&lt;-spplot(county,&quot;incMSE.POV&quot;, main = &quot;Poverty&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))
+
+pm25&lt;-spplot(county,&quot;incMSE.PM25&quot;, main = &quot;PM25&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))
+
+no2&lt;-spplot(county,&quot;incMSE.NO2&quot;, main = &quot;NO2&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))
+
+so2&lt;-spplot(county,&quot;incMSE.NO2&quot;, main = &quot;SO2&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))</code></pre>
+<pre class="r"><code>grid.arrange(smok, pov,pm25,no2, so2,ncol=5, heights = c(30,6), top = textGrob(&quot;Local Feature Importance (IncMSE)&quot;,gp=gpar(fontsize=25)))</code></pre>
+<p><img src="geographically-wighted-random-forest_files/figure-html/unnamed-chunk-13-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="local-goodness-of-fit" class="section level3">
+<h3>Local goodness of fit</h3>
+<pre class="r"><code>county@data$loc_R2=grf.model$LGofFit$LM_Rsq100</code></pre>
+<pre class="r"><code>myPaletteRes &lt;- colorRampPalette(c(&quot;lightseagreen&quot;,&quot;lightsteelblue1&quot;, &quot;moccasin&quot;,&quot;hotpink&quot;, &quot;red&quot;))
+local_r2&lt;-spplot(county,&quot;loc_R2&quot;, main = &quot;Local R2 (%)&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=myPaletteRes(100))
+#windows(width=4, height=3.5)
+#tiff( file=&quot;FIG_GWRP_Std_Residuals.tif&quot;, 
+#      width=4, height=3.5,units = &quot;in&quot;, pointsize = 12, res=1600,
+#      restoreConsole = T,bg=&quot;transparent&quot;)
+print(local_r2)</code></pre>
+<p><img src="geographically-wighted-random-forest_files/figure-html/unnamed-chunk-15-1.png" width="384" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#dev.off() </code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

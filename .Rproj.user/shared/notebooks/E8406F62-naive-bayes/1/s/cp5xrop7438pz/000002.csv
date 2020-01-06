@@ -1,2 +1,0 @@
-"0","mc <- makeCluster(detectCores())"
-"0","registerDoParallel(mc)"

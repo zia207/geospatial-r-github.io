@@ -1,0 +1,3 @@
+"0","df_arrest_time_crime <- df %>%"
+"0","  group_by(incident_type, day_of_week, hour_of_day) %>% "
+"0","  summarize(count = n())"

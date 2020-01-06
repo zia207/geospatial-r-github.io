@@ -1,2 +1,0 @@
-"0","r <- raster(bd, res=10000)"
-"0","vr <- rasterize(v.gp, r, 'SOC')"

@@ -1,0 +1,1 @@
+"0","# data.csv =  read.csv(""~//DATA_01//test_data.csv"", header=T)     # read csv files"

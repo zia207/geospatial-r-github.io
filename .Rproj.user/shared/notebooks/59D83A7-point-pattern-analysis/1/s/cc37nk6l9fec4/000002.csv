@@ -1,0 +1,4 @@
+"0","# Create a data frame"
+"0","crime_df<- df %>%"
+"0","  select(incident_type, long, lat) %>%"
+"0","  filter(incident_type %in% c(""Theft"", ""Assault"",""Breaking & Entering"", ""Theft of Vehicle"")) "

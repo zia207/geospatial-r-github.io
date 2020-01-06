@@ -1,7 +1,0 @@
-"0","# Variogram"
-"0","v.ndvi<-variogram(NDVI~ 1, data = train, cloud=F)"
-"0","# Intial parameter set by eye esitmation"
-"0","m.ndvi<-vgm(1.5,""Exp"",40000,0.5)"
-"0","# least square fit"
-"0","m.f.ndvi<-fit.variogram(v.ndvi, m.ndvi)"
-"0","p2<-plot(v.ndvi, pl=F, model=m.f.ndvi, main=""NDVI"")"

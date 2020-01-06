@@ -1,3 +1,0 @@
-"0","#write.csv(train.cf, ""CFM_train_model_01.csv"")"
-"0","#write.csv(valid.cf, ""CFM_valid_model_01.csv"")"
-"0","#write.csv(test.cf, ""CFM_test_moldel_01.csv"")"

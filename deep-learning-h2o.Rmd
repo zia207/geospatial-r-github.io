@@ -1,8 +1,25 @@
 ---
-title: "Deep Neural Network - Supervised Image Classification in H20 R"
+title: ''
 ---
+
+<div style="margin-bottom:10px;">
+</div>
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\DNN_h2o.png')
+```
+
 <div style="margin-bottom:30px;">
 </div>
+
+
+# Deep Neural Network - Supervised Image Classification in H20 R
+
 
 **Deep Neural Networks (or Deep Dearning)** is based on a multi-layer, feed-forward artificial neural network that is trained with stochastic gradient descent using back-propagation. The network can contain many hidden layers consisting of neurons with activation functions. Advanced features such as adaptive learning rate, rate annealing, momentum training, dropout, L1 or L2 regularization, checkpointing, and grid search enable high predictive accuracy. Each computer node trains a copy of the global model parameters on its local data with multi-threading (asynchronously) and contributes periodically to the global model via model averaging across the network.
 
@@ -46,14 +63,14 @@ library(ggplot2)       # Plotting
 <div style="margin-bottom:20px;">
 </div>
 
-The data could be available for download  from [here](https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0).
+The data could be available for download from [here](https://www.dropbox.com/s/a1pxx8we5r2p1zs/Data_RS_DNN.7z?dl=0).
 
 <div style="margin-bottom:20px;">
 </div>
 
 ```{r}
 # Define data folder
-dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//"
+dataFolder<-"D:/Dropbox/WebSite_Data/R_Data/Data_RS_DNN/"
 ```
 
 
@@ -231,7 +248,7 @@ g.predict = as.data.frame(h2o.predict(object = dl_model, newdata = grid))
 #### Stop h20 cluster
 
 ```{r}
-# h2o.shutdown(prompt=FALSE)
+h2o.shutdown(prompt=FALSE)
 ```
 
 #### Extract Prediction Class
@@ -277,7 +294,6 @@ LU
 ```{r}
 # writeRaster(r, filename = paste0(dataFolder,".\\Sentinel_2\\DNN_H20_Landuse.tiff"), "GTiff", overwrite=T)
 ```
-
 
 
 ```{r}

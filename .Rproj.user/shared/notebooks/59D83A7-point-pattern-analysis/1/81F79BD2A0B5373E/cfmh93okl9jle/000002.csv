@@ -1,0 +1,7 @@
+"0","spatstat.options(checksegments = FALSE)"
+"0","ktheft <- Kest(spp$""Theft"")"
+"2","number of data points exceeds 3000 - computing border correction estimate only
+"
+"0","ketheft <- envelope(spp$""Theft"", Kest)"
+"2","
+"

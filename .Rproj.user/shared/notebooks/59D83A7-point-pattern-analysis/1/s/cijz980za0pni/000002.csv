@@ -1,0 +1,6 @@
+"0","crime_data$fcat <- as.factor(crime_data$incident_type)"
+"0","w <- as.owin(city)"
+"0","xy <- coordinates(crime_data)"
+"0","mpp <- ppp(xy[,1], xy[,2], window = w, marks=crime_data$fcat)"
+"2","9 points were rejected as lying outside the specified window"
+"2","data contain duplicated points"

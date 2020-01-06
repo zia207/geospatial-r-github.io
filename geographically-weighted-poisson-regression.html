@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>geographically-weighted-poisson-regression.utf8</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div style="margin-bottom:10px;">
+
+</div>
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="geographically-weighted-poisson-regression-gwpr" class="section level1">
+<h1>Geographically Weighted Poisson Regression (GWPR)</h1>
+<p>Geographically weighted Poisson regression is a local form of generalized linear models that assumes that data follow a Poisson distribution. We will use <strong>GWmodle</strong> package for GWPR analysis.</p>
+<p>The form of the GWPR regression model is:</p>
+<p><img src="Image/PNG_FILE_07/GWPR.png" width="60%" style="display: block; margin: auto;" /></p>
+<div id="load-r-packages" class="section level4">
+<h4>Load R packages</h4>
+<pre class="r"><code>library(GWmodel)      ### GW models
+library(sp)           ## Data management
+library(spdep)        ## Spatial autocorrelation
+library(RColorBrewer) ## Visualization
+library(classInt)     ## Class intervals
+library(raster)       ## spatial data
+library(grid)         # plot
+library(gridExtra)    # Multiple plot
+library(ggplot2)      # Multiple plot
+library(gtable)</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load Data</h4>
+<p>The data use in this lesson could be found <a href="https://www.dropbox.com/s/sngfyskys1jwvet/Data_GWR.7z?dl=0">here</a>.</p>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;D:\\Dropbox\\WebSite_Data\\R_Data\\Data_GWR\\&quot;
+county&lt;-shapefile(paste0(dataFolder,&quot;COUNTY_ATLANTIC.shp&quot;))
+state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))
+mf&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), header=T)</code></pre>
+</div>
+<div id="create-a-data-frame" class="section level4">
+<h4>Create a data frame</h4>
+<pre class="r"><code>df=mf[c(1,4:9)]
+head(df)</code></pre>
+<pre><code>##    FIPS Rate       POV     SMOK     PM25       NO2         SO2
+## 1 13111   72 15.920000 27.93333 11.75533 0.9776667 0.064184954
+## 2 42115   59 12.220000 26.96667  9.02600 1.4999333 0.033210980
+## 3 42075   61  8.986667 25.27333 11.96333 3.6164667 0.120281334
+## 4 51683   62  7.860000 22.90000 12.73133 3.6219333 0.118371127
+## 5 36057   59 14.746667 27.18000  8.30200 1.6327333 0.006404368
+## 6 13149   86 17.506667 30.21333 12.27133 1.6258000 0.138780485</code></pre>
+</div>
+<div id="scale-co-variates" class="section level4">
+<h4>Scale co-variates</h4>
+<pre class="r"><code>df[, 3:7] = scale(df[, 3:7])</code></pre>
+</div>
+<div id="merge-data-with-county-shape-file" class="section level3">
+<h3>Merge data with county shape file</h3>
+<pre class="r"><code>SPDF&lt;-merge(county,df, by=&quot;FIPS&quot;)
+names(SPDF)</code></pre>
+<pre><code>##  [1] &quot;FIPS&quot;       &quot;ID&quot;         &quot;x&quot;          &quot;y&quot;          &quot;REGION_ID&quot; 
+##  [6] &quot;DIVISION_I&quot; &quot;STATE_ID&quot;   &quot;COUNTY_ID&quot;  &quot;REGION&quot;     &quot;DIVISION&quot;  
+## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;Rate&quot;       &quot;POV&quot;        &quot;SMOK&quot;      
+## [16] &quot;PM25&quot;       &quot;NO2&quot;        &quot;SO2&quot;</code></pre>
+<div id="bandwidth-selection" class="section level4">
+<h4>Bandwidth selection</h4>
+<pre class="r"><code>DM&lt;-gw.dist(dp.locat=coordinates(SPDF))
+
+bw.gwr &lt;- bw.ggwr(Rate ~ POV+SMOK+PM25+NO2+SO2,  
+                 data = SPDF,
+                 family = &quot;poisson&quot;,
+                 approach = &quot;AICc&quot;,
+                 kernel = &quot;bisquare&quot;, 
+                 adaptive = TRUE,
+                 dMat = DM )</code></pre>
+</div>
+<div id="fit-the-model" class="section level4">
+<h4>Fit the model</h4>
+<pre class="r"><code>bgwr.res &lt;- ggwr.basic(Rate ~ POV+SMOK+PM25+NO2+SO2, 
+                      data =SPDF,
+                      family = &quot;poisson&quot;,
+                      bw = bw.gwr, 
+                      kernel = &quot;bisquare&quot;, 
+                      adaptive = TRUE,
+                      dMat = DM)</code></pre>
+<pre class="r"><code>bgwr.res</code></pre>
+<pre><code>##    ***********************************************************************
+##    *                       Package   GWmodel                             *
+##    ***********************************************************************
+##    Program starts at: 2019-10-21 16:15:28 
+##    Call:
+##    ggwr.basic(formula = Rate ~ POV + SMOK + PM25 + NO2 + SO2, data = SPDF, 
+##     bw = bw.gwr, family = &quot;poisson&quot;, kernel = &quot;bisquare&quot;, adaptive = TRUE, 
+##     dMat = DM)
+## 
+##    Dependent (y) variable:  Rate
+##    Independent variables:  POV SMOK PM25 NO2 SO2
+##    Number of data points: 666
+##    Used family: poisson
+##    ***********************************************************************
+##    *              Results of Generalized linear Regression               *
+##    ***********************************************************************
+## 
+## Call:
+## NULL
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.33778  -0.07926  -0.00795   0.07353   0.44683  
+## 
+## Coefficients:
+##            Estimate Std. Error z value Pr(&gt;|z|)    
+## Intercept  4.240086   0.004671 907.821  &lt; 2e-16 ***
+## POV        0.009136   0.006197   1.474 0.140426    
+## SMOK       0.113173   0.006503  17.402  &lt; 2e-16 ***
+## PM25       0.031132   0.005253   5.926  3.1e-09 ***
+## NO2       -0.022162   0.006208  -3.570 0.000357 ***
+## SO2       -0.010988   0.005657  -1.943 0.052074 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 1373.87  on 665  degrees of freedom
+## Residual deviance:  658.89  on 660  degrees of freedom
+## AIC: 670.89
+## 
+## Number of Fisher Scoring iterations: 4
+## 
+## 
+##  AICc:  671.0189
+##  Pseudo R-square value:  0.5204135
+##    ***********************************************************************
+##    *          Results of Geographically Weighted Regression              *
+##    ***********************************************************************
+## 
+##    *********************Model calibration information*********************
+##    Kernel function: bisquare 
+##    Adaptive bandwidth: 162 (number of nearest neighbours)
+##    Regression points: the same locations as observations are used.
+##    Distance metric: A distance matrix is specified for this model calibration.
+## 
+##    ************Summary of Generalized GWR coefficient estimates:**********
+##                     Min.     1st Qu.      Median     3rd Qu.   Max.
+##    Intercept  4.08362541  4.19861446  4.22895519  4.25854869 4.3950
+##    POV       -0.04589176 -0.01347790  0.00842714  0.03837710 0.0732
+##    SMOK       0.06640547  0.09796380  0.11303596  0.12827161 0.1598
+##    PM25      -0.10416849 -0.01108839  0.03140601  0.06959557 0.1627
+##    NO2       -0.26484877 -0.04248764  0.00060665  0.10294423 0.3235
+##    SO2       -0.13812259 -0.05804406 -0.03941077 -0.01816985 0.0381
+##    ************************Diagnostic information*************************
+##    Number of data points: 666 
+##    GW Deviance: 410.4704 
+##    AIC : 507.7076 
+##    AICc : 515.5351 
+##    Pseudo R-square value:  0.7012314 
+## 
+##    ***********************************************************************
+##    Program stops at: 2019-10-21 16:15:30</code></pre>
+<p>###s Save the summary output</p>
+<pre class="r"><code># capture.output(print(bgwr.res),file=&quot;summary_GWRP.doc&quot;)</code></pre>
+</div>
+<div id="extract-gwpr-results" class="section level4">
+<h4>Extract GWPR results</h4>
+<pre class="r"><code>### Create spatial data frame
+
+county@data$y&lt;-bgwr.res$SDF$y
+county@data$yhat&lt;-bgwr.res$SDF$yhat
+county@data$residual&lt;-bgwr.res$SDF$residual
+rsd=sd(county@data$residual)
+county@data$stdRes&lt;-(county@data$residual)/sd(county@data$residual)
+county@data$LLN=county@data$yhat-1.645*rsd
+county@data$ULN=county@data$yhat+1.645*rsd
+
+# Intercept
+county@data$Intercept&lt;-bgwr.res$SDF$Intercept
+county@data$est_SMOK&lt;-bgwr.res$SDF$SMOK
+county@data$est_POV&lt;-bgwr.res$SDF$POV
+county@data$est_PM25&lt;-bgwr.res$SDF$PM25
+county@data$est_NO2&lt;-bgwr.res$SDF$NO2
+county@data$est_SO2&lt;-bgwr.res$SDF$SO2
+
+# T-values
+
+county@data$t_Intercept&lt;-bgwr.res$SDF$Intercept_TV
+county@data$t_SMOK&lt;-bgwr.res$SDF$SMOK_TV
+county@data$t_POV&lt;-bgwr.res$SDF$POV_TV
+county@data$t_PM25&lt;-bgwr.res$SDF$PM25_TV
+county@data$t_NO2&lt;-bgwr.res$SDF$NO2_TV
+county@data$t_SO2&lt;-bgwr.res$SDF$SO2_TV
+
+# Calculate psudo-t values
+
+county@data$p_SMOK&lt;-2*pt(-abs(bgwr.res$SDF$SMOK_TV),df=3103)
+county@data$p_POV&lt;-2*pt(-abs(bgwr.res$SDF$POV_TV),df=3103)
+county@data$p_PM25&lt;-2*pt(-abs(bgwr.res$SDF$PM25_TV),df=3103)
+county@data$p_NO2&lt;-2*pt(-abs(bgwr.res$SDF$NO2_TV),df=3103)
+county@data$p_SO2&lt;-2*pt(-abs(bgwr.res$SDF$SO2_TV),df=3103)
+
+
+county$sig_SMOK &lt;-ifelse(county@data$est_SMOK &gt; 0 &amp;
+                          county@data$p_SMOK &lt;= 0.05 , 1, 0)
+county$sig_POV &lt;-ifelse(county@data$est_POV &gt; 0 &amp;
+                           county@data$p_POV &lt;= 0.05 , 1, 0)
+county$sig_PM25 &lt;-ifelse(county@data$est_PM25 &gt; 0 &amp;
+                          county@data$p_PM25 &lt;= 0.05 , 1, 0)
+county$sig_NO2 &lt;-ifelse(county@data$est_NO2 &gt; 0 &amp;
+                           county@data$p_NO2 &lt;= 0.05 , 1, 0)
+county$sig_SO2 &lt;-ifelse(county@data$est_SO2 &gt; 0 &amp;
+                           county@data$p_SO2 &lt;= 0.05 , 1, 0)</code></pre>
+</div>
+</div>
+<div id="plot-gwrp-statistics" class="section level3">
+<h3>Plot GWRP Statistics</h3>
+<pre class="r"><code>polys&lt;- list(&quot;sp.lines&quot;, as(state, &quot;SpatialLines&quot;), col=&quot;grey&quot;, lwd=.8,lty=1)
+col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;)</code></pre>
+<div id="plot-local-estimates" class="section level4">
+<h4>Plot Local Estimates</h4>
+<pre class="r"><code>col.palette&lt;-colorRampPalette(c(&quot;lightcyan&quot;,&quot;cyan&quot;,&quot;cyan1&quot;, &quot;cyan2&quot;,&quot;cyan3&quot;,&quot;cyan4&quot;, &quot;darkblue&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;) 
+est_smok&lt;-spplot(county,&quot;est_SMOK&quot;, main = &quot;Smoking&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=col.palette(100))
+
+est_pov&lt;-spplot(county,&quot;est_POV&quot;, main = &quot;Poverty&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=col.palette(100))
+
+est_pm25&lt;-spplot(county,&quot;est_PM25&quot;, main = &quot;PM25&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=col.palette(100))
+
+est_no2&lt;-spplot(county,&quot;est_NO2&quot;, main = &quot;NO2&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=col.palette(100))
+
+est_so2&lt;-spplot(county,&quot;est_SO2&quot;, main = &quot;SO2&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=col.palette(100))</code></pre>
+<pre class="r"><code>grid.arrange(est_smok, est_pov,est_pm25,est_no2, est_so2,ncol= 5, heights = c(30,6), top = textGrob(&quot;Local Estimates&quot;,gp=gpar(fontsize=25)))</code></pre>
+<p><img src="geographically-weighted-poisson-regression_files/figure-html/unnamed-chunk-15-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-local-t-values" class="section level4">
+<h4>Plot Local t-values</h4>
+<pre class="r"><code>col.palette.t&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;,&quot;pink&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;) 
+
+t_smok&lt;-spplot(county,&quot;t_SMOK&quot;, main = &quot;Smoking&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))
+
+t_pov&lt;-spplot(county,&quot;t_POV&quot;, main = &quot;Poverty&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))
+
+t_pm25&lt;-spplot(county,&quot;t_PM25&quot;, main = &quot;PM25&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))
+
+t_no2&lt;-spplot(county,&quot;t_NO2&quot;, main = &quot;NO2&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))
+
+t_so2&lt;-spplot(county,&quot;t_SO2&quot;, main = &quot;SO2&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=rev(col.palette.t(100)))</code></pre>
+<pre class="r"><code>grid.arrange(t_smok, t_pov,t_pm25,t_no2, t_so2,ncol=5, heights = c(30,6), top = textGrob(&quot;Local t-values&quot;,gp=gpar(fontsize=25)))</code></pre>
+<p><img src="geographically-weighted-poisson-regression_files/figure-html/unnamed-chunk-17-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot-std-residuals" class="section level4">
+<h4>Plot Std-Residuals</h4>
+<pre class="r"><code>myPaletteRes &lt;- colorRampPalette(c(&quot;lightseagreen&quot;,&quot;lightsteelblue1&quot;, &quot;moccasin&quot;,&quot;hotpink&quot;, &quot;red&quot;))
+std_res&lt;-spplot(county,&quot;stdRes&quot;, main = &quot;GWRP Std. Residuals&quot;, 
+       sp.layout=list(polys),
+       col=&quot;transparent&quot;,
+       col.regions=myPaletteRes(100))
+#windows(width=4, height=3.5)
+#tiff( file=&quot;FIG_GWRP_Std_Residuals.tif&quot;, 
+#      width=4, height=3.5,units = &quot;in&quot;, pointsize = 12, res=1600,
+#      restoreConsole = T,bg=&quot;transparent&quot;)
+print(std_res)</code></pre>
+<p><img src="geographically-weighted-poisson-regression_files/figure-html/unnamed-chunk-18-1.png" width="384" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#dev.off() </code></pre>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

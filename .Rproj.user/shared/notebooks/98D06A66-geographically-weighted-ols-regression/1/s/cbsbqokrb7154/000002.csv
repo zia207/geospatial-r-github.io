@@ -1,0 +1,4 @@
+"0","xy <- train[,c(8:9)]"
+"0","df<-train[,c(8:11,18)]"
+"0","mf<-train[,c(10:11,18)]"
+"0","SPDF<-SpatialPointsDataFrame(coords = xy, data = mf)"

@@ -10,7 +10,7 @@ Co-kriging (CK) is an extension of ordinary kriging in which additional observed
 
 
 ```{r echo=FALSE, out.width='60%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\cokriging.png')
+knitr::include_graphics('E:\\My_WebPage\\geospatial-r-github\\Image\\PNG_FILE_07\\cokriging.png')
 ```
 
 
@@ -84,7 +84,7 @@ cor.matrix
 From correlation analysis, it is observed that only **NDVI** shows the highest correlation with SOC (r = 0.63, p-value < 0.001), So will use NDVI for co-kriging. We first model the spatial structure of the target variable (SOC), the co-variable (NDVI) and its covariance with the target variable (SOC). This is called a **co-regionalisation**. It is an extension of the theory of a single regionalism variable used for ordinary kriging. The direct and cross-variograms must be modeled together, with some restrictions to ensure that the resulting CK system can be solved. Cross-variogram (per pair of regionalized variables) is calculated using following equation: 
 
 ```{r echo=FALSE, out.width='60%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\crossvariogram.png')
+knitr::include_graphics('E:\\My_WebPage\\geospatial-r-github\\Image\\PNG_FILE_07\\crossvariogram.png')
 ```
 
 

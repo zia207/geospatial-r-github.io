@@ -1,0 +1,18 @@
+"0","bgwr.res <- ggwr.basic(Rate ~ POV+SMOK+PM25+NO2+SO2, "
+"0","                      data =SPDF,"
+"0","                      family = ""poisson"","
+"0","                      bw = bw.gwr, "
+"0","                      kernel = ""bisquare"", "
+"0","                      adaptive = TRUE,"
+"0","                      dMat = DM)"
+"1"," Iteration    Log-Likelihood
+=========================
+"
+"1","       0        -2229 
+"
+"1","       1        -2228 
+"
+"1","       2        -2228 
+"
+"1","       3        -2228 
+"

@@ -1,0 +1,360 @@
+---
+title: ''
+---
+<div style="margin-bottom:10px;">
+</div>
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+# Geographically Weighted Ordinary Regression
+
+In this exercise we will apply a general form GWR to  predict Soil Organic C.  We will use two covariates, elevation and NDVI to fit GWR OLS model. The soil organic carbon data (train and test data set) could be found [here](https://www.dropbox.com/s/b5z55zvvw98zzdh/Data_OLS.7z?dl=0).  
+
+
+#### Load packages
+
+```{r message=F, warning=F}
+library(GWmodel)      ## GW models
+library(spgwr)        ## GW models
+library(spdep)        ## Spatial autocorrelation
+library(gstat)        ## Geostatistics
+library(RColorBrewer) ## Visualization
+library(classInt)     ## Class intervals
+library(raster)       ## spatial data
+library(gridExtra)    #  Multiple plot
+library(ggplot2)      # plot
+library(latticeExtra) # advance ploting function
+library(RStoolbox)    # advance raster ploting function
+#library(SpatialML)    # Geographicall Weigted Random Forest
+```
+
+
+#### Load data
+
+```{r}
+# Define data folder
+dataFolder<-"D:\\Dropbox\\WebSite_Data\\R_Data\\Data_OLS\\"
+```
+
+```{r}
+train<-read.csv(paste0(dataFolder,"train_data.csv"), header= TRUE) 
+state<-shapefile(paste0(dataFolder,"GP_STATE.shp"))
+grid<-read.csv(paste0(dataFolder, "GP_prediction_grid_data.csv"), header= TRUE) 
+```
+
+
+```{r}
+xy <- train[,c(8:9)]
+df<-train[,c(8:11,18)]
+mf<-train[,c(10:11,18)]
+SPDF<-SpatialPointsDataFrame(coords = xy, data = mf)
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+#### GWR with spgwr package
+
+We will use **gwr.sel()** function  in **spgwr** packageto find a bandwidth for a given geographically weighted regression by optimizing a selected function. For cross-validation, this scores the root mean square prediction error for the geographically weighted regressions, choosing the bandwidth minimizing this quantity
+
+
+#### Bandwith
+
+```{r}
+bwG <- gwr.sel(SOC ~ ELEV +NDVI, 
+               data = SPDF, 
+               gweight = gwr.Gauss, 
+               verbose = FALSE)
+bwG
+```
+
+Then, well use **gwr()** function to implement the basic geographically weighted regression approach to exploring spatial non-stationarity for given global bandwidth and chosen weighting scheme.
+
+#### Fit GWR model 
+
+```{r}
+gwrG <- gwr(SOC ~ ELEV +NDVI, 
+            data = SPDF, 
+            bandwidth = bwG, 
+            gweight = gwr.Gauss, 
+            hatmatrix = TRUE)
+gwrG
+```
+
+
+#### Extract and plot coefficients 
+
+```{r}
+df$NDVI_slope<-gwrG$SDF$NDVI      # Slope NDVI
+df$ELEV_slope<-gwrG$SDF$ELEV      # Slope Elevation 
+df$R2<-gwrG$SDF$localR2           # Local R2
+```
+
+
+```{r,collapse = TRUE,fig.align='center',fig.height=5, fig.width=6}
+rgb.palette.col <- colorRampPalette(c("red","yellow", "green", "blue"),space = "rgb")
+p1<-levelplot(NDVI_slope~x+y, df,cex=0.6,
+              aspect = "iso",main= "Local slope: NDVI",
+              xlab="", ylab="",  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col="grey",lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space="right",width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col="grey30")
+              }) 
+
+p2<-levelplot(ELEV_slope~x+y, df,cex=0.6,
+              aspect = "iso",main= "Local slope: Elevation",
+              xlab="", ylab="",  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col="grey",lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space="right",width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col="grey30")
+              })
+
+p3<-levelplot(R2~x+y, df,cex=0.6,
+              aspect = "iso",main= "Local R2",
+              xlab="", ylab="",  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col="grey",lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space="right",width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col="grey30")
+              }) 
+
+```
+
+
+```{r,collapse = TRUE,fig.align='center',fig.height=5, fig.width=10}
+grid.arrange(p1, p2,p3, ncol=3)
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+#### Prediction at grid location
+
+We can use use fit.points	as additional argument to predict SOC at grid locations. 
+
+```{r}
+coordinates(grid) = ~x+y
+g.soc <- gwr(SOC ~ ELEV +NDVI, 
+            data = SPDF, 
+            bandwidth = bwG, 
+            fit.points=grid[, 2:3])
+g.soc
+```
+
+#### Extract coefficients  
+
+```{r}
+grid$NDVI_slope<-g.soc$SDF$NDVI                   # Slope NDVI
+grid$ELEV_slope<-g.soc$SDF$ELEV                  # Slope Elevation 
+grid$Intercept<-g.soc$SDF$'(Intercept)'           # Local Intercept
+```
+
+#### Convert to raster
+
+```{r message=F, warning=F}
+NDVI.slope<-rasterFromXYZ(as.data.frame(grid)[, c("x", "y", "NDVI_slope")])
+ELEV.slope<-rasterFromXYZ(as.data.frame(grid)[, c("x", "y", "ELEV_slope")])
+Intercept<-rasterFromXYZ(as.data.frame(grid)[, c("x", "y", "Intercept")])
+```
+
+
+```{r,echo=TRUE,fig.align='center',fig.height=4, fig.width=10}
+p1<-ggR(Intercept, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("orange", "yellow", "green",  "sky blue","blue"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("Intercept")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+p2<-ggR(NDVI.slope, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("blue",  "green","yellow", "orange"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("Slope - NDVI")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+p3<-ggR(ELEV.slope, geom_raster = TRUE) +
+scale_fill_gradientn("", colours = c("blue",  "green","yellow", "orange"))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle("Slope - Elevation")+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(p1,p2,p3, ncol = 3)  # Multiplot 
+```
+
+<div style="margin-bottom:20px;">
+</div>
+
+#### GWR with GWModel package
+
+In GWModel package allow to select a subset of  independent variable with a pseudo stepwise procedure in a forward direction.  
+
+```{r}
+xy <- train[,c(8:9)]
+df.1<-train[,c(8:19)]
+mf.1<-train[,c(10:19)]
+SPDF.1<-SpatialPointsDataFrame(coords = xy, data = mf.1)
+names(SPDF.1)
+```
+
+
+The function **model.selection.gwr()**, whose AICc outputs are sorted using **model.sort.gwr** and then inputted to **model.view.gwr** to provide a useful vi-sualization of the AICc data.
+
+
+```{r message=F, warning=F, echo=T, results='hide'}
+RESPONSE <- "SOC"
+PREDICTORS <- c("ELEV", "Aspect","Slope","TPI","K_Factor","MAP","MAT","NDVI", "Slit_Clay")
+model.sel <- model.selection.gwr(RESPONSE, PREDICTORS, 
+                                 data = SPDF.1,
+                                 kernel = "bisquare", 
+                                 adaptive = TRUE, 
+                                 bw = 231)
+```
+
+
+```{r}
+sorted.models <- model.sort.gwr(model.sel, numVars = length(PREDICTORS),ruler.vector = model.sel[[2]][,2])
+model.list <- sorted.models[[1]]
+model.view.gwr(RESPONSE, PREDICTORS, model.list = model.list)
+
+```
+
+
+Figure below presents a circle view of the 45 GW regressions (numbered 1 to 45) that result from stepwise procedure. Here the dependent variable is located in the centre of the chart and the independent variables are represented as nodes differentiated by shapes and colors. 
+
+
+```{r}
+plot(sorted.models[[2]][,2], col = "black", pch = 20, lty = 5,
+    main = "Alternative view of GWR model selection procedure",
+    ylab = "AICc", xlab = "Model number", type = "b")
+```
+
+
+Figure displays the corresponding AICc values from the same as of circle figure. The two graphs work together, explaining model performance when more and more variables are introduced. Clearly, AICc values continue to fall until all independent
+variables are included. 
+
+#### Bandwith
+
+```{r}
+gwr.bw <- bw.gwr(SOC~ELEV+Aspect+Slope+TPI+K_Factor+MAP+MAT+NDVI+Slit_Clay, 
+                 data = SPDF.1, 
+                 approach = "AICc", 
+                 kernel = "bisquare", 
+                 adaptive = TRUE)
+gwr.bw
+```
+
+
+The optimal bandwidth is found at N = 231
+
+#### Fit GWR model 
+
+```{r}
+gwr.res <- gwr.basic(SOC~ELEV+Aspect+Slope+TPI+K_Factor+MAP+MAT+NDVI+Slit_Clay,
+                     data = SPDF.1,
+                     bw = gwr.bw, 
+                     kernel = "bisquare",   
+                     adaptive = TRUE, 
+                     F123.test = TRUE)
+gwr.res
+```
+
+#### Extract and plot coefficients  
+
+```{r}
+df.1$NDVI_slope<-gwr.res$SDF$NDVI       # Slope NDVI
+df.1$MAT_slope<-gwr.res$SDF$MAT         # Slope Elevation 
+df.1$R2<-gwr.res$SDF$Local_R2           # Local R2
+
+```
+
+
+```{r,collapse = TRUE,fig.align='center',fig.height=5, fig.width=6}
+rgb.palette.col <- colorRampPalette(c("red","yellow", "green", "blue"),space = "rgb")
+p1.1<-levelplot(NDVI_slope~x+y, df.1,cex=0.6,
+              aspect = "iso",main= "Local slope: NDVI",
+              xlab="", ylab="",  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col="grey",lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space="right",width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col="grey30")
+              }) 
+
+p2.1<-levelplot(MAT_slope~x+y, df.1,cex=0.6,
+              aspect = "iso",main= "Local slope: Temperature",
+              xlab="", ylab="",  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col="grey",lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space="right",width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col="grey30")
+              })
+
+p3.1<-levelplot(R2~x+y, df.1,cex=0.6,
+              aspect = "iso",main= "Local R2",
+              xlab="", ylab="",  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col="grey",lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space="right",width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col="grey30")
+              }) 
+
+```
+
+
+```{r,collapse = TRUE,fig.align='center',fig.height=5, fig.width=10}
+grid.arrange(p1.1, p2.1,p3.1, ncol=3)
+```
+
+
+
+
+
+
+
+```{r}
+rm(list = ls())
+```
+
+
+
+
+

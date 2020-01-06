@@ -1,1 +1,0 @@
-{"frames":[{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"library(classInt)","line_number":0},{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"stop(txt, domain = NA)","line_number":0}],"message":"Error in library(classInt) : there is no package called ‘classInt’\n"}

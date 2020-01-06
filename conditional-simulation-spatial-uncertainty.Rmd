@@ -214,7 +214,7 @@ height = 600, width = 600, interval = .5, outdir = getwd())
 
 
 
-![](F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/FIGURE_SOC_SIM_ANIMATION.gif)
+![](E:/My_WebPage/geospatial-r-github/FIGURE_SOC_SIM_ANIMATION.gif)
 
 
 

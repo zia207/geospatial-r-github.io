@@ -1,2 +1,0 @@
-"0","g <- gstat(NULL, id = ""SOC"", form = SOC.bc ~ 1, data=train)"
-"0","g <- gstat(g, id = ""NDVI"", form = NDVI ~ 1, data=train)"

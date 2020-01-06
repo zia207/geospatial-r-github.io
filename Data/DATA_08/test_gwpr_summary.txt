@@ -1,0 +1,91 @@
+*****************************************************************************
+*             Semiparametric Geographically Weighted Regression             *
+*                         Release 1.0.90 (GWR 4.0.90)                       *
+*                               12 May 2015                                 *
+*                 (Originally coded by T. Nakaya: 1 Nov 2009)               *
+*                                                                           *
+*              Tomoki Nakaya(1), Martin Charlton(2), Chris Brunsdon (2)     *
+*              Paul Lewis (2), Jing Yao (3), A Stewart Fotheringham (4)     *
+*                       (c) GWR4 development team                           *
+* (1) Ritsumeikan University, (2) National University of Ireland, Maynooth, *
+*         (3) University of Glasgow, (4) Arizona State University           *
+*****************************************************************************
+
+Program began at 1/19/2019 7:32:01 AM
+
+*****************************************************************************
+Session: 
+Session control file: F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_08\test_gwpr.ctl
+*****************************************************************************
+Data filename: F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_08\data_atlantic_1998_2012.csv
+Number of areas/points: 733
+
+Model settings---------------------------------
+Model type: Poisson
+Geographic kernel: adaptive bi-square
+Method for optimal bandwidth search: Golden section search
+Criterion for optimal bandwidth: AICc
+Number of varying coefficients: 6
+Number of fixed coefficients:   0
+
+Modelling options---------------------------------
+Standardisation of independent variables: OFF
+Testing geographical variability of local coefficients: OFF
+Local to Global Variable selection: OFF
+Global to Local Variable selection: OFF
+Prediction at non-regression points: OFF
+
+Variable settings---------------------------------
+Area key: field1: "FIPS"
+Easting (x-coord): field2 : "x"
+Northing (y-coord): field3: "y"
+Cartesian coordinates: Euclidean distance
+Dependent variable: field6: "cancer"
+Offset variable: field5: "pop"
+Intercept: varying (Local) intercept
+Independent variable with varying (Local) coefficient: field7: "poverty"
+Independent variable with varying (Local) coefficient: field8: "smoking"
+Independent variable with varying (Local) coefficient: field9: "PM25"
+Independent variable with varying (Local) coefficient: field10: "NO2"
+Independent variable with varying (Local) coefficient: field11: "SO2"
+*****************************************************************************
+
+*****************************************************************************
+  Global regression result
+*****************************************************************************
+  < Diagnostic information >
+Number of parameters:                   6
+Deviance:                          82510.312087
+Classic AIC:                       82522.312087
+AICc:                              82522.427789
+BIC/MDL:                           82549.894961
+Percent deviance explained             0.049068
+
+Variable                  Estimate    Standard Error      z(Est/SE)        Exp(Est)  
+-------------------- --------------- --------------- --------------- --------------- 
+Intercept                  -9.750909        0.044330     -219.961517        0.000058
+"poverty"                  -0.009071 17758897420951.700000        0.000000        0.990970
+"smoking"                   0.000000 17758897420951.700000        0.000000        1.000000
+"PM25"                      0.092902        0.004331       21.450053        1.097355
+"NO2"                      -0.014146        0.003699       -3.823913        0.985953
+"SO2"                      -0.422296        0.078951       -5.348821        0.655540
+
+*****************************************************************************
+  GWR (Geographically weighted regression) bandwidth selection
+*****************************************************************************
+
+Bandwidth search <golden section search>
+  Limits: 52,  733
+ Golden section search begins...
+ Initial values
+  pL            Bandwidth:   230.491 Criterion:        NaN
+  p1            Bandwidth:   422.432 Criterion:        NaN
+  p2            Bandwidth:   541.059 Criterion:        NaN
+  pU            Bandwidth:   733.000 Criterion:  82164.609
+Best bandwidth size  0.000
+Minimum AICc          NaN
+
+Error: GWR computation was failed: optional tests and/or model selection are cancelled.
+
+*****************************************************************************
+Program terminated at 1/19/2019 7:32:54 AM

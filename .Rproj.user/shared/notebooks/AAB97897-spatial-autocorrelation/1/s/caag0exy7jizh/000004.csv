@@ -1,4 +1,0 @@
-"0","# add moran's I results back to the shapefile"
-"0","SPDF@data$lmoran_i <- local.moran.results[,1]"
-"0","SPDF@data$lmoran_p <- local.moran.results[,5]"
-"0","SPDF@data$lmoran_sig <- local.moran.results[,5]<0.05"

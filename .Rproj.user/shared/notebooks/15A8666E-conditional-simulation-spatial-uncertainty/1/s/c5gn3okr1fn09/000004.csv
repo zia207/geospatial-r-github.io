@@ -1,2 +1,0 @@
-"0","for(i in 1:length(sim.soc@data)){sim.soc@data[[i]] <- (((sim.soc[[i]]*0.2523339+1)^k1))}"
-"0","sim.data<-as.data.frame(sim.soc)"

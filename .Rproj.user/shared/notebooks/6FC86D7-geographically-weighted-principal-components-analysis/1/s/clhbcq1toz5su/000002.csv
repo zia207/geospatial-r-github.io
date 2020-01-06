@@ -1,0 +1,4 @@
+"0","# function for calculation pproportion of variance "
+"0","prop.var <- function(gwpca.obj, n.components) {"
+"0","            return((rowSums(gwpca.obj$var[, 1:n.components]) /rowSums(gwpca.obj$var)) * 100)"
+"0","                                   }"

@@ -1,2 +1,0 @@
-"0","par(mfrow=c(1,2))"
-"0","hist(df$As, breaks=20, xlab = ""As (ppb)"", main=""Histogram of As"")"

@@ -1,6 +1,0 @@
-"0","p10<-rasterFromXYZ(as.data.frame(ik.grid.10)[, c(""x"", ""y"", ""var1.pred"")])"
-"2","no non-missing arguments to min; returning Inf"
-"2","no non-missing arguments to max; returning -Inf"
-"0","p50<-rasterFromXYZ(as.data.frame(ik.grid.50)[, c(""x"", ""y"", ""var1.pred"")])"
-"2","no non-missing arguments to min; returning Inf"
-"2","no non-missing arguments to max; returning -Inf"

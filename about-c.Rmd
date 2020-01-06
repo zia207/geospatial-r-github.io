@@ -2,18 +2,28 @@
 title: ''
 ---
 
+<div style="margin-bottom:10px;">
+</div>
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
 
 ```{r echo=FALSE, out.width='100%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\RS.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\RS.png')
 ```
 
+<div style="margin-bottom:30px;">
+</div>
 
 
+This section provides a brief introduction to remote sensing data processing and analysis with R.
 
 <div style="margin-bottom:50px;">
 </div>
 
-### Table of Content
+## Table of Content
 
 
 <div style="margin-bottom:30px;">
@@ -67,6 +77,8 @@ knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-dat
         - [Deep Learning-H20](deep-learning-h2o.html)
         
         - [Deep Learning Keras-TensorFolow](deep-learning-keras-tensorflow.html)
+        
+  * [Deep Learning for Computer Vision: Image Classification With CNN](deep-learning-for-computer-vision.html)
 
 
 

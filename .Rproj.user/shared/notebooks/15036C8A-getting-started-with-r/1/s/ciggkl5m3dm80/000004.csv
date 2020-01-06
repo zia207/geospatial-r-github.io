@@ -1,0 +1,5 @@
+"0","# One package"
+"0","# install.packages(""raster"", dependencies = TRUE)"
+"0",""
+"0","# Multiple packages"
+"0","# install.packages(c(""raster"",""gstat"") dependencies = TRUE)"

@@ -1,3 +1,0 @@
-"0","df<-read.csv(paste0(dataFolder,""bgs_geochemical.csv""), header= TRUE) "
-"0","grid<-read.csv(paste0(dataFolder,""bd_grid.csv""), header= TRUE) "
-"0","bd<-shapefile(paste0(dataFolder,""BD_Banladesh_BUTM.shp"")) "

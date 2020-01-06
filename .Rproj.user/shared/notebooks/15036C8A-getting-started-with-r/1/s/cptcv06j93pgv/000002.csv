@@ -1,0 +1,2 @@
+"0","# Write CSV file"
+"0","#write.csv(data.csv , ""~/Data_01//test_data.csv"", row.names = FALSE)"

@@ -1,9 +1,15 @@
 ---
-title: "Spatial Statistics"
+title: ''
 ---
 
 <div style="margin-bottom:30px;">
 </div>
+
+
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\Spatial_Statistics.png')
+```
+
 
 “The GIS dictionary (Wade and Sommer, 2006) define spatial statistics as “the field of study concerning statistical methods that use space and spatial relationships (such as distance, area, volume, length, height, orientation, centrality and/or other spatial characteristics of data) directly in their mathematical computations. Spatial statistics are used for a variety of different types of analyses, including pattern analysis, shape analysis, surface modeling and surface prediction, spatial regression, statistical comparisons of spatial datasets, statistical modeling and prediction of spatial interaction, and more. The many types of spatial statistics include descriptive, inferential, exploratory, geostatistical, and econometric statistics.”
 
@@ -25,11 +31,5 @@ The three major branches of Spatial Statistics are:
     
     - [Geographically Weighted Regression Analysis](geographically-weighted-regression.html)
 
-* [Spatial interpolation](spatial-interpolation.html)
 
-
-    - [Deterministic Methods for Spatial Interpolation](deterministic-methods-for-spatial-interpolation.html)
-    
-    - [Geostatistical Methods for Spatial Interpolation](geostatistical-methods-for-spatial-interpolation.html)
-    
 

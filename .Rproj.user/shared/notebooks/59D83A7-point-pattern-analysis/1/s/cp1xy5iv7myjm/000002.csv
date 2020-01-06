@@ -1,0 +1,2 @@
+"0","data <- df %>%"
+"0"," select(ID, long, lat, address, incident_type, date_incid, day_of_week, hour_of_day)"

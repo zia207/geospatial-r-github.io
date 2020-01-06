@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Geographically Weighted Summary Statistics</title>
+<title>geographically-weighted-summary-statistics.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,9 +281,12 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -202,10 +295,7 @@ $(document).ready(function () {
       <a href="about.html">Content</a>
     </li>
     <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
-    </li>
-    <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -222,20 +312,20 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about-b.html">Content</a>
-    </li>
-    <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
     </li>
     <li>
       <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
@@ -251,6 +341,27 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="spatial-interpolation.html">Spatial Interpolation</a>
@@ -298,7 +409,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -383,15 +494,20 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Geographically Weighted Summary Statistics</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<div style="margin-bottom:10px;">
 
 </div>
-<p>This lessons we will show GW modelling with GW summary statistics (Bruns-don et al. 2002; Fotheringham et al. 2002). Here, we will leanr how to calculate GW means, GW standard deviations, GW measures of skew and GW correlations which constitute a set of basic GW summary statistics.</p>
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="geographically-weighted-summary-statistics" class="section level1">
+<h1>Geographically Weighted Summary Statistics</h1>
+<p>To visualize geographical variation in the statistical distribution, geographically weighted local summary statistics (mean, standard deviation and Pearson’s correlation has described Brunsdon et al., (2002). This lessons we will leanr how to calculate GW means, GW standard deviation using <strong>GWModel</strong> package (Gollini et al., 2013) in the R statistical computing environment</p>
 <div id="load-r-packages" class="section level4">
 <h4>Load R packages</h4>
 <pre class="r"><code>library(GWmodel)      ### GW models
@@ -406,29 +522,27 @@ library(ggplot2)      # Multiple plot</code></pre>
 </div>
 <div id="load-data" class="section level4">
 <h4>Load Data</h4>
-<p>The spatial polygon of lung cancer mortality rate and envrionmental covariate data could be found <a href="https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0">here</a>.</p>
+<p>The data use in this lesson could be found <a href="https://www.dropbox.com/s/sngfyskys1jwvet/Data_GWR.7z?dl=0">here</a>.</p>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;
+dataFolder&lt;-&quot;D:\\Dropbox\\WebSite_Data\\R_Data\\Data_GWR\\&quot;
 COUNTY&lt;-shapefile(paste0(dataFolder,&quot;COUNTY_ATLANTIC.shp&quot;))
 state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))
-df&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), header=T)</code></pre>
+mf&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), header=T)</code></pre>
 </div>
 <div id="create-a-data-frame" class="section level4">
 <h4>Create a data frame</h4>
-<pre class="r"><code>df[5] &lt;- lapply(df[5], as.numeric) # Cancer data to numeric
-SPDF&lt;-merge(COUNTY,df, by=&quot;FIPS&quot;)
+<pre class="r"><code>SPDF&lt;-merge(COUNTY,mf, by=&quot;FIPS&quot;)
 names(SPDF)</code></pre>
 <pre><code>##  [1] &quot;FIPS&quot;       &quot;ID&quot;         &quot;x.x&quot;        &quot;y.x&quot;        &quot;REGION_ID&quot; 
 ##  [6] &quot;DIVISION_I&quot; &quot;STATE_ID&quot;   &quot;COUNTY_ID&quot;  &quot;REGION&quot;     &quot;DIVISION&quot;  
-## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;x.y&quot;        &quot;y.y&quot;        &quot;pop&quot;       
-## [16] &quot;cancer&quot;     &quot;poverty&quot;    &quot;smoking&quot;    &quot;PM25&quot;       &quot;NO2&quot;       
-## [21] &quot;SO2&quot;</code></pre>
+## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;x.y&quot;        &quot;y.y&quot;        &quot;Rate&quot;      
+## [16] &quot;POV&quot;        &quot;SMOK&quot;       &quot;PM25&quot;       &quot;NO2&quot;        &quot;SO2&quot;</code></pre>
 <pre class="r"><code>polys&lt;- list(&quot;sp.lines&quot;, as(state, &quot;SpatialLines&quot;), col=&quot;grey&quot;, lwd=.8,lty=1)
 col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;)</code></pre>
 <div style="margin-bottom:42px;">
 
 </div>
-<p>We will use <strong>gwss()</strong> function to GW GW summary statistics of cancer rate and PM25, also pearson correlation coefficents between these two variables. We will use ** bandwith (bw)** = 48 and “bisqure” kerbel function. There are five kernel functions available in GW package:</p>
+<p>We will use <strong>gwss()</strong> function to calcyulate GW summary statistics of cancer Rate and PM25, also pearson correlation coefficents between these two variables. We will use ** bandwith (bw)** = 48 and “bisqure” kerbel function. There are five kernel functions available in GW package:</p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -458,9 +572,9 @@ col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quo
 
 </div>
 </div>
-<div id="lung-cancer-vs-pm2.5" class="section level3">
-<h3>Lung cancer vs PM2.5</h3>
-<pre class="r"><code>gwss.pm25 &lt;- gwss(SPDF,vars = c(&quot;cancer&quot;, &quot;PM25&quot;),
+<div id="lung-rate-vs-pm2.5" class="section level3">
+<h3>Lung Rate vs PM2.5</h3>
+<pre class="r"><code>gwss.pm25 &lt;- gwss(SPDF,vars = c(&quot;Rate&quot;, &quot;PM25&quot;),
                kernel=&quot;bisquare&quot;, adaptive=TRUE, bw=48)</code></pre>
 <pre class="r"><code>gwss.pm25</code></pre>
 <pre><code>##    ***********************************************************************
@@ -470,7 +584,7 @@ col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quo
 ##    ***********************Calibration information*************************
 ## 
 ##    Local summary statistics calculated for variables:
-##     cancer PM25
+##     Rate PM25
 ##    Number of summary points: 666
 ##    Kernel function: bisquare 
 ##    Summary points: the same locations as observations are used.
@@ -479,33 +593,33 @@ col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quo
 ## 
 ##    ************************Local Summary Statistics:**********************
 ##    Summary information for Local means:
-##                Min. 1st Qu. Median 3rd Qu.   Max.
-##    cancer_LM 52.780  64.937 69.631  73.579 92.558
-##    PM25_LM   19.998  24.872 26.294  27.119 31.146
+##               Min. 1st Qu.  Median 3rd Qu.   Max.
+##    Rate_LM 52.7799 64.9372 69.6305 73.5792 92.558
+##    PM25_LM  8.2401 10.8570 11.6318 12.2853 13.278
 ##    Summary information for local standard deviation :
-##                  Min. 1st Qu.  Median 3rd Qu.    Max.
-##    cancer_LSD  4.7659  7.7152  9.1053 10.8309 16.2608
-##    PM25_LSD    1.1285  2.0743  2.4853  3.0355  5.0165
+##                 Min.  1st Qu.   Median  3rd Qu.   Max.
+##    Rate_LSD  4.76587  7.71522  9.10529 10.83088 16.261
+##    PM25_LSD  0.13631  0.41391  0.62050  0.87379  1.483
 ##    Summary information for local variance :
-##                    Min.  1st Qu.   Median  3rd Qu.    Max.
-##    cancer_LVar  22.7135  59.5248  82.9064 117.3081 264.413
-##    PM25_LVar     1.2734   4.3026   6.1765   9.2140  25.165
+##                   Min.   1st Qu.    Median   3rd Qu.     Max.
+##    Rate_LVar  22.71352  59.52483  82.90636 117.30809 264.4128
+##    PM25_LVar   0.01858   0.17132   0.38503   0.76351   2.1992
 ##    Summary information for Local skewness:
-##                    Min.  1st Qu.   Median  3rd Qu.   Max.
-##    cancer_LSKe -1.20800 -0.15435  0.13821  0.42117 1.8327
-##    PM25_LSKe   -2.46009 -1.20737 -0.82817 -0.48497 0.5996
+##                  Min.  1st Qu.   Median  3rd Qu.   Max.
+##    Rate_LSKe -1.20800 -0.15435  0.13821  0.42117 1.8327
+##    PM25_LSKe -2.49278 -0.64593 -0.16305  0.38104 1.9453
 ##    Summary information for localized coefficient of variation:
-##                   Min.  1st Qu.   Median  3rd Qu.   Max.
-##    cancer_LCV 0.068524 0.113617 0.131623 0.155867 0.2273
-##    PM25_LCV   0.040098 0.076753 0.093921 0.122776 0.2270
+##                 Min.  1st Qu.   Median  3rd Qu.   Max.
+##    Rate_LCV 0.068524 0.113617 0.131623 0.155867 0.2273
+##    PM25_LCV 0.011049 0.036055 0.057189 0.078496 0.1392
 ##    Summary information for localized Covariance and Correlation between these variables:
-##                                 Min.  1st Qu.   Median  3rd Qu.    Max.
-##    Cov_cancer.PM25          -3.40683  8.16075 14.69411 22.66243 60.9193
-##    Corr_cancer.PM25         -0.18652  0.48146  0.62714  0.74329  0.9207
-##    Spearman_rho_cancer.PM25 -0.14856  0.40891  0.59095  0.71518  0.8852
+##                                Min.   1st Qu.    Median   3rd Qu.   Max.
+##    Cov_Rate.PM25          -9.396809 -1.079663 -0.133940  1.042163 5.8661
+##    Corr_Rate.PM25         -0.794845 -0.234503 -0.034965  0.187568 0.6243
+##    Spearman_rho_Rate.PM25 -0.740171 -0.215073 -0.030902  0.187173 0.6360
 ## 
 ##    ************************************************************************</code></pre>
-<pre class="r"><code>p1.pm25&lt;-spplot(gwss.pm25$SDF,&quot;cancer_LM&quot;, main = &quot;Local Mean of Lung Cancer&quot;, 
+<pre class="r"><code>p1.pm25&lt;-spplot(gwss.pm25$SDF,&quot;Rate_LM&quot;, main = &quot;Local Mean of Lung Cancer&quot;, 
        sp.layout=list(polys),
        col=&quot;transparent&quot;,
        col.regions=col.palette(100))
@@ -515,61 +629,62 @@ p2.pm25&lt;-spplot(gwss.pm25$SDF,&quot;PM25_LM&quot;, main = &quot;Local Mean of
        col=&quot;transparent&quot;,
        col.regions=col.palette(100))
 
-p3.pm25&lt;-spplot(gwss.pm25$SDF,&quot;Corr_cancer.PM25&quot;, main = &quot;Local Pearson Correlation&quot;, 
+p3.pm25&lt;-spplot(gwss.pm25$SDF,&quot;Corr_Rate.PM25&quot;, main = &quot;Local Pearson Correlation&quot;, 
        sp.layout=list(polys),
        col=&quot;transparent&quot;
         )</code></pre>
 <pre class="r"><code>grid.arrange(p1.pm25, p2.pm25, p3.pm25, ncol=3)</code></pre>
-<p><img src="geographically-weighted-summary-statistics_files/figure-html/unnamed-chunk-8-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="geographically-weighted-summary-statistics_files/figure-html/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
 </div>
-<div id="lung-cancer-vs-smoking" class="section level3">
-<h3>Lung cancer vs Smoking</h3>
-<pre class="r"><code>gwss.smok&lt;- gwss(SPDF,vars = c(&quot;cancer&quot;, &quot;smoking&quot;),
+<div id="lung-cancer-rate-vs-smok" class="section level3">
+<h3>Lung cancer Rate vs SMOK</h3>
+<pre class="r"><code>gwss.smok&lt;- gwss(SPDF,vars = c(&quot;Rate&quot;, &quot;SMOK&quot;),
                kernel=&quot;bisquare&quot;, adaptive=TRUE, bw=48)</code></pre>
-<pre class="r"><code>p1.smok&lt;-spplot(gwss.smok$SDF,&quot;cancer_LM&quot;, main = &quot;Local Mean of Lung Cancer&quot;, 
+<pre class="r"><code>p1.smok&lt;-spplot(gwss.smok$SDF,&quot;Rate_LM&quot;, main = &quot;Local Mean of Lung Cancer&quot;, 
        sp.layout=list(polys),
        col=&quot;transparent&quot;,
        col.regions=col.palette(100))
 
-p2.smok&lt;-spplot(gwss.smok$SDF,&quot;smoking_LM&quot;, main = &quot;Local Mean Smoking Prevelance&quot;, 
+p2.smok&lt;-spplot(gwss.smok$SDF,&quot;SMOK_LM&quot;, main = &quot;Local Mean of Smoking&quot;, 
        sp.layout=list(polys),
        col=&quot;transparent&quot;,
        col.regions=col.palette(100))
 
-p3.smok&lt;-spplot(gwss.smok$SDF,&quot;Corr_cancer.smoking&quot;, main = &quot;Local Pearson Correlation&quot;, 
+p3.smok&lt;-spplot(gwss.smok$SDF,&quot;Corr_Rate.SMOK&quot;, main = &quot;Local Pearson Correlation&quot;, 
        sp.layout=list(polys),
        col=&quot;transparent&quot;
         )</code></pre>
 <pre class="r"><code>grid.arrange(p1.smok, p2.smok, p3.smok, ncol=3)</code></pre>
-<p><img src="geographically-weighted-summary-statistics_files/figure-html/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="geographically-weighted-summary-statistics_files/figure-html/unnamed-chunk-12-1.png" width="960" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
 </div>
-<div id="lung-cancer-vs-poverty" class="section level3">
-<h3>Lung cancer vs Poverty</h3>
-<pre class="r"><code>gwss.pov&lt;- gwss(SPDF,vars = c(&quot;cancer&quot;, &quot;poverty&quot;),
+<div id="lung-cancer-rate-vs-pov" class="section level3">
+<h3>Lung cancer Rate vs POV</h3>
+<pre class="r"><code>gwss.pov&lt;- gwss(SPDF,vars = c(&quot;Rate&quot;, &quot;POV&quot;),
                kernel=&quot;bisquare&quot;, adaptive=TRUE, bw=48)</code></pre>
-<pre class="r"><code>p1.pov&lt;-spplot(gwss.pov$SDF,&quot;cancer_LM&quot;, main = &quot;Local Mean of Lung Cancer&quot;, 
+<pre class="r"><code>p1.pov&lt;-spplot(gwss.pov$SDF,&quot;Rate_LM&quot;, main = &quot;Local Mean of Lung Cancer&quot;, 
        sp.layout=list(polys),
        col=&quot;transparent&quot;,
        col.regions=col.palette(100))
 
-p2.pov&lt;-spplot(gwss.pov$SDF,&quot;poverty_LM&quot;, main = &quot;Local Mean Poverty&quot;, 
+p2.pov&lt;-spplot(gwss.pov$SDF,&quot;POV_LM&quot;, main = &quot;Local Mean of Poverty&quot;, 
        sp.layout=list(polys),
        col=&quot;transparent&quot;,
        col.regions=col.palette(100))
 
-p3.pov&lt;-spplot(gwss.pov$SDF,&quot;Corr_cancer.poverty&quot;, main = &quot;Local Pearson Correlation&quot;, 
+p3.pov&lt;-spplot(gwss.pov$SDF,&quot;Corr_Rate.POV&quot;, main = &quot;Local Pearson Correlation&quot;, 
        sp.layout=list(polys),
        col=&quot;transparent&quot;
         )</code></pre>
 <pre class="r"><code>grid.arrange(p1.pov, p2.pov, p3.pov, ncol=3)</code></pre>
-<p><img src="geographically-weighted-summary-statistics_files/figure-html/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="geographically-weighted-summary-statistics_files/figure-html/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 
 
@@ -589,6 +704,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

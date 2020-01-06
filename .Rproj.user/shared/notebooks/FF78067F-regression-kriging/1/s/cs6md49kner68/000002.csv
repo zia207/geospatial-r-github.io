@@ -1,7 +1,0 @@
-"0","SK.stack<-krige(residuals.stack~ 1, "
-"0","              loc=train.xy,        # Data frame"
-"0","              newdata=grid.xy,     # Prediction location"
-"0","              model = m.f.stack,    # fitted varigram model"
-"0","              beta = 0)            # residuals from a trend; expected value is 0     "
-"1","[using simple kriging]
-"

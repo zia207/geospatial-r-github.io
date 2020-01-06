@@ -1,0 +1,3 @@
+"0","ds <- density(p,"
+"0","              sigma = 500) # Smoothing bandwidth, or bandwidth selection function"
+"0","plot(ds, Add=TRUE, main='Crime density')"

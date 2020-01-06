@@ -1,4 +1,0 @@
-"0","Sys.setenv(PATH = paste(""C:\\Program Files\\ImageMagick-7.0.6-0-Q16"", Sys.getenv(""PATH""), sep = "";""))"
-"0","ani.options(convert=""C:\\Program Files\\ImageMagick-7.0.6-0-Q16\\covert.exe"")"
-"0","magickPath<-shortPathName(""C:\\Program Files\\ImageMagick-7.0.6-0-Q16-x64\\magick.exe"")"
-"0","ani.options(convert=magickPath)"

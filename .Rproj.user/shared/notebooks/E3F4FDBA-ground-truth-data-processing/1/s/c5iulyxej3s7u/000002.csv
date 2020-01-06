@@ -1,2 +1,0 @@
-"0","rp.df <- as.data.frame(rasterToPoints(rp))"
-"0","colnames(rp.df)[3] <- 'Class_ID'"

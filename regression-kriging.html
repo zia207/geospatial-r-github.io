@@ -193,7 +193,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -205,7 +205,7 @@ $(document).ready(function () {
       <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -226,7 +226,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
@@ -298,7 +298,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -392,7 +392,7 @@ $(document).ready(function () {
 
 </div>
 <p>Regression kriging (RK) mathematically equivalent to the universal kriging or kriging with external drift, where auxiliary predictors are used directly to solve the kriging weights. Regression kriging combines a regression model with simple kriging of the regression residuals. The experimental variogram of residuals is first computed and modeled, and then simple kriging (SK) is applied to the residuals to give the spatial prediction of the residuals.</p>
-<p><img src="Image/PNG_FILE_07/RK.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/RK.png" width="60%" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -821,7 +821,7 @@ grid.arrange(rf1,rf2,rf3,rf4, ncol = 4)  # Multiplot </code></pre>
 <div id="meta-ensemble-machine-learning" class="section level3">
 <h3>Meta Ensemble Machine Learning</h3>
 <p>Ensemble machine learning methods use multiple learning algorithms to obtain better predictive performance than could be obtained from any of the constituent learning algorithms. Many of the popular modern machine learning algorithms are ensembles. For example, Random Forest and Gradient Boosting Machine are both ensemble learners. However, <strong>stacked generalization or stacking or Supper Learning</strong> (Wolpert, 1992) that introduces the concept of a meta learner that ensemble or combined several strong, diverse sets of machine learning models together to get better prediction. In this modeling approach, each base level models are trained first, then the meta-model is trained on the outputs of the base level models. The base level models often consist of different learning algorithms and therefore stacking ensembles are often heterogeneous.</p>
-<p><img src="Image/PNG_FILE_07/metaModel.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/metaModel.png" width="60%" style="display: block; margin: auto;" /></p>
 <p>We will built a random forest (RF) regression model by stacking of GLM and RF regression models (sub-models) to predict SOC.</p>
 <div id="create-a-model-list" class="section level4">
 <h4>Create a model list</h4>

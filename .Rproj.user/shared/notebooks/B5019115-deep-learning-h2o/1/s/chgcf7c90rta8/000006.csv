@@ -1,8 +1,0 @@
-"0","test.cf<-h2o.confusionMatrix(dl_model,test)"
-"0","print(test.cf)"
-"1","Confusion Matrix"
-"1",":"
-"1"," "
-"1","Row labels: Actual class; Column labels: Predicted class"
-"1","
-"

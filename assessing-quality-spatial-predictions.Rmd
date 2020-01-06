@@ -12,7 +12,7 @@ Diagnostic measures of quality of spatial prediction are:  **mean error (ME), me
 
 
 ```{r echo=FALSE, out.width='60%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\Error.png')
+knitr::include_graphics('E:\\My_WebPage\\geospatial-r-github\\Image\\PNG_FILE_07\\Error.png')
 ```
 
 

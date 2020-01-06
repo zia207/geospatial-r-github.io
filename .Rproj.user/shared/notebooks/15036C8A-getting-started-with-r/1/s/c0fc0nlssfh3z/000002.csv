@@ -1,0 +1,3 @@
+"0","# install.packages(""xlsx"") # Install ""xlsx"" package"
+"0","# library(xlsx)            # Load xlsx package"
+"0","# data.xls <- read.xlsx(""~//Data_01//test_data.xlsx"", 1)  # read xlsx file"

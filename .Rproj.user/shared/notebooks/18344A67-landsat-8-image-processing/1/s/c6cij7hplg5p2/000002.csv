@@ -1,3 +1,0 @@
-"0","# raster stack"
-"0","s.rgb <- stack(b4,b3,b2)"
-"0","names(s.rgb) <- c(""B4"",""B2"", ""B3"")"

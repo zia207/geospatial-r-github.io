@@ -193,7 +193,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -205,7 +205,7 @@ $(document).ready(function () {
       <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -226,7 +226,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
@@ -298,7 +298,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -578,7 +578,7 @@ nn.pred&lt;-rasterFromXYZ(as.data.frame(nn)[, c(&quot;x&quot;, &quot;y&quot;, &q
 <div id="inverse-distance-weighted-interpolation" class="section level3">
 <h3>Inverse Distance Weighted Interpolation</h3>
 <p><strong>Inverse distance weighted (IDW)</strong> is one of the most commonly used <strong>non-statistical</strong> method for spatial interpolation based on an assumption that things that are close to one another are more alike than those that are farther apart, and each measured point has a local influence that diminishes with distance. It gives greater weights to points closest to the prediction location, and the weights diminish as a function of distance. The factors that affect the accuracy of IWD are the value of the power parameter and size and the number of the neighbor.</p>
-<p><img src="Image/PNG_FILE_07/IDW.png" width="40%" style="display: block; margin: auto;" /></p>
+<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/IDW.png" width="40%" style="display: block; margin: auto;" /></p>
 <p>We will use the <strong>gstat</strong> package to interpolate SOC using IDW. First we fit a model ( ~1 means) “intercept only” using krige() function. In the case of spatial data, that would be only ‘x’ and ‘y’ coordinates are used.</p>
 <pre class="r"><code>IDW&lt;- krige(SOC ~ 1, train, grid)</code></pre>
 <pre><code>## [inverse distance weighted interpolation]</code></pre>

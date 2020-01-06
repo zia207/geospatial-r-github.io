@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Deep Neural Network - Supervised Image Classification in H20 R</title>
+<title>deep-learning-h2o.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,9 +281,12 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -202,10 +295,7 @@ $(document).ready(function () {
       <a href="about.html">Content</a>
     </li>
     <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
-    </li>
-    <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -222,11 +312,14 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -251,6 +344,27 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="spatial-interpolation.html">Spatial Interpolation</a>
@@ -298,7 +412,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -383,14 +497,23 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Deep Neural Network - Supervised Image Classification in H20 R</h1>
 
 </div>
 
 
+<div style="margin-bottom:10px;">
+
+</div>
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<p><img src="Image/DNN_h2o.png" width="100%" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:30px;">
 
 </div>
+<div id="deep-neural-network---supervised-image-classification-in-h20-r" class="section level1">
+<h1>Deep Neural Network - Supervised Image Classification in H20 R</h1>
 <p><strong>Deep Neural Networks (or Deep Dearning)</strong> is based on a multi-layer, feed-forward artificial neural network that is trained with stochastic gradient descent using back-propagation. The network can contain many hidden layers consisting of neurons with activation functions. Advanced features such as adaptive learning rate, rate annealing, momentum training, dropout, L1 or L2 regularization, checkpointing, and grid search enable high predictive accuracy. Each computer node trains a copy of the global model parameters on its local data with multi-threading (asynchronously) and contributes periodically to the global model via model averaging across the network.</p>
 <p>In this tutorial will show how to implement a Deep Neural Network for pixel based supervised classification of Sentinel-2 multispectral images using the <a href="http://h2o-release.s3.amazonaws.com/h2o/rel-lambert/5/docs-website/Ruser/Rinstall.html">H20</a> package in R.</p>
 <p><a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html">H2O is an open source, in-memory, distributed, fast, and scalable machine learning and predictive analytics platform that allows you to build machine learning models on big data and provides easy productionalization of those models in an enterprise environment</a>. It’s core code is written in Java and can read data in parallel from a distributed cluster and also from local cluster. H2O allows access to all the capabilities of H2O from an external program or script via JSON over HTTP. The Rest API is used by H2O’s <a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html">web interface (Flow UI)</a>, <a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html">R binding (H2O-R)</a>, and <a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html">Python binding (H2O-Python)</a>. Requirement and installation steps in R can be found <a href="http://h2o-release.s3.amazonaws.com/h2o/rel-wheeler/2/index.html">here</a>.</p>
@@ -418,12 +541,12 @@ library(ggplot2)       # Plotting</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
-<p>The data could be available for download from <a href="https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0">here</a>.</p>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/a1pxx8we5r2p1zs/Data_RS_DNN.7z?dl=0">here</a>.</p>
 <div style="margin-bottom:20px;">
 
 </div>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+dataFolder&lt;-&quot;D:/Dropbox/WebSite_Data/R_Data/Data_RS_DNN/&quot;</code></pre>
 </div>
 <div id="load-point-and-grid-data" class="section level4">
 <h4>Load point and grid data</h4>
@@ -502,14 +625,14 @@ x &lt;- setdiff(names(train), y)</code></pre>
 ## Model Key:  Deep_Learning 
 ## Status of Neuron Layers: predicting Class, 5-class classification, multinomial distribution, CrossEntropy loss, 123,805 weights/biases, 1.4 MB, 198,374 training samples, mini-batch size 1
 ##   layer units             type dropout       l1       l2 mean_rate
-## 1     1    10            Input  0.00 %                            
+## 1     1    10            Input  0.00 %       NA       NA        NA
 ## 2     2   200 RectifierDropout 20.00 % 0.000001 0.000001  0.002778
 ## 3     3   200 RectifierDropout 10.00 % 0.000001 0.000001  0.017429
 ## 4     4   200 RectifierDropout 10.00 % 0.000001 0.000001  0.009463
 ## 5     5   200 RectifierDropout  0.00 % 0.000001 0.000001  0.026793
-## 6     6     5          Softmax         0.000001 0.000001  0.044096
+## 6     6     5          Softmax      NA 0.000001 0.000001  0.044096
 ##   rate_rms momentum mean_weight weight_rms mean_bias bias_rms
-## 1                                                            
+## 1       NA       NA          NA         NA        NA       NA
 ## 2 0.001755 0.000000    0.065016   0.182215  0.360042 0.080736
 ## 3 0.017699 0.000000   -0.029830   0.097819  0.916611 0.146557
 ## 4 0.012781 0.000000   -0.016788   0.078863  0.962554 0.029205
@@ -644,20 +767,20 @@ x &lt;- setdiff(names(train), y)</code></pre>
 ## 
 ## Scoring History: 
 ##              timestamp          duration training_speed   epochs
-## 1  2019-10-15 18:44:19         0.000 sec                 0.00000
-## 2  2019-10-15 18:44:37  3 min 25.928 sec   1056 obs/sec  1.00000
-## 3  2019-10-15 18:44:53  3 min 42.052 sec   1147 obs/sec  2.00000
-## 4  2019-10-15 18:45:07  3 min 56.659 sec   1221 obs/sec  3.00000
-## 5  2019-10-15 18:45:21  4 min 10.270 sec   1284 obs/sec  4.00000
-## 6  2019-10-15 18:45:36  4 min 24.924 sec   1305 obs/sec  5.00000
-## 7  2019-10-15 18:45:49  4 min 37.840 sec   1348 obs/sec  6.00000
-## 8  2019-10-15 18:46:02  4 min 50.726 sec   1380 obs/sec  7.00000
-## 9  2019-10-15 18:46:14  5 min  3.508 sec   1409 obs/sec  8.00000
-## 10 2019-10-15 18:46:27  5 min 15.886 sec   1436 obs/sec  9.00000
-## 11 2019-10-15 18:46:39  5 min 28.416 sec   1458 obs/sec 10.00000
-## 12 2019-10-15 18:46:52  5 min 40.711 sec   1477 obs/sec 11.00000
+## 1  2019-10-24 12:36:49         0.000 sec             NA  0.00000
+## 2  2019-10-24 12:37:06  7 min 13.514 sec   1098 obs/sec  1.00000
+## 3  2019-10-24 12:37:22  7 min 29.758 sec   1184 obs/sec  2.00000
+## 4  2019-10-24 12:37:37  7 min 45.080 sec   1241 obs/sec  3.00000
+## 5  2019-10-24 12:37:52  7 min 59.812 sec   1285 obs/sec  4.00000
+## 6  2019-10-24 12:38:06  8 min 14.179 sec   1320 obs/sec  5.00000
+## 7  2019-10-24 12:38:20  8 min 28.331 sec   1348 obs/sec  6.00000
+## 8  2019-10-24 12:38:34  8 min 42.311 sec   1371 obs/sec  7.00000
+## 9  2019-10-24 12:38:48  8 min 56.188 sec   1390 obs/sec  8.00000
+## 10 2019-10-24 12:39:02  9 min  9.895 sec   1408 obs/sec  9.00000
+## 11 2019-10-24 12:39:16  9 min 23.543 sec   1423 obs/sec 10.00000
+## 12 2019-10-24 12:39:29  9 min 37.107 sec   1436 obs/sec 11.00000
 ##    iterations       samples training_rmse training_logloss training_r2
-## 1           0      0.000000                                           
+## 1           0      0.000000            NA               NA          NA
 ## 2           1  18034.000000       0.30807          0.31402     0.92909
 ## 3           2  36068.000000       0.23927          0.18531     0.95723
 ## 4           3  54102.000000       0.22067          0.16103     0.96362
@@ -670,7 +793,7 @@ x &lt;- setdiff(names(train), y)</code></pre>
 ## 11         10 180340.000000       0.15287          0.08055     0.98254
 ## 12         11 198374.000000       0.16720          0.09567     0.97911
 ##    training_classification_error validation_rmse validation_logloss
-## 1                                                                  
+## 1                             NA              NA                 NA
 ## 2                        0.11761         0.30326            0.30153
 ## 3                        0.06920         0.24144            0.18801
 ## 4                        0.06155         0.21938            0.15935
@@ -683,7 +806,7 @@ x &lt;- setdiff(names(train), y)</code></pre>
 ## 11                       0.03488         0.15253            0.08104
 ## 12                       0.03471         0.16421            0.09223
 ##    validation_r2 validation_classification_error
-## 1                                               
+## 1             NA                              NA
 ## 2        0.93046                         0.11491
 ## 3        0.95592                         0.07182
 ## 4        0.96361                         0.06224
@@ -730,14 +853,14 @@ x &lt;- setdiff(names(train), y)</code></pre>
 <pre class="r"><code>plot(dl_model,
      timestep = &quot;epochs&quot;,
      metric = &quot;classification_error&quot;)</code></pre>
-<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-14-1.png" width="480" /></p>
+<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-16-1.png" width="480" /></p>
 </div>
 <div id="plot-logloss" class="section level4">
 <h4>Plot logloss</h4>
 <pre class="r"><code>plot(dl_model,
      timestep = &quot;epochs&quot;,
      metric = &quot;logloss&quot;)</code></pre>
-<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-15-1.png" width="480" /></p>
+<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-17-1.png" width="480" /></p>
 </div>
 <div id="cross-validation-error" class="section level4">
 <h4>Cross-validation Error</h4>
@@ -748,7 +871,7 @@ cv_models &lt;- sapply(dl_model@model$cross_validation_models,
 plot(cv_models[[1]], 
      timestep = &quot;epochs&quot;, 
      metric = &quot;classification_error&quot;)</code></pre>
-<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-16-1.png" width="480" /></p>
+<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-18-1.png" width="480" /></p>
 </div>
 <div id="cross-validation-result" class="section level4">
 <h4>Cross validation result</h4>
@@ -881,7 +1004,8 @@ print(test.cf)
 </div>
 <div id="stop-h20-cluster" class="section level4">
 <h4>Stop h20 cluster</h4>
-<pre class="r"><code># h2o.shutdown(prompt=FALSE)</code></pre>
+<pre class="r"><code>h2o.shutdown(prompt=FALSE)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="extract-prediction-class" class="section level4">
 <h4>Extract Prediction Class</h4>
@@ -910,12 +1034,13 @@ LU&lt;-spplot(r,&quot;Class_ID&quot;, main=&quot;Supervised Image Classification
               lab = c(&quot;Road/parking/pavement&quot; ,&quot;Building&quot;, &quot;Tree/buses&quot;, &quot;Grass&quot;, &quot;Water&quot;))),
               col.regions=myPalette,cut=4)
 LU</code></pre>
-<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-24-1.png" width="624" style="display: block; margin: auto;" /></p>
+<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-26-1.png" width="624" style="display: block; margin: auto;" /></p>
 </div>
 <div id="write-raster" class="section level4">
 <h4>Write raster</h4>
 <pre class="r"><code># writeRaster(r, filename = paste0(dataFolder,&quot;.\\Sentinel_2\\DNN_H20_Landuse.tiff&quot;), &quot;GTiff&quot;, overwrite=T)</code></pre>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 </div>
 
@@ -936,6 +1061,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

@@ -1,2 +1,0 @@
-"0","# Write as CSV file"
-"0","write.csv(mf, paste0(dataFolder,""GP_all_data.csv""), row.names=F)"

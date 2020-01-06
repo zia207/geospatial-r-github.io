@@ -1,0 +1,53 @@
+---
+title: ''
+---
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:30px;">
+</div>
+
+
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\Spatial_Statistics.png')
+```
+
+
+<div style="margin-bottom:50px;">
+</div>
+
+<div style="margin-bottom:30px;">
+</div>
+
+“The GIS dictionary (Wade and Sommer, 2006) define spatial statistics as “the field of study concerning statistical methods that use space and spatial relationships (such as distance, area, volume, length, height, orientation, centrality and/or other spatial characteristics of data) directly in their mathematical computations. Spatial statistics are used for a variety of different types of analyses, including pattern analysis, shape analysis, surface modeling and surface prediction, spatial regression, statistical comparisons of spatial datasets, statistical modeling and prediction of spatial interaction, and more. The many types of spatial statistics include descriptive, inferential, exploratory, geostatistical, and econometric statistics.”
+
+Spatial analysis includes a variety of techniques, many still in their early development, using different analytic approaches and applied in fields as diverse as astronomy, with its studies of the placement of galaxies in the cosmos, to chip fabrication engineering, with its use of "place and route" algorithms to build complex wiring structures. In a more restricted sense, spatial analysis is the technique applied to structures at the human scale, most notably in the analysis of geographic data [(Wikipedia, 2018)](https://en.wikipedia.org/wiki/Spatial_analysis). 
+
+
+### Table of Content 
+
+<div style="margin-bottom:20px;">
+</div>
+
+
+* [Spatial Autocorrelation](spatial-autocorrelation.html)
+
+    - Moran's I  
+    - Geary's C
+    - Getis's Gi 
+    
+* [Point Pattern Analysis](point-pattern-analysis.html)
+
+* [Geographically Weighted Mmodels](geographically-weighted-models.html)
+
+    - [Geographically Weighted Summary Statistics](geographically-weighted-summary-statistics.html)
+    
+    - [Geographically Weighted Principal Components Analysis](geographically-weighted-principal-components-analysis.html)
+    
+    - [Geographically Weighted Regression](geographically-weighted-regression.html)
+
+        - [Geographically Weighted OLS Regression](geographically-weighted-ols-regression.html) 
+ 
+        - [Geographically Weighted Poisson Regression](geographically-weighted-poisson-regression.html)
+  
+        - [Geographically Wighted Rrandom Forest](geographically-wighted-random-forest.html)

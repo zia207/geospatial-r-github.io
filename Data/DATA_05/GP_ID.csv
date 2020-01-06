@@ -1,0 +1,474 @@
+ID,STATE_ID,STATE,FIPS,COUNTY
+1,56,Wyoming,56041,Uinta County
+2,56,Wyoming,56023,Lincoln County
+3,56,Wyoming,56039,Teton County
+4,56,Wyoming,56039,Teton County
+5,56,Wyoming,56029,Park County
+6,56,Wyoming,56039,Teton County
+7,56,Wyoming,56039,Teton County
+8,56,Wyoming,56039,Teton County
+9,56,Wyoming,56039,Teton County
+10,56,Wyoming,56035,Sublette County
+11,56,Wyoming,56035,Sublette County
+12,56,Wyoming,56035,Sublette County
+13,56,Wyoming,56039,Teton County
+14,56,Wyoming,56041,Uinta County
+15,56,Wyoming,56035,Sublette County
+16,56,Wyoming,56023,Lincoln County
+17,56,Wyoming,56029,Park County
+18,56,Wyoming,56029,Park County
+19,56,Wyoming,56013,Fremont County
+20,56,Wyoming,56035,Sublette County
+21,56,Wyoming,56035,Sublette County
+22,56,Wyoming,56035,Sublette County
+23,56,Wyoming,56013,Fremont County
+24,56,Wyoming,56029,Park County
+25,56,Wyoming,56035,Sublette County
+26,56,Wyoming,56037,Sweetwater County
+27,56,Wyoming,56037,Sweetwater County
+28,56,Wyoming,56013,Fremont County
+29,56,Wyoming,56029,Park County
+30,56,Wyoming,56035,Sublette County
+31,56,Wyoming,56029,Park County
+32,56,Wyoming,56029,Park County
+33,8,Colorado,8081,Moffat County
+34,35,New Mexico,35023,Hidalgo County
+35,35,New Mexico,35003,Catron County
+36,56,Wyoming,56029,Park County
+37,35,New Mexico,35023,Hidalgo County
+38,8,Colorado,8083,Montezuma County
+39,35,New Mexico,35031,McKinley County
+40,56,Wyoming,56017,Hot Springs County
+41,8,Colorado,8077,Mesa County
+42,35,New Mexico,35031,McKinley County
+43,56,Wyoming,56013,Fremont County
+44,35,New Mexico,35003,Catron County
+45,35,New Mexico,35023,Hidalgo County
+46,8,Colorado,8077,Mesa County
+47,35,New Mexico,35006,Cibola County
+48,56,Wyoming,56013,Fremont County
+49,8,Colorado,8045,Garfield County
+50,35,New Mexico,35017,Grant County
+51,8,Colorado,8033,Dolores County
+52,8,Colorado,8033,Dolores County
+53,56,Wyoming,56029,Park County
+54,56,Wyoming,56013,Fremont County
+55,35,New Mexico,35031,McKinley County
+56,35,New Mexico,35017,Grant County
+57,8,Colorado,8033,Dolores County
+58,35,New Mexico,35006,Cibola County
+59,8,Colorado,8077,Mesa County
+60,35,New Mexico,35045,San Juan County
+61,8,Colorado,8081,Moffat County
+62,35,New Mexico,35017,Grant County
+63,35,New Mexico,35006,Cibola County
+64,35,New Mexico,35031,McKinley County
+65,56,Wyoming,56013,Fremont County
+66,35,New Mexico,35031,McKinley County
+67,35,New Mexico,35003,Catron County
+68,35,New Mexico,35017,Grant County
+69,8,Colorado,8033,Dolores County
+70,8,Colorado,8083,Montezuma County
+71,8,Colorado,8085,Montrose County
+72,56,Wyoming,56043,Washakie County
+73,35,New Mexico,35023,Hidalgo County
+74,35,New Mexico,35003,Catron County
+75,35,New Mexico,35003,Catron County
+76,35,New Mexico,35045,San Juan County
+77,35,New Mexico,35006,Cibola County
+78,8,Colorado,8083,Montezuma County
+79,8,Colorado,8077,Mesa County
+80,8,Colorado,8113,San Miguel County
+81,56,Wyoming,56043,Washakie County
+82,35,New Mexico,35003,Catron County
+83,35,New Mexico,35029,Luna County
+84,56,Wyoming,56013,Fremont County
+85,8,Colorado,8033,Dolores County
+86,35,New Mexico,35003,Catron County
+87,35,New Mexico,35003,Catron County
+88,8,Colorado,8091,Ouray County
+89,35,New Mexico,35031,McKinley County
+90,35,New Mexico,35045,San Juan County
+91,56,Wyoming,56043,Washakie County
+92,56,Wyoming,56013,Fremont County
+93,56,Wyoming,56037,Sweetwater County
+94,35,New Mexico,35017,Grant County
+95,56,Wyoming,56013,Fremont County
+96,56,Wyoming,56013,Fremont County
+97,8,Colorado,8103,Rio Blanco County
+98,35,New Mexico,35045,San Juan County
+99,8,Colorado,8067,La Plata County
+100,35,New Mexico,35029,Luna County
+101,8,Colorado,8103,Rio Blanco County
+102,56,Wyoming,56043,Washakie County
+103,8,Colorado,8067,La Plata County
+104,35,New Mexico,35045,San Juan County
+105,35,New Mexico,35045,San Juan County
+106,56,Wyoming,56013,Fremont County
+107,35,New Mexico,35053,Socorro County
+108,35,New Mexico,35006,Cibola County
+109,8,Colorado,8077,Mesa County
+110,8,Colorado,8091,Ouray County
+111,35,New Mexico,35053,Socorro County
+112,56,Wyoming,56013,Fremont County
+113,35,New Mexico,35053,Socorro County
+114,8,Colorado,8085,Montrose County
+115,35,New Mexico,35029,Luna County
+116,56,Wyoming,56007,Carbon County
+117,8,Colorado,8111,San Juan County
+118,56,Wyoming,56013,Fremont County
+119,8,Colorado,8081,Moffat County
+120,8,Colorado,8045,Garfield County
+121,56,Wyoming,56037,Sweetwater County
+122,35,New Mexico,35051,Sierra County
+123,8,Colorado,8051,Gunnison County
+124,8,Colorado,8081,Moffat County
+125,8,Colorado,8045,Garfield County
+126,35,New Mexico,35051,Sierra County
+127,35,New Mexico,35043,Sandoval County
+128,56,Wyoming,56043,Washakie County
+129,8,Colorado,8103,Rio Blanco County
+130,8,Colorado,8107,Routt County
+131,56,Wyoming,56007,Carbon County
+132,35,New Mexico,35053,Socorro County
+133,35,New Mexico,35053,Socorro County
+134,56,Wyoming,56025,Natrona County
+135,35,New Mexico,35039,Rio Arriba County
+136,35,New Mexico,35043,Sandoval County
+137,56,Wyoming,56025,Natrona County
+138,35,New Mexico,35053,Socorro County
+139,8,Colorado,8045,Garfield County
+140,56,Wyoming,56019,Johnson County
+141,35,New Mexico,35043,Sandoval County
+142,8,Colorado,8107,Routt County
+143,8,Colorado,8051,Gunnison County
+144,35,New Mexico,35043,Sandoval County
+145,35,New Mexico,35053,Socorro County
+146,56,Wyoming,56007,Carbon County
+147,8,Colorado,8107,Routt County
+148,35,New Mexico,35051,Sierra County
+149,56,Wyoming,56019,Johnson County
+150,8,Colorado,8079,Mineral County
+151,8,Colorado,8051,Gunnison County
+152,56,Wyoming,56033,Sheridan County
+153,56,Wyoming,56007,Carbon County
+154,8,Colorado,8007,Archuleta County
+155,56,Wyoming,56019,Johnson County
+156,8,Colorado,8051,Gunnison County
+157,35,New Mexico,35039,Rio Arriba County
+158,56,Wyoming,56019,Johnson County
+159,35,New Mexico,35039,Rio Arriba County
+160,8,Colorado,8109,Saguache County
+161,35,New Mexico,35039,Rio Arriba County
+162,56,Wyoming,56007,Carbon County
+163,56,Wyoming,56007,Carbon County
+164,8,Colorado,8105,Rio Grande County
+165,35,New Mexico,35043,Sandoval County
+166,35,New Mexico,35043,Sandoval County
+167,56,Wyoming,56007,Carbon County
+168,8,Colorado,8051,Gunnison County
+169,35,New Mexico,35013,Dowa Ana County
+170,56,Wyoming,56025,Natrona County
+171,35,New Mexico,35013,Dowa Ana County
+172,35,New Mexico,35039,Rio Arriba County
+173,8,Colorado,8109,Saguache County
+174,8,Colorado,8037,Eagle County
+175,56,Wyoming,56019,Johnson County
+176,56,Wyoming,56007,Carbon County
+177,56,Wyoming,56007,Carbon County
+178,56,Wyoming,56007,Carbon County
+179,8,Colorado,8057,Jackson County
+180,8,Colorado,8049,Grand County
+181,8,Colorado,8105,Rio Grande County
+182,56,Wyoming,56025,Natrona County
+183,56,Wyoming,56033,Sheridan County
+184,8,Colorado,8065,Lake County
+185,8,Colorado,8117,Summit County
+186,8,Colorado,8015,Chaffee County
+187,56,Wyoming,56019,Johnson County
+188,8,Colorado,8065,Lake County
+189,56,Wyoming,56019,Johnson County
+190,8,Colorado,8021,Conejos County
+191,56,Wyoming,56033,Sheridan County
+192,56,Wyoming,56033,Sheridan County
+193,56,Wyoming,56007,Carbon County
+194,35,New Mexico,35039,Rio Arriba County
+195,8,Colorado,8049,Grand County
+196,56,Wyoming,56007,Carbon County
+197,56,Wyoming,56001,Albany County
+198,56,Wyoming,56025,Natrona County
+199,8,Colorado,8057,Jackson County
+200,8,Colorado,8105,Rio Grande County
+201,35,New Mexico,35035,Otero County
+202,8,Colorado,8093,Park County
+203,56,Wyoming,56005,Campbell County
+204,8,Colorado,8109,Saguache County
+205,8,Colorado,8109,Saguache County
+206,56,Wyoming,56009,Converse County
+207,56,Wyoming,56001,Albany County
+208,8,Colorado,8049,Grand County
+209,8,Colorado,8003,Alamosa County
+210,8,Colorado,8069,Larimer County
+211,8,Colorado,8093,Park County
+212,8,Colorado,8109,Saguache County
+213,8,Colorado,8109,Saguache County
+214,56,Wyoming,56009,Converse County
+215,35,New Mexico,35027,Lincoln County
+216,35,New Mexico,35057,Torrance County
+217,56,Wyoming,56009,Converse County
+218,35,New Mexico,35055,Taos County
+219,8,Colorado,8093,Park County
+220,56,Wyoming,56005,Campbell County
+221,56,Wyoming,56001,Albany County
+222,56,Wyoming,56001,Albany County
+223,8,Colorado,8003,Alamosa County
+224,35,New Mexico,35055,Taos County
+225,8,Colorado,8027,Custer County
+226,56,Wyoming,56005,Campbell County
+227,8,Colorado,8069,Larimer County
+228,35,New Mexico,35055,Taos County
+229,8,Colorado,8069,Larimer County
+230,8,Colorado,8013,Boulder County
+231,56,Wyoming,56005,Campbell County
+232,56,Wyoming,56009,Converse County
+233,56,Wyoming,56009,Converse County
+234,56,Wyoming,56005,Campbell County
+235,56,Wyoming,56005,Campbell County
+236,8,Colorado,8069,Larimer County
+237,8,Colorado,8023,Costilla County
+238,35,New Mexico,35047,San Miguel County
+239,56,Wyoming,56005,Campbell County
+240,35,New Mexico,35007,Colfax County
+241,56,Wyoming,56009,Converse County
+242,56,Wyoming,56009,Converse County
+243,56,Wyoming,56031,Platte County
+244,56,Wyoming,56021,Laramie County
+245,35,New Mexico,35047,San Miguel County
+246,56,Wyoming,56031,Platte County
+247,35,New Mexico,35019,Guadalupe County
+248,35,New Mexico,35035,Otero County
+249,8,Colorado,8027,Custer County
+250,35,New Mexico,35007,Colfax County
+251,35,New Mexico,35007,Colfax County
+252,56,Wyoming,56009,Converse County
+253,8,Colorado,8041,El Paso County
+254,8,Colorado,8069,Larimer County
+255,8,Colorado,8071,Las Animas County
+256,56,Wyoming,56011,Crook County
+257,35,New Mexico,35033,Mora County
+258,8,Colorado,8005,Arapahoe County
+259,8,Colorado,8123,Weld County
+260,56,Wyoming,56027,Niobrara County
+261,8,Colorado,8041,El Paso County
+262,8,Colorado,8041,El Paso County
+263,56,Wyoming,56011,Crook County
+264,8,Colorado,8035,Douglas County
+265,35,New Mexico,35015,Eddy County
+266,8,Colorado,8055,Huerfano County
+267,8,Colorado,8035,Douglas County
+268,56,Wyoming,56045,Weston County
+269,35,New Mexico,35005,Chaves County
+270,35,New Mexico,35011,De Baca County
+271,8,Colorado,8071,Las Animas County
+272,56,Wyoming,56015,Goshen County
+273,35,New Mexico,35007,Colfax County
+274,56,Wyoming,56045,Weston County
+275,56,Wyoming,56045,Weston County
+276,8,Colorado,8041,El Paso County
+277,56,Wyoming,56045,Weston County
+278,8,Colorado,8005,Arapahoe County
+279,8,Colorado,8123,Weld County
+280,35,New Mexico,35011,De Baca County
+281,56,Wyoming,56015,Goshen County
+282,8,Colorado,8001,Adams County
+283,8,Colorado,8123,Weld County
+284,8,Colorado,8005,Arapahoe County
+285,56,Wyoming,56027,Niobrara County
+286,8,Colorado,8123,Weld County
+287,56,Wyoming,56021,Laramie County
+288,56,Wyoming,56015,Goshen County
+289,56,Wyoming,56027,Niobrara County
+290,35,New Mexico,35005,Chaves County
+291,8,Colorado,8123,Weld County
+292,8,Colorado,8039,Elbert County
+293,35,New Mexico,35011,De Baca County
+294,35,New Mexico,35019,Guadalupe County
+295,8,Colorado,8071,Las Animas County
+296,35,New Mexico,35005,Chaves County
+297,56,Wyoming,56015,Goshen County
+298,56,Wyoming,56015,Goshen County
+299,8,Colorado,8101,Pueblo County
+300,8,Colorado,8041,El Paso County
+301,8,Colorado,8101,Pueblo County
+302,56,Wyoming,56015,Goshen County
+303,56,Wyoming,56021,Laramie County
+304,8,Colorado,8041,El Paso County
+305,35,New Mexico,35015,Eddy County
+306,8,Colorado,8039,Elbert County
+307,8,Colorado,8089,Otero County
+308,35,New Mexico,35037,Quay County
+309,35,New Mexico,35021,Harding County
+310,8,Colorado,8025,Crowley County
+311,8,Colorado,8039,Elbert County
+312,35,New Mexico,35059,Union County
+313,35,New Mexico,35005,Chaves County
+314,35,New Mexico,35005,Chaves County
+315,35,New Mexico,35041,Roosevelt County
+316,35,New Mexico,35025,Lea County
+317,35,New Mexico,35021,Harding County
+318,35,New Mexico,35025,Lea County
+319,35,New Mexico,35041,Roosevelt County
+320,35,New Mexico,35037,Quay County
+321,8,Colorado,8087,Morgan County
+322,8,Colorado,8087,Morgan County
+323,8,Colorado,8073,Lincoln County
+324,35,New Mexico,35025,Lea County
+325,35,New Mexico,35025,Lea County
+326,35,New Mexico,35041,Roosevelt County
+327,35,New Mexico,35041,Roosevelt County
+328,35,New Mexico,35025,Lea County
+329,35,New Mexico,35037,Quay County
+330,8,Colorado,8089,Otero County
+331,35,New Mexico,35059,Union County
+332,35,New Mexico,35009,Curry County
+333,8,Colorado,8121,Washington County
+334,35,New Mexico,35025,Lea County
+335,35,New Mexico,35037,Quay County
+336,8,Colorado,8071,Las Animas County
+337,8,Colorado,8075,Logan County
+338,35,New Mexico,35037,Quay County
+339,8,Colorado,8017,Cheyenne County
+340,35,New Mexico,35041,Roosevelt County
+341,35,New Mexico,35009,Curry County
+342,35,New Mexico,35059,Union County
+343,8,Colorado,8121,Washington County
+344,8,Colorado,8075,Logan County
+345,35,New Mexico,35059,Union County
+346,8,Colorado,8075,Logan County
+347,8,Colorado,8121,Washington County
+348,8,Colorado,8017,Cheyenne County
+349,8,Colorado,8061,Kiowa County
+350,8,Colorado,8009,Baca County
+351,8,Colorado,8063,Kit Carson County
+352,8,Colorado,8125,Yuma County
+353,8,Colorado,8125,Yuma County
+354,8,Colorado,8061,Kiowa County
+355,8,Colorado,8009,Baca County
+356,8,Colorado,8061,Kiowa County
+357,8,Colorado,8063,Kit Carson County
+358,8,Colorado,8009,Baca County
+359,8,Colorado,8099,Prowers County
+360,8,Colorado,8095,Phillips County
+361,8,Colorado,8095,Phillips County
+362,8,Colorado,8009,Baca County
+363,8,Colorado,8125,Yuma County
+364,8,Colorado,8095,Phillips County
+365,8,Colorado,8061,Kiowa County
+366,8,Colorado,8009,Baca County
+367,8,Colorado,8017,Cheyenne County
+368,20,Kansas,20023,Cheyenne County
+369,20,Kansas,20023,Cheyenne County
+370,20,Kansas,20075,Hamilton County
+371,20,Kansas,20129,Morton County
+372,20,Kansas,20199,Wallace County
+373,20,Kansas,20129,Morton County
+374,20,Kansas,20023,Cheyenne County
+375,20,Kansas,20109,Logan County
+376,20,Kansas,20189,Stevens County
+377,20,Kansas,20193,Thomas County
+378,20,Kansas,20093,Kearny County
+379,20,Kansas,20109,Logan County
+380,20,Kansas,20189,Stevens County
+381,20,Kansas,20193,Thomas County
+382,20,Kansas,20081,Haskell County
+383,20,Kansas,20193,Thomas County
+384,20,Kansas,20175,Seward County
+385,20,Kansas,20069,Gray County
+386,20,Kansas,20101,Lane County
+387,20,Kansas,20101,Lane County
+388,20,Kansas,20039,Decatur County
+389,20,Kansas,20055,Finney County
+390,20,Kansas,20039,Decatur County
+391,20,Kansas,20063,Gove County
+392,20,Kansas,20057,Ford County
+393,20,Kansas,20057,Ford County
+394,20,Kansas,20065,Graham County
+395,20,Kansas,20057,Ford County
+396,20,Kansas,20025,Clark County
+397,20,Kansas,20137,Norton County
+398,20,Kansas,20065,Graham County
+399,20,Kansas,20065,Graham County
+400,20,Kansas,20195,Trego County
+401,20,Kansas,20057,Ford County
+402,20,Kansas,20145,Pawnee County
+403,20,Kansas,20145,Pawnee County
+404,20,Kansas,20097,Kiowa County
+405,20,Kansas,20009,Barton County
+406,20,Kansas,20185,Stafford County
+407,20,Kansas,20167,Russell County
+408,20,Kansas,20007,Barber County
+409,20,Kansas,20185,Stafford County
+410,20,Kansas,20009,Barton County
+411,20,Kansas,20183,Smith County
+412,20,Kansas,20007,Barber County
+413,20,Kansas,20151,Pratt County
+414,20,Kansas,20089,Jewell County
+415,20,Kansas,20053,Ellsworth County
+416,20,Kansas,20123,Mitchell County
+417,20,Kansas,20159,Rice County
+418,20,Kansas,20105,Lincoln County
+419,20,Kansas,20077,Harper County
+420,20,Kansas,20095,Kingman County
+421,20,Kansas,20077,Harper County
+422,20,Kansas,20105,Lincoln County
+423,20,Kansas,20053,Ellsworth County
+424,20,Kansas,20029,Cloud County
+425,20,Kansas,20191,Sumner County
+426,20,Kansas,20113,McPherson County
+427,20,Kansas,20169,Saline County
+428,20,Kansas,20169,Saline County
+429,20,Kansas,20157,Republic County
+430,20,Kansas,20173,Sedgwick County
+431,20,Kansas,20143,Ottawa County
+432,20,Kansas,20041,Dickinson County
+433,20,Kansas,20079,Harvey County
+434,20,Kansas,20173,Sedgwick County
+435,20,Kansas,20191,Sumner County
+436,20,Kansas,20115,Marion County
+437,20,Kansas,20041,Dickinson County
+438,20,Kansas,20041,Dickinson County
+439,20,Kansas,20201,Washington County
+440,20,Kansas,20015,Butler County
+441,20,Kansas,20015,Butler County
+442,20,Kansas,20017,Chase County
+443,20,Kansas,20015,Butler County
+444,20,Kansas,20017,Chase County
+445,20,Kansas,20161,Riley County
+446,20,Kansas,20161,Riley County
+447,20,Kansas,20117,Marshall County
+448,20,Kansas,20197,Wabaunsee County
+449,20,Kansas,20019,Chautauqua County
+450,20,Kansas,20111,Lyon County
+451,20,Kansas,20149,Pottawatomie County
+452,20,Kansas,20073,Greenwood County
+453,20,Kansas,20197,Wabaunsee County
+454,20,Kansas,20073,Greenwood County
+455,20,Kansas,20131,Nemaha County
+456,20,Kansas,20177,Shawnee County
+457,20,Kansas,20125,Montgomery County
+458,20,Kansas,20207,Woodson County
+459,20,Kansas,20207,Woodson County
+460,20,Kansas,20031,Coffey County
+461,20,Kansas,20139,Osage County
+462,20,Kansas,20013,Brown County
+463,20,Kansas,20139,Osage County
+464,20,Kansas,20005,Atchison County
+465,20,Kansas,20087,Jefferson County
+466,20,Kansas,20099,Labette County
+467,20,Kansas,20013,Brown County
+468,20,Kansas,20099,Labette County
+469,20,Kansas,20013,Brown County
+470,20,Kansas,20133,Neosho County
+471,20,Kansas,20001,Allen County
+472,20,Kansas,20043,Doniphan County
+473,20,Kansas,20021,Cherokee County

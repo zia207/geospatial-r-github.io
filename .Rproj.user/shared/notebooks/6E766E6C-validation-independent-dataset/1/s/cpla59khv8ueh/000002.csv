@@ -1,2 +1,0 @@
-"0","train$SOC.bc<-bcPower(train$SOC, 0.2523339)"
-"0","test$SOC.bc<-bcPower(test$SOC, 0.3379903)"

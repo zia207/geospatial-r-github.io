@@ -1,3 +1,0 @@
-"0","glist <- list.files(path=paste0(dataFolder, "".//RASTER""),pattern='.tif$',full.names=T)"
-"0","s<- stack(glist)"
-"0","plot(s)"

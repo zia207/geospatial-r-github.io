@@ -1,0 +1,6 @@
+"0","gw.pca<- gwpca(scaled.spdf, "
+"0","               vars = colnames(scaled.spdf@data), "
+"0","               bw=bw.gw.pca,"
+"0","               k = 5, "
+"0","               robust = FALSE, "
+"0","               adaptive = TRUE)"

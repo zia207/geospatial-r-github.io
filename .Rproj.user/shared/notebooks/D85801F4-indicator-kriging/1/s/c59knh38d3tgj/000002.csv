@@ -1,5 +1,0 @@
-"0","par(mfrow=c(1,2))"
-"0","plot(coordinates(cv.10), asp = 1, pch=21, col = ifelse(cv.10$observed,"
-"0"," ""red"", ""green""), cex = 0.2 + 1 * cv.10$var1.pred,"
-"0"," xlab = ""E (km)"", ylab = ""N (km)"", main = ""Probability of TRUE indicator (10 ppb)"","
-"0"," sub = ""Actual indicator: green/red = FALSE/TRUE"")"

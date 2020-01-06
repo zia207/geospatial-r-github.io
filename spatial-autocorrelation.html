@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Spatial Autocorrelation</title>
+<title>spatial-autocorrelation.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,9 +281,12 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Data Processing with R
+    Spatial Data Processing
      
     <span class="caret"></span>
   </a>
@@ -202,10 +295,7 @@ $(document).ready(function () {
       <a href="about.html">Content</a>
     </li>
     <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
-    </li>
-    <li>
-      <a href="read-write-spatial-data.html">Read and Write Spatial Data in R</a>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
     </li>
     <li>
       <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
@@ -222,20 +312,20 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Spatial Statistics with R
+    Spatial Statistics
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about-b.html">Content</a>
-    </li>
-    <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
     </li>
     <li>
       <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
@@ -251,6 +341,27 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="spatial-interpolation.html">Spatial Interpolation</a>
@@ -298,7 +409,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Remote Sensing Data with R
+    Remote Sensing
      
     <span class="caret"></span>
   </a>
@@ -383,15 +494,21 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Spatial Autocorrelation</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<div style="margin-bottom:10px;">
 
 </div>
-<p>Spatial autocorrelation measures the degree of correlation to itself through space (Cliff and Ord 1973, 1981). Tests of spatial autocorrelation examine the independency of observed value of a variable in relation to values of that variable at neighboring locations. Spatial autocorrelation can be positive or negative.</p>
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="spatial-autocorrelation" class="section level1">
+<h1>Spatial Autocorrelation</h1>
+<p>“Spatial autocorrelation is a method of Exploratory Spatial Data Analysis (ESDA)”. It helps to study and understanding of the spatial distribution and spatial structure as well as they allow for detecting spatial dependence or autocorrelation in spatial data.</p>
+<p>Spatial autocorrelation measures the degree of correlation on space (Cliff and Ord 1973, 1981). Tests of spatial autocorrelation examine the independency of observed value in relation to values of that variable at neighboring locations. Spatial autocorrelation can be positive or negative.</p>
 <p><strong>Positive spatial autocorrelation</strong> indicates that similar values appear close to each other, or cluster, in space.</p>
 <p><strong>Negative spatial autocorrelation</strong> occurs when dissimilar values occur near one another.</p>
 <p><strong>Null spatial autocorrelation</strong> indicates that the spatial pattern is random.</p>
@@ -428,27 +545,26 @@ library(rgdal)       # raster</code></pre>
 </div>
 <div id="load-data" class="section level4">
 <h4>Load Data</h4>
-<p>The spatial polygon of lung cancer mortality rate and envrionmental covariate data could be found <a href="https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0">here</a>.</p>
+<p>The data could be found <a href="https://www.dropbox.com/s/sngfyskys1jwvet/Data_GWR.7z?dl=0">here</a>.</p>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;
+dataFolder&lt;-&quot;D:\\Dropbox\\WebSite_Data\\R_Data\\Data_GWR\\&quot;
 COUNTY&lt;-shapefile(paste0(dataFolder,&quot;COUNTY_ATLANTIC.shp&quot;))
 state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))
 df&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), header=T)</code></pre>
 </div>
 <div id="create-a-data-frame" class="section level4">
 <h4>Create a data frame</h4>
-<pre class="r"><code>df[6] &lt;- lapply(df[6], as.numeric) # Cancer data to numeric
+<pre class="r"><code>df[6] &lt;- lapply(df[6], as.numeric) # Rate data to numeric
 SPDF&lt;-merge(COUNTY,df, by=&quot;FIPS&quot;)
 names(SPDF)</code></pre>
 <pre><code>##  [1] &quot;FIPS&quot;       &quot;ID&quot;         &quot;x.x&quot;        &quot;y.x&quot;        &quot;REGION_ID&quot; 
 ##  [6] &quot;DIVISION_I&quot; &quot;STATE_ID&quot;   &quot;COUNTY_ID&quot;  &quot;REGION&quot;     &quot;DIVISION&quot;  
-## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;x.y&quot;        &quot;y.y&quot;        &quot;pop&quot;       
-## [16] &quot;cancer&quot;     &quot;poverty&quot;    &quot;smoking&quot;    &quot;PM25&quot;       &quot;NO2&quot;       
-## [21] &quot;SO2&quot;</code></pre>
+## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;x.y&quot;        &quot;y.y&quot;        &quot;Rate&quot;      
+## [16] &quot;POV&quot;        &quot;SMOK&quot;       &quot;PM25&quot;       &quot;NO2&quot;        &quot;SO2&quot;</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
-<p>Before autocorrelation, analysis we have construct neighbours list from polygon list and then we have calculate spatial weights for neighbours lists.</p>
+<p>Before autocorrelation analysis, we have to construct a neighbours list from polygon list and then we have to calculate spatial weights for neighbours lists.</p>
 </div>
 <div id="construct-neighbours-list-from-polygon-list" class="section level4">
 <h4>Construct neighbours list from polygon list</h4>
@@ -464,7 +580,7 @@ names(SPDF)</code></pre>
      col=&quot;red&quot;,
      add=T)
   }</code></pre>
-<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div id="spatial-weights-for-neighbours-lists" class="section level4">
 <h4>Spatial weights for neighbours lists</h4>
@@ -483,11 +599,11 @@ names(SPDF)</code></pre>
 <div id="global-morans-i" class="section level4">
 <h4>Global Moran’s I</h4>
 <p>The Spatial Autocorrelation with Global Moran’s I is an inferential statistic, which means that the results of the analysis are always interpreted within the context of its null hypothesis.</p>
-<pre class="r"><code>moran.test(SPDF$cancer,neighbourhood_weights_list)</code></pre>
+<pre class="r"><code>moran.test(SPDF$Rate,neighbourhood_weights_list)</code></pre>
 <pre><code>## 
 ##  Moran I test under randomisation
 ## 
-## data:  SPDF$cancer  
+## data:  SPDF$Rate  
 ## weights: neighbourhood_weights_list    
 ## 
 ## Moran I statistic standard deviate = 22.356, p-value &lt; 2.2e-16
@@ -496,7 +612,7 @@ names(SPDF)</code></pre>
 ## Moran I statistic       Expectation          Variance 
 ##      0.5477054258     -0.0015037594      0.0006035296</code></pre>
 <p>Note that the p-value computed from the moran.test function is not computed from an MC simulation but analytically instead. This may not always prove to be the most accurate measure of significance. To test for significance using the MC simulation method instead, use the <em>moran.mc</em> function.</p>
-<pre class="r"><code>gobal.moran.mc &lt;- moran.mc(SPDF$cancer,
+<pre class="r"><code>gobal.moran.mc &lt;- moran.mc(SPDF$Rate,
                                 neighbourhood_weights_list,
                                 nsim=599)
 
@@ -505,7 +621,7 @@ gobal.moran.mc</code></pre>
 <pre><code>## 
 ##  Monte-Carlo simulation of Moran I
 ## 
-## data:  SPDF$cancer 
+## data:  SPDF$Rate 
 ## weights: neighbourhood_weights_list  
 ## number of simulations + 1: 600 
 ## 
@@ -513,7 +629,7 @@ gobal.moran.mc</code></pre>
 ## alternative hypothesis: greater</code></pre>
 <pre class="r"><code># Plot the distribution (note that this is a density plot instead of a histogram)
 plot(gobal.moran.mc, main=&quot;&quot;, las=1)</code></pre>
-<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-8-1.png" width="432" style="display: block; margin: auto;" /></p>
+<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-9-1.png" width="432" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -521,7 +637,7 @@ plot(gobal.moran.mc, main=&quot;&quot;, las=1)</code></pre>
 <div id="local-morans-i" class="section level4">
 <h4>Local Moran’s I</h4>
 <p>The Local Moran statistic was suggested in Anselin (1995) as a way to identify local clusters and spatial outliers. Moran I is combined with the location of each observation in the Moran Scatterplot. This allows for a classification of the significant locations as high-high and low-low spatial clusters, and high-low and low-high spatial outliers. Note that the reference to high and low is relative to the mean of the variable, and should not be interpreted in an absolute sense.</p>
-<pre class="r"><code>local.moran.results &lt;- localmoran(SPDF$cancer,
+<pre class="r"><code>local.moran.results &lt;- localmoran(SPDF$Rate,
                          neighbourhood_weights_list,
            p.adjust.method=&quot;bonferroni&quot;,
            na.action=na.exclude,
@@ -560,7 +676,7 @@ p3&lt;-spplot(SPDF, &quot;lmoran_sig&quot;, main=&quot;P-values &lt; 0.05&quot;,
         cut=2,col.regions=col.palette.3(3))</code></pre>
 <p>Blue represents hot spots or spatial outliers</p>
 <pre class="r"><code>grid.arrange(p1, p2, p3, ncol=3)</code></pre>
-<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-12-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -570,11 +686,11 @@ p3&lt;-spplot(SPDF, &quot;lmoran_sig&quot;, main=&quot;P-values &lt; 0.05&quot;,
 <h3>Gearys C</h3>
 <p>Geary’s C is a measure of spatial autocorrelation or determines if adjacent observations of the same attributes are correlated in multi- or bi-directional ways. The value of Geary’s C lies between 0 and some general value greater than 1. Values significantly lower than one demonstrate increasing positive spatial autocorrelation, while values significantly higher than one illustrate increasing negative spatial autocorrelation. Geary’s C is inversely related to Moran’s I, but it is not identical. Moran’s I is a measure of global spatial autocorrelation, while Geary’s C is more sensitive to local spatial autocorrelation.</p>
 <p>Geary’s test for spatial autocorrelation using a spatial weights matrix in weights list form. The assumptions underlying the test are sensitive to the form of the graph of neighbour relationships and other factors, and results may be checked against those of geary.mc permutation</p>
-<pre class="r"><code>geary.test(SPDF$cancer,neighbourhood_weights_list)</code></pre>
+<pre class="r"><code>geary.test(SPDF$Rate,neighbourhood_weights_list)</code></pre>
 <pre><code>## 
 ##  Geary C test under randomisation
 ## 
-## data:  SPDF$cancer 
+## data:  SPDF$Rate 
 ## weights: neighbourhood_weights_list 
 ## 
 ## Geary C statistic standard deviate = 20.049, p-value &lt; 2.2e-16
@@ -582,7 +698,7 @@ p3&lt;-spplot(SPDF, &quot;lmoran_sig&quot;, main=&quot;P-values &lt; 0.05&quot;,
 ## sample estimates:
 ## Geary C statistic       Expectation          Variance 
 ##      0.4475172082      1.0000000000      0.0007593585</code></pre>
-<pre class="r"><code>gobal.geary.mc &lt;- geary.mc(SPDF$cancer,
+<pre class="r"><code>gobal.geary.mc &lt;- geary.mc(SPDF$Rate,
                                 neighbourhood_weights_list,
                                 nsim=599)
 
@@ -591,7 +707,7 @@ gobal.geary.mc</code></pre>
 <pre><code>## 
 ##  Monte-Carlo simulation of Geary C
 ## 
-## data:  SPDF$cancer 
+## data:  SPDF$Rate 
 ## weights: neighbourhood_weights_list 
 ## number of simulations + 1: 600 
 ## 
@@ -606,7 +722,7 @@ gobal.geary.mc</code></pre>
 <p>Hotspot analysis using Getis-Ord Gi* statistic (pronounced G-i-star) for spatial vectors to identify the locations of statistically significant hot spots and cold spots in data. The z-scores and p-values indicates where features with either high or low values cluster spatially.</p>
 <pre class="r"><code>wr &lt;- poly2nb(SPDF, row.names=SPDF$FIPS, queen=FALSE)
 lstw &lt;- nb2listw(wr, style=&#39;B&#39;)
-Gi &lt;- localG(SPDF$cancer, lstw)
+Gi &lt;- localG(SPDF$Rate, lstw)
 head(Gi)</code></pre>
 <pre><code>## [1]  0.5840283 -1.4912058 -1.7824333 -0.6611661 -1.4912058  0.3436725</code></pre>
 <pre class="r"><code>Gcuts &lt;- cut(Gi, 5)
@@ -614,17 +730,18 @@ Gcutsi &lt;- as.integer(Gcuts)
 cols &lt;- rev(gray(seq(0,1,.2)))
 plot(SPDF, col=cols[Gcutsi])
 legend(&#39;bottomleft&#39;, levels(Gcuts), fill=cols)</code></pre>
-<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ws &lt;- include.self(wr)
 lstws &lt;- nb2listw(ws, style=&#39;B&#39;)
-Gis &lt;- localG(SPDF$cancer, lstws)
+Gis &lt;- localG(SPDF$Rate, lstws)
 Gscuts &lt;- cut(Gis, 5)
 Gscutsi &lt;- as.integer(Gscuts)
 cols &lt;- rev(gray(seq(0,1,.2)))
 plot(SPDF, col=cols[Gscutsi])
 legend(&#39;bottomleft&#39;, levels(Gscuts), fill=cols)</code></pre>
-<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="spatial-autocorrelation_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 
 
@@ -644,6 +761,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

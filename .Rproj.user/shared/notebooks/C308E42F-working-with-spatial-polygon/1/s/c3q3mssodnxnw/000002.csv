@@ -1,2 +1,0 @@
-"0","# Join data to county shape file"
-"0","SPOLY.DF<-merge(county,cancer.stat, by=""FIPS"")"

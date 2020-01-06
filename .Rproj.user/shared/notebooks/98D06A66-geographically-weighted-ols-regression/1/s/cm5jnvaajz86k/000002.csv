@@ -1,0 +1,3 @@
+"0","NDVI.slope<-rasterFromXYZ(as.data.frame(grid)[, c(""x"", ""y"", ""NDVI_slope"")])"
+"0","ELEV.slope<-rasterFromXYZ(as.data.frame(grid)[, c(""x"", ""y"", ""ELEV_slope"")])"
+"0","Intercept<-rasterFromXYZ(as.data.frame(grid)[, c(""x"", ""y"", ""Intercept"")])"

@@ -1,7 +1,0 @@
-"0","p1 <- ggplot(mf_tidy, aes(long, lat, fill=lmoran_i, group=id)) +"
-"0","  geom_polygon(col=""white"") +"
-"0","  scale_fill_gradient(low=""white"",high=""blue"") +"
-"0","  coord_fixed() +"
-"0","  theme_void()+"
-"0","  ggtitle(""Moran'I"")"
-"0","p1"

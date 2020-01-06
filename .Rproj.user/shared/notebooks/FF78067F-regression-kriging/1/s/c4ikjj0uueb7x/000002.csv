@@ -1,7 +1,0 @@
-"0","set.seed(1856)"
-"0","models<-caretList(train.x, RESPONSE,"
-"0","                  methodList=algorithmList,"
-"0","                  trControl=myControl,"
-"0","                  preProc=c('center', 'scale')) "
-"2","trControl$savePredictions not 'all' or 'final'.  Setting to 'final' so we can ensemble the models."
-"2","indexes not defined in trControl.  Attempting to set them ourselves, so each model in the ensemble will have the same resampling indexes."

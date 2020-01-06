@@ -1,2 +1,0 @@
-"0","train.df<-read.csv(paste0(dataFolder,"".\\Sentinel_2\\train_data.csv""), header = T)"
-"0","test.df<-read.csv(paste0(dataFolder,"".\\Sentinel_2\\test_data.csv""), header = T)"

@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>geographically-weighted-ols-regression.utf8</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div style="margin-bottom:10px;">
+
+</div>
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="geographically-weighted-ordinary-regression" class="section level1">
+<h1>Geographically Weighted Ordinary Regression</h1>
+<p>In this exercise we will apply a general form GWR to predict Soil Organic C. We will use two covariates, elevation and NDVI to fit GWR OLS model. The soil organic carbon data (train and test data set) could be found <a href="https://www.dropbox.com/s/b5z55zvvw98zzdh/Data_OLS.7z?dl=0">here</a>.</p>
+<div id="load-packages" class="section level4">
+<h4>Load packages</h4>
+<pre class="r"><code>library(GWmodel)      ## GW models
+library(spgwr)        ## GW models
+library(spdep)        ## Spatial autocorrelation
+library(gstat)        ## Geostatistics
+library(RColorBrewer) ## Visualization
+library(classInt)     ## Class intervals
+library(raster)       ## spatial data
+library(gridExtra)    #  Multiple plot
+library(ggplot2)      # plot
+library(latticeExtra) # advance ploting function
+library(RStoolbox)    # advance raster ploting function
+#library(SpatialML)    # Geographicall Weigted Random Forest</code></pre>
+</div>
+<div id="load-data" class="section level4">
+<h4>Load data</h4>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;D:\\Dropbox\\WebSite_Data\\R_Data\\Data_OLS\\&quot;</code></pre>
+<pre class="r"><code>train&lt;-read.csv(paste0(dataFolder,&quot;train_data.csv&quot;), header= TRUE) 
+state&lt;-shapefile(paste0(dataFolder,&quot;GP_STATE.shp&quot;))
+grid&lt;-read.csv(paste0(dataFolder, &quot;GP_prediction_grid_data.csv&quot;), header= TRUE) </code></pre>
+<pre class="r"><code>xy &lt;- train[,c(8:9)]
+df&lt;-train[,c(8:11,18)]
+mf&lt;-train[,c(10:11,18)]
+SPDF&lt;-SpatialPointsDataFrame(coords = xy, data = mf)</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="gwr-with-spgwr-package" class="section level4">
+<h4>GWR with spgwr package</h4>
+<p>We will use <strong>gwr.sel()</strong> function in <strong>spgwr</strong> packageto find a bandwidth for a given geographically weighted regression by optimizing a selected function. For cross-validation, this scores the root mean square prediction error for the geographically weighted regressions, choosing the bandwidth minimizing this quantity</p>
+</div>
+<div id="bandwith" class="section level4">
+<h4>Bandwith</h4>
+<pre class="r"><code>bwG &lt;- gwr.sel(SOC ~ ELEV +NDVI, 
+               data = SPDF, 
+               gweight = gwr.Gauss, 
+               verbose = FALSE)
+bwG</code></pre>
+<pre><code>## [1] 168261.2</code></pre>
+<p>Then, well use <strong>gwr()</strong> function to implement the basic geographically weighted regression approach to exploring spatial non-stationarity for given global bandwidth and chosen weighting scheme.</p>
+</div>
+<div id="fit-gwr-model" class="section level4">
+<h4>Fit GWR model</h4>
+<pre class="r"><code>gwrG &lt;- gwr(SOC ~ ELEV +NDVI, 
+            data = SPDF, 
+            bandwidth = bwG, 
+            gweight = gwr.Gauss, 
+            hatmatrix = TRUE)
+gwrG</code></pre>
+<pre><code>## Call:
+## gwr(formula = SOC ~ ELEV + NDVI, data = SPDF, bandwidth = bwG, 
+##     gweight = gwr.Gauss, hatmatrix = TRUE)
+## Kernel function: gwr.Gauss 
+## Fixed bandwidth: 168261.2 
+## Summary of GWR coefficient estimates at data points:
+##                     Min.     1st Qu.      Median     3rd Qu.        Max.
+## X.Intercept. -1.5269e+01 -5.0132e+00 -3.3765e+00 -1.9694e+00  8.3425e+00
+## ELEV         -2.9072e-03  7.9294e-05  1.5306e-03  2.5182e-03  8.4633e-03
+## NDVI         -7.6028e-01  1.2401e+01  1.5900e+01  1.9333e+01  3.7073e+01
+##               Global
+## X.Intercept. -4.0684
+## ELEV          0.0013
+## NDVI         18.7817
+## Number of data points: 368 
+## Effective number of parameters (residual: 2traceS - traceS&#39;S): 26.93114 
+## Effective degrees of freedom (residual: 2traceS - traceS&#39;S): 341.0689 
+## Sigma (residual: 2traceS - traceS&#39;S): 3.769681 
+## Effective number of parameters (model: traceS): 19.62378 
+## Effective degrees of freedom (model: traceS): 348.3762 
+## Sigma (model: traceS): 3.729936 
+## Sigma (ML): 3.629123 
+## AICc (GWR p. 61, eq 2.33; p. 96, eq. 4.21): 2036.859 
+## AIC (GWR p. 96, eq. 4.22): 2012.66 
+## Residual sum of squares: 4846.757 
+## Quasi-global R2: 0.4846599</code></pre>
+</div>
+<div id="extract-and-plot-coefficients" class="section level4">
+<h4>Extract and plot coefficients</h4>
+<pre class="r"><code>df$NDVI_slope&lt;-gwrG$SDF$NDVI      # Slope NDVI
+df$ELEV_slope&lt;-gwrG$SDF$ELEV      # Slope Elevation 
+df$R2&lt;-gwrG$SDF$localR2           # Local R2</code></pre>
+<pre class="r"><code>rgb.palette.col &lt;- colorRampPalette(c(&quot;red&quot;,&quot;yellow&quot;, &quot;green&quot;, &quot;blue&quot;),space = &quot;rgb&quot;)
+p1&lt;-levelplot(NDVI_slope~x+y, df,cex=0.6,
+              aspect = &quot;iso&quot;,main= &quot;Local slope: NDVI&quot;,
+              xlab=&quot;&quot;, ylab=&quot;&quot;,  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col=&quot;grey&quot;,lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space=&quot;right&quot;,width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col=&quot;grey30&quot;)
+              }) 
+
+p2&lt;-levelplot(ELEV_slope~x+y, df,cex=0.6,
+              aspect = &quot;iso&quot;,main= &quot;Local slope: Elevation&quot;,
+              xlab=&quot;&quot;, ylab=&quot;&quot;,  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col=&quot;grey&quot;,lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space=&quot;right&quot;,width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col=&quot;grey30&quot;)
+              })
+
+p3&lt;-levelplot(R2~x+y, df,cex=0.6,
+              aspect = &quot;iso&quot;,main= &quot;Local R2&quot;,
+              xlab=&quot;&quot;, ylab=&quot;&quot;,  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col=&quot;grey&quot;,lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space=&quot;right&quot;,width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col=&quot;grey30&quot;)
+              }) </code></pre>
+<pre class="r"><code>grid.arrange(p1, p2,p3, ncol=3)</code></pre>
+<p><img src="geographically-weighted-ols-regression_files/figure-html/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="prediction-at-grid-location" class="section level4">
+<h4>Prediction at grid location</h4>
+<p>We can use use fit.points as additional argument to predict SOC at grid locations.</p>
+<pre class="r"><code>coordinates(grid) = ~x+y
+g.soc &lt;- gwr(SOC ~ ELEV +NDVI, 
+            data = SPDF, 
+            bandwidth = bwG, 
+            fit.points=grid[, 2:3])
+g.soc</code></pre>
+<pre><code>## Call:
+## gwr(formula = SOC ~ ELEV + NDVI, data = SPDF, bandwidth = bwG, 
+##     fit.points = grid[, 2:3])
+## Kernel function: gwr.Gauss 
+## Fixed bandwidth: 168261.2 
+## Fit points: 10674
+## Summary of GWR coefficient estimates at fit points:
+##                     Min.     1st Qu.      Median     3rd Qu.    Max.
+## X.Intercept. -1.5923e+01 -4.9354e+00 -3.3336e+00 -2.0286e+00  9.1539
+## ELEV         -3.6870e-03  2.0298e-04  1.6168e-03  2.4894e-03  0.0116
+## NDVI         -1.3422e+00  1.1993e+01  1.5231e+01  1.8892e+01 37.6824</code></pre>
+</div>
+<div id="extract-coefficients" class="section level4">
+<h4>Extract coefficients</h4>
+<pre class="r"><code>grid$NDVI_slope&lt;-g.soc$SDF$NDVI                   # Slope NDVI
+grid$ELEV_slope&lt;-g.soc$SDF$ELEV                  # Slope Elevation 
+grid$Intercept&lt;-g.soc$SDF$&#39;(Intercept)&#39;           # Local Intercept</code></pre>
+</div>
+<div id="convert-to-raster" class="section level4">
+<h4>Convert to raster</h4>
+<pre class="r"><code>NDVI.slope&lt;-rasterFromXYZ(as.data.frame(grid)[, c(&quot;x&quot;, &quot;y&quot;, &quot;NDVI_slope&quot;)])
+ELEV.slope&lt;-rasterFromXYZ(as.data.frame(grid)[, c(&quot;x&quot;, &quot;y&quot;, &quot;ELEV_slope&quot;)])
+Intercept&lt;-rasterFromXYZ(as.data.frame(grid)[, c(&quot;x&quot;, &quot;y&quot;, &quot;Intercept&quot;)])</code></pre>
+<pre class="r"><code>p1&lt;-ggR(Intercept, geom_raster = TRUE) +
+scale_fill_gradientn(&quot;&quot;, colours = c(&quot;orange&quot;, &quot;yellow&quot;, &quot;green&quot;,  &quot;sky blue&quot;,&quot;blue&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;Intercept&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+p2&lt;-ggR(NDVI.slope, geom_raster = TRUE) +
+scale_fill_gradientn(&quot;&quot;, colours = c(&quot;blue&quot;,  &quot;green&quot;,&quot;yellow&quot;, &quot;orange&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;Slope - NDVI&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+p3&lt;-ggR(ELEV.slope, geom_raster = TRUE) +
+scale_fill_gradientn(&quot;&quot;, colours = c(&quot;blue&quot;,  &quot;green&quot;,&quot;yellow&quot;, &quot;orange&quot;))+
+  theme_bw()+
+    theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+   ggtitle(&quot;Slope - Elevation&quot;)+
+   theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(p1,p2,p3, ncol = 3)  # Multiplot </code></pre>
+<p><img src="geographically-weighted-ols-regression_files/figure-html/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:20px;">
+
+</div>
+</div>
+<div id="gwr-with-gwmodel-package" class="section level4">
+<h4>GWR with GWModel package</h4>
+<p>In GWModel package allow to select a subset of independent variable with a pseudo stepwise procedure in a forward direction.</p>
+<pre class="r"><code>xy &lt;- train[,c(8:9)]
+df.1&lt;-train[,c(8:19)]
+mf.1&lt;-train[,c(10:19)]
+SPDF.1&lt;-SpatialPointsDataFrame(coords = xy, data = mf.1)
+names(SPDF.1)</code></pre>
+<pre><code>##  [1] &quot;SOC&quot;       &quot;ELEV&quot;      &quot;Aspect&quot;    &quot;Slope&quot;     &quot;TPI&quot;      
+##  [6] &quot;K_Factor&quot;  &quot;MAP&quot;       &quot;MAT&quot;       &quot;NDVI&quot;      &quot;Slit_Clay&quot;</code></pre>
+<p>The function <strong>model.selection.gwr()</strong>, whose AICc outputs are sorted using <strong>model.sort.gwr</strong> and then inputted to <strong>model.view.gwr</strong> to provide a useful vi-sualization of the AICc data.</p>
+<pre class="r"><code>RESPONSE &lt;- &quot;SOC&quot;
+PREDICTORS &lt;- c(&quot;ELEV&quot;, &quot;Aspect&quot;,&quot;Slope&quot;,&quot;TPI&quot;,&quot;K_Factor&quot;,&quot;MAP&quot;,&quot;MAT&quot;,&quot;NDVI&quot;, &quot;Slit_Clay&quot;)
+model.sel &lt;- model.selection.gwr(RESPONSE, PREDICTORS, 
+                                 data = SPDF.1,
+                                 kernel = &quot;bisquare&quot;, 
+                                 adaptive = TRUE, 
+                                 bw = 231)</code></pre>
+<pre class="r"><code>sorted.models &lt;- model.sort.gwr(model.sel, numVars = length(PREDICTORS),ruler.vector = model.sel[[2]][,2])
+model.list &lt;- sorted.models[[1]]
+model.view.gwr(RESPONSE, PREDICTORS, model.list = model.list)</code></pre>
+<p><img src="geographically-weighted-ols-regression_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Figure below presents a circle view of the 45 GW regressions (numbered 1 to 45) that result from stepwise procedure. Here the dependent variable is located in the centre of the chart and the independent variables are represented as nodes differentiated by shapes and colors.</p>
+<pre class="r"><code>plot(sorted.models[[2]][,2], col = &quot;black&quot;, pch = 20, lty = 5,
+    main = &quot;Alternative view of GWR model selection procedure&quot;,
+    ylab = &quot;AICc&quot;, xlab = &quot;Model number&quot;, type = &quot;b&quot;)</code></pre>
+<p><img src="geographically-weighted-ols-regression_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Figure displays the corresponding AICc values from the same as of circle figure. The two graphs work together, explaining model performance when more and more variables are introduced. Clearly, AICc values continue to fall until all independent variables are included.</p>
+</div>
+<div id="bandwith-1" class="section level4">
+<h4>Bandwith</h4>
+<pre class="r"><code>gwr.bw &lt;- bw.gwr(SOC~ELEV+Aspect+Slope+TPI+K_Factor+MAP+MAT+NDVI+Slit_Clay, 
+                 data = SPDF.1, 
+                 approach = &quot;AICc&quot;, 
+                 kernel = &quot;bisquare&quot;, 
+                 adaptive = TRUE)</code></pre>
+<pre><code>## Adaptive bandwidth (number of nearest neighbours): 235 AICc value: 2041.217 
+## Adaptive bandwidth (number of nearest neighbours): 153 AICc value: 2048.422 
+## Adaptive bandwidth (number of nearest neighbours): 286 AICc value: 2042.04 
+## Adaptive bandwidth (number of nearest neighbours): 203 AICc value: 2041.382 
+## Adaptive bandwidth (number of nearest neighbours): 254 AICc value: 2041.324 
+## Adaptive bandwidth (number of nearest neighbours): 222 AICc value: 2041.512 
+## Adaptive bandwidth (number of nearest neighbours): 241 AICc value: 2041.294 
+## Adaptive bandwidth (number of nearest neighbours): 229 AICc value: 2041.29 
+## Adaptive bandwidth (number of nearest neighbours): 236 AICc value: 2041.291 
+## Adaptive bandwidth (number of nearest neighbours): 231 AICc value: 2041.213 
+## Adaptive bandwidth (number of nearest neighbours): 232 AICc value: 2041.292 
+## Adaptive bandwidth (number of nearest neighbours): 234 AICc value: 2041.295 
+## Adaptive bandwidth (number of nearest neighbours): 232 AICc value: 2041.292 
+## Adaptive bandwidth (number of nearest neighbours): 233 AICc value: 2041.257 
+## Adaptive bandwidth (number of nearest neighbours): 232 AICc value: 2041.292 
+## Adaptive bandwidth (number of nearest neighbours): 232 AICc value: 2041.292 
+## Adaptive bandwidth (number of nearest neighbours): 231 AICc value: 2041.213</code></pre>
+<pre class="r"><code>gwr.bw</code></pre>
+<pre><code>## [1] 231</code></pre>
+<p>The optimal bandwidth is found at N = 231</p>
+</div>
+<div id="fit-gwr-model-1" class="section level4">
+<h4>Fit GWR model</h4>
+<pre class="r"><code>gwr.res &lt;- gwr.basic(SOC~ELEV+Aspect+Slope+TPI+K_Factor+MAP+MAT+NDVI+Slit_Clay,
+                     data = SPDF.1,
+                     bw = gwr.bw, 
+                     kernel = &quot;bisquare&quot;,   
+                     adaptive = TRUE, 
+                     F123.test = TRUE)</code></pre>
+<pre><code>## Warning in pf(F2, F2.DF[1], F2.DF[2], lower.tail = FALSE): NaNs produced</code></pre>
+<pre class="r"><code>gwr.res</code></pre>
+<pre><code>##    ***********************************************************************
+##    *                       Package   GWmodel                             *
+##    ***********************************************************************
+##    Program starts at: 2019-10-18 13:00:33 
+##    Call:
+##    gwr.basic(formula = SOC ~ ELEV + Aspect + Slope + TPI + K_Factor + 
+##     MAP + MAT + NDVI + Slit_Clay, data = SPDF.1, bw = gwr.bw, 
+##     kernel = &quot;bisquare&quot;, adaptive = TRUE, F123.test = TRUE)
+## 
+##    Dependent (y) variable:  SOC
+##    Independent variables:  ELEV Aspect Slope TPI K_Factor MAP MAT NDVI Slit_Clay
+##    Number of data points: 368
+##    ***********************************************************************
+##    *                    Results of Global Regression                     *
+##    ***********************************************************************
+## 
+##    Call:
+##     lm(formula = formula, data = data)
+## 
+##    Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -13.0688  -2.0901  -0.4861   1.4701  17.5191 
+## 
+##    Coefficients:
+##                  Estimate Std. Error t value Pr(&gt;|t|)    
+##    (Intercept)  0.9620569  2.9314299   0.328 0.742962    
+##    ELEV        -0.0001908  0.0006758  -0.282 0.777880    
+##    Aspect       0.0015092  0.0090800   0.166 0.868083    
+##    Slope        0.1405423  0.0729235   1.927 0.054739 .  
+##    TPI          0.0250793  0.0561447   0.447 0.655368    
+##    K_Factor    -2.8115398  3.4926100  -0.805 0.421356    
+##    MAP          0.0048705  0.0019738   2.468 0.014071 *  
+##    MAT         -0.3014147  0.0980634  -3.074 0.002277 ** 
+##    NDVI         8.9768177  2.4390791   3.680 0.000269 ***
+##    Slit_Clay    0.0324410  0.0167687   1.935 0.053824 .  
+## 
+##    ---Significance stars
+##    Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1 
+##    Residual standard error: 3.847 on 358 degrees of freedom
+##    Multiple R-squared: 0.4366
+##    Adjusted R-squared: 0.4224 
+##    F-statistic: 30.82 on 9 and 358 DF,  p-value: &lt; 2.2e-16 
+##    ***Extra Diagnostic information
+##    Residual sum of squares: 5298.888
+##    Sigma(hat): 3.804975
+##    AIC:  2047.857
+##    AICc:  2048.599
+##    ***********************************************************************
+##    *          Results of Geographically Weighted Regression              *
+##    ***********************************************************************
+## 
+##    *********************Model calibration information*********************
+##    Kernel function: bisquare 
+##    Adaptive bandwidth: 231 (number of nearest neighbours)
+##    Regression points: the same locations as observations are used.
+##    Distance metric: Euclidean distance metric is used.
+## 
+##    ****************Summary of GWR coefficient estimates:******************
+##                     Min.     1st Qu.      Median     3rd Qu.    Max.
+##    Intercept -3.44262655 -0.60164873  0.97765472  2.01764374  5.2844
+##    ELEV      -0.00298087 -0.00095504  0.00037826  0.00069260  0.0015
+##    Aspect    -0.01742220 -0.00177237  0.00559962  0.01043209  0.0167
+##    Slope     -0.12830677 -0.02740338  0.01353384  0.09438182  0.1526
+##    TPI       -0.11229518 -0.00603647  0.03383873  0.18720680  0.2984
+##    K_Factor  -8.35475064 -5.53848256 -3.76182795  0.99261921 10.2079
+##    MAP        0.00065770  0.00463274  0.00617414  0.01181778  0.0154
+##    MAT       -0.69521018 -0.53935868 -0.45411911 -0.29010281 -0.0065
+##    NDVI       1.56293955  5.10399371  9.41043826 12.38995543 16.9790
+##    Slit_Clay -0.05878864  0.01178128  0.03674368  0.04637966  0.0617
+##    ************************Diagnostic information*************************
+##    Number of data points: 368 
+##    Effective number of parameters (2trace(S) - trace(S&#39;S)): 36.82948 
+##    Effective degrees of freedom (n-2trace(S) + trace(S&#39;S)): 331.1705 
+##    AICc (GWR book, Fotheringham, et al. 2002, p. 61, eq 2.33): 2041.213 
+##    AIC (GWR book, Fotheringham, et al. 2002,GWR p. 96, eq. 4.22): 2004.854 
+##    Residual sum of squares: 4627.128 
+##    R-square value:  0.5080123 
+##    Adjusted R-square value:  0.4531327 
+##    ******************F test results of GWR calibration********************
+##    ---F1 test (Leung et al. 2000)
+##     F1 statistic Numerator DF Denominator DF  Pr(&gt;)
+##          0.94397          Inf            358 0.2108
+##    ---F2 test (Leung et al. 2000)
+##     F2 statistic Numerator DF Denominator DF Pr(&gt;)
+##           1.6916      -2.3652            358    NA
+##    ---F3 test (Leung et al. 2000)
+##              F3 statistic Numerator DF Denominator DF     Pr(&gt;)    
+##    Intercept      0.14681    158.28842            Inf 1.0000000    
+##    ELEV           1.12412    172.73077            Inf 0.1262193    
+##    Aspect         0.59043    123.24461            Inf 0.9999146    
+##    Slope          0.41990     96.88100            Inf 0.9999999    
+##    TPI            2.85866     39.75585            Inf 4.851e-09 ***
+##    K_Factor       1.16978    109.24648            Inf 0.1084885    
+##    MAP            2.09811     78.40929            Inf 4.626e-08 ***
+##    MAT            0.62273    158.20877            Inf 0.9999447    
+##    NDVI           1.99276     60.04008            Inf 7.666e-06 ***
+##    Slit_Clay      1.48229    148.88508            Inf 0.0001206 ***
+##    ---F4 test (GWR book p92)
+##     F4 statistic Numerator DF Denominator DF Pr(&gt;)
+##          0.87323    331.17052            358 0.105
+## 
+##    ---Significance stars
+##    Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1 
+##    ***********************************************************************
+##    Program stops at: 2019-10-18 13:00:45</code></pre>
+</div>
+<div id="extract-and-plot-coefficients-1" class="section level4">
+<h4>Extract and plot coefficients</h4>
+<pre class="r"><code>df.1$NDVI_slope&lt;-gwr.res$SDF$NDVI       # Slope NDVI
+df.1$MAT_slope&lt;-gwr.res$SDF$MAT         # Slope Elevation 
+df.1$R2&lt;-gwr.res$SDF$Local_R2           # Local R2</code></pre>
+<pre class="r"><code>rgb.palette.col &lt;- colorRampPalette(c(&quot;red&quot;,&quot;yellow&quot;, &quot;green&quot;, &quot;blue&quot;),space = &quot;rgb&quot;)
+p1.1&lt;-levelplot(NDVI_slope~x+y, df.1,cex=0.6,
+              aspect = &quot;iso&quot;,main= &quot;Local slope: NDVI&quot;,
+              xlab=&quot;&quot;, ylab=&quot;&quot;,  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col=&quot;grey&quot;,lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space=&quot;right&quot;,width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col=&quot;grey30&quot;)
+              }) 
+
+p2.1&lt;-levelplot(MAT_slope~x+y, df.1,cex=0.6,
+              aspect = &quot;iso&quot;,main= &quot;Local slope: Temperature&quot;,
+              xlab=&quot;&quot;, ylab=&quot;&quot;,  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col=&quot;grey&quot;,lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space=&quot;right&quot;,width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col=&quot;grey30&quot;)
+              })
+
+p3.1&lt;-levelplot(R2~x+y, df.1,cex=0.6,
+              aspect = &quot;iso&quot;,main= &quot;Local R2&quot;,
+              xlab=&quot;&quot;, ylab=&quot;&quot;,  
+              scales=list(y=list(draw=T,cex=0.5,rot=90, tck= 0.5),x=list(draw=T, cex=0.5,tck= 0.6)),
+              par.settings=list(axis.line=list(col=&quot;grey&quot;,lwd=0.5)),
+              col.regions=rgb.palette.col (20),
+              colorkey=list(space=&quot;right&quot;,width=1.2,labels=list(cex=1.2)),
+              panel = function(...) {
+              panel.levelplot.points(...)
+              sp.polygons(state,lty=1,lwd=0.5,col=&quot;grey30&quot;)
+              }) </code></pre>
+<pre class="r"><code>grid.arrange(p1.1, p2.1,p3.1, ncol=3)</code></pre>
+<p><img src="geographically-weighted-ols-regression_files/figure-html/unnamed-chunk-23-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>rm(list = ls())</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

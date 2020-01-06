@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571406037583.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3852681057",
+    "id" : "482E35A3",
+    "lastKnownWriteTime" : 1571689018,
+    "last_content_update" : 1571689018994,
+    "path" : "E:/GitHub/geospatial-r-github/geographically-weighted-regression.Rmd",
+    "project_path" : "geographically-weighted-regression.Rmd",
+    "properties" : {
+        "cursorPosition" : "5,55",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

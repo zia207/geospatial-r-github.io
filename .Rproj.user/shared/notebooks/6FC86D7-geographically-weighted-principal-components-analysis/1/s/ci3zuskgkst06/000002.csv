@@ -1,0 +1,2 @@
+"0","var.gwpca <- prop.var(gw.pca, 3)"
+"0","mf$var.gwpca <- var.gwpca"

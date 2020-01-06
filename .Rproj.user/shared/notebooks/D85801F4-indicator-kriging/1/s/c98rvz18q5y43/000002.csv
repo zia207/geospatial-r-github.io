@@ -1,5 +1,0 @@
-"0","p1<-spplot(ik.df, zcol = ""ik.50"", col.regions = c(""green"", ""red""), cex=.5,"
-"0","       main = ""As > 10 ppb"")"
-"0","p2<-spplot(ik.df, zcol = ""ik.50"", col.regions = c(""green"", ""red""), cex=.5,"
-"0","       main = "" As > 50 ppb"")"
-"0","grid.arrange(p1, p2, ncol=2)"
