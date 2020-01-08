@@ -42,4 +42,4 @@ knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\Spatial_Statist
  
         - [Geographically Weighted Poisson Regression](geographically-weighted-poisson-regression.html)
   
-        - [Geographically Weighted Random Forest](geographically-wighted-random-forest.html)
+        - [Global and local (Geographically Weighted) Random Forest](geographically-wighted-random-forest.html)
