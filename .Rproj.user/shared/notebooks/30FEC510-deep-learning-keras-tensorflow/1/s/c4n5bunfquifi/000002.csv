@@ -1,0 +1,6 @@
+"0","FLAGS <- flags("
+"0","  flag_numeric('dropout_1', 0.2, 'First dropout'),"
+"0","  flag_numeric('dropout_2', 0.2, 'Second dropout'),"
+"0","  flag_numeric('dropout_3', 0.1, 'Third dropout'),"
+"0","  flag_numeric('dropout_4', 0.1, 'Forth dropout')"
+"0","  )"

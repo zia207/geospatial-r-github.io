@@ -331,6 +331,9 @@ $(document).ready(function () {
       <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
+    </li>
+    <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
     </li>
     <li>
@@ -349,7 +352,7 @@ $(document).ready(function () {
       <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
     </li>
     <li>
-      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
     </li>
   </ul>
 </li>
@@ -362,9 +365,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about-d.html">Content</a>
-    </li>
-    <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -400,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -460,6 +460,9 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
+      <a href="stack-ensemble-h2o.html">Stack-Ensemble-H20</a>
+    </li>
+    <li>
       <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
@@ -498,15 +501,15 @@ $(document).ready(function () {
 </div>
 
 
-<div style="margin-bottom:10px;">
-
-</div>
 <img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
 <div style="margin-bottom:20px;">
 
 </div>
 <div id="geographically-weighted-poisson-regression-gwpr" class="section level1">
 <h1>Geographically Weighted Poisson Regression (GWPR)</h1>
+<div style="margin-bottom:20px;">
+
+</div>
 <p>Geographically weighted Poisson regression is a local form of generalized linear models that assumes that data follow a Poisson distribution. We will use <strong>GWmodle</strong> package for GWPR analysis.</p>
 <p>The form of the GWPR regression model is:</p>
 <p><img src="Image/PNG_FILE_07/GWPR.png" width="60%" style="display: block; margin: auto;" /></p>
@@ -525,9 +528,9 @@ library(gtable)</code></pre>
 </div>
 <div id="load-data" class="section level4">
 <h4>Load Data</h4>
-<p>The data use in this lesson could be found <a href="https://www.dropbox.com/s/sngfyskys1jwvet/Data_GWR.7z?dl=0">here</a>.</p>
+<p>The data use in this lesson could be found <a href="https://www.dropbox.com/s/lrz6og0ld2m64df/Data_GWR.7z?dl=0">here</a>.</p>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;D:\\Dropbox\\WebSite_Data\\R_Data\\Data_GWR\\&quot;
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_GWR\\&quot;
 county&lt;-shapefile(paste0(dataFolder,&quot;COUNTY_ATLANTIC.shp&quot;))
 state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))
 mf&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), header=T)</code></pre>
@@ -566,7 +569,8 @@ bw.gwr &lt;- bw.ggwr(Rate ~ POV+SMOK+PM25+NO2+SO2,
                  approach = &quot;AICc&quot;,
                  kernel = &quot;bisquare&quot;, 
                  adaptive = TRUE,
-                 dMat = DM )</code></pre>
+                 dMat = DM )
+bw.gwr</code></pre>
 </div>
 <div id="fit-the-model" class="section level4">
 <h4>Fit the model</h4>
@@ -581,7 +585,7 @@ bw.gwr &lt;- bw.ggwr(Rate ~ POV+SMOK+PM25+NO2+SO2,
 <pre><code>##    ***********************************************************************
 ##    *                       Package   GWmodel                             *
 ##    ***********************************************************************
-##    Program starts at: 2019-10-21 16:15:28 
+##    Program starts at: 2020-01-07 23:07:30 
 ##    Call:
 ##    ggwr.basic(formula = Rate ~ POV + SMOK + PM25 + NO2 + SO2, data = SPDF, 
 ##     bw = bw.gwr, family = &quot;poisson&quot;, kernel = &quot;bisquare&quot;, adaptive = TRUE, 
@@ -650,7 +654,7 @@ bw.gwr &lt;- bw.ggwr(Rate ~ POV+SMOK+PM25+NO2+SO2,
 ##    Pseudo R-square value:  0.7012314 
 ## 
 ##    ***********************************************************************
-##    Program stops at: 2019-10-21 16:15:30</code></pre>
+##    Program stops at: 2020-01-07 23:07:31</code></pre>
 <p>###s Save the summary output</p>
 <pre class="r"><code># capture.output(print(bgwr.res),file=&quot;summary_GWRP.doc&quot;)</code></pre>
 </div>

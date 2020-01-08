@@ -1,0 +1,4 @@
+"0","ggR(GC, geom_raster = TRUE) +"
+"0","    scale_fill_gradientn(""GC"", "
+"0","    colours = c(""red"", ""yellow"", ""green"", ""green4""))+"
+"0","    ggtitle(""Green Vegetation Cover (GC)"")"

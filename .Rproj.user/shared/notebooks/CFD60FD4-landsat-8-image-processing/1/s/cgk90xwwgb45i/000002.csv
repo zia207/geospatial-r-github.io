@@ -1,0 +1,8 @@
+"0","# red (30 m)"
+"0","b4 <- raster(paste0(dataFolder,"".\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B4.TIF"")) "
+"0","# green (30 m)"
+"0","b2 <- raster(paste0(dataFolder,"".\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B2.TIF"")) "
+"0","# blue (30 m)"
+"0","b3 <- raster(paste0(dataFolder,"".\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B3.TIF"")) "
+"0","# Band 8 Pan (15 m)"
+"0","pan <- raster(paste0(dataFolder,"".\\Landsat8\\Landsat8_RAW\\LC08_L1TP_016030_20160927_20170220_01_T1_B8.TIF""))    "

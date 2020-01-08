@@ -21,15 +21,15 @@ knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\Banner.png')
 
 <div style="margin-bottom:50px;">
 </div>
-This tutorial  consists of three modules: 
+This tutorial  consists of four modules: 
 
 
 
 #### 1. [Spatial Data Processing](about.html)
 
-#### 2. [Spatial Statistics](about-b.html)
+#### 2. [Spatial Statistics](spatial-statistics.html)
 
-#### 3. [Geostatistics](about-d.html)
+#### 3. [Spatial Interpolation](spatial-interpolation.html)
 
 #### 4. [Remote Sensing Data Processing and Analysis](about-c.html)
 

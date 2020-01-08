@@ -1,2 +1,0 @@
-"0","coords <- as.matrix(cbind(SPDF$x.x, SPDF$y.y))"
-"0","scaled.spdf <- SpatialPointsDataFrame(coords, as.data.frame(data.scaled ))"

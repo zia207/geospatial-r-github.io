@@ -331,6 +331,9 @@ $(document).ready(function () {
       <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
+    </li>
+    <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
     </li>
     <li>
@@ -349,7 +352,7 @@ $(document).ready(function () {
       <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
     </li>
     <li>
-      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
     </li>
   </ul>
 </li>
@@ -362,9 +365,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about-d.html">Content</a>
-    </li>
-    <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -400,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -460,6 +460,9 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
+      <a href="stack-ensemble-h2o.html">Stack-Ensemble-H20</a>
+    </li>
+    <li>
       <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
@@ -498,15 +501,15 @@ $(document).ready(function () {
 </div>
 
 
-<div style="margin-bottom:10px;">
-
-</div>
 <img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
 <div style="margin-bottom:20px;">
 
 </div>
 <div id="geographically-weighted-summary-statistics" class="section level1">
 <h1>Geographically Weighted Summary Statistics</h1>
+<div style="margin-bottom:20px;">
+
+</div>
 <p>To visualize geographical variation in the statistical distribution, geographically weighted local summary statistics (mean, standard deviation and Pearson’s correlation has described Brunsdon et al., (2002). This lessons we will leanr how to calculate GW means, GW standard deviation using <strong>GWModel</strong> package (Gollini et al., 2013) in the R statistical computing environment</p>
 <div id="load-r-packages" class="section level4">
 <h4>Load R packages</h4>
@@ -522,9 +525,9 @@ library(ggplot2)      # Multiple plot</code></pre>
 </div>
 <div id="load-data" class="section level4">
 <h4>Load Data</h4>
-<p>The data use in this lesson could be found <a href="https://www.dropbox.com/s/sngfyskys1jwvet/Data_GWR.7z?dl=0">here</a>.</p>
+<p>The data use in this lesson could be found <a href="https://www.dropbox.com/s/lrz6og0ld2m64df/Data_GWR.7z?dl=0">here</a>.</p>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;D:\\Dropbox\\WebSite_Data\\R_Data\\Data_GWR\\&quot;
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_GWR\\&quot;
 COUNTY&lt;-shapefile(paste0(dataFolder,&quot;COUNTY_ATLANTIC.shp&quot;))
 state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))
 mf&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), header=T)</code></pre>
@@ -533,9 +536,9 @@ mf&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), head
 <h4>Create a data frame</h4>
 <pre class="r"><code>SPDF&lt;-merge(COUNTY,mf, by=&quot;FIPS&quot;)
 names(SPDF)</code></pre>
-<pre><code>##  [1] &quot;FIPS&quot;       &quot;ID&quot;         &quot;x.x&quot;        &quot;y.x&quot;        &quot;REGION_ID&quot; 
+<pre><code>##  [1] &quot;FIPS&quot;       &quot;ID&quot;         &quot;x&quot;          &quot;y&quot;          &quot;REGION_ID&quot; 
 ##  [6] &quot;DIVISION_I&quot; &quot;STATE_ID&quot;   &quot;COUNTY_ID&quot;  &quot;REGION&quot;     &quot;DIVISION&quot;  
-## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;x.y&quot;        &quot;y.y&quot;        &quot;Rate&quot;      
+## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;X&quot;          &quot;Y&quot;          &quot;Rate&quot;      
 ## [16] &quot;POV&quot;        &quot;SMOK&quot;       &quot;PM25&quot;       &quot;NO2&quot;        &quot;SO2&quot;</code></pre>
 <pre class="r"><code>polys&lt;- list(&quot;sp.lines&quot;, as(state, &quot;SpatialLines&quot;), col=&quot;grey&quot;, lwd=.8,lty=1)
 col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;)</code></pre>

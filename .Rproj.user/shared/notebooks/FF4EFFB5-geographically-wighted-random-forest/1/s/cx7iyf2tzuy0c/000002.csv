@@ -1,0 +1,5 @@
+"0","# Custom prediction function wrapper"
+"0","pdp_pred <- function(object, newdata)  {"
+"0","  results <- mean(as.vector(h2o.predict(object, as.h2o(newdata))))"
+"0","  return(results)"
+"0","}"

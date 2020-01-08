@@ -1,0 +1,2 @@
+"0","response <- ""Rate"""
+"0","predictors <- setdiff(names(train.hex), response)"

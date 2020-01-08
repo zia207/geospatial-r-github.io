@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578421056311.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2165013000",
+    "id" : "D00D8956",
+    "lastKnownWriteTime" : 1578421290,
+    "last_content_update" : 1578421290358,
+    "path" : "E:/GitHub/geospatial-r-github/random-forest.Rmd",
+    "project_path" : "random-forest.Rmd",
+    "properties" : {
+        "cursorPosition" : "48,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 17,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

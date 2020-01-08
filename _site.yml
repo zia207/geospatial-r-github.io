@@ -49,15 +49,13 @@ navbar:
       href: geographically-weighted-ols-regression.html
     - text: Geographically Weighted Poisson Regression
       href: geographically-weighted-poisson-regression.html 
-    - text: Geographically Wighted Rrandom Forest
+    - text: Global and Local (geographically weighted) Random Forest
       href: geographically-wighted-random-forest.html
   - text: Spatial Interpolation
     href: spatial-interpolation.html   
     menu:
     - text: Content
       href: about-d.html
-    - text: Spatial Interpolation
-      href: spatial-interpolation.html
     - text: Deterministic Methods for Spatial Interpolation
       href: deterministic-methods-for-spatial-interpolation.html
     - text: Geostatistical Methods for Spatial Interpolation
@@ -81,7 +79,7 @@ navbar:
     - text: Cross-validation
       href: cross-validation.html 
     - text: Validation with an Independent Dataset
-      href: validation-independent-dataset.html.
+      href: validation-independent-dataset.html
     - text: Conditional Simulation for Spatial Uncertainty
       href: conditional-simulation-spatial-uncertainty.html
   - text: Remote Sensing
@@ -117,6 +115,8 @@ navbar:
       href: exboost.html
     - text: Deep Learning with H20
       href: deep-learning-h2o.html
+    - text: Stack-Ensemble-H20
+      href: stack-ensemble-h2o.html
     - text: Deep Learning with Keras-TensorFlow
       href: deep-learning-keras-tensorflow.html
   right:

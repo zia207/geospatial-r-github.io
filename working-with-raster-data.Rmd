@@ -1,8 +1,15 @@
 ---
-title: "Working with Raster Data"
+title: ''
 ---
 
-<div style="margin-bottom:40px;">
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+# Working with Raster Data
+<div style="margin-bottom:42px;">
 </div>
 
 
@@ -78,7 +85,7 @@ We will use elevation data (5 km x 5 km) of  four states of great plain region o
 
 ```{r}
 # Define data folder
-dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//"
+dataFolder<-"D://Dropbox//Spatial Data Analysis and Processing in R//DATA_07//DATA_07//"
 ```
 
 #### Load raster

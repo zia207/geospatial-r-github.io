@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Working With Spatial Polygon Data</title>
+<title>working-with-spatial-polygon.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -253,7 +346,25 @@ $(document).ready(function () {
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
     </li>
     <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -289,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,11 +494,16 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Working With Spatial Polygon Data</h1>
 
 </div>
 
 
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="working-with-spatial-polygon-data" class="section level1">
+<h1>Working With Spatial Polygon Data</h1>
 <div style="margin-bottom:40px;">
 
 </div>
@@ -397,7 +513,7 @@ $(document).ready(function () {
 <li><p><a href="#visualization">Visualization</a></p></li>
 <li><p><a href="#animation">Animation</a></p></li>
 </ul>
-<p>The will use following data set fo US Atlantic regions (expcept Florida) which could be avilable fro download from <a href="https://www.dropbox.com/s/1ofgjkpat6dso1l/DATA_06.7z?dl=0">here</a>.</p>
+<p>The will use following data set fo US Atlantic regions (expcept Florida) which could be avilable fro download from <a href="https://www.dropbox.com/s/lrz6og0ld2m64df/Data_GWR.7z?dl=00">here</a>.</p>
 <div id="age-adjusted-lung-bronchus-cancer-mortality-rates-by-county" class="section level2">
 <h2>Age Adjusted Lung &amp; Bronchus Cancer Mortality Rates by County</h2>
 <p>Age Adjusted Lung &amp; Bronchus Cancer Mortality Rates from 1980 t0 2014 by county was obtained from <a href="http://ghdx.healthdata.org/us-data">Institute for Health Metrics and Evaluation (IHME)</a>. The rate was estimated using spatially explicit Bayesian mixed effects regression models for both males and females <a href="https://jamanetwork.com/journals/jama/fullarticle/2598772">(Mokdad et al., 2016)</a>. The model incorporated 7 covariates, such as proportion of the adult population that graduated high school, the proportion of the population that is Hispanic, the proportion of the population that is black, the proportion of the population that is a race other than black or white, The proportion of a county that is contained within a state or federal Native American reservation, the median household income, and the population density. To reduce the noise due to low mortality rate in a small population size, we smoothed data with the <a href="https://en.wikipedia.org/wiki/Empirical_Bayes_method">Empirical Bayesian smoother</a>, a tool for dealing with rate instability associated with small sample sizes. It takes the population in the region as an indicator of confidence in the data, with higher population providing a higher confidence in the value at that location. We used <a href="https://www.biomedware.com/?module=Page&amp;sID=spacestat">SpaceStat</a> (Evaluation version) Software for smoothing data.</p>
@@ -441,7 +557,7 @@ library(rcompanion)</code></pre>
 <div id="load-data" class="section level4">
 <h4>Load Data</h4>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_06\\&quot;</code></pre>
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_06\\DATA_06\\&quot;</code></pre>
 </div>
 <div id="load-all-csv-files" class="section level4">
 <h4>Load all CSV files</h4>
@@ -466,7 +582,7 @@ state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))</code></p
 <pre class="r"><code>cent = gCentroid(county,byid=TRUE)</code></pre>
 <pre class="r"><code>plot(state, main=&quot;County Centriods&quot;)
 points(cent,pch=1, cex=0.5, col=&quot;red&quot;)</code></pre>
-<p><img src="working-with-spatial-polygon_files/figure-html/unnamed-chunk-6-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-polygon_files/figure-html/unnamed-chunk-7-1.png" width="336" style="display: block; margin: auto;" /></p>
 </div>
 <div id="convert-contriods-to-spdf" class="section level4">
 <h4>Convert contriods to SPDF</h4>
@@ -479,17 +595,17 @@ str(XY.centriods)</code></pre>
 <div id="calculate-mean-of-all-variables" class="section level4">
 <h4>Calculate Mean of All variables</h4>
 <p>We will create a data frame 15 years (1998-2012) mean all variables, and will this data in spatial statistics lesson.</p>
-<pre class="r"><code>avg&lt;-read.csv(paste0(dataFolder, &quot;FIPS_COUNTY_ATLANTIC_COUNTY.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
-avg$x&lt;-XY.centriods$x
-avg$y&lt;-XY.centriods$y
-avg$pop&lt;-apply(pop[2:16],1,mean,na.rm=TRUE)
-avg$cancer&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
-avg$poverty&lt;-apply(poverty[2:16],1,mean,na.rm=TRUE)
-avg$smoking&lt;-apply(smoking[2:16],1,mean,na.rm=TRUE)
-avg$PM25&lt;-apply(PM25[2:16],1,mean,na.rm=TRUE)
-avg$NO2&lt;-apply(NO2[2:16],1,mean,na.rm=TRUE)
-avg$SO2&lt;-apply(SO2[2:16],1,mean,na.rm=TRUE)
-head(avg)</code></pre>
+<pre class="r"><code>COUNTY.FIPS&lt;-read.csv(paste0(dataFolder, &quot;FIPS_COUNTY_ATLANTIC_COUNTY.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+COUNTY.FIPS$x&lt;-XY.centriods$x
+COUNTY.FIPS$y&lt;-XY.centriods$y
+COUNTY.FIPS$pop&lt;-apply(pop[2:16],1,mean,na.rm=TRUE)
+COUNTY.FIPS$cancer&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
+COUNTY.FIPS$poverty&lt;-apply(poverty[2:16],1,mean,na.rm=TRUE)
+COUNTY.FIPS$smoking&lt;-apply(smoking[2:16],1,mean,na.rm=TRUE)
+COUNTY.FIPS$PM25&lt;-apply(PM25[2:16],1,mean,na.rm=TRUE)
+COUNTY.FIPS$NO2&lt;-apply(NO2[2:16],1,mean,na.rm=TRUE)
+COUNTY.FIPS$SO2&lt;-apply(SO2[2:16],1,mean,na.rm=TRUE)
+head(COUNTY.FIPS)</code></pre>
 <pre><code>##    FIPS       x       y       pop   cancer   poverty  smoking     PM25
 ## 1 13111 1056524 1376613 116485.00 71.87066 15.920000 27.93333 11.75533
 ## 2 42115 1653442 2267301 194008.40 58.85177 12.220000 26.96667  9.02600
@@ -504,7 +620,7 @@ head(avg)</code></pre>
 ## 4 3.6219333 0.118371127
 ## 5 1.6327333 0.006404368
 ## 6 1.6258000 0.138780485</code></pre>
-<pre class="r"><code>write.csv(avg, paste0(dataFolder, &quot;data_atlantic_1998_2012.csv&quot;), row.names=FALSE)</code></pre>
+<pre class="r"><code>write.csv(COUNTY.FIPS, paste0(dataFolder, &quot;data_atlantic_1998_2012.csv&quot;), row.names=FALSE)</code></pre>
 </div>
 <div id="calculate-confidence-ci-95-ci-alpha-.05.-of-mean" class="section level4">
 <h4>Calculate confidence CI (95% CI, alpha = .05. ) of Mean</h4>
@@ -512,19 +628,19 @@ head(avg)</code></pre>
 <pre class="r"><code>numb=15
 dof=15-1
 cancer.stat&lt;-read.csv(paste0(dataFolder, &quot;FIPS_COUNTY_ATLANTIC_COUNTY.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
-cancer.stat$avg&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
+cancer.stat$COUNTY.FIPS&lt;-apply(cancer[2:16],1,mean,na.rm=TRUE)
 cancer.stat$std&lt;-apply(cancer[2:16],1,sd,na.rm=TRUE)
 cancer.stat$mse&lt;- qt(.95,dof)*cancer.stat$std/sqrt(10)
-cancer.stat$upper&lt;-cancer.stat$avg + cancer.stat$mse
-cancer.stat$lower&lt;-cancer.stat$avg - cancer.stat$mse 
+cancer.stat$upper&lt;-cancer.stat$COUNTY.FIPS + cancer.stat$mse
+cancer.stat$lower&lt;-cancer.stat$COUNTY.FIPS - cancer.stat$mse 
 head(cancer.stat)</code></pre>
-<pre><code>##    FIPS      avg      std      mse    upper    lower
-## 1 13111 71.87066 2.564211 1.428202 73.29886 70.44246
-## 2 42115 58.85177 3.058839 1.703697 60.55547 57.14807
-## 3 42075 60.67665 2.315031 1.289415 61.96607 59.38724
-## 4 51683 61.56533 9.605861 5.350226 66.91556 56.21511
-## 5 36057 59.21461 3.344015 1.862533 61.07714 57.35208
-## 6 13149 85.76928 3.670388 2.044315 87.81359 83.72496</code></pre>
+<pre><code>##    FIPS COUNTY.FIPS      std      mse    upper    lower
+## 1 13111    71.87066 2.564211 1.428202 73.29886 70.44246
+## 2 42115    58.85177 3.058839 1.703697 60.55547 57.14807
+## 3 42075    60.67665 2.315031 1.289415 61.96607 59.38724
+## 4 51683    61.56533 9.605861 5.350226 66.91556 56.21511
+## 5 36057    59.21461 3.344015 1.862533 61.07714 57.35208
+## 6 13149    85.76928 3.670388 2.044315 87.81359 83.72496</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -538,14 +654,14 @@ SPOLY.DF&lt;-merge(county,cancer.stat, by=&quot;FIPS&quot;)</code></pre>
 <pre class="r"><code>polys&lt;- list(&quot;sp.lines&quot;, as(state, &quot;SpatialLines&quot;), col=&quot;grey&quot;, lwd=.8,lty=1)
 col.palette&lt;-colorRampPalette(c(&quot;blue&quot;,  &quot;sky blue&quot;, &quot;green&quot;,&quot;yellow&quot;, &quot;red&quot;),space=&quot;rgb&quot;,interpolate = &quot;linear&quot;)
 
-at.break = classIntervals(cancer.stat$avg, n = 20, style = &quot;quantile&quot;)$brks
-round(quantile(cancer.stat$avg, probs=seq(0,1, by=0.05)),1)</code></pre>
+at.break = classIntervals(cancer.stat$COUNTY.FIPS, n = 20, style = &quot;quantile&quot;)$brks
+round(quantile(cancer.stat$COUNTY.FIPS, probs=seq(0,1, by=0.05)),1)</code></pre>
 <pre><code>##    0%    5%   10%   15%   20%   25%   30%   35%   40%   45%   50%   55% 
 ##  39.3  50.8  55.2  59.2  60.8  62.4  63.7  65.2  66.9  68.2  69.3  70.8 
 ##   60%   65%   70%   75%   80%   85%   90%   95%  100% 
 ##  72.3  73.5  75.1  77.2  79.3  81.1  84.4  90.8 120.4</code></pre>
 <pre class="r"><code>spplot(SPOLY.DF, 
-       c(&quot;avg&quot;, &quot;lower&quot;, &quot;upper&quot;), 
+       c(&quot;COUNTY.FIPS&quot;, &quot;lower&quot;, &quot;upper&quot;), 
        names.attr = c(&quot;Mean&quot;,&quot;Lower&quot;, &quot;Upper&quot;),
        main = &quot;Mean and 90% CI of Lung Cancer Mortality Rate (1998-2012)\n
              (death per 100,000)&quot;,
@@ -560,41 +676,92 @@ round(quantile(cancer.stat$avg, probs=seq(0,1, by=0.05)),1)</code></pre>
                  labels=c(&quot;&quot; ,&quot;&quot;, &quot;&lt; 55&quot;, &quot;&quot; ,&quot;&quot;, &quot;62&quot;,&quot;&quot;, &quot;&quot;, &quot;&quot; , &quot;&quot;, &quot;69&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 
                           &quot;77&quot;, &quot;&quot;, &quot;&quot;, &quot;&gt; 85&quot;, &quot;&quot;, &quot;&quot;))),
        col.regions=col.palette(100))</code></pre>
-<p><img src="working-with-spatial-polygon_files/figure-html/unnamed-chunk-11-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-polygon_files/figure-html/unnamed-chunk-12-1.png" width="960" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
 </div>
-<div id="animation" class="section level3">
-<h3>Animation</h3>
+</div>
+<div id="create-a-data-from-from-1998-to-2012" class="section level2">
+<h2>Create a data from from 1998 to 2012</h2>
+<pre class="r"><code>wide.cancer&lt;-read.csv(paste0(dataFolder, &quot;Lung_cancer_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+wide.poverty&lt;-read.csv(paste0(dataFolder, &quot;POVERTY_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+wide.smoking&lt;-read.csv(paste0(dataFolder, &quot;SMOKING_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+wide.PM25&lt;-read.csv(paste0(dataFolder, &quot;PM25_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+wide.NO2&lt;-read.csv(paste0(dataFolder, &quot;NO2_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
+wide.SO2&lt;-read.csv(paste0(dataFolder, &quot;SO2_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)</code></pre>
+<div id="add-id-variable" class="section level3">
+<h3>add id variable</h3>
+<pre class="r"><code>wide.cancer$id &lt;- c(1:666) 
+wide.poverty$id &lt;- c(1:666) 
+wide.smoking$id &lt;- c(1:666) 
+wide.PM25$id &lt;- c(1:666) 
+wide.NO2$id &lt;- c(1:666)
+wide.SO2$id &lt;- c(1:666) </code></pre>
+</div>
+<div id="change-name-of-first-variable" class="section level3">
+<h3>change name of first variable</h3>
+<pre class="r"><code>colnames(wide.cancer)[1] &lt;- &#39;FIPS&#39;
+colnames(wide.poverty)[1] &lt;- &#39;FIPS&#39;
+colnames(wide.smoking)[1] &lt;- &#39;FIPS&#39;
+colnames(wide.PM25)[1] &lt;- &#39;FIPS&#39;
+colnames(wide.NO2)[1] &lt;- &#39;FIPS&#39;
+colnames(wide.SO2)[1] &lt;- &#39;FIPS&#39;</code></pre>
+</div>
+<div id="create-long-data-frames" class="section level3">
+<h3>Create long data frames</h3>
+<pre class="r"><code>long.cancer&lt;- reshape2::melt(wide.cancer, id.vars=c(&quot;FIPS&quot;,&quot;id&quot;))
+long.poverty&lt;- reshape2::melt(wide.poverty, id.vars=c(&quot;FIPS&quot;,&quot;id&quot;))
+long.smoking&lt;- reshape2::melt(wide.smoking, id.vars=c(&quot;FIPS&quot;,&quot;id&quot;))
+long.PM25&lt;- reshape2::melt(wide.PM25, id.vars=c(&quot;FIPS&quot;,&quot;id&quot;))
+long.NO2&lt;- reshape2::melt(wide.NO2, id.vars=c(&quot;FIPS&quot;,&quot;id&quot;))
+long.SO2&lt;- reshape2::melt(wide.SO2, id.vars=c(&quot;FIPS&quot;,&quot;id&quot;))</code></pre>
+</div>
+<div id="renames-column" class="section level3">
+<h3>Renames Column</h3>
+<pre class="r"><code>colnames(long.cancer)[3] &lt;- &#39;Year&#39;
+colnames(long.cancer)[4] &lt;- &#39;Rate&#39;
+
+colnames(long.poverty)[3] &lt;- &#39;Year&#39;
+colnames(long.poverty)[4] &lt;- &#39;POVERTY&#39;
+
+colnames(long.smoking)[3] &lt;- &#39;Year&#39;
+colnames(long.smoking)[4] &lt;- &#39;SMOKING&#39;
+
+colnames(long.PM25)[3] &lt;- &#39;Year&#39;
+colnames(long.PM25)[4] &lt;- &#39;PM25&#39;
+
+colnames(long.NO2)[3] &lt;- &#39;Year&#39;
+colnames(long.NO2)[4] &lt;- &#39;NO2&#39;
+
+colnames(long.SO2)[3] &lt;- &#39;Year&#39;
+colnames(long.SO2)[4] &lt;- &#39;SO2&#39;</code></pre>
+</div>
+<div id="join-all-data-frame" class="section level3">
+<h3>Join all data-frame</h3>
+<pre class="r"><code>data.long&lt;-long.cancer[,-2]
+data.long$POVERTY&lt;-long.poverty[,4]
+data.long$SMOKING&lt;-long.smoking[,4]
+data.long$PM25&lt;-long.PM25[,4]
+data.long$NO2&lt;-long.NO2[,4]
+data.long$SO2&lt;-long.SO2[,4]
+
+data.long.FIPS&lt;-merge(COUNTY.FIPS[,1:3], data.long, by=&quot;FIPS&quot;)
+write.csv(data.long.FIPS, paste0(dataFolder, &quot;data_all_1998_2012.csv&quot;), row.names=FALSE)</code></pre>
+</div>
+</div>
+<div id="animation" class="section level2">
+<h2>Animation</h2>
 <p>We Created an animated time series map of Lung Cancer Mortality Rate from 1998-2012, To create an animation map in R, we have to install <em>animation</em> packages in R. This package depends on <a href="https://www.imagemagick.org/"><em>ImageMagick</em></a> software.</p>
 <pre class="r"><code>library(animation)</code></pre>
+<pre><code>## Warning: package &#39;animation&#39; was built under R version 3.6.2</code></pre>
 <p>After install you have define PATH of this software.</p>
 <pre class="r"><code>Sys.setenv(PATH = paste(&quot;C:\\Program Files\\ImageMagick-7.0.6-0-Q16&quot;, Sys.getenv(&quot;PATH&quot;), sep = &quot;;&quot;))
 ani.options(convert=&quot;C:\\Program Files\\ImageMagick-7.0.6-0-Q16\\covert.exe&quot;)
 magickPath&lt;-shortPathName(&quot;C:\\Program Files\\ImageMagick-7.0.6-0-Q16-x64\\magick.exe&quot;)
 ani.options(convert=magickPath)</code></pre>
-<pre class="r"><code>wide.df&lt;-read.csv(paste0(dataFolder, &quot;Lung_cancer_1998_2012.csv&quot;), stringsAsFactors = FALSE, check.names=FALSE)
-# add id variable
-wide.df$id &lt;- c(1:666) # total 738 counties
-# change name of first variable
-colnames(wide.df)[1] &lt;- &#39;FIPS&#39;
-# convert from wide to long
-long.df&lt;- reshape2::melt(wide.df, id.vars=c(&quot;FIPS&quot;,&quot;id&quot;))
-head(long.df)</code></pre>
-<pre><code>##    FIPS id variable    value
-## 1 13111  1     1998 73.09316
-## 2 42115  2     1998 61.73904
-## 3 42075  3     1998 62.61683
-## 4 51683  4     1998 75.72253
-## 5 36057  5     1998 61.92260
-## 6 13149  6     1998 88.91067</code></pre>
-<pre class="r"><code># change name of third variable
-colnames(long.df)[3] &lt;- &#39;Year&#39;
-colnames(long.df)[4] &lt;- &#39;Rate&#39;
-
-at.risk = classIntervals(long.df$Rate, n = 20, style = &quot;quantile&quot;)$brks
-round(quantile(long.df$Rate, probs=seq(0,1, by=0.05)),4)</code></pre>
+<pre class="r"><code>at.risk = classIntervals(long.cancer$Rate, n = 20, style = &quot;quantile&quot;)$brks
+round(quantile(long.cancer$Rate, probs=seq(0,1, by=0.05)),4)</code></pre>
 <pre><code>##       0%       5%      10%      15%      20%      25%      30%      35% 
 ##  32.3006  49.5058  54.4828  57.6885  59.8426  61.8422  63.6249  65.2329 
 ##      40%      45%      50%      55%      60%      65%      70%      75% 
@@ -630,7 +797,7 @@ saveGIF(
                           &quot;75&quot;, &quot;&quot;, &quot;&quot;, &quot;&gt; 92&quot;, &quot;&quot;, &quot;&quot;))),
                  col.regions=col.palette(100)))}, 
   ani.width = 500, ani.height = 700, interval = .5, clean = TRUE, outdir = getwd())</code></pre>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/FIGURE_Cancer_ATLANTIC.gif" /></p>
+<p><img src="FIGURE_Cancer_ATLANTIC.gif" /></p>
 <pre class="r"><code>rm(list = ls())</code></pre>
 </div>
 </div>
@@ -652,6 +819,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

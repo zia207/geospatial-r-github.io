@@ -1,0 +1,5 @@
+"0","#### Convert to raster"
+"0","x<-SpatialPointsDataFrame(as.data.frame(new.grid.na)[, c(""x"", ""y"")], data = new.grid.na)"
+"0","r <- rasterFromXYZ(as.data.frame(x)[, c(""x"", ""y"", ""Class_ID"")])"
+"2","no non-missing arguments to min; returning Inf"
+"2","no non-missing arguments to max; returning -Inf"

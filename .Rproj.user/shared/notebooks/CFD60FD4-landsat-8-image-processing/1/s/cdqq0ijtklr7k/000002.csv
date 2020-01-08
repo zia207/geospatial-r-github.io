@@ -1,0 +1,5 @@
+"0","# Automatic haze estimation"
+"0","hazeDN <- estimateHaze(lsat, # raster object"
+"0","	hazeBands = 2:5,		       # haze band B2,B3, B4 and B5  "
+"0","	plot = TRUE,		           # display hisgram and haze values"
+"0","	darkProp=0.01)		         # Proportion of pixels estimate haze"

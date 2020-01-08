@@ -1,0 +1,60 @@
+---
+title: ''
+---
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:30px;">
+</div>
+
+# Table of Content 
+
+<div style="margin-bottom:20px;">
+</div>
+
+* [Spatial Interpolation](spatial-interpolation.html)
+
+    -  [Deterministic Methods for Spatial Interpolation](deterministic-methods-for-spatial-interpolation.html)
+    
+        -  Polynomial Trend Surface
+
+        -  Proximity Analysis-Thiessen Polygons
+
+        -  Nearest Neighbor Interpolation
+
+        - Inverse Distance Weighted
+
+        - Thin Plate Spline
+    
+    -  [Geostatistical Methods for Spatial Interpolation](geostatistical-methods-for-spatial-interpolation.html)
+    
+  
+        - [Semivariogram Modeling](semivariogram-modeling.html)
+        
+        - [Kriging](kriging.html)
+        
+            - [Ordinary Kriging](ordinary-kriging.html)
+            
+            - [Universal Kriging](universal-kriging.html)
+            
+            - [Co-Kriging](cokriging.html)
+            
+            - [Regression kriging](regression-kriging.html)
+            
+                - Generalized Linear Model
+
+                - Random Forest
+
+                - Meta Ensemble Machine Learning
+            
+            - [Indicator kriging](indicator-kriging.html)
+             
+* [Assessing the Quality of Spatial Predictions](assessing-quality-spatial-predictions.html)
+    
+    - [Cross-validation](cross-validation.html)
+    
+    - [Validation with an Independent Dataset](validation-independent-dataset.html)
+    
+    - [Conditional Simulation for Spatial Uncertainty](conditional-simulation-spatial-uncertainty.html)
+
+

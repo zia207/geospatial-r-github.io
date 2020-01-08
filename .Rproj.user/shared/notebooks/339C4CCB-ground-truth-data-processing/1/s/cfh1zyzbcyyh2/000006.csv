@@ -1,0 +1,1 @@
+"0","point.df <- raster::extract(multi, point.SPDF, df=TRUE, method='simple')"

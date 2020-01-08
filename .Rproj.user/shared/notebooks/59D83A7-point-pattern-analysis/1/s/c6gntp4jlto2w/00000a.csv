@@ -1,3 +1,0 @@
-"0","theft_df_time<- df %>%"
-"0","  select(incident_type, day_of_week, hour_of_day ) %>%"
-"0","  filter(incident_type ==""Theft"") "

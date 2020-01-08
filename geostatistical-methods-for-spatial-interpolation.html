@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Geostatistical Interpolation</title>
+<title>geostatistical-methods-for-spatial-interpolation.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -251,6 +344,27 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="spatial-interpolation.html">Spatial Interpolation</a>
@@ -289,7 +403,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,12 +497,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Geostatistical Interpolation</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="geostatistical-interpolation" class="section level1">
+<h1>Geostatistical Interpolation</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p>Spatial interpolation using <strong>geostatistical</strong> techniques has been widely used to map environmental variables. Geostatistics relies on on the concept of <strong>random function</strong>, whereby the set of unknown values is considered as a set of spatially dependent random variables. The random function concepts allows to account for structures in the spatial variation of the attributes. Unlike the deterministic interpolation approaches, geostatistics assumes that all values in a domain are the result of a random process with dependence. At any particular location, the uncertainty of attribute value is estimated from a set of possible outcomes of the random variable at that location. This way we can model the uncertainty of spatial prediction over the entire study area.</p>
@@ -397,17 +516,17 @@ $(document).ready(function () {
 </div>
 <p>The main steps involved in geostatistical interpolation model are:</p>
 <ol style="list-style-type: decimal">
-<li>Examining the data (distribution, trends, directional components, outliers)</li>
-<li>Calculating the empirical semivariogram or covariance values</li>
-<li>Fitting a model to the empirical values.</li>
-<li>Generating the matrices of kriging equations.</li>
-<li>Solving them to obtain a predicted value and the error (uncertainty) associated with it for each location in the output surface.</li>
+<li><p>Examining the data (distribution, trends, directional components, outliers)</p></li>
+<li><p>Calculating the empirical semivariogram or covariance values</p></li>
+<li><p>Fitting a model to the empirical values.</p></li>
+<li><p>Generating the matrices of kriging equations.</p></li>
+<li><p>Solving them to obtain a predicted value and the error (uncertainty) associated with it for each location in the output surface.</p></li>
 </ol>
 <div style="margin-bottom:20px;">
 
 </div>
 <div class="figure" style="text-align: center">
-<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/Flow_Chart.png" alt="Work Flow Geostatistical Interpolation (Source: http://pro.arcgis.com/en/pro-app/help/analysis/geostatistical-analyst/the-geostatistical-workflow.htm )" width="40%" />
+<img src="Image/PNG_FILE_07/Flow_Chart.png" alt="Work Flow Geostatistical Interpolation (Source: http://pro.arcgis.com/en/pro-app/help/analysis/geostatistical-analyst/the-geostatistical-workflow.htm )" width="40%" />
 <p class="caption">
 Work Flow Geostatistical Interpolation (Source: <a href="http://pro.arcgis.com/en/pro-app/help/analysis/geostatistical-analyst/the-geostatistical-workflow.htm" class="uri">http://pro.arcgis.com/en/pro-app/help/analysis/geostatistical-analyst/the-geostatistical-workflow.htm</a> )
 </p>
@@ -434,11 +553,11 @@ Work Flow Geostatistical Interpolation (Source: <a href="http://pro.arcgis.com/e
 <li><p><a href="regression-kriging.html">Regression Kriging</a></p>
 <p>Generalized Linear Model</p>
 <p>Random Forest</p>
-<p>Extreme Gradient Boosting</p>
 <p>Meta-Ensemble Machine Learning</p></li>
 <li><p><a href="indicator-kriging.html">Indicator Kriging</a></p></li>
 </ul></li>
 </ul>
+</div>
 
 
 
@@ -457,6 +576,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

@@ -1,0 +1,22 @@
+"0","install.packages(""xgboost"")"
+"2","Installing package into ‘C:/Users/zua3/Documents/R/win-library/3.6’
+(as ‘lib’ is unspecified)
+"
+"2","trying URL 'https://cran.rstudio.com/bin/windows/contrib/3.6/xgboost_0.90.0.2.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 2333256 bytes (2.2 MB)
+"
+"2","downloaded 2.2 MB
+
+"
+"1","package â€˜xgboostâ€™ successfully unpacked and MD5 sums checked
+"
+"1","
+"
+"1",""
+"1","The downloaded binary packages are in
+	C:\Users\zua3\AppData\Local\Temp\Rtmpcv3HAS\downloaded_packages"
+"1",""
+"1","
+"

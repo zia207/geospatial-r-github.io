@@ -331,6 +331,9 @@ $(document).ready(function () {
       <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
+    </li>
+    <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
     </li>
     <li>
@@ -362,9 +365,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about-d.html">Content</a>
-    </li>
-    <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -400,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -498,15 +498,15 @@ $(document).ready(function () {
 </div>
 
 
-<div style="margin-bottom:10px;">
-
-</div>
 <img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
 <div style="margin-bottom:20px;">
 
 </div>
 <div id="spatial-autocorrelation" class="section level1">
 <h1>Spatial Autocorrelation</h1>
+<div style="margin-bottom:20px;">
+
+</div>
 <p>“Spatial autocorrelation is a method of Exploratory Spatial Data Analysis (ESDA)”. It helps to study and understanding of the spatial distribution and spatial structure as well as they allow for detecting spatial dependence or autocorrelation in spatial data.</p>
 <p>Spatial autocorrelation measures the degree of correlation on space (Cliff and Ord 1973, 1981). Tests of spatial autocorrelation examine the independency of observed value in relation to values of that variable at neighboring locations. Spatial autocorrelation can be positive or negative.</p>
 <p><strong>Positive spatial autocorrelation</strong> indicates that similar values appear close to each other, or cluster, in space.</p>
@@ -545,9 +545,9 @@ library(rgdal)       # raster</code></pre>
 </div>
 <div id="load-data" class="section level4">
 <h4>Load Data</h4>
-<p>The data could be found <a href="https://www.dropbox.com/s/sngfyskys1jwvet/Data_GWR.7z?dl=0">here</a>.</p>
+<p>The data could be found <a href="https://www.dropbox.com/s/lrz6og0ld2m64df/Data_GWR.7z?dl=0">here</a>.</p>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;D:\\Dropbox\\WebSite_Data\\R_Data\\Data_GWR\\&quot;
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_GWR\\&quot;
 COUNTY&lt;-shapefile(paste0(dataFolder,&quot;COUNTY_ATLANTIC.shp&quot;))
 state&lt;-shapefile(paste0(dataFolder,&quot;STATE_ATLANTIC.shp&quot;))
 df&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), header=T)</code></pre>
@@ -557,9 +557,9 @@ df&lt;-read.csv(paste0(dataFolder,&quot;data_atlantic_1998_2012.csv&quot;), head
 <pre class="r"><code>df[6] &lt;- lapply(df[6], as.numeric) # Rate data to numeric
 SPDF&lt;-merge(COUNTY,df, by=&quot;FIPS&quot;)
 names(SPDF)</code></pre>
-<pre><code>##  [1] &quot;FIPS&quot;       &quot;ID&quot;         &quot;x.x&quot;        &quot;y.x&quot;        &quot;REGION_ID&quot; 
+<pre><code>##  [1] &quot;FIPS&quot;       &quot;ID&quot;         &quot;x&quot;          &quot;y&quot;          &quot;REGION_ID&quot; 
 ##  [6] &quot;DIVISION_I&quot; &quot;STATE_ID&quot;   &quot;COUNTY_ID&quot;  &quot;REGION&quot;     &quot;DIVISION&quot;  
-## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;x.y&quot;        &quot;y.y&quot;        &quot;Rate&quot;      
+## [11] &quot;STATE&quot;      &quot;COUNTY&quot;     &quot;X&quot;          &quot;Y&quot;          &quot;Rate&quot;      
 ## [16] &quot;POV&quot;        &quot;SMOK&quot;       &quot;PM25&quot;       &quot;NO2&quot;        &quot;SO2&quot;</code></pre>
 <div style="margin-bottom:20px;">
 

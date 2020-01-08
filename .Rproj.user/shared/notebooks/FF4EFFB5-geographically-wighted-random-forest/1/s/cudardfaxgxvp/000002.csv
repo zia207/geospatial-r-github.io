@@ -1,1 +1,3 @@
-"0","df[, 5:9] = scale(df[, 5:9])"
+"0","test.df[, 5:9] = scale(test.df[, 5:9])"
+"0","valid.df[, 5:9] = scale(valid.df[, 5:9])"
+"0","train.df[, 5:9] = scale(train.df[, 5:9])"

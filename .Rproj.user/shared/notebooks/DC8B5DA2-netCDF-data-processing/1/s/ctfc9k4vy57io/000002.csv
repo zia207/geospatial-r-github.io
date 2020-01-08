@@ -1,0 +1,3 @@
+"0","df.SPDF<-cbind.data.frame(bd.SPDF)"
+"0","df.SPDF<-df.SPDF[,-94]"
+"0","fwrite(df.SPDF, ""t2m_spatial_2015.csv"", row.names = F)"

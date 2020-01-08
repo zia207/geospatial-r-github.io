@@ -1,8 +1,15 @@
 ---
-title: "Kriging"
+title: ''
 ---
 
-<div style="margin-bottom:40px;">
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+# Kriging
+<div style="margin-bottom:20px;">
 </div>
 
 **Kriging** is a group of geostatistical techniques to interpolate the value of a random field (e.g., the soil variables as a function of the geographic location) at an un-sampled location from known observations of its value at nearby locations. The main statistical assumption behind kriging is one of **stationarity** which means that statistical properties (such as **mean and variance**) do not depend on the exact spatial locations, so the mean and variance of a variable at one location is equal to the mean and variance at another location. The basic idea of kriging is to predict the value at a given point by computing a weighted average of the known values of the function in the neighborhood of the point. Unlike other deterministic interpolation methods such as inverse distance weighted (IDW) and Spline, **kriging** is based on auto-correlation-that is, the statistical relationships among the measured points to interpolate the values in the spatial field. Kriging is capable to produce prediction surface with uncertainty.  Although **stationarity (constant mean and variance) and isotropy (uniformity in all directions) ** are the two main assumptions for kriging to provide best linear unbiased prediction, however, there is flexibility of these assumptions for various forms and methods of kriging.  
@@ -26,7 +33,7 @@ The weights are determined from the variogram based on the spatial structure of 
 
 
 ```{r echo=FALSE, out.width='40%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\weight.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_07\\weight.png')
 ```
 
 <div style="margin-bottom:20px;">

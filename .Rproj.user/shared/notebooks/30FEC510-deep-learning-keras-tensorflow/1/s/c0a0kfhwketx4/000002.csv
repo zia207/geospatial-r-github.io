@@ -1,0 +1,8 @@
+"0","##  Determine sample size"
+"0","ind <- sample(2, nrow(point.df), replace=TRUE, prob=c(0.80, 0.20))"
+"0","# Split the `Split data"
+"0","training <- point.df[ind==1, 1:10]"
+"0","test <- point.df[ind==2, 1:10]"
+"0","# Split the class attribute"
+"0","trainingtarget <- point.df[ind==1, 11]"
+"0","testtarget <- point.df[ind==2, 11]"

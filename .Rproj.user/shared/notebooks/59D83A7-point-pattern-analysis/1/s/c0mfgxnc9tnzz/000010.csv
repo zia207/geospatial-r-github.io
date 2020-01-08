@@ -1,6 +1,0 @@
-"0","plot <- ggplot(theft_df_time, aes(x = hour_of_day, y = day_of_week, fill = count)) +"
-"0","  geom_tile() +"
-"0","  theme(axis.text.x = element_text(angle = 90, vjust = 0.6), legend.title = element_blank(), legend.position=""top"",               legend.direction=""horizontal"", legend.key.width=unit(2, ""cm""), legend.key.height=unit(0.25, ""cm""), legend.margin=unit(-0.5,""cm""), panel.margin=element_blank()) +"
-"0","  labs(x = ""Hour at Theft Committed"", y = ""Day of the Week"", title = ""Number of Theft Committed at City of Buffalo, 2018"") +"
-"0","  scale_fill_gradient(low = ""white"", high = ""#27AE60"")"
-"0","plot"

@@ -352,7 +352,7 @@ $(document).ready(function () {
       <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
     </li>
     <li>
-      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
     </li>
   </ul>
 </li>
@@ -365,9 +365,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about-d.html">Content</a>
-    </li>
-    <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -403,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -461,6 +458,9 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="stack-ensemble-h2o.html">Stack-Ensemble-H20</a>
     </li>
     <li>
       <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
@@ -538,12 +538,12 @@ library(tfestimators)  # Interface to &#39;TensorFlow&#39; Estimators </code></p
 <div style="margin-bottom:20px;">
 
 </div>
-<p>The data could be available for download from <a href="https://www.dropbox.com/s/a1pxx8we5r2p1zs/Data_RS_DNN.7z?dl=0">here</a>.</p>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/bupqmsfyr2tk1yg/Data_RS_DNN.7z?dl=0">here</a>.</p>
 <div style="margin-bottom:20px;">
 
 </div>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;D:/Dropbox/WebSite_Data/R_Data/Data_RS_DNN/&quot;</code></pre>
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_RS_DNN&quot;</code></pre>
 </div>
 <div id="load-point-and-grid-data" class="section level4">
 <h4>Load point and grid data</h4>
@@ -557,7 +557,7 @@ grid.df&lt;-grid[c(4:13)]
 grid.xy&lt;-grid[c(3,1:2)]</code></pre>
 </div>
 <div id="convert-class-to-dummy-variables" class="section level4">
-<h4>Convert Class to dummy variables:</h4>
+<h4>Convert Class to dummy variables</h4>
 <pre class="r"><code>point.df[,11] &lt;- as.numeric(point.df[,11]) -1 </code></pre>
 </div>
 <div id="convert-data-as-matrix" class="section level4">
@@ -566,7 +566,7 @@ grid.xy&lt;-grid[c(3,1:2)]</code></pre>
 grid.df &lt;- as.matrix(grid.df)</code></pre>
 </div>
 <div id="set-dimnames-to-null" class="section level4">
-<h4>Set <code>dimnames</code> to <code>NULL</code>:</h4>
+<h4>Set dimnames to NULL</h4>
 <pre class="r"><code>dimnames(point.df) &lt;- NULL
 dimnames(grid.df) &lt;- NULL</code></pre>
 </div>
@@ -674,9 +674,9 @@ summary(model)</code></pre>
 <h4>Evaluate the model</h4>
 <pre class="r"><code>score &lt;- model %&gt;% evaluate(test, testtarget, batch_size = 100)
 cat(&#39;Test loss:&#39;, score[[1]], &#39;\n&#39;)</code></pre>
-<pre><code>## Test loss: 0.6109825</code></pre>
+<pre><code>## Test loss: 0.6139388</code></pre>
 <pre class="r"><code>cat(&#39;Test accuracy:&#39;, score[[2]], &#39;\n&#39;)</code></pre>
-<pre><code>## Test accuracy: 0.8863825</code></pre>
+<pre><code>## Test accuracy: 0.8723315</code></pre>
 </div>
 <div id="prediction-confusion-matrix---test-data" class="section level4">
 <h4>Prediction &amp; confusion matrix - test data</h4>
@@ -686,11 +686,11 @@ cat(&#39;Test loss:&#39;, score[[1]], &#39;\n&#39;)</code></pre>
 table(testtarget,class.test)</code></pre>
 <pre><code>##           class.test
 ## testtarget    0    1    2    3    4
-##          0 1027   43   16   14   45
-##          1  138  650   24    9   92
-##          2  106    3 1494   20    0
-##          3    0    0   35  936    0
-##          4    0    0    4    0  176</code></pre>
+##          0 1001   34   12   15   50
+##          1  129  596   35    4  142
+##          2  109    7 1474   22    0
+##          3    0    0   47  924    0
+##          4    0    0    4    0  173</code></pre>
 </div>
 <div id="predicted-class-probability" class="section level4">
 <h4>Predicted Class Probability</h4>

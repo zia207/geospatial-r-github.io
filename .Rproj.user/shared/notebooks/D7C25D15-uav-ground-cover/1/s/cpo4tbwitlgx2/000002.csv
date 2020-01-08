@@ -1,0 +1,6 @@
+"0","a2= (1+a1^2)^0.5 # nominator of the  equations "
+"0","# PVI"
+"0","PVI = (b5 - a1*b2- a0)/a2"
+"0","PVI[PVI < 0.000] <- 0.000"
+"0","PVI[PVI > 100.001] <- 100"
+"0","PVI.1<-PVI/100"

@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Working with Raster Data</title>
+<title>working-with-raster-data.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -251,6 +344,27 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="spatial-interpolation.html">Spatial Interpolation</a>
@@ -289,7 +403,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,12 +497,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Working with Raster Data</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="working-with-raster-data" class="section level1">
+<h1>Working with Raster Data</h1>
+<div style="margin-bottom:42px;">
 
 </div>
 <p>In this exerciser we will learn following raster processing techniques with R:</p>
@@ -441,7 +560,7 @@ library(spatialEco)   # Curveture analysis</code></pre>
 <h4>Load Data</h4>
 <p>We will use elevation data (5 km x 5 km) of four states of great plain region of USA (GP_ELEV.tif) and data set could be available for download from <a href="https://www.dropbox.com/s/qv252sfhs2d6f3p/DATA_07.7z?dl=0">here</a></p>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//&quot;</code></pre>
+dataFolder&lt;-&quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_07//DATA_07//&quot;</code></pre>
 </div>
 <div id="load-raster" class="section level4">
 <h4>Load raster</h4>
@@ -462,14 +581,14 @@ dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//
 <div id="check-raster-attribute" class="section level4">
 <h4>Check raster attribute</h4>
 <pre class="r"><code>ELEV.GP</code></pre>
-<pre><code>## class       : RasterLayer 
-## dimensions  : 310, 275, 85250  (nrow, ncol, ncell)
-## resolution  : 5000, 5000  (x, y)
-## extent      : -1250285, 124715, 988795, 2538795  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
-## data source : F:\Spatial_Data_Processing_and_Analysis_R\Data\DATA_07\GP_ELEV.tif 
-## names       : GP_ELEV 
-## values      : 224.4348, 3828.2  (min, max)</code></pre>
+<pre><code>## class      : RasterLayer 
+## dimensions : 310, 275, 85250  (nrow, ncol, ncell)
+## resolution : 5000, 5000  (x, y)
+## extent     : -1250285, 124715, 988795, 2538795  (xmin, xmax, ymin, ymax)
+## crs        : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+## source     : D:/Dropbox/Spatial Data Analysis and Processing in R/DATA_07/DATA_07/GP_ELEV.tif 
+## names      : GP_ELEV 
+## values     : 224.4348, 3828.2  (min, max)</code></pre>
 <ul>
 <li>Nrow, Ncol: the number of rows and columns in the data (imagine a spreadsheet or a matrix).</li>
 <li>Ncells: the total number of pixels or cells that make up the raster.</li>
@@ -481,11 +600,11 @@ dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//
 <div id="raster-extent" class="section level4">
 <h4>Raster extent</h4>
 <pre class="r"><code>extent(ELEV.GP)</code></pre>
-<pre><code>## class       : Extent 
-## xmin        : -1250285 
-## xmax        : 124715 
-## ymin        : 988795 
-## ymax        : 2538795</code></pre>
+<pre><code>## class      : Extent 
+## xmin       : -1250285 
+## xmax       : 124715 
+## ymin       : 988795 
+## ymax       : 2538795</code></pre>
 </div>
 <div id="raster-statistics" class="section level4">
 <h4>Raster statistics</h4>
@@ -509,12 +628,12 @@ dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//
      xlab= &quot;Elevation (m)&quot;,                                     # x-axis name
      ylab = &quot;Number of Pixels&quot;)                                 # y-axis name
 box()</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plot-raster" class="section level4">
 <h4>Plot raster</h4>
 <pre class="r"><code>plot(ELEV.GP, main=&quot;Albers Equal Area Conic&quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -535,7 +654,7 @@ writeRaster(ELEV.CO, paste0(dataFolder,&quot;CO_ELEV.tiff&quot;),&quot;GTiff&quo
 <h5>Plot Clip DEM</h5>
 <pre class="r"><code>plot(ELEV.CO, main= &quot;5 km x 5 Km DEM of CO State&quot;)
 plot(CO.STATE, add=TRUE)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -554,7 +673,7 @@ plot(CO.STATE, add=TRUE)</code></pre>
      xlab= &quot;Elevation (m)&quot;,                                     # x-axis name
      ylab = &quot;Number of Pixels&quot;)                                 # y-axis name
 box()</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>Now, you can check where are breaks and how many pixels in each category, and use these breaks to plot a raster layer</p>
 <pre class="r"><code>HISTO.CO$breaks</code></pre>
 <pre><code>## [1] 1000 2000 3000 4000</code></pre>
@@ -565,7 +684,7 @@ plot(ELEV.CO,
      breaks = c(1000, 2000, 3000, 4000), 
      col = terrain.colors(5),
      main=&quot;DEM &quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>We will use breaks of histogram to reclassify the DEM raster. First, you have to create classification matrix</p>
 <ul>
 <li>Class 1: 1000 - 2000 m (low elevation)</li>
@@ -594,7 +713,7 @@ reclass_m</code></pre>
 <pre class="r"><code>barplot(ELEV.CO.reclass,
         main = &quot;Number of pixels in each class&quot;)
 box()</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Now we plot the reclassified raster using <strong>plot</strong> function with a nice looking legend</p>
 <pre class="r"><code>plot(ELEV.CO.reclass,
      legend = FALSE,
@@ -606,7 +725,7 @@ legend(&quot;topright&quot;,
        fill = c(&quot;green&quot;, &quot;blue&quot;, &quot;red&quot;),
        border = FALSE,
        bty = &quot;n&quot;) # turn off legend border</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="quantile" class="section level4">
 <h4>Quantile</h4>
@@ -638,7 +757,7 @@ spplot(ELEV.CO, main = &quot;Quantile of DEM (m)&quot;,
    colorkey=list(space=&quot;right&quot;,height=1, width=1.3,at=1:11,labels=list(cex=1.0,at=1:11,
    labels=c(&quot;1032&quot;,&quot;1280&quot;,&quot;1418&quot;,&quot;1568&quot;,&quot;1771&quot;,&quot;2007&quot;,&quot;2267&quot;,&quot;2481&quot;,&quot;2756&quot;,&quot;3089&quot;,&quot;3828&quot;))),
    col.regions=rgb.palette(100))</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-24-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -650,7 +769,7 @@ spplot(ELEV.CO, main = &quot;Quantile of DEM (m)&quot;,
 <p>Focal statistics calculate for each input cell location a statistic (mean, sum etc) of the values within a specified neighborhood around it. Conceptually, on execution, the algorithm visits each cell in the raster and calculates the specified statistic with the identified neighborhood. The cell for which the statistic is being calculated is referred to as the processing cell. The value of the processing cell, as well as all the cell values in the identified neighborhood, is included in the neighborhood statistics calculation. The neighborhoods can overlap so that cells in one neighborhood may also be included in the neighborhood of another processing cell. (Source:<a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)</p>
 <p>To illustrate the neighborhood processing for Focal Statistics calculating a Sum statistic, consider the processing cell with a value of 5 in the following diagram. A rectangular 3 by 3 cell neighborhood shape is specified. The sum of the values of the neighboring cells (3 + 2 + 3 + 4 + 2 + 1 + 4 = 19) plus the value of the processing cell (5) equals 24 (19 + 5 = 24). So a value of 24 is given to the cell in the output raster in the same location as the processing cell in the input raster.</p>
 <div class="figure" style="text-align: center">
-<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/focal.png" alt="Focal Statistics(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
+<img src="F:\Spatial_Data_Processing_and_Analysis_R\Spatial-data-R\Image\PNG_FILE_05\focal.png" alt="Focal Statistics(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
 <p class="caption">
 Focal Statistics(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)
 </p>
@@ -661,12 +780,12 @@ Focal Statistics(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/
     w=matrix(1/9,nrow=3,ncol=3),    # matrix of weights for 3 x 3 
     fun=sum)</code></pre>
 <pre class="r"><code>spplot(focal.sum, main=&quot;Focal Sum of DEM (m)&quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-26-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-27-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>focal.mean&lt;- focal(ELEV.CO, 
     w=matrix(1/9,nrow=3,ncol=3),    # matrix of weights for 3 x 3 
     fun=mean)</code></pre>
 <pre class="r"><code>spplot(focal.mean,main=&quot;Focal Mean of DEM (m)&quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-28-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-29-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -677,10 +796,10 @@ Focal Statistics(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/
 <p>A simple sample of raster algebra in R is to convert unit of DEM raster from meter to feet (1 m = 3.28084 feet)</p>
 <pre class="r"><code>dem.feet&lt;-ELEV.CO*3.28084</code></pre>
 <pre class="r"><code>plot(dem.feet, main= &quot;DEM (feet)&quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-30-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-31-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>dem.feet.1000&lt;-dem.feet/1000
 plot(dem.feet.1000, main = &quot;DEM (feet x 1000)&quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-31-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-32-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -694,19 +813,19 @@ mean.DEM&lt;-aggregate(ELEV.CO, fact=2, fun=mean)
 sd.DEM&lt;-aggregate(ELEV.CO, fact=2, fun=sd) 
 se.DEM&lt;-sd.DEM/sqrt(2)
 mean.DEM</code></pre>
-<pre><code>## class       : RasterLayer 
-## dimensions  : 51, 64, 3264  (nrow, ncol, ncell)
-## resolution  : 10000, 10000  (x, y)
-## extent      : -1145285, -505285, 1563795, 2073795  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
-## data source : in memory
-## names       : GP_ELEV 
-## values      : 1052.791, 3692.687  (min, max)</code></pre>
+<pre><code>## class      : RasterLayer 
+## dimensions : 51, 64, 3264  (nrow, ncol, ncell)
+## resolution : 10000, 10000  (x, y)
+## extent     : -1145285, -505285, 1563795, 2073795  (xmin, xmax, ymin, ymax)
+## crs        : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+## source     : memory
+## names      : GP_ELEV 
+## values     : 1052.791, 3692.687  (min, max)</code></pre>
 <pre class="r"><code>p1&lt;-spplot(mean.DEM, main=&quot;Mean (10 km x 10 km) of DEM (m)&quot;)
 p2&lt;-spplot(sd.DEM, main=&quot;SD of DEM (m)&quot;)
 p3&lt;-spplot(se.DEM, main=&quot;SE of DEM (m)&quot;)
 grid.arrange(p1, p2, p3, ncol=3)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-33-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-34-1.png" width="768" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -716,16 +835,16 @@ grid.arrange(p1, p2, p3, ncol=3)</code></pre>
 <p>Re-sample transfers values between non matching Raster in in terms of origin and resolution. We will re-sample 10 km raster to 5 km raster again using ELEV.CO ( 5 km). We will use <strong>resample</strong> function. Here two methods available: <strong>bilinear</strong> for bilinear interpolation, or **ngb* for using the nearest neighbor. First argument is a raster object to be re-sampled and second argument is raster object with parameters that first raster should be re-sampled to.</p>
 <pre class="r"><code>dem.5km&lt;-resample(mean.DEM, ELEV.CO, method=&#39;bilinear&#39;) #
 dem.5km</code></pre>
-<pre><code>## class       : RasterLayer 
-## dimensions  : 101, 128, 12928  (nrow, ncol, ncell)
-## resolution  : 5000, 5000  (x, y)
-## extent      : -1145285, -505285, 1568795, 2073795  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
-## data source : in memory
-## names       : GP_ELEV 
-## values      : 1045.513, 3630.237  (min, max)</code></pre>
+<pre><code>## class      : RasterLayer 
+## dimensions : 101, 128, 12928  (nrow, ncol, ncell)
+## resolution : 5000, 5000  (x, y)
+## extent     : -1145285, -505285, 1568795, 2073795  (xmin, xmax, ymin, ymax)
+## crs        : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+## source     : memory
+## names      : GP_ELEV 
+## values     : 1045.513, 3630.237  (min, max)</code></pre>
 <pre class="r"><code>spplot(dem.5km, main=&quot;Resampled DEM - 5 x 5 km&quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-35-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-36-1.png" width="768" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -735,14 +854,14 @@ dem.5km</code></pre>
 <p>We will use <em>merge()</em> function to mosaic all raster ./DEM.GP folder to create a seamless raster of great plain</p>
 <pre class="r"><code>DEM.input &lt;- list.files(path= paste0(dataFolder,&quot;.//DEM_GP&quot;),pattern=&quot;.tif$&quot;,full.names=T)   
 DEM.input</code></pre>
-<pre><code>## [1] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//.//DEM_GP/CO_ELEV.tif&quot;
-## [2] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//.//DEM_GP/KS_ELEV.tif&quot;
-## [3] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//.//DEM_GP/NM_ELEV.tif&quot;
-## [4] &quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_07//.//DEM_GP/WY_ELEV.tif&quot;</code></pre>
+<pre><code>## [1] &quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_07//DATA_07//.//DEM_GP/CO_ELEV.tif&quot;
+## [2] &quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_07//DATA_07//.//DEM_GP/KS_ELEV.tif&quot;
+## [3] &quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_07//DATA_07//.//DEM_GP/NM_ELEV.tif&quot;
+## [4] &quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_07//DATA_07//.//DEM_GP/WY_ELEV.tif&quot;</code></pre>
 <pre class="r"><code>r &lt;- lapply(DEM.input, raster)
 r1&lt;-do.call(merge, c(r, tolerance = 1))</code></pre>
 <pre class="r"><code>plot(r1, main=&quot;Mosaic DEM (m)&quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-37-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-38-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -778,7 +897,7 @@ DEM &lt;- rasterFromXYZ(as.data.frame(x)[, c(&quot;x&quot;, &quot;y&quot;, &quot
 usa_albers = CRS(&quot;+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs&quot;)
 proj4string(DEM) = usa_albers</code></pre>
 <pre class="r"><code>spplot(DEM)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-40-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-41-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -789,16 +908,16 @@ proj4string(DEM) = usa_albers</code></pre>
 <pre class="r"><code>s&lt;-stack(mean.DEM,sd.DEM, se.DEM) # stack
 names(s)&lt;-c(&quot;Mean&quot;, &quot;SD&quot;,&quot;SE&quot;)  # rename the layers
 s</code></pre>
-<pre><code>## class       : RasterStack 
-## dimensions  : 51, 64, 3264, 3  (nrow, ncol, ncell, nlayers)
-## resolution  : 10000, 10000  (x, y)
-## extent      : -1145285, -505285, 1563795, 2073795  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
-## names       :      Mean,        SD,        SE 
-## min values  :  1052.791,     0.000,     0.000 
-## max values  : 3692.6873,  470.5111,  332.7016</code></pre>
+<pre><code>## class      : RasterStack 
+## dimensions : 51, 64, 3264, 3  (nrow, ncol, ncell, nlayers)
+## resolution : 10000, 10000  (x, y)
+## extent     : -1145285, -505285, 1563795, 2073795  (xmin, xmax, ymin, ymax)
+## crs        : +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+## names      :      Mean,        SD,        SE 
+## min values :  1052.791,     0.000,     0.000 
+## max values : 3692.6873,  470.5111,  332.7016</code></pre>
 <pre class="r"><code>spplot(s)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-42-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-43-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:30px;">
 
 </div>
@@ -813,7 +932,7 @@ s</code></pre>
 <h4>Slope</h4>
 <p>The slope is an incline, or steepness, of a surface. The slope can be measured in degrees from horizontal (0-90), or percent slope (which is the rise divided by the run, multiplied by 100). A slope of 30 and 45 degrees equals 58 and 100 percent slope, respectively. As the slope angle approaches vertical (90 degrees), the percent slope approaches infinity. The slope for a cell in a raster is the steepest slope of a plane defined by the cell and its eight surrounding neighbors. (Source: ESRI online GIS Dictionary).</p>
 <div class="figure" style="text-align: center">
-<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/slope.png" alt="Slope(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
+<img src="F:\Spatial_Data_Processing_and_Analysis_R\Spatial-data-R\Image\PNG_FILE_05\slope.png" alt="Slope(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
 <p class="caption">
 Slope(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)
 </p>
@@ -824,7 +943,7 @@ Slope(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#
     unit=&#39;degrees&#39;)                 # unit degree</code></pre>
 <pre class="r"><code>plot(SLOPE,
        col = rainbow(16), main= &quot;Slope (degree)&quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-45-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-46-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -833,7 +952,7 @@ Slope(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#
 <h4>Aspect</h4>
 <p>The compass direction that a slope faces is most commonly measured from degrees north. The Aspect command provides a 32-bit float raster that ranges from 0° and 360°. This represents the azimuth (the angular distance from the north to south point of the horizon that can be transversed by a vertical circle that intersects the horizon, which represents the direction of an object from the observer) that slopes are facing. In other words, 0° means that the slope is facing North, 90° indicates East, 180° indicates a Southward facing, and 270° is to the west. This however requires that the top of your input raster is north oriented, as most are. Values found in between these ranges assume a mixture of cardinal directions, ex. 250 indicates a hillside with a Southeast facing aspect. The aspect value -9999 is generally used as the ‘nodata’ value to indicate use of an undefined aspect in areas lacking variation in topography, with slope=0. You can also make use of the legend to indicate the appropriate aspect for each hillside in your study area. The legend permits you to identify North (~ 0 or 360 degrees), South (~ 180 degrees), East (~270 degrees) or West (~90 degrees) facing slopes).</p>
 <div class="figure" style="text-align: center">
-<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/aspect.png" alt="Aspect(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
+<img src="F:\Spatial_Data_Processing_and_Analysis_R\Spatial-data-R\Image\PNG_FILE_05\aspect.png" alt="Aspect(Source: http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/)" width="40%" />
 <p class="caption">
 Aspect(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/" class="uri">http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/How_Focal_Statistics_works/009z000000r7000000/</a>)
 </p>
@@ -843,7 +962,7 @@ Aspect(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html
     unit=&#39;degrees&#39;)                   #  unit degree</code></pre>
 <pre class="r"><code>plot(ASPECT,
        col = rainbow(16), main= &quot;Aspect (degree)&quot;)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-48-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-49-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -852,7 +971,7 @@ Aspect(Source: <a href="http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html
 <h4>Hillshade</h4>
 <p><a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm">A hillshade is a grayscale 3D representation of the surface, with the sun’s relative position taken into account for shading the image. This function uses the altitude and azimuth properties to specify the sun’s position.</a></p>
 <div class="figure" style="text-align: center">
-<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/hillshade.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
+<img src="F:\Spatial_Data_Processing_and_Analysis_R\Spatial-data-R\Image\PNG_FILE_05\hillshade.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
 <p class="caption">
 Hill Shade(Source: <a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm" class="uri">http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm</a>)
 </p>
@@ -861,7 +980,7 @@ Hill Shade(Source: <a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data
 <pre class="r"><code>hill &lt;- hillShade(SLOPE, ASPECT, 45, 250)
 plot(hill, col=grey(0:100/100), legend=FALSE, main=&#39;Hillshade Map of CO&#39;)
 plot(ELEV.CO, col=rainbow(50, alpha=0.35), add=TRUE)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-50-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-51-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -875,7 +994,7 @@ plot(ELEV.CO, col=rainbow(50, alpha=0.35), add=TRUE)</code></pre>
 <pre class="r"><code>plot(TRI,
        main= &quot;Terrain Ruggedness Index (TRI)&quot;,
      col=rainbow(50))</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-52-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-53-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -889,7 +1008,7 @@ plot(ELEV.CO, col=rainbow(50, alpha=0.35), add=TRUE)</code></pre>
 <pre class="r"><code>plot(TPI,
        main= &quot;Topographic Position Index (TPI)&quot;,
      col=rainbow(50))</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-54-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-55-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -903,7 +1022,7 @@ plot(ELEV.CO, col=rainbow(50, alpha=0.35), add=TRUE)</code></pre>
 <pre class="r"><code>plot(ROUGH,
        main= &quot;Roughness&quot;,
      col=rainbow(50))</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-56-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-57-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -914,7 +1033,7 @@ plot(ELEV.CO, col=rainbow(50, alpha=0.35), add=TRUE)</code></pre>
 <p>A Plan curve is the measurement of the rate at which a horizontal curve changes. Positive and negative values respectively indicate divergence and convergence of a particular slope. Highlight a divergent slope, negative values a convergent slope.</p>
 <p>A Profile curve is conversely a vertical measurement of the change of a slope. Positive values indicate convexity, while negative values represent concave profiles.</p>
 <div class="figure" style="text-align: center">
-<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_05/curveture.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
+<img src="F:\Spatial_Data_Processing_and_Analysis_R\Spatial-data-R\Image\PNG_FILE_05\curveture.png" alt="Hill Shade(Source: http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm)" width="40%" />
 <p class="caption">
 Hill Shade(Source: <a href="http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm" class="uri">http://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/hillshade-function.htm</a>)
 </p>
@@ -931,7 +1050,7 @@ b.crv &lt;- curvature(ELEV.CO, s=5, type=&quot;bolstad&quot;)</code></pre>
 <pre class="r"><code>p1&lt;-spplot(m.crv, main=&quot;McNab curvature&quot;)
 p2&lt;-spplot(b.crv, main=&quot;Bolstad curvature&quot;)
 grid.arrange(p1, p2, ncol=2)</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-60-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-61-1.png" width="768" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -945,8 +1064,9 @@ grid.arrange(p1, p2, ncol=2)</code></pre>
 <pre class="r"><code>plot(FLD,
        main= &quot;Flow Direction&quot;,
      col=rainbow(50))</code></pre>
-<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-62-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-raster-data_files/figure-html/unnamed-chunk-63-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 </div>
 
@@ -967,6 +1087,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

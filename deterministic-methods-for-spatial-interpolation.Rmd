@@ -1,15 +1,16 @@
 ---
-title: "Deterministic Methods for Spatial Interpolation"
+title: ''
 ---
 
-
-```{r, echo=FALSE}
-htmltools::img(src = knitr::image_uri(file.path(R.home("doc"), "html", "logo.jpg")), 
-               alt = 'logo', 
-               style = 'position:absolute; top:-0.5; right:0; padding:10px;')
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
 ```
+<div style="margin-bottom:20px;">
+</div>
 
-
+# Deterministic Methods for Spatial Interpolation
+<div style="margin-bottom:20px;">
+</div>
 
 Deterministic interpolation techniques, also known as exact interpolator, predict values from measured points, based on either the extent of similarity (inverse distance weighted) or the degree of smoothing (radial basis functions). This kind of interpolation techniques usually predict a value that is identical to the measured value at a sampled location without documenting potential error or error is assumed to be negligible.  
 
@@ -28,8 +29,8 @@ In this exercise we will explore following deterministic methods to predict Soil
 
 * [Thin Plate Spline](#thin-plate-spline)
 
-
-
+<div style="margin-bottom:20px;">
+</div>
 
 
 #### Load package: 
@@ -56,7 +57,7 @@ The soil organic carbon data (train and test data set) could be found [here](htt
 
 ```{r}
 # Define data folder
-dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\"
 ```
 
 
@@ -243,7 +244,7 @@ ggR(nn.pred, geom_raster = TRUE) +
 
 
 ```{r echo=FALSE, out.width='40%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\IDW.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_07\\IDW.png')
 ```
 
 

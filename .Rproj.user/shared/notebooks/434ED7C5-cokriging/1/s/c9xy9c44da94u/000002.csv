@@ -1,0 +1,7 @@
+"0","# Variogram"
+"0","v.soc<-variogram(SOC.bc~ 1, data = train, cloud=F)"
+"0","# Intial parameter set by eye esitmation"
+"0","m.soc<-vgm(1.5,""Exp"",400000,0.5)"
+"0","# least square fit"
+"0","m.f.soc<-fit.variogram(v.soc, m.soc)"
+"0","p1<-plot(v.soc, pl=F, model=m.f.soc, main= ""SOC"")"

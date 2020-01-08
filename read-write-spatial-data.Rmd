@@ -1,8 +1,15 @@
 ---
-title: "Read and Write Spatial Data"
+title: ''
 ---
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
 
-<div style="margin-bottom:40px;">
+
+# Read and Write Spatial Data
+<div style="margin-bottom:20px;">
 </div>
 
 In this exercise, you will learn how to read and write following types of spatial data with R.
@@ -65,7 +72,7 @@ Before reading the data from a local drive, you need to define a working directo
 
 ```{r}
 # Define data folder
-dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_02//"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_02\\DATA_02\\"
 ```
 
 <div style="margin-bottom:20px;">
@@ -77,7 +84,7 @@ dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_02//"
 
 
 ```{r echo=FALSE, out.width='60%', fig.align="center",fig.cap=paste("Vector Data (Source: http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/)")} 
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_02\\vector.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_02\\vector.png')
 ```
 
 
@@ -114,7 +121,7 @@ print(proj4string(poly.GCS))			                                # check projectio
 
 ```{r}
 # Read with rgdal package
-dsn="F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_02"
+dsn="D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_02\\DATA_02"
 poly.GCS<- readOGR(dsn=dsn, "NY_County_GCS")   
 print(proj4string(poly.GCS))			                                 # check projection
 ```
@@ -219,7 +226,7 @@ Unlike vector data, a raster data consists of cells or pixels organized into row
 
 
 ```{r echo=FALSE, out.width='60%', fig.align="center",fig.cap=paste("Raster Data (Source: http://neondataskills.org/GIS-Spatial-Data/Working-With-Rasters/)")} 
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_02\\raster.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_02\\raster.png')
 ```
 
 

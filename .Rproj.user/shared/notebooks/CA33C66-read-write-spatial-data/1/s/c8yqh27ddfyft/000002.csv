@@ -1,0 +1,4 @@
+"0","# Load packages"
+"0","library(maptools)   # spatial vector data"
+"0","library (rgdal) 	# Geospatial Data Abstraction Library for spatial data "
+"0","library (raster) 	# raster and vector data read & write"

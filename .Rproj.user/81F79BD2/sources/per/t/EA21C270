@@ -5,20 +5,20 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2302501816",
+    "hash" : "723074342",
     "id" : "EA21C270",
-    "lastKnownWriteTime" : 1571690224,
-    "last_content_update" : 1571690224539,
+    "lastKnownWriteTime" : 1578358531,
+    "last_content_update" : 1578358531101,
     "path" : "E:/GitHub/geospatial-r-github/about-b.Rmd",
     "project_path" : "about-b.Rmd",
     "properties" : {
-        "cursorPosition" : "36,16",
+        "cursorPosition" : "18,19",
         "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [
     ],
-    "relative_order" : 5,
+    "relative_order" : 4,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_markdown"

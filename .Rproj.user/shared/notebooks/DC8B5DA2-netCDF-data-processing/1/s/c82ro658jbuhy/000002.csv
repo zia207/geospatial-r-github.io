@@ -1,0 +1,6 @@
+"0","lon <- ncvar_get(nc, ""longitude"")"
+"0","lat <- ncvar_get(nc, ""latitude"")"
+"0","station <- expand.grid(lon, lat) "
+"0","colnames(station) <- c(""Lon"", ""Lat"")"
+"0","station$StationName <- paste(station$Lon, station$Lat, sep = ""_"")"
+"0","head(station)"

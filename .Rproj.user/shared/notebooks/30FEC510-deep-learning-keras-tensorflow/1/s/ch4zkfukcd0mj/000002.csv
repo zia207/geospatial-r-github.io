@@ -1,0 +1,4 @@
+"0","class<-as.data.frame(Class.grid)"
+"0","new.grid<-cbind(x=grid.xy$x, y=grid.xy$y,Class_ID=class )"
+"0","colnames(new.grid)[3]<-""Class_ID"""
+"0","new.grid.na<-na.omit(new.grid)"

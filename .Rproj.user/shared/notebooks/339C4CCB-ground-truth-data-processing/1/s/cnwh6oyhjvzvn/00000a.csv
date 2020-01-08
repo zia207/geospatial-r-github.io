@@ -1,0 +1,1 @@
+"0","df.grid<- raster::extract(multi, grid.point, df=TRUE, method='simple')"

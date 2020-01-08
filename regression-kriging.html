@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Regression Kriging</title>
+<title>regression-kriging.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -251,6 +344,27 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="spatial-interpolation.html">Spatial Interpolation</a>
@@ -289,7 +403,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,16 +497,21 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Regression Kriging</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="regression-kriging" class="section level1">
+<h1>Regression Kriging</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p>Regression kriging (RK) mathematically equivalent to the universal kriging or kriging with external drift, where auxiliary predictors are used directly to solve the kriging weights. Regression kriging combines a regression model with simple kriging of the regression residuals. The experimental variogram of residuals is first computed and modeled, and then simple kriging (SK) is applied to the residuals to give the spatial prediction of the residuals.</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/RK.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="Image/PNG_FILE_07/RK.png" width="60%" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -425,7 +544,7 @@ library(gridExtra)</code></pre>
 <h4>Load Data</h4>
 <p>The soil organic carbon data (train and test data set) could be found <a href="https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0">here</a>.</p>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;</code></pre>
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\&quot;</code></pre>
 <pre class="r"><code>train&lt;-read.csv(paste0(dataFolder,&quot;train_data.csv&quot;), header= TRUE) 
 state&lt;-shapefile(paste0(dataFolder,&quot;GP_STATE.shp&quot;))
 grid&lt;-read.csv(paste0(dataFolder, &quot;GP_prediction_grid_data.csv&quot;), header= TRUE) </code></pre>
@@ -491,11 +610,11 @@ print(GLM)</code></pre>
 ## 
 ## Pre-processing: centered (11), scaled (11) 
 ## Resampling: Cross-Validated (10 fold, repeated 5 times) 
-## Summary of sample sizes: 331, 331, 330, 332, 332, 331, ... 
+## Summary of sample sizes: 332, 331, 331, 331, 332, 331, ... 
 ## Resampling results:
 ## 
-##   RMSE       Rsquared  MAE      
-##   0.9462919  0.472206  0.7336851</code></pre>
+##   RMSE       Rsquared   MAE      
+##   0.9423772  0.4742412  0.7310591</code></pre>
 </div>
 <div id="variogram-modeling-of-glm-residuals" class="section level4">
 <h4>Variogram modeling of GLM residuals</h4>
@@ -523,7 +642,7 @@ plot(v.glm, pl=F,
      main=&quot;Variogram and Fitted Model\n Residuals of GLM model&quot;,
      xlab=&quot;Distance (m)&quot;,
      ylab=&quot;Semivariance&quot;)</code></pre>
-<p><img src="regression-kriging_files/figure-html/unnamed-chunk-13-1.png" width="432" style="display: block; margin: auto;" /></p>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-14-1.png" width="432" style="display: block; margin: auto;" /></p>
 </div>
 <div id="glm-prediction-at-grid-location" class="section level4">
 <h4>GLM Prediction at grid location</h4>
@@ -632,7 +751,7 @@ glm4&lt;-ggR(RK.GLM.SOC, geom_raster = TRUE) +
    theme(plot.title = element_text(hjust = 0.5))
 
 grid.arrange(glm1,glm2,glm3,glm4, ncol = 4)  # Multiplot </code></pre>
-<p><img src="regression-kriging_files/figure-html/unnamed-chunk-19-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-20-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -662,11 +781,11 @@ print(RF)</code></pre>
 ## 
 ## Pre-processing: centered (11), scaled (11) 
 ## Resampling: Cross-Validated (10 fold, repeated 5 times) 
-## Summary of sample sizes: 331, 331, 330, 332, 332, 331, ... 
+## Summary of sample sizes: 332, 331, 331, 331, 332, 331, ... 
 ## Resampling results:
 ## 
 ##   RMSE       Rsquared   MAE      
-##   0.9384411  0.4777247  0.7223098
+##   0.9345237  0.4780398  0.7210278
 ## 
 ## Tuning parameter &#39;mtry&#39; was held constant at a value of 3.316625</code></pre>
 </div>
@@ -684,7 +803,7 @@ m.f.rf&lt;-fit.variogram(v.rf, m.rf)
 m.f.rf</code></pre>
 <pre><code>##   model     psill    range
 ## 1   Nug 0.0000000     0.00
-## 2   Exp 0.1921976 13931.16</code></pre>
+## 2   Exp 0.1934731 15626.27</code></pre>
 <pre class="r"><code>#### Plot varigram and fitted model:
 plot(v.rf, pl=F, 
      model=m.f.rf,
@@ -696,7 +815,7 @@ plot(v.rf, pl=F,
      main=&quot;Variogram and Fitted Model\n Residuals of RF model&quot;,
      xlab=&quot;Distance (m)&quot;,
      ylab=&quot;Semivariance&quot;)</code></pre>
-<p><img src="regression-kriging_files/figure-html/unnamed-chunk-22-1.png" width="432" style="display: block; margin: auto;" /></p>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-23-1.png" width="432" style="display: block; margin: auto;" /></p>
 </div>
 <div id="prediction-at-grid-location" class="section level4">
 <h4>Prediction at grid location</h4>
@@ -740,19 +859,19 @@ summary(grid.xy)</code></pre>
 ##  3rd Qu.: 8237   3rd Qu.: 2.4885   3rd Qu.: 0.130163   3rd Qu.: 2.553  
 ##  Max.   :10999   Max.   : 4.2655   Max.   : 1.663093   Max.   : 4.995  
 ##      RK.GLM              RF              SK.RF           
-##  Min.   : 0.2819   Min.   :-0.4367   Min.   :-1.2867008  
-##  1st Qu.: 2.7028   1st Qu.: 1.1303   1st Qu.:-0.0343964  
-##  Median : 4.2374   Median : 1.8236   Median : 0.0009033  
-##  Mean   : 5.3003   Mean   : 1.8354   Mean   : 0.0000754  
-##  3rd Qu.: 7.1747   3rd Qu.: 2.5394   3rd Qu.: 0.0367950  
-##  Max.   :25.3268   Max.   : 4.6765   Max.   : 0.9090374  
+##  Min.   : 0.2819   Min.   :-0.2965   Min.   :-1.0396339  
+##  1st Qu.: 2.7028   1st Qu.: 1.1496   1st Qu.:-0.0487090  
+##  Median : 4.2374   Median : 1.8344   Median :-0.0008605  
+##  Mean   : 5.3003   Mean   : 1.8425   Mean   :-0.0063920  
+##  3rd Qu.: 7.1747   3rd Qu.: 2.5434   3rd Qu.: 0.0401477  
+##  Max.   :25.3268   Max.   : 4.6236   Max.   : 1.0526308  
 ##     RK.RF.bc           RK.RF        
-##  Min.   :-0.8992   Min.   : 0.3606  
-##  1st Qu.: 1.1228   1st Qu.: 2.6875  
-##  Median : 1.8166   Median : 4.4609  
-##  Mean   : 1.8354   Mean   : 5.2441  
-##  3rd Qu.: 2.5520   3rd Qu.: 7.1708  
-##  Max.   : 5.2751   Max.   :28.6180</code></pre>
+##  Min.   :-0.8629   Min.   : 0.3779  
+##  1st Qu.: 1.1342   1st Qu.: 2.7114  
+##  Median : 1.8129   Median : 4.4496  
+##  Mean   : 1.8361   Mean   : 5.2190  
+##  3rd Qu.: 2.5500   3rd Qu.: 7.1623  
+##  Max.   : 5.2743   Max.   :28.6076</code></pre>
 </div>
 <div id="convert-to-raster-1" class="section level4">
 <h4>Convert to raster</h4>
@@ -812,7 +931,7 @@ rf4&lt;-ggR(RK.RF.SOC, geom_raster = TRUE) +
    theme(plot.title = element_text(hjust = 0.5))
 
 grid.arrange(rf1,rf2,rf3,rf4, ncol = 4)  # Multiplot </code></pre>
-<p><img src="regression-kriging_files/figure-html/unnamed-chunk-28-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-29-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -821,7 +940,7 @@ grid.arrange(rf1,rf2,rf3,rf4, ncol = 4)  # Multiplot </code></pre>
 <div id="meta-ensemble-machine-learning" class="section level3">
 <h3>Meta Ensemble Machine Learning</h3>
 <p>Ensemble machine learning methods use multiple learning algorithms to obtain better predictive performance than could be obtained from any of the constituent learning algorithms. Many of the popular modern machine learning algorithms are ensembles. For example, Random Forest and Gradient Boosting Machine are both ensemble learners. However, <strong>stacked generalization or stacking or Supper Learning</strong> (Wolpert, 1992) that introduces the concept of a meta learner that ensemble or combined several strong, diverse sets of machine learning models together to get better prediction. In this modeling approach, each base level models are trained first, then the meta-model is trained on the outputs of the base level models. The base level models often consist of different learning algorithms and therefore stacking ensembles are often heterogeneous.</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/metaModel.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="Image/PNG_FILE_07/metaModel.png" width="60%" style="display: block; margin: auto;" /></p>
 <p>We will built a random forest (RF) regression model by stacking of GLM and RF regression models (sub-models) to predict SOC.</p>
 <div id="create-a-model-list" class="section level4">
 <h4>Create a model list</h4>
@@ -849,19 +968,19 @@ summary(results.all)</code></pre>
 ## Number of resamples: 50 
 ## 
 ## MAE 
-##          Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## glm 0.5157651 0.6707609 0.7307180 0.7987774 0.8065927 3.7745042    0
-## rf  0.5106550 0.6539792 0.7141956 0.7175838 0.7706795 0.8925233    0
+##          Min.   1st Qu.    Median      Mean   3rd Qu.     Max. NA&#39;s
+## glm 0.5299362 0.6759200 0.7317607 0.7323044 0.7936931 1.049905    0
+## rf  0.5559114 0.6511738 0.7138410 0.7195130 0.7839459 1.010871    0
 ## 
 ## RMSE 
-##          Min.   1st Qu.    Median      Mean  3rd Qu.      Max. NA&#39;s
-## glm 0.6660224 0.8659659 0.9533328 1.1335664 1.041104 10.130333    0
-## rf  0.6682639 0.8572315 0.9262251 0.9293029 1.000262  1.156476    0
+##          Min.   1st Qu.    Median      Mean  3rd Qu.     Max. NA&#39;s
+## glm 0.6654767 0.8742916 0.9524959 0.9435913 1.034049 1.308432    0
+## rf  0.6854099 0.8645415 0.9399393 0.9306508 1.010455 1.261128    0
 ## 
 ## Rsquared 
 ##          Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## glm 0.1186950 0.3932415 0.4767383 0.4640988 0.5440863 0.6975254    0
-## rf  0.1746744 0.4263169 0.4791852 0.4862900 0.5527687 0.7094794    0</code></pre>
+## glm 0.1626709 0.4161093 0.4726874 0.4767778 0.5456160 0.6850497    0
+## rf  0.2138578 0.4080458 0.4848379 0.4868120 0.5505441 0.7026729    0</code></pre>
 </div>
 <div id="plot-k-fold-cross-validation-results-mae-rmse-r2" class="section level4">
 <h4>Plot K-fold Cross Validation results (MAE, RMSE, R2)</h4>
@@ -869,7 +988,7 @@ summary(results.all)</code></pre>
         scales =list(x = list(relation = &quot;free&quot;)),
         panelRange =T,  conf.level = 0.9, 
         between = list(x = 2))</code></pre>
-<p><img src="regression-kriging_files/figure-html/unnamed-chunk-33-1.png" width="768" /></p>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-34-1.png" width="768" /></p>
 </div>
 <div id="combine-several-predictive-models-via-stacking" class="section level4">
 <h4>Combine several predictive models via stacking</h4>
@@ -901,8 +1020,8 @@ stack.rf.results&lt;-print(stack.rf)</code></pre>
 ## Summary of sample sizes: 1656, 1656, 1656, 1656, 1656, 1656, ... 
 ## Resampling results:
 ## 
-##   RMSE       Rsquared   MAE     
-##   0.9073866  0.5067794  0.683433
+##   RMSE       Rsquared   MAE      
+##   0.8861827  0.5296594  0.6690021
 ## 
 ## Tuning parameter &#39;mtry&#39; was held constant at a value of 2</code></pre>
 </div>
@@ -918,9 +1037,9 @@ m.stack&lt;-vgm(0.15,&quot;Exp&quot;,40000,0.05)
 # least square fit
 m.f.stack&lt;-fit.variogram(v.stack, m.stack)
 m.f.stack</code></pre>
-<pre><code>##   model     psill    range
-## 1   Nug 0.0000000    0.000
-## 2   Exp 0.7577935 9029.593</code></pre>
+<pre><code>##   model      psill    range
+## 1   Nug 0.74019315      0.0
+## 2   Exp 0.02392722 196106.8</code></pre>
 <pre class="r"><code>#### Plot varigram and fitted model:
 plot(v.stack, pl=F, 
      model=m.f.stack,
@@ -932,7 +1051,7 @@ plot(v.stack, pl=F,
      main=&quot;Variogram and Fitted Model\n Residuals of meta-Ensemble model&quot;,
      xlab=&quot;Distance (m)&quot;,
      ylab=&quot;Semivariance&quot;)</code></pre>
-<p><img src="regression-kriging_files/figure-html/unnamed-chunk-38-1.png" width="432" style="display: block; margin: auto;" /></p>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-39-1.png" width="432" style="display: block; margin: auto;" /></p>
 </div>
 <div id="prediction-at-grid-location-1" class="section level4">
 <h4>Prediction at grid location</h4>
@@ -976,26 +1095,26 @@ summary(grid.xy)</code></pre>
 ##  3rd Qu.: 8237   3rd Qu.: 2.4885   3rd Qu.: 0.130163   3rd Qu.: 2.553  
 ##  Max.   :10999   Max.   : 4.2655   Max.   : 1.663093   Max.   : 4.995  
 ##      RK.GLM              RF              SK.RF           
-##  Min.   : 0.2819   Min.   :-0.4367   Min.   :-1.2867008  
-##  1st Qu.: 2.7028   1st Qu.: 1.1303   1st Qu.:-0.0343964  
-##  Median : 4.2374   Median : 1.8236   Median : 0.0009033  
-##  Mean   : 5.3003   Mean   : 1.8354   Mean   : 0.0000754  
-##  3rd Qu.: 7.1747   3rd Qu.: 2.5394   3rd Qu.: 0.0367950  
-##  Max.   :25.3268   Max.   : 4.6765   Max.   : 0.9090374  
-##     RK.RF.bc           RK.RF             stack            SK.stack        
-##  Min.   :-0.8992   Min.   : 0.3606   Min.   :-0.9311   Min.   :-1.839253  
-##  1st Qu.: 1.1228   1st Qu.: 2.6875   1st Qu.: 1.0965   1st Qu.:-0.035334  
-##  Median : 1.8166   Median : 4.4609   Median : 1.8194   Median :-0.000612  
-##  Mean   : 1.8354   Mean   : 5.2441   Mean   : 1.8351   Mean   :-0.011891  
-##  3rd Qu.: 2.5520   3rd Qu.: 7.1708   3rd Qu.: 2.5871   3rd Qu.: 0.019561  
-##  Max.   : 5.2751   Max.   :28.6180   Max.   : 5.2627   Max.   : 3.368401  
+##  Min.   : 0.2819   Min.   :-0.2965   Min.   :-1.0396339  
+##  1st Qu.: 2.7028   1st Qu.: 1.1496   1st Qu.:-0.0487090  
+##  Median : 4.2374   Median : 1.8344   Median :-0.0008605  
+##  Mean   : 5.3003   Mean   : 1.8425   Mean   :-0.0063920  
+##  3rd Qu.: 7.1747   3rd Qu.: 2.5434   3rd Qu.: 0.0401477  
+##  Max.   :25.3268   Max.   : 4.6236   Max.   : 1.0526308  
+##     RK.RF.bc           RK.RF             stack           SK.stack       
+##  Min.   :-0.8629   Min.   : 0.3779   Min.   :-1.218   Min.   :-0.21691  
+##  1st Qu.: 1.1342   1st Qu.: 2.7114   1st Qu.: 1.126   1st Qu.:-0.05766  
+##  Median : 1.8129   Median : 4.4496   Median : 1.826   Median :-0.02026  
+##  Mean   : 1.8361   Mean   : 5.2190   Mean   : 1.840   Mean   :-0.01805  
+##  3rd Qu.: 2.5500   3rd Qu.: 7.1623   3rd Qu.: 2.578   3rd Qu.: 0.01338  
+##  Max.   : 5.2743   Max.   :28.6076   Max.   : 5.223   Max.   : 0.17909  
 ##   RK.stack.bc        RK.stack      
-##  Min.   :-1.500   Min.   : 0.1519  
-##  1st Qu.: 1.089   1st Qu.: 2.6171  
-##  Median : 1.808   Median : 4.4351  
-##  Mean   : 1.823   Mean   : 5.3615  
-##  3rd Qu.: 2.574   3rd Qu.: 7.2683  
-##  Max.   : 5.605   Max.   :32.8859</code></pre>
+##  Min.   :-1.257   Min.   : 0.2205  
+##  1st Qu.: 1.117   1st Qu.: 2.6744  
+##  Median : 1.804   Median : 4.4215  
+##  Mean   : 1.822   Mean   : 5.3440  
+##  3rd Qu.: 2.552   3rd Qu.: 7.1725  
+##  Max.   : 5.202   Max.   :27.7264</code></pre>
 </div>
 <div id="convert-to-raster-2" class="section level4">
 <h4>Convert to raster</h4>
@@ -1055,8 +1174,9 @@ s4&lt;-ggR(RK.stack.SOC, geom_raster = TRUE) +
    theme(plot.title = element_text(hjust = 0.5))
 
 grid.arrange(s1,s2,s3,s4, ncol = 4)  # Multiplot </code></pre>
-<p><img src="regression-kriging_files/figure-html/unnamed-chunk-44-1.png" width="1440" style="display: block; margin: auto;" /></p>
+<p><img src="regression-kriging_files/figure-html/unnamed-chunk-45-1.png" width="1440" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 </div>
 
@@ -1077,6 +1197,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

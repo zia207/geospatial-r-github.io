@@ -1,8 +1,15 @@
 ---
-title: "Indicator Kriging"
+title: ''
 ---
 
-<div style="margin-bottom:40px;">
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+# Indicator Kriging
+<div style="margin-bottom:20px;">
 </div>
 
 Indicator kriging (IK) is a non-parametric geostatistical method that works with variables after indicator transformation (0, 1) of pre-defined threshold values and map the probability of exceeding pre-defined threshold values. This is directly useful for probabilistic decision-making. It can also be used to estimate an entire cumulative probability distribution (CDF) and the mean (E-type-estimate) of  CDF can be used as an estimate of the pollutant concentration after modeling of the upper and lower tails of the distribution [(Goovaerts, 2009)]( https://www.ncbi.nlm.nih.gov/pubmed/20161335).   The CDF based IK is applicable when data is strongly skewed, traditional data transformation limit to get robust statistics and estimators due to extreme values.   
@@ -51,7 +58,7 @@ library(gridExtra)
 
 ```{r}
 # Define data folder
-dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\"
 ```
 
 
@@ -117,7 +124,7 @@ Now, we compute an indicator variable for threshold 400 ppm Pb using following e
 
 
 ```{r echo=FALSE, out.width='50%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\IK.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\IK.png')
 ```
 
 

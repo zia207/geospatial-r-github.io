@@ -1,0 +1,5 @@
+"0","model %>% compile("
+"0","  loss = 'sparse_categorical_crossentropy',"
+"0","  optimizer = optimizer,"
+"0","  metrics = 'accuracy'"
+"0",")"

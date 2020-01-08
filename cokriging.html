@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Co-Kriging</title>
+<title>cokriging.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -253,7 +346,25 @@ $(document).ready(function () {
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
     </li>
     <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -289,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -349,6 +460,9 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
+      <a href="stack-ensemble-h2o.html">Stack-Ensemble-H20</a>
+    </li>
+    <li>
       <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
@@ -383,16 +497,21 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Co-Kriging</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="co-kriging" class="section level1">
+<h1>Co-Kriging</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p>Co-kriging (CK) is an extension of ordinary kriging in which additional observed variables (know as co-variate which are often correlated with the variable of interest) are used to improve the precision of the interpolation of the variable of interest. Unlike regression and universal kriging, Co-Kriging does not require that the secondary information is available at all prediction locations. The co-variable may be measured at the same points as the target (co-located samples), at other points, or both. The most common application of co-kriging is when the co-variable is cheaper to measure than the target variable.</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/cokriging.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="Image/PNG_FILE_07/cokriging.png" width="60%" style="display: block; margin: auto;" /></p>
 <p>In this excessive first we will explore relation between SOC and other environmental co-variates such as elevation, NDVI, TPI, and then we will select one variable that would show highest relationship with SOC. This variable will be used for cokriging of SOC. The soil organic carbon data (train and test data set) that we have created before is available for download from <a href="https://www.dropbox.com/s/0fnrtmanl5lnkws/DATA_07.7z?dl=0">here</a>.</p>
 <div id="load-package" class="section level4">
 <h4>Load package</h4>
@@ -414,7 +533,7 @@ library(Hmisc)</code></pre>
 <h4>Load Data</h4>
 <p>The soil organic carbon data (train and test data set) that we have created before is available for download <a href="https://www.dropbox.com/sh/vpd01sg9i9goa6r/AADft85Qtpu10dnI-AdigD25a?dl=0">here</a>.</p>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;</code></pre>
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\&quot;</code></pre>
 <pre class="r"><code>train&lt;-read.csv(paste0(dataFolder,&quot;train_data.csv&quot;), header= TRUE) 
 state&lt;-shapefile(paste0(dataFolder,&quot;GP_STATE.shp&quot;))
 grid&lt;-read.csv(paste0(dataFolder, &quot;GP_prediction_grid_data.csv&quot;), header= TRUE) </code></pre>
@@ -490,7 +609,7 @@ cor.matrix</code></pre>
 <div id="variogram-modeling-of-co-regionalisation-or-corss-varoigram" class="section level3">
 <h3>Variogram Modeling of co-regionalisation or Corss-Varoigram</h3>
 <p>From correlation analysis, it is observed that only <strong>NDVI</strong> shows the highest correlation with SOC (r = 0.63, p-value &lt; 0.001), So will use NDVI for co-kriging. We first model the spatial structure of the target variable (SOC), the co-variable (NDVI) and its covariance with the target variable (SOC). This is called a <strong>co-regionalisation</strong>. It is an extension of the theory of a single regionalism variable used for ordinary kriging. The direct and cross-variograms must be modeled together, with some restrictions to ensure that the resulting CK system can be solved. Cross-variogram (per pair of regionalized variables) is calculated using following equation:</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/crossvariogram.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="E:\My_WebPage\geospatial-r-github\Image\PNG_FILE_07\crossvariogram.png" width="60%" style="display: block; margin: auto;" /></p>
 <p>Before variogram modeling. first. we have to define x &amp; y variables to coordinates</p>
 <pre class="r"><code>coordinates(train) = ~x+y
 coordinates(grid) = ~x+y</code></pre>
@@ -514,7 +633,7 @@ m.ndvi&lt;-vgm(1.5,&quot;Exp&quot;,40000,0.5)
 m.f.ndvi&lt;-fit.variogram(v.ndvi, m.ndvi)
 p2&lt;-plot(v.ndvi, pl=F, model=m.f.ndvi, main=&quot;NDVI&quot;)</code></pre>
 <pre class="r"><code>grid.arrange(p1, p2, ncol = 2)  # Multiplot </code></pre>
-<p><img src="cokriging_files/figure-html/unnamed-chunk-12-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="cokriging_files/figure-html/unnamed-chunk-13-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="cross-variogram" class="section level4">
 <h4>Cross-Variogram</h4>
@@ -525,7 +644,7 @@ g &lt;- gstat(g, id = &quot;NDVI&quot;, form = NDVI ~ 1, data=train)</code></pre
 <p>Mow display the two direct variograms and one cross-variogram</p>
 <pre class="r"><code>v.cross &lt;- variogram(g)
 plot(v.cross, pl=F)</code></pre>
-<p><img src="cokriging_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="cokriging_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We will add variogram models to the gstat object and fit a them using the linear model of co-regionalisation. By filling all the frames with one model (using the fill.all = T argument), these conditions are automatically met.</p>
 <pre class="r"><code>#g &lt;- gstat(g, id = &quot;SOC&quot;, model = m.f.soc, fill.all=T)
 g &lt;- gstat(g, id = &quot;SOC&quot;, model = m.f.soc, fill.all=T)
@@ -556,7 +675,7 @@ g</code></pre>
 ## SOC.NDVI[1]   Nug -0.022802328     0.00
 ## SOC.NDVI[2]   Exp  0.125599263 82362.04</code></pre>
 <pre class="r"><code>plot(variogram(g), model=g$model)</code></pre>
-<p><img src="cokriging_files/figure-html/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="cokriging_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="co-kriging-prediction-at-grid-locations" class="section level4">
 <h4>Co-Kriging Prediction at grid locations</h4>
@@ -652,9 +771,10 @@ scale_fill_gradientn(&quot;&quot;, colours = c(&quot;blue&quot;,  &quot;green&qu
    theme(plot.title = element_text(hjust = 0.5))
 
 grid.arrange(p3,p4, ncol = 2)  # Multiplot </code></pre>
-<p><img src="cokriging_files/figure-html/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="cokriging_files/figure-html/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>Above plots show the interpolated map of soil SOC with associated error at each prediction grid. CK predicted map shows global pattern and hot spot locations of SOC concentration. The kriging variance is higher in unsampled locations, since variance depends on geometry of the sampling locations with lower variance near sampling locations.</p>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 </div>
 
@@ -675,6 +795,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

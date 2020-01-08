@@ -1,0 +1,6 @@
+"0","writeOGR(bd.SPDF,	dsn="","","
+"0","         ""t2m_spatial_2015"",	"
+"0","         driver=""ESRI Shapefile"", overwrite_layer=T) "
+"2","Error in writeOGR(bd.SPDF, dsn = "","", ""t2m_spatial_2015"", driver = ""ESRI Shapefile"",  : 
+  could not find function ""writeOGR""
+"

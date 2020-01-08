@@ -1,0 +1,4 @@
+"0","ggR(PVI.1, geom_raster = TRUE) +"
+"0","    scale_fill_gradientn(""PVI"", "
+"0","    colours = c(""red"", ""yellow"", ""green"", ""green4""))+"
+"0","    ggtitle(""Perpendicular Vegetation Index (PVI)"")"

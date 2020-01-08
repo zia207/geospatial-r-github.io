@@ -1,0 +1,164 @@
+---
+title: ''
+---
+
+<div style="margin-bottom:20px;">
+</div>
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+
+# netCDF data processing in R
+
+[NetCDF (Network Common Data Form)](https://en.wikipedia.org/wiki/NetCDF) is a set of software libraries and machine-independent data formats that support the creation, access, and sharing of array-oriented scientific data. It is also a community standard for sharing scientific data. 
+
+In this excercie we will use hourly weather data download from  global atmospheric reanalysis [ERA- Interim archive produced by European Centre for Medium-Range Weather Forecasts (ECMWF)](https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era-interim). This gridded data product includes a large variety of 3-hourly surface parameters and 6-hourly upper-air parameters covering the troposphere  (Dee et al., 2011). We will process hourly data of average temperature for Bangladesh for the month of Januray to March for year 2015.
+
+The data could avilable [here](https://apps.ecmwf.int/datasets/data/interim-land/type=fc/) for download.  We used Pyhthon scrip for download data. Detail could be found [here](https://confluence.ecmwf.int/display/WEBAPI/Access+ECMWF+Public+Datasets). The data used in this excersice could be available for download from [here](https://www.dropbox.com/s/ahz76sm7xtwgk01/Data_NetCDF.7z?dl=0) 
+
+We will use [ncdf4](https://cran.r-project.org/web/packages/ncdf4/index.html) packge for processing netCDF   data in R. 
+
+
+### Load
+
+```{r message=F, warning=F}
+library(ncdf4)
+library(PCICt)
+library(RNetCDF)
+library(dplyr)
+library(data.table)
+library(tidyr)
+library(reshape2)
+library(stringr)
+library(raster)
+```
+
+### Set working directory
+
+```{r}
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_NetCDF\\"
+```
+
+### Load netCDF file
+
+```{r}
+nc <- nc_open(paste0(dataFolder,"data_fc_2015.nc"))
+print(nc)
+```
+
+### Extract long & lat
+
+```{r}
+lon <- ncvar_get(nc, "longitude")
+lat <- ncvar_get(nc, "latitude")
+station <- expand.grid(lon, lat) 
+colnames(station) <- c("Lon", "Lat")
+station$StationName <- paste(station$Lon, station$Lat, sep = "_")
+head(station)
+```
+
+### Extract year, date and time
+
+```{r}
+iTime <- ncvar_get(nc, "time")
+startDate <- "1900-01-01 00:00:0.0";
+fTime <- as.PCICt(iTime*3600, cal = "gregorian", origin = startDate); 
+targetTime <- format(fTime, "%m")
+```
+
+### Create empty data-frame
+
+```{r}
+out <- as.data.frame(matrix(nrow=length(targetTime), ncol = length(station$StationName) + 1))                         
+colnames(out) <- c("Time", station$StationName)
+out$Time <- format(fTime, "%m/%d/%Y %H:%M")
+```
+
+### Extract data (Temerature)
+
+```{r}
+var <- ncvar_get(nc, "t2m") 
+var <- (var - 273.15) # Covert to Degree
+input <- var
+# Write variables in data frame
+for (i in 1:length(station$StationName)) {
+  out[, station$StationName[i]] <- input[lon == station$Lon[i], lat == station$Lat[i] , ]
+}
+```
+
+### Create  daily data
+
+```{r}
+inData<-out
+uniqueDates <- unique(as.Date(inData[, 1], format = "%m/%d/%Y %R"));
+stationNames <- colnames(inData)[-1];
+outVar <- data.frame(matrix(nrow = length(uniqueDates), ncol = length(stationNames) + 1));
+colnames(outVar) <- c("Time", stationNames);
+outVar$Time <- uniqueDates;
+for (uDate in 1:length(uniqueDates)) {
+  outVar[uDate, stationNames] <- apply(inData[as.Date(inData$Time, format = "%m/%d/%Y %R") == uniqueDates[uDate], stationNames], MARGIN = 2, FUN = mean, na.rm = TRUE);
+}
+head(outVar[,1:4])
+```
+
+### Create daily spatial data
+
+```{r}
+df<-t(outVar)
+my.names <- df[1,]
+colnames(df) <- my.names
+df <- cbind(Log_Lat = rownames(df), df)
+rownames(df) <- 1:nrow(df)
+mf<-as.data.frame(df)
+mf = mf[-1,]
+lon_lat<-mf[,1]
+lon_lat<-str_split_fixed(lon_lat, "_", 2)
+lon_lat.df<-as.data.frame(lon_lat)
+colnames(lon_lat.df) <- c("lon","lat")
+data<-mf[2:92]
+data_xy<-cbind(lon_lat.df,data)
+my.data <- mutate_all(data_xy, function(x) as.numeric(as.character(x)))
+head(my.data[,1:6])
+```
+
+## Create a spatial point data.frame 
+
+```{r}
+xy<-my.data[1:2]
+data<- my.data[-1:-2]
+SPDF <- SpatialPointsDataFrame(coords=xy, data=data)
+# define projection
+proj4string(SPDF) <- CRS("+init=epsg:4326")
+# repojection to BUTM
+bd<-shapefile(paste0(dataFolder,"BD_Banladesh_BUTM.shp"))
+BUTM<-proj4string(bd)
+SPDF.proj<- spTransform(SPDF,BUTM)
+```
+
+```{r, fig.align='center', fig.height=7, fig.width=6}
+plot(SPDF.proj)
+plot(bd, add=TRUE)
+```
+
+###  Cliping data with country boundary
+
+```{r, fig.align='center', fig.height=7, fig.width=6}
+bd.SPDF <-SPDF.proj[bd, ]
+plot(bd.SPDF)
+plot(bd, add=TRUE)
+```
+
+
+### write as csv file
+
+```{r}
+df.SPDF<-cbind.data.frame(bd.SPDF)
+df.SPDF<-df.SPDF[,-94]
+fwrite(df.SPDF, "t2m_spatial_2015.csv", row.names = F)
+```
+
+
+### 

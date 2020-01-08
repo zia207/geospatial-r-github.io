@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Texture Analysis</title>
+<title>texture-analysis.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -253,7 +346,25 @@ $(document).ready(function () {
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
     </li>
     <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -289,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,12 +494,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Texture Analysis</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="texture-analysis" class="section level1">
+<h1>Texture Analysis</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p>Texture is one of the most important characteristics dealt with during image interpretation and classification. Texture analysis has been successfully applied to forestry and vegetation studies using a variety of remote sensing data (Asner et al., 2002; Franklin et al., 2000) and radar images (Costa, 2004; Hess et al., 2003). The <strong>Gray Level Co-occurrence Matrix (GLCM)</strong> is one of the most widely used methods to compute second order texture measures. This method considers the spatial relationships between two pixels at a time which are called the the reference and the neighbor pixel. The neighbor pixel can be to the East (0), North-East (45), North (90), or North-West (135) of the reference pixel. For a more detail, please see <a href="https://prism.ucalgary.ca/handle/1880/51900">here</a>.</p>
@@ -413,7 +529,7 @@ library(glcm)         # texture analysis</code></pre>
 
 </div>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+dataFolder&lt;-&quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_09//DATA_09//&quot;</code></pre>
 </div>
 <div id="load-bands" class="section level4">
 <h4>Load bands</h4>
@@ -423,10 +539,10 @@ NIR&lt;- raster(paste0(dataFolder,&quot;//Landsat8//Landsat8_PROCESSED//_B5_sre.
 
 </div>
 </div>
-<div id="texture-analysis" class="section level2">
+<div id="texture-analysis-1" class="section level2">
 <h2>Texture Analysis</h2>
 <p>We will use <strong>glcm</strong> package to calculate following eight texture statistics of RED and NIR bands derived from grey-level co-occurrence matrices</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/Texture.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="Image/PNG_FILE_08/Texture.png" width="60%" style="display: block; margin: auto;" /></p>
 <div id="red-band-texture" class="section level4">
 <h4>Red Band Texture</h4>
 <pre class="r"><code>glcm.red &lt;- glcm(RED,
@@ -441,16 +557,16 @@ NIR&lt;- raster(paste0(dataFolder,&quot;//Landsat8//Landsat8_PROCESSED//_B5_sre.
                                   &quot;second_moment&quot;, 
                                   &quot;correlation&quot;))
 glcm.red</code></pre>
-<pre><code>## class       : RasterStack 
-## dimensions  : 504, 541, 272664, 8  (nrow, ncol, ncell, nlayers)
-## resolution  : 30, 30  (x, y)
-## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## names       :   glcm_mean, glcm_variance, glcm_homogeneity, glcm_contrast, glcm_entropy, glcm_dissimilarity, glcm_second_moment, glcm_correlation 
-## min values  :   0.0312500,     0.9255645,        0.1830405,     0.0000000,    0.0000000,          0.0000000,          0.0241566,             -Inf 
-## max values  :   0.3770727,   169.8674705,        1.0000000,    71.7908163,    3.7689108,          6.4642857,          1.0000000,              Inf</code></pre>
+<pre><code>## class      : RasterStack 
+## dimensions : 504, 541, 272664, 8  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names      :   glcm_mean, glcm_variance, glcm_homogeneity, glcm_contrast, glcm_entropy, glcm_dissimilarity, glcm_second_moment, glcm_correlation 
+## min values :   0.0312500,     0.9255645,        0.1830405,     0.0000000,    0.0000000,          0.0000000,          0.0241566,             -Inf 
+## max values :   0.3770727,   169.8674705,        1.0000000,    71.7908163,    3.7689108,          6.4642857,          1.0000000,              Inf</code></pre>
 <pre class="r"><code>plot(glcm.red)</code></pre>
-<p><img src="texture-analysis_files/figure-html/unnamed-chunk-6-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="texture-analysis_files/figure-html/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>     #main= &quot;GLCM Texture of Red Band&quot;)</code></pre>
 </div>
 <div id="nir-band-texture" class="section level4">
@@ -467,7 +583,7 @@ glcm.red</code></pre>
                                   &quot;second_moment&quot;, 
                                   &quot;correlation&quot;))</code></pre>
 <pre class="r"><code>plot(glcm.nir)</code></pre>
-<p><img src="texture-analysis_files/figure-html/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="texture-analysis_files/figure-html/unnamed-chunk-9-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="write-all-texture-bands" class="section level4">
 <h4>Write all texture bands</h4>
@@ -487,14 +603,14 @@ glcm.red</code></pre>
 <p>In order to reduce the redundancy in the texture bands and to determine appropriate texture features, it is neceassry to do principle component analyses (PCA) to the all texture images. We will use <strong>rasterPCA()</strong> faction of <strong>RSToolbox</strong> to calculates R-mode PCA for RasterBricks or RasterStacks and returns a RasterBrick with multiple layers of PCA scores.</p>
 <pre class="r"><code>r&lt;-stack(glcm.red,glcm.nir)  # stack PC raster of red and NIR bands (total raster 8 x 2 = 16)
 r</code></pre>
-<pre><code>## class       : RasterStack 
-## dimensions  : 504, 541, 272664, 16  (nrow, ncol, ncell, nlayers)
-## resolution  : 30, 30  (x, y)
-## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## names       : glcm_mean.1, glcm_variance.1, glcm_homogeneity.1, glcm_contrast.1, glcm_entropy.1, glcm_dissimilarity.1, glcm_second_moment.1, glcm_correlation.1, glcm_mean.2, glcm_variance.2, glcm_homogeneity.2, glcm_contrast.2, glcm_entropy.2, glcm_dissimilarity.2, glcm_second_moment.2, ... 
-## min values  :  0.03125000,      0.92556451,         0.18304046,      0.00000000,     0.00000000,           0.00000000,           0.02415660,               -Inf,  0.03140944,      0.92280891,         0.15628695,      0.01020408,     0.04981169,           0.01020408,           0.02186589, ... 
-## max values  :   0.3770727,     169.8674705,          1.0000000,      71.7908163,      3.7689108,            6.4642857,            1.0000000,                Inf,   0.8759566,     754.4886370,          0.9948980,     106.0816327,      3.8423098,            7.9693878,            0.9800083, ...</code></pre>
+<pre><code>## class      : RasterStack 
+## dimensions : 504, 541, 272664, 16  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names      : glcm_mean.1, glcm_variance.1, glcm_homogeneity.1, glcm_contrast.1, glcm_entropy.1, glcm_dissimilarity.1, glcm_second_moment.1, glcm_correlation.1, glcm_mean.2, glcm_variance.2, glcm_homogeneity.2, glcm_contrast.2, glcm_entropy.2, glcm_dissimilarity.2, glcm_second_moment.2, ... 
+## min values :  0.03125000,      0.92556451,         0.18304046,      0.00000000,     0.00000000,           0.00000000,           0.02415660,               -Inf,  0.03140944,      0.92280891,         0.15628695,      0.01020408,     0.04981169,           0.01020408,           0.02186589, ... 
+## max values :   0.3770727,     169.8674705,          1.0000000,      71.7908163,      3.7689108,            6.4642857,            1.0000000,                Inf,   0.8759566,     754.4886370,          0.9948980,     106.0816327,      3.8423098,            7.9693878,            0.9800083, ...</code></pre>
 <div id="develop-a-pca-model" class="section level4">
 <h4>Develop a PCA model</h4>
 <pre class="r"><code>r1&lt;-scale(r)        # scale the data
@@ -514,10 +630,10 @@ summary(rpc$model)</code></pre>
 ## Standard deviation     0.173120352 0.163495250 0.126134487 0.11798550
 ## Proportion of Variance 0.002218986 0.001979103 0.001177947 0.00103066
 ## Cumulative Proportion  0.995117251 0.997096354 0.998274302 0.99930496
-##                             Comp.13      Comp.14 Comp.15 Comp.16
-## Standard deviation     0.0765902470 0.0593417660       0       0
-## Proportion of Variance 0.0004343153 0.0002607229       0       0
-## Cumulative Proportion  0.9997392771 1.0000000000       1       1</code></pre>
+##                             Comp.13      Comp.14      Comp.15 Comp.16
+## Standard deviation     0.0765902470 0.0593417660 6.843795e-09       0
+## Proportion of Variance 0.0004343153 0.0002607229 3.467786e-18       0
+## Cumulative Proportion  0.9997392771 1.0000000000 1.000000e+00       1</code></pre>
 </div>
 <div id="extact-firs-4-pcs-from-the-model" class="section level4">
 <h4>Extact firs 4 PCs from the model</h4>
@@ -540,8 +656,9 @@ PC4&lt;-rpc$map$PC4</code></pre>
   plots &lt;- lapply(1:4, function(x) ggR(rpc$map, x, geom_raster = TRUE))
   grid.arrange(plots[[1]],plots[[2]], plots[[3]], plots[[4]],ncol=2)
 }</code></pre>
-<p><img src="texture-analysis_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="texture-analysis_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -563,6 +680,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

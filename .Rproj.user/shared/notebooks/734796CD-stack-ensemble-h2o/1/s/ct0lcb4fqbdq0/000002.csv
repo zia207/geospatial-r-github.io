@@ -1,0 +1,1464 @@
+"0","# hyper prameters"
+"0","glm_hyper_params <-list("
+"0","             alpha = c(0,0.25,0.5,0.75,1),"
+"0","             lambda = c(1, 0.5, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0))"
+"0",""
+"0","# Grid search"
+"0","glm_grid <- h2o.grid("
+"0","                  algorithm=""glm"","
+"0","                  grid_id = ""glm_grid_IDs"","
+"0","                  x= x,"
+"0","                  y = y,"
+"0","                  training_frame = train,"
+"0","                  validation_frame = valid,"
+"0","                  stopping_metric = ""logloss"","
+"0","                  nfolds=10,"
+"0","                  keep_cross_validation_predictions = TRUE,"
+"0","                  hyper_params = glm_hyper_params,"
+"0","                  seed = 42)"
+"1","  |                                                                                                                                     "
+"1","  |                                                                                                                               |   0%"
+"1","  |                                                                                                                                     "
+"1","  |===============================================================================================================================| 100%"
+"1","
+"
+"1","Hyper-parameter: alpha, 0
+"
+"1","Hyper-parameter: lambda, 1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_1.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_1.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.25
+"
+"1","Hyper-parameter: lambda, 1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_2.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_2.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.5
+"
+"1","Hyper-parameter: lambda, 1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_3.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_3.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.75
+"
+"1","Hyper-parameter: lambda, 1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_4.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_4.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 1
+"
+"1","Hyper-parameter: lambda, 1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_5.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_5.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0
+"
+"1","Hyper-parameter: lambda, 0.5
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_6.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_6.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.25
+"
+"1","Hyper-parameter: lambda, 0.5
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_7.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_7.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.5
+"
+"1","Hyper-parameter: lambda, 0.5
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_8.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_8.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.75
+"
+"1","Hyper-parameter: lambda, 0.5
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_9.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_9.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 1
+"
+"1","Hyper-parameter: lambda, 0.5
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_10.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_10.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0
+"
+"1","Hyper-parameter: lambda, 0.1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_11.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_11.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.25
+"
+"1","Hyper-parameter: lambda, 0.1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_12.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_12.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.5
+"
+"1","Hyper-parameter: lambda, 0.1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_13.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_13.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.75
+"
+"1","Hyper-parameter: lambda, 0.1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_14.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_14.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 1
+"
+"1","Hyper-parameter: lambda, 0.1
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_15.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_15.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0
+"
+"1","Hyper-parameter: lambda, 0.01
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_16.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_16.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.25
+"
+"1","Hyper-parameter: lambda, 0.01
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_17.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_17.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.5
+"
+"1","Hyper-parameter: lambda, 0.01
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_18.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_18.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.75
+"
+"1","Hyper-parameter: lambda, 0.01
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_19.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:05] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_19.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 1
+"
+"1","Hyper-parameter: lambda, 0.01
+"
+"1","[2020-01-07 16:56:05] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_20.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_20.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0
+"
+"1","Hyper-parameter: lambda, 0.001
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_21.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_21.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.25
+"
+"1","Hyper-parameter: lambda, 0.001
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_22.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_22.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.5
+"
+"1","Hyper-parameter: lambda, 0.001
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_23.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_23.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.75
+"
+"1","Hyper-parameter: lambda, 0.001
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_24.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_24.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 1
+"
+"1","Hyper-parameter: lambda, 0.001
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_25.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_25.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0
+"
+"1","Hyper-parameter: lambda, 1e-04
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_26.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_26.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.25
+"
+"1","Hyper-parameter: lambda, 1e-04
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_27.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_27.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.5
+"
+"1","Hyper-parameter: lambda, 1e-04
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_28.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_28.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.75
+"
+"1","Hyper-parameter: lambda, 1e-04
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_29.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_29.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 1
+"
+"1","Hyper-parameter: lambda, 1e-04
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_30.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_30.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0
+"
+"1","Hyper-parameter: lambda, 1e-05
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_31.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_31.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.25
+"
+"1","Hyper-parameter: lambda, 1e-05
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_32.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_32.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.5
+"
+"1","Hyper-parameter: lambda, 1e-05
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_33.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_33.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.75
+"
+"1","Hyper-parameter: lambda, 1e-05
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_34.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_34.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 1
+"
+"1","Hyper-parameter: lambda, 1e-05
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_35.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_35.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0
+"
+"1","Hyper-parameter: lambda, 0
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_36.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_36.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.25
+"
+"1","Hyper-parameter: lambda, 0
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_37.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_37.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.5
+"
+"1","Hyper-parameter: lambda, 0
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_38.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_38.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 0.75
+"
+"1","Hyper-parameter: lambda, 0
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_39.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_39.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"
+"1","Hyper-parameter: alpha, 1
+"
+"1","Hyper-parameter: lambda, 0
+"
+"1","[2020-01-07 16:56:06] failure_details: Illegal argument(s) for GLM model: glm_grid_IDs_model_40.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+ 
+"
+"1","[2020-01-07 16:56:06] failure_stack_traces: water.exceptions.H2OModelBuilderIllegalArgumentException: Illegal argument(s) for GLM model: glm_grid_IDs_model_40.  Details: ERRR on field: _stopping_metric: Stopping metric cannot be logloss for regression.
+ERRR on field: _response: Regression requires numeric response, got categorical.
+
+For more information visit:
+  http://jira.h2o.ai/browse/TN-2
+
+	at water.exceptions.H2OModelBuilderIllegalArgumentException.makeFromBuilder(H2OModelBuilderIllegalArgumentException.java:20)
+	at hex.glm.GLM.computeCrossValidation(GLM.java:99)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:347)
+	at hex.ModelBuilder$TrainModelNestedRunnable.run(ModelBuilder.java:381)
+	at water.H2O.runOnH2ONode(H2O.java:1305)
+	at water.H2O.runOnH2ONode(H2O.java:1294)
+	at hex.ModelBuilder.trainModelNested(ModelBuilder.java:362)
+	at hex.grid.GridSearch.buildModel(GridSearch.java:345)
+	at hex.grid.GridSearch.gridSearch(GridSearch.java:221)
+	at hex.grid.GridSearch.access$000(GridSearch.java:71)
+	at hex.grid.GridSearch$1.compute2(GridSearch.java:139)
+	at water.H2O$H2OCountedCompleter.compute(H2O.java:1417)
+	at jsr166y.CountedCompleter.exec(CountedCompleter.java:468)
+	at jsr166y.ForkJoinTask.doExec(ForkJoinTask.java:263)
+	at jsr166y.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:974)
+	at jsr166y.ForkJoinPool.runWorker(ForkJoinPool.java:1477)
+	at jsr166y.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+ 
+"

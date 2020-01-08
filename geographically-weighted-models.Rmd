@@ -29,7 +29,7 @@ When data are not described well by a global model, but data explain better by a
  
   - [Geographically Weighted Poisson Regression](geographically-weighted-poisson-regression.html)
   
-  - [Geographically Wighted Rrandom Forest](geographically-wighted-random-forest.html)
+  - [Global and Local (geographically weighted) Random Forest](geographically-wighted-random-forest.html)
 
 
 <div style="margin-bottom:30px;">

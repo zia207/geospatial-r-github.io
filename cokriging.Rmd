@@ -1,8 +1,15 @@
 ---
-title: "Co-Kriging"
+title: ''
 ---
 
-<div style="margin-bottom:40px;">
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+# Co-Kriging
+<div style="margin-bottom:20px;">
 </div>
 
 Co-kriging (CK) is an extension of ordinary kriging in which additional observed variables (know as co-variate which are often correlated with the variable of interest) are used to improve the precision of the interpolation of the variable of interest. Unlike regression and universal kriging, Co-Kriging does not require that the secondary information is available at all prediction locations. The co-variable may be measured at the same points as the target (co-located samples), at other points, or both. The most common application of co-kriging is when the co-variable is cheaper to measure than the target variable. 
@@ -10,7 +17,7 @@ Co-kriging (CK) is an extension of ordinary kriging in which additional observed
 
 
 ```{r echo=FALSE, out.width='60%', fig.align="center"}
-knitr::include_graphics('E:\\My_WebPage\\geospatial-r-github\\Image\\PNG_FILE_07\\cokriging.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_07\\cokriging.png')
 ```
 
 
@@ -41,7 +48,7 @@ The soil organic carbon data (train and test data set) that we have created befo
 
 ```{r}
 # Define data folder
-dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\"
 ```
 
 

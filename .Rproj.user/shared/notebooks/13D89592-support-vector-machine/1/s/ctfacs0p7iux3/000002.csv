@@ -1,0 +1,2 @@
+"0","x<-SpatialPointsDataFrame(as.data.frame(grid.new.na)[, c(""x"", ""y"")], data = grid.new.na)"
+"0","r <- rasterFromXYZ(as.data.frame(x)[, c(""x"", ""y"", ""Class_ID"")])"

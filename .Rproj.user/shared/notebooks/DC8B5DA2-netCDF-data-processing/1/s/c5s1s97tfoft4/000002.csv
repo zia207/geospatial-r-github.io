@@ -1,0 +1,7 @@
+"0","var <- ncvar_get(nc, ""t2m"") "
+"0","var <- (var - 273.15) # Covert to Degree"
+"0","input <- var"
+"0","# Write variables in data frame"
+"0","for (i in 1:length(station$StationName)) {"
+"0","  out[, station$StationName[i]] <- input[lon == station$Lon[i], lat == station$Lat[i] , ]"
+"0","}"

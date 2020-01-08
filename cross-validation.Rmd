@@ -1,8 +1,16 @@
 ---
-title: "Cross-validation"
+title: ''
 ---
 
-<div style="margin-bottom:40px;">
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+
+# Cross-validation
+<div style="margin-bottom:20px;">
 </div>
 
 Cross-validation is a re-sampling procedure used to evaluate models on a limited data sample. It is better than residuals evaluation. Two major types of cross-validation techniques are usually use for model evaluation:  1) K-fold cross validation and 2) Leave-one-out cross validation.
@@ -39,7 +47,7 @@ The soil organic carbon data (train and test data set) could be found [here](htt
 
 ```{r}
 # Define data folder
-dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\"
 ```
 
 

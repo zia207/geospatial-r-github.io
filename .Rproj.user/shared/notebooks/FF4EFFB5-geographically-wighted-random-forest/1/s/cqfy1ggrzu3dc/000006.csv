@@ -1,0 +1,4 @@
+"0","per.var.imp<-per.var.imp$data"
+"0","# Scale the importance"
+"0","per.var.imp$Rank<-(per.var.imp$Importance-min(per.var.imp$Importance))*100/(max(per.var.imp$Importance)-min(per.var.imp$Importance))"
+"0","head(per.var.imp)"

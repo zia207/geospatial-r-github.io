@@ -1,8 +1,7 @@
 ---
 title: ''
 ---
-<div style="margin-bottom:10px;">
-</div>
+
 ```{r echo=FALSE, out.width='100%', fig.align="center"}
 knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
 ```
@@ -10,6 +9,9 @@ knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.pn
 </div>
 
 # Spatial Autocorrelation
+
+<div style="margin-bottom:20px;">
+</div>
 
 "Spatial autocorrelation is a method of Exploratory Spatial Data Analysis (ESDA)". It helps to study and understanding of the spatial distribution and spatial structure as well as they allow for detecting spatial dependence or autocorrelation in spatial data.  
 
@@ -59,11 +61,11 @@ library(rgdal)       # raster
 
 #### Load Data
 
-The data could be found  [here](https://www.dropbox.com/s/sngfyskys1jwvet/Data_GWR.7z?dl=0). 
+The data could be found  [here](https://www.dropbox.com/s/lrz6og0ld2m64df/Data_GWR.7z?dl=0). 
 
 ```{r message=F, warning=F}
 # Define data folder
-dataFolder<-"D:\\Dropbox\\WebSite_Data\\R_Data\\Data_GWR\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_GWR\\"
 COUNTY<-shapefile(paste0(dataFolder,"COUNTY_ATLANTIC.shp"))
 state<-shapefile(paste0(dataFolder,"STATE_ATLANTIC.shp"))
 df<-read.csv(paste0(dataFolder,"data_atlantic_1998_2012.csv"), header=T)

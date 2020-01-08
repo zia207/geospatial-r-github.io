@@ -1,0 +1,4 @@
+"0","xy <- rp.df[,c(1,2)]"
+"0","point.SPDF <- SpatialPointsDataFrame(coords = xy,"
+"0","                                data=rp.df,"
+"0","                                proj4string = CRS(""+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs""))"

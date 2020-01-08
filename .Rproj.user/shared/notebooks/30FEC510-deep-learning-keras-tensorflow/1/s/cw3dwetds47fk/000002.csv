@@ -1,0 +1,7 @@
+"0","library(rgdal)"
+"0","library(raster)"
+"0","library(dplyr)"
+"0","library(plyr)"
+"0","library(keras)         # karas api in R"
+"0","library(tfruns)        # Create and manage unique directories for each 'TensorFlow' training run. "
+"0","library(tfestimators)  # Interface to 'TensorFlow' Estimators "

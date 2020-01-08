@@ -1,0 +1,3 @@
+"0","county.GCS<-readShapePoly(paste0(dataFolder, ""NY_County_GCS.shp""))"
+"2","readShapePoly is deprecated; use rgdal::readOGR or sf::st_read"
+"0","plot(county.GCS,  main=""NYS County"")"

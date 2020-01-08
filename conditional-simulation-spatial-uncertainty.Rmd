@@ -1,8 +1,18 @@
 ---
-title: "Conditional Simulation for Spatial Uncertainty"
+title: ''
 ---
-<div style="margin-bottom:40px;">
+
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
 </div>
+
+
+# Conditional Simulation for Spatial Uncertainty
+<div style="margin-bottom:20px;">
+</div>
+
 
 This kriging prediction map smooth out local details of spatial distribution of the attribute under study, with small values being overestimated while large values are underestimated especially in area with low sampling density (Isaaks and Srivastava 1989).  Conditional sequential Gaussian simulation (CSGS) techniques, unlike kriging, produce a better picture of reality and eliminate the unrealistic smoothing with focusing on the reproduction of global statistics or the semivariogram model in addition to honoring of original data values (Goovaerts 1997).  The set of alternative realizations generated with CSGS provides a degree of uncertainty about the spatial prediction,  which usually uses to draw reliable probability map of the variables under study (Goovaerts 1997). The CSGS is thus increasingly preferred to kriging for characterization of uncertainty for decision and risk analysis rather producing the best unbiased prediction of un-sampled location as is done with kriging  (Deutsch and Journel 1998). 
 
@@ -31,9 +41,9 @@ library(gridExtra)
 The soil organic carbon data (train and test data set) that we have created before is available for download from  [here](https://www.dropbox.com/s/d6nnlu2da93mp48/DATA_08.7z?dl=0). 
 
 
+
 ```{r}
-# Define data folder
-dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\"
 ```
 
 ```{r}
@@ -172,7 +182,7 @@ The set of realizations provides a measure of uncertainty about the spatial dist
 ```{r}
 soc=sim.data[,3:102]
 soc.stack=stack(soc)
-round(quantile(soc.stack$values, probs=seq(0,1, by=.1)),1)
+# round(quantile(soc.stack$values, probs=seq(0,1, by=.1)),1)
 at.soc=classIntervals(soc.stack$values, n = 10, style = "quantile")$brks
 rgb.palette <- colorRampPalette(c("red" ,"yellow","green","blue"),space = "rgb")
 bound <- list("sp.lines", as(state, "SpatialLines"), col="grey40", lwd=.8,lty=1)
@@ -200,7 +210,7 @@ ani.options(convert=magickPath)
 
 #### Animation Map
 
-```{r,,eval = FALSE,message=F, warning=F}
+```{r,eval = FALSE,message=F, warning=F}
 saveGIF(
 for (i in 1:100){
 print(spplot(sim.data[,i], main = list(label=paste("Realization",i),cex=1.5),
@@ -214,7 +224,7 @@ height = 600, width = 600, interval = .5, outdir = getwd())
 
 
 
-![](E:/My_WebPage/geospatial-r-github/FIGURE_SOC_SIM_ANIMATION.gif)
+![](E:/GitHub/geospatial-r-github/FIGURE_SOC_SIM_ANIMATION.gif)
 
 
 

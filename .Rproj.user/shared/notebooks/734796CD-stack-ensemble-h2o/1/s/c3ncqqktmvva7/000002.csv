@@ -1,0 +1,8 @@
+"0","# Extract predicted landuse class"
+"0","grid.xy$Class<-g.predict$predict  "
+"0","# Import lnaduse ID file "
+"0","ID<-read.csv(paste0(dataFolder,"".\\Sentinel_2\\Landuse_ID.csv""), header=T)"
+"0","# Join landuse ID"
+"0","grid.new<-join(grid.xy, ID, by=""Class"", type=""inner"") "
+"0","# Omit missing values"
+"0","grid.new.na<-na.omit(grid.new)                                                            "

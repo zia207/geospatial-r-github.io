@@ -1,0 +1,2 @@
+"0","dimnames(point.df) <- NULL"
+"0","dimnames(grid.df) <- NULL"

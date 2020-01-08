@@ -1,0 +1,6 @@
+"0","gwrf.SPDF<-shapefile(paste0(dataFolder,""COUNTY_ATLANTIC.shp""))"
+"0","gwrf.SPDF@data$incMSE.SMOK=grf.model$Local.Pc.IncMSE$SMOK"
+"0","gwrf.SPDF@data$incMSE.POV=grf.model$Local.Pc.IncMSE$POV"
+"0","gwrf.SPDF@data$incMSE.PM25=grf.model$Local.Pc.IncMSE$PM25"
+"0","gwrf.SPDF@data$incMSE.NO2=grf.model$Local.Pc.IncMSE$NO2"
+"0","gwrf.SPDF@data$incMSE.SO2=grf.model$Local.Pc.IncMSE$SO2"

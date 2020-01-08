@@ -1,3 +1,0 @@
-"0","theft_df<- df %>%"
-"0","  select(incident_type, long, lat) %>%"
-"0","  filter(incident_type ==""Theft"") "

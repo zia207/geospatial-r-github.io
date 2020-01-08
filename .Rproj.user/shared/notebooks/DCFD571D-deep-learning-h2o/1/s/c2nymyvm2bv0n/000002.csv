@@ -1,0 +1,6 @@
+"0","search_criteria <- list(strategy = ""RandomDiscrete"", "
+"0","                        max_models = 200,"
+"0","                        max_runtime_secs = 900,"
+"0","                        stopping_tolerance = 0.001,"
+"0","                        stopping_rounds = 2,"
+"0","                        seed = 1345767)"

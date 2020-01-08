@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>eXtreme Gradient Boosting - Supervised Image Classification</title>
+<title>exboost.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -253,7 +346,25 @@ $(document).ready(function () {
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
     </li>
     <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -289,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -349,6 +460,9 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
+      <a href="stack-ensemble-h2o.html">Stack-Ensemble-H20</a>
+    </li>
+    <li>
       <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
@@ -383,12 +497,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">eXtreme Gradient Boosting - Supervised Image Classification</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="extreme-gradient-boosting---supervised-image-classification" class="section level1">
+<h1>eXtreme Gradient Boosting - Supervised Image Classification</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p>In this lesson we will learn about <strong>Extreme Gradient Boosting (XGBoost)</strong>. <strong>XGBoost</strong> has recently been dominating applied machine learning and Kaggle competitions for structured or tabular data . XGBoost is an implementation of gradient boosted decision trees, which are designed for speed and performance. Technically it is one kind of Gradient boosting for regression and classification problems by ensemble of weak prediction models sequentially , with each new model attempting to correct for the deficiencies in the previous model.</p>
@@ -414,7 +533,7 @@ library(doParallel)   # Parallel processing</code></pre>
 
 </div>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+dataFolder&lt;-&quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_09//DATA_09//&quot;</code></pre>
 </div>
 <div id="load-data" class="section level4">
 <h4>Load data</h4>
@@ -470,8 +589,8 @@ fit.xgb</code></pre>
 ## Summary of sample sizes: 11176, 11175, 11177, 11175, 11175, 11178, ... 
 ## Resampling results:
 ## 
-##   Accuracy   Kappa    
-##   0.9963613  0.9951697
+##   Accuracy  Kappa    
+##   0.995884  0.9945362
 ## 
 ## Tuning parameter &#39;nrounds&#39; was held constant at a value of 200
 ##  0.75
@@ -491,18 +610,18 @@ confusionMatrix(p1, train.df$Landuse)</code></pre>
 ## 
 ##                        Reference
 ## Prediction              Building Grass Parking/road/pavement Tree/bushes
-##   Building                  3086     0                     2           1
+##   Building                  3087     0                     2           0
 ##   Grass                        0  3481                     1           0
-##   Parking/road/pavement       13     0                  3871           0
-##   Tree/bushes                  2     1                     0        5667
+##   Parking/road/pavement       14     0                  3870           0
+##   Tree/bushes                  0     1                     1        5668
 ##   Water                        0     0                     0           0
 ##                        Reference
 ## Prediction              Water
 ##   Building                  0
 ##   Grass                     0
 ##   Parking/road/pavement     0
-##   Tree/bushes               0
-##   Water                   639
+##   Tree/bushes               1
+##   Water                   638
 ## 
 ## Overall Statistics
 ##                                           
@@ -512,37 +631,38 @@ confusionMatrix(p1, train.df$Landuse)</code></pre>
 ##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
 ##                                           
 ##                   Kappa : 0.9984          
+##                                           
 ##  Mcnemar&#39;s Test P-Value : NA              
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: Building Class: Grass
-## Sensitivity                   0.9952       0.9997
-## Specificity                   0.9998       0.9999
-## Pos Pred Value                0.9990       0.9997
-## Neg Pred Value                0.9989       0.9999
+## Sensitivity                   0.9955       0.9997
+## Specificity                   0.9999       0.9999
+## Pos Pred Value                0.9994       0.9997
+## Neg Pred Value                0.9990       0.9999
 ## Prevalence                    0.1850       0.2077
 ## Detection Rate                0.1841       0.2076
 ## Detection Prevalence          0.1843       0.2077
-## Balanced Accuracy             0.9975       0.9998
+## Balanced Accuracy             0.9977       0.9998
 ##                      Class: Parking/road/pavement Class: Tree/bushes
-## Sensitivity                                0.9992             0.9998
-## Specificity                                0.9990             0.9997
-## Pos Pred Value                             0.9967             0.9995
-## Neg Pred Value                             0.9998             0.9999
+## Sensitivity                                0.9990             1.0000
+## Specificity                                0.9989             0.9997
+## Pos Pred Value                             0.9964             0.9995
+## Neg Pred Value                             0.9997             1.0000
 ## Prevalence                                 0.2311             0.3381
-## Detection Rate                             0.2309             0.3380
-## Detection Prevalence                       0.2317             0.3382
-## Balanced Accuracy                          0.9991             0.9998
+## Detection Rate                             0.2309             0.3381
+## Detection Prevalence                       0.2317             0.3383
+## Balanced Accuracy                          0.9989             0.9999
 ##                      Class: Water
-## Sensitivity               1.00000
+## Sensitivity               0.99844
 ## Specificity               1.00000
 ## Pos Pred Value            1.00000
-## Neg Pred Value            1.00000
+## Neg Pred Value            0.99994
 ## Prevalence                0.03812
-## Detection Rate            0.03812
-## Detection Prevalence      0.03812
-## Balanced Accuracy         1.00000</code></pre>
+## Detection Rate            0.03806
+## Detection Prevalence      0.03806
+## Balanced Accuracy         0.99922</code></pre>
 </div>
 <div id="confusion-matrix---test-data" class="section level4">
 <h4>Confusion Matrix - test data</h4>
@@ -552,10 +672,10 @@ confusionMatrix(p2, test.df$Landuse)</code></pre>
 ## 
 ##                        Reference
 ## Prediction              Building Grass Parking/road/pavement Tree/bushes
-##   Building                  1313     0                     2           2
-##   Grass                        0  1490                     0           1
-##   Parking/road/pavement       13     0                  1658           0
-##   Tree/bushes                  2     1                     0        2426
+##   Building                  1315     0                     1           0
+##   Grass                        0  1491                     0           1
+##   Parking/road/pavement       13     0                  1656           0
+##   Tree/bushes                  0     0                     3        2428
 ##   Water                        0     0                     0           0
 ##                        Reference
 ## Prediction              Water
@@ -566,35 +686,36 @@ confusionMatrix(p2, test.df$Landuse)</code></pre>
 ##   Water                   273
 ## 
 ## Overall Statistics
-##                                           
-##                Accuracy : 0.9971          
-##                  95% CI : (0.9955, 0.9982)
-##     No Information Rate : 0.3383          
-##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
-##                                           
-##                   Kappa : 0.9961          
-##  Mcnemar&#39;s Test P-Value : NA              
+##                                          
+##                Accuracy : 0.9975         
+##                  95% CI : (0.996, 0.9985)
+##     No Information Rate : 0.3383         
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16      
+##                                          
+##                   Kappa : 0.9967         
+##                                          
+##  Mcnemar&#39;s Test P-Value : NA             
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: Building Class: Grass
-## Sensitivity                   0.9887       0.9993
-## Specificity                   0.9993       0.9998
-## Pos Pred Value                0.9970       0.9993
-## Neg Pred Value                0.9974       0.9998
+## Sensitivity                   0.9902       1.0000
+## Specificity                   0.9998       0.9998
+## Pos Pred Value                0.9992       0.9993
+## Neg Pred Value                0.9978       1.0000
 ## Prevalence                    0.1849       0.2076
-## Detection Rate                0.1828       0.2075
-## Detection Prevalence          0.1834       0.2076
-## Balanced Accuracy             0.9940       0.9996
+## Detection Rate                0.1831       0.2076
+## Detection Prevalence          0.1833       0.2078
+## Balanced Accuracy             0.9950       0.9999
 ##                      Class: Parking/road/pavement Class: Tree/bushes
-## Sensitivity                                0.9988             0.9988
+## Sensitivity                                0.9976             0.9996
 ## Specificity                                0.9976             0.9994
 ## Pos Pred Value                             0.9922             0.9988
-## Neg Pred Value                             0.9996             0.9994
+## Neg Pred Value                             0.9993             0.9998
 ## Prevalence                                 0.2312             0.3383
-## Detection Rate                             0.2309             0.3378
-## Detection Prevalence                       0.2327             0.3383
-## Balanced Accuracy                          0.9982             0.9991
+## Detection Rate                             0.2306             0.3381
+## Detection Prevalence                       0.2324             0.3385
+## Balanced Accuracy                          0.9976             0.9995
 ##                      Class: Water
 ## Sensitivity               1.00000
 ## Specificity               1.00000
@@ -636,12 +757,13 @@ LU&lt;-spplot(r,&quot;Class_ID&quot;, main=&quot;Supervised Image Classification
               lab = c(&quot;Road/parking/pavement&quot; ,&quot;Building&quot;, &quot;Tree/buses&quot;, &quot;Grass&quot;, &quot;Water&quot;))),
               col.regions=myPalette,cut=4)
 LU</code></pre>
-<p><img src="exboost_files/figure-html/unnamed-chunk-14-1.png" width="624" style="display: block; margin: auto;" /></p>
+<p><img src="exboost_files/figure-html/unnamed-chunk-15-1.png" width="624" style="display: block; margin: auto;" /></p>
 </div>
 <div id="write-raster" class="section level4">
 <h4>Write raster</h4>
 <pre class="r"><code># writeRaster(r, filename = paste0(dataFolder,&quot;.\\Sentinel_2\\XGB_Landuse.tiff&quot;), &quot;GTiff&quot;, overwrite=T)</code></pre>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 
 
@@ -661,6 +783,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

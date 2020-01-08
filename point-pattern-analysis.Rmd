@@ -1,8 +1,7 @@
 ---
 title: ''
 ---
-<div style="margin-bottom:10px;">
-</div>
+
 ```{r echo=FALSE, out.width='100%', fig.align="center"}
 knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
 ```
@@ -11,7 +10,8 @@ knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.pn
 
 
 # Point Pattern Analysis
-
+<div style="margin-bottom:20px;">
+</div>
 ["Point pattern analysis is a set of methods for the detection of patterns in maps that contain a set of locations. Typically, these locations are points where some sort of event has occurred – the location of a car crash, a crime, a seed germinating. Point pattern analysis is used to determine the presence or absence of structure in a map of locations. Point pattern analysis is a statistical enterprise involving formal statistical tests of null hypotheses. Inferences about structure in point patterns are dependent upon both the scale of the analysis and the assumptions (or model) used to generate the null hypothesis. Point pattern analysis is gaining contemporary relevance as mobile devices, information technologies, and global positioning systems facilitate the large‐scale collection of geolocated information"](https://onlinelibrary.wiley.com/doi/abs/10.1002/9781118786352.wbieg0849)
 
 
@@ -23,7 +23,7 @@ knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.pn
 An alternative to the **density based methods** explored thus far are the distance based methods for pattern analysis whereby the interest lies in how the points are distributed relative to one another (a second-order property of the point pattern) as opposed to how the points are distributed relative to the study extent
 (source: https://mgimond.github.io/Spatial/point-pattern-analysis.html) 
 
-In this excercise we will explore the crime rate at City at Buffalo for the year 2018. The crime data was downloaded from [here](https://data.buffalony.gov/). The shape file of Buffalo city area and crime data for the year 2018 could be found [here](https://www.dropbox.com/s/f01629tt7zikf7j/Data_Crime.7z?dl=0).
+In this excercise we will explore the crime rate at City at Buffalo for the year 2018. The crime data was downloaded from [here](https://data.buffalony.gov/). The shape file of Buffalo city area and crime data for the year 2018 could be found [here](https://www.dropbox.com/s/32haeg8mjoinwdi/Data_Crime.7z?dl=0).
 
 <div style="margin-bottom:30px;">
 </div>
@@ -69,7 +69,7 @@ library(maptools)
 
 ```{r message=F, warning=F}
 # Define data folder
-dataFolder<-"D:\\Dropbox\\WebSite_Data\\R_Data\\Data_Crime\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_Crime\\"
 df<-read.csv(paste0(dataFolder,"crime_data_2018.csv"), header = TRUE)
 city<-shapefile(paste0(dataFolder,"buffalo_city.shp"))
 crime_loc<-shapefile(paste0(dataFolder,"Crime_location_2018.shp"))

@@ -1,0 +1,53 @@
+Model Details:
+==============
+
+H2ORegressionModel: drf
+Model Key:  drf_grid_IDs_model_2 
+Model Summary: 
+
+H2ORegressionMetrics: drf
+** Reported on training data. **
+** Metrics reported on Out-Of-Bag training samples **
+
+MSE:  56.11259
+RMSE:  7.490833
+MAE:  5.790228
+RMSLE:  0.1042209
+Mean Residual Deviance :  56.11259
+R^2 :  0.6389572
+
+
+H2ORegressionMetrics: drf
+** Reported on validation data. **
+
+MSE:  106.7637
+RMSE:  10.33265
+MAE:  8.280727
+RMSLE:  0.1630097
+Mean Residual Deviance :  106.7637
+R^2 :  0.3475137
+
+
+H2ORegressionMetrics: drf
+** Reported on cross-validation data. **
+** 10-fold cross-validation on training data (Metrics computed for combined holdout predictions) **
+
+MSE:  56.16486
+RMSE:  7.494322
+MAE:  5.800765
+RMSLE:  0.1042751
+Mean Residual Deviance :  56.16486
+R^2 :  0.6386209
+
+
+Cross-Validation Metrics Summary: 
+
+Scoring History: 
+
+---
+
+Variable Importances: (Extract with `h2o.varimp`) 
+=================================================
+
+Variable Importances: 
+Variable Importances: 

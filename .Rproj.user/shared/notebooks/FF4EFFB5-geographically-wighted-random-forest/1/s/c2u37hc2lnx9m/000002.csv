@@ -1,0 +1,4 @@
+"0","# Validation data"
+"0","FIPS.xy$GWRF_2011<-predict.grf(grf.model, valid.df, x.var.name=""X"", y.var.name=""Y"", local.w=1, global.w=0)"
+"0","# Test data"
+"0","FIPS.xy$GWRF_2012<-predict.grf(grf.model, test.df, x.var.name=""X"", y.var.name=""Y"", local.w=1, global.w=0)"

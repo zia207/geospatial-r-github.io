@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Support Vector Machines (SVMs)- Supervised Image Classification</title>
+<title>support-vector-machine.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -253,7 +346,25 @@ $(document).ready(function () {
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
     </li>
     <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -289,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,12 +494,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Support Vector Machines (SVMs)- Supervised Image Classification</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="support-vector-machines-svms--supervised-image-classification" class="section level1">
+<h1>Support Vector Machines (SVMs)- Supervised Image Classification</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p><strong>Support Vector Machines (SVMs)</strong> are supervised learning algorithms used mostly for classification problems. SVM models apply non-linear functions to select the best relationship between the response variable and predictors by introducing kernels functions that map the independent variables to higher dimensional feature spaces . This approach typically leads to a better generalization of the chosen model on out-of-sample data . The principle behind an SVM classifier algorithm is to separate data into different classes using a hyperplane. The goal in choosing a hyperplane is to maximize the distance from the hyperplane to the nearest data point of either class . These nearest data points are known as Support Vectors.</p>
@@ -416,7 +532,7 @@ library(doParallel)   # Parallel processing</code></pre>
 
 </div>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+dataFolder&lt;-&quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_09//DATA_09//&quot;</code></pre>
 </div>
 <div id="load-data" class="section level4">
 <h4>Load data</h4>
@@ -456,17 +572,17 @@ fit.svm </code></pre>
 ## 
 ## Pre-processing: centered (9), scaled (9) 
 ## Resampling: Cross-Validated (3 fold, repeated 2 times) 
-## Summary of sample sizes: 11176, 11175, 11177, 11175, 11175, 11178, ... 
+## Summary of sample sizes: 11175, 11176, 11177, 11175, 11177, 11176, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   C     Accuracy   Kappa    
-##   0.25  0.9589598  0.9455614
-##   0.50  0.9672515  0.9565454
-##   1.00  0.9769151  0.9693513
+##   0.25  0.9564543  0.9422039
+##   0.50  0.9645668  0.9529613
+##   1.00  0.9754235  0.9673634
 ## 
-## Tuning parameter &#39;sigma&#39; was held constant at a value of 1.526924
+## Tuning parameter &#39;sigma&#39; was held constant at a value of 1.446147
 ## Accuracy was used to select the optimal model using the largest value.
-## The final values used for the model were sigma = 1.526924 and C = 1.</code></pre>
+## The final values used for the model were sigma = 1.446147 and C = 1.</code></pre>
 </div>
 <div id="stop-cluster" class="section level4">
 <h4>Stop cluster</h4>
@@ -480,58 +596,59 @@ confusionMatrix(p1, train.df$Landuse)</code></pre>
 ## 
 ##                        Reference
 ## Prediction              Building Grass Parking/road/pavement Tree/bushes
-##   Building                  2990     0                    52           0
-##   Grass                        0  3437                     0           8
-##   Parking/road/pavement       70     0                  3810          58
-##   Tree/bushes                 41    45                    12        5602
+##   Building                  2984     0                    50           0
+##   Grass                        0  3442                     0          21
+##   Parking/road/pavement       76     0                  3812          63
+##   Tree/bushes                 41    40                    12        5584
 ##   Water                        0     0                     0           0
 ##                        Reference
 ## Prediction              Water
 ##   Building                  0
 ##   Grass                     0
 ##   Parking/road/pavement     0
-##   Tree/bushes              11
-##   Water                   628
+##   Tree/bushes              13
+##   Water                   626
 ## 
 ## Overall Statistics
-##                                           
-##                Accuracy : 0.9823          
-##                  95% CI : (0.9802, 0.9842)
-##     No Information Rate : 0.3381          
-##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
-##                                           
-##                   Kappa : 0.9765          
-##  Mcnemar&#39;s Test P-Value : NA              
+##                                          
+##                Accuracy : 0.9812         
+##                  95% CI : (0.979, 0.9832)
+##     No Information Rate : 0.3381         
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16      
+##                                          
+##                   Kappa : 0.975          
+##                                          
+##  Mcnemar&#39;s Test P-Value : NA             
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: Building Class: Grass
-## Sensitivity                   0.9642       0.9871
-## Specificity                   0.9962       0.9994
-## Pos Pred Value                0.9829       0.9977
-## Neg Pred Value                0.9919       0.9966
+## Sensitivity                   0.9623       0.9885
+## Specificity                   0.9963       0.9984
+## Pos Pred Value                0.9835       0.9939
+## Neg Pred Value                0.9915       0.9970
 ## Prevalence                    0.1850       0.2077
-## Detection Rate                0.1784       0.2050
-## Detection Prevalence          0.1815       0.2055
-## Balanced Accuracy             0.9802       0.9932
+## Detection Rate                0.1780       0.2053
+## Detection Prevalence          0.1810       0.2066
+## Balanced Accuracy             0.9793       0.9935
 ##                      Class: Parking/road/pavement Class: Tree/bushes
-## Sensitivity                                0.9835             0.9884
-## Specificity                                0.9901             0.9902
-## Pos Pred Value                             0.9675             0.9809
-## Neg Pred Value                             0.9950             0.9940
+## Sensitivity                                0.9840             0.9852
+## Specificity                                0.9892             0.9904
+## Pos Pred Value                             0.9648             0.9814
+## Neg Pred Value                             0.9952             0.9924
 ## Prevalence                                 0.2311             0.3381
-## Detection Rate                             0.2273             0.3342
-## Detection Prevalence                       0.2349             0.3407
-## Balanced Accuracy                          0.9868             0.9893
+## Detection Rate                             0.2274             0.3331
+## Detection Prevalence                       0.2357             0.3394
+## Balanced Accuracy                          0.9866             0.9878
 ##                      Class: Water
-## Sensitivity               0.98279
+## Sensitivity               0.97966
 ## Specificity               1.00000
 ## Pos Pred Value            1.00000
-## Neg Pred Value            0.99932
+## Neg Pred Value            0.99919
 ## Prevalence                0.03812
-## Detection Rate            0.03746
-## Detection Prevalence      0.03746
-## Balanced Accuracy         0.99139</code></pre>
+## Detection Rate            0.03734
+## Detection Prevalence      0.03734
+## Balanced Accuracy         0.98983</code></pre>
 </div>
 <div id="confusion-matrix---test-data" class="section level4">
 <h4>Confusion Matrix - test data</h4>
@@ -541,58 +658,59 @@ confusionMatrix(p2, test.df$Landuse)</code></pre>
 ## 
 ##                        Reference
 ## Prediction              Building Grass Parking/road/pavement Tree/bushes
-##   Building                  1278     0                    30           0
-##   Grass                        0  1472                     0           5
-##   Parking/road/pavement       34     0                  1625          23
-##   Tree/bushes                 16    19                     5        2401
+##   Building                  1273     0                    16           0
+##   Grass                        0  1478                     0           8
+##   Parking/road/pavement       43     0                  1639          18
+##   Tree/bushes                 12    13                     5        2403
 ##   Water                        0     0                     0           0
 ##                        Reference
 ## Prediction              Water
 ##   Building                  0
 ##   Grass                     0
 ##   Parking/road/pavement     0
-##   Tree/bushes               7
-##   Water                   266
+##   Tree/bushes               5
+##   Water                   268
 ## 
 ## Overall Statistics
 ##                                           
-##                Accuracy : 0.9806          
-##                  95% CI : (0.9772, 0.9837)
+##                Accuracy : 0.9833          
+##                  95% CI : (0.9801, 0.9861)
 ##     No Information Rate : 0.3383          
 ##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
 ##                                           
-##                   Kappa : 0.9743          
+##                   Kappa : 0.9778          
+##                                           
 ##  Mcnemar&#39;s Test P-Value : NA              
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: Building Class: Grass
-## Sensitivity                   0.9623       0.9873
-## Specificity                   0.9949       0.9991
-## Pos Pred Value                0.9771       0.9966
-## Neg Pred Value                0.9915       0.9967
+## Sensitivity                   0.9586       0.9913
+## Specificity                   0.9973       0.9986
+## Pos Pred Value                0.9876       0.9946
+## Neg Pred Value                0.9907       0.9977
 ## Prevalence                    0.1849       0.2076
-## Detection Rate                0.1780       0.2050
-## Detection Prevalence          0.1821       0.2057
-## Balanced Accuracy             0.9786       0.9932
+## Detection Rate                0.1773       0.2058
+## Detection Prevalence          0.1795       0.2069
+## Balanced Accuracy             0.9779       0.9949
 ##                      Class: Parking/road/pavement Class: Tree/bushes
-## Sensitivity                                0.9789             0.9885
-## Specificity                                0.9897             0.9901
-## Pos Pred Value                             0.9661             0.9808
-## Neg Pred Value                             0.9936             0.9941
+## Sensitivity                                0.9873             0.9893
+## Specificity                                0.9890             0.9926
+## Pos Pred Value                             0.9641             0.9856
+## Neg Pred Value                             0.9962             0.9945
 ## Prevalence                                 0.2312             0.3383
-## Detection Rate                             0.2263             0.3344
-## Detection Prevalence                       0.2342             0.3409
-## Balanced Accuracy                          0.9843             0.9893
+## Detection Rate                             0.2282             0.3346
+## Detection Prevalence                       0.2367             0.3395
+## Balanced Accuracy                          0.9882             0.9910
 ##                      Class: Water
-## Sensitivity               0.97436
+## Sensitivity               0.98168
 ## Specificity               1.00000
 ## Pos Pred Value            1.00000
-## Neg Pred Value            0.99899
+## Neg Pred Value            0.99928
 ## Prevalence                0.03802
-## Detection Rate            0.03704
-## Detection Prevalence      0.03704
-## Balanced Accuracy         0.98718</code></pre>
+## Detection Rate            0.03732
+## Detection Prevalence      0.03732
+## Balanced Accuracy         0.99084</code></pre>
 </div>
 <div id="predition-at-grid-location" class="section level4">
 <h4>Predition at grid location</h4>
@@ -625,12 +743,13 @@ LU&lt;-spplot(r,&quot;Class_ID&quot;, main=&quot;Supervised Image Classification
               lab = c(&quot;Road/parking/pavement&quot; ,&quot;Building&quot;, &quot;Tree/buses&quot;, &quot;Grass&quot;, &quot;Water&quot;))),
               col.regions=myPalette,cut=4)
 LU</code></pre>
-<p><img src="support-vector-machine_files/figure-html/unnamed-chunk-12-1.png" width="624" style="display: block; margin: auto;" /></p>
+<p><img src="support-vector-machine_files/figure-html/unnamed-chunk-13-1.png" width="624" style="display: block; margin: auto;" /></p>
 </div>
 <div id="write-raster" class="section level4">
 <h4>Write raster</h4>
 <pre class="r"><code># writeRaster(r, filename = paste0(dataFolder,&quot;.\\Sentinel_2\\SVM_Landuse.tiff&quot;), &quot;GTiff&quot;, overwrite=T)</code></pre>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 
 
@@ -650,6 +769,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

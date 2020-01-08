@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Indicator Kriging</title>
+<title>indicator-kriging.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -251,6 +344,27 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="spatial-interpolation.html">Spatial Interpolation</a>
@@ -289,7 +403,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,12 +497,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Indicator Kriging</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="indicator-kriging" class="section level1">
+<h1>Indicator Kriging</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p>Indicator kriging (IK) is a non-parametric geostatistical method that works with variables after indicator transformation (0, 1) of pre-defined threshold values and map the probability of exceeding pre-defined threshold values. This is directly useful for probabilistic decision-making. It can also be used to estimate an entire cumulative probability distribution (CDF) and the mean (E-type-estimate) of CDF can be used as an estimate of the pollutant concentration after modeling of the upper and lower tails of the distribution <a href="https://www.ncbi.nlm.nih.gov/pubmed/20161335">(Goovaerts, 2009)</a>. The CDF based IK is applicable when data is strongly skewed, traditional data transformation limit to get robust statistics and estimators due to extreme values.</p>
@@ -423,7 +542,7 @@ library(gridExtra)</code></pre>
 <div id="load-data" class="section level4">
 <h4>Load Data</h4>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\&quot;</code></pre>
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\&quot;</code></pre>
 <pre class="r"><code>df&lt;-read.csv(paste0(dataFolder,&quot;bgs_geochemical.csv&quot;), header= TRUE) 
 grid&lt;-read.csv(paste0(dataFolder,&quot;bd_grid.csv&quot;), header= TRUE) 
 bd&lt;-shapefile(paste0(dataFolder,&quot;BD_Banladesh_BUTM.shp&quot;)) </code></pre>
@@ -437,7 +556,7 @@ hist(df$As, breaks=20, xlab = &quot;As (ppb)&quot;, main=&quot;Histogram of As&q
 box()
 qqnorm(df$As, pch = 1,main= &quot;QQ-plot of As&quot;) 
 qqline(df$As, col = &quot;steelblue&quot;, lwd = 2) </code></pre>
-<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-6-1.png" width="768" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>par(mfrow=c(1,1))</code></pre>
 </div>
 </div>
@@ -475,7 +594,7 @@ head(mf)</code></pre>
 <div id="indicator-transformation" class="section level4">
 <h4>Indicator transformation</h4>
 <p>Now, we compute an indicator variable for threshold 400 ppm Pb using following equation. Here an indicator for a continuous variable is 1 if the value is below a defined threshold, 0 otherwise</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_07/IK.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="E:\GitHub\geospatial-r-github\Image\IK.png" width="50%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ik.10&lt;-mf$As &gt; 10    # threshold 10 ppb
 ik.50&lt;-mf$As &gt; 50    # threshold 50 ppb</code></pre>
 <p>Now, we create a df with this indicator.</p>
@@ -495,13 +614,13 @@ coordinates(grid) = ~x+y</code></pre>
 <h4>Map data</h4>
 <pre class="r"><code>spplot(ik.df, zcol = &quot;As&quot;, col.regions = c(&quot;green&quot;, &quot;orange&quot;, &quot;red&quot;), cex=.5,
        main = &quot;Groundwater As  (ppb)&quot;)</code></pre>
-<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>p1&lt;-spplot(ik.df, zcol = &quot;ik.50&quot;, col.regions = c(&quot;green&quot;, &quot;red&quot;), cex=.5,
        main = &quot;As &gt; 10 ppb&quot;)
 p2&lt;-spplot(ik.df, zcol = &quot;ik.50&quot;, col.regions = c(&quot;green&quot;, &quot;red&quot;), cex=.5,
        main = &quot; As &gt; 50 ppb&quot;)
 grid.arrange(p1, p2, ncol=2)</code></pre>
-<img src="indicator-kriging_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" />
+<img src="indicator-kriging_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" />
 <div style="margin-bottom:20px;">
 
 </div>
@@ -552,7 +671,7 @@ v2&lt;-plot(v50, pl=F,
      xlab=&quot;Distance (m)&quot;,
      ylab=&quot;Semivariance&quot;)
 grid.arrange(v1, v2, nrow = 1)</code></pre>
-<img src="indicator-kriging_files/figure-html/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" />
+<img src="indicator-kriging_files/figure-html/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;" />
 <div style="margin-bottom:20px;">
 
 </div>
@@ -580,20 +699,20 @@ summary(cv.50)</code></pre>
 ## proj4string : [NA]
 ## Number of points: 3420
 ## Data attributes:
-##    var1.pred         var1.var       observed          residual         
-##  Min.   :0.0000   Min.   :0.1085   Mode :logical   Min.   :-0.9696943  
-##  1st Qu.:0.0268   1st Qu.:0.1158   FALSE:2558      1st Qu.:-0.1588415  
-##  Median :0.1403   Median :0.1173   TRUE :862       Median :-0.0270371  
-##  Mean   :0.2529   Mean   :0.1178                   Mean   :-0.0005298  
-##  3rd Qu.:0.4025   3rd Qu.:0.1192                   3rd Qu.: 0.0110539  
-##  Max.   :1.0000   Max.   :0.1620                   Max.   : 1.0058205  
-##      zscore               fold      
-##  Min.   :-2.851293   Min.   :1.000  
-##  1st Qu.:-0.463429   1st Qu.:2.000  
-##  Median :-0.078249   Median :3.000  
-##  Mean   :-0.001444   Mean   :2.975  
-##  3rd Qu.: 0.032057   3rd Qu.:4.000  
-##  Max.   : 2.975622   Max.   :5.000</code></pre>
+##    var1.pred          var1.var       observed          residual         
+##  Min.   :0.00000   Min.   :0.1079   Mode :logical   Min.   :-1.0129563  
+##  1st Qu.:0.02446   1st Qu.:0.1158   FALSE:2558      1st Qu.:-0.1547362  
+##  Median :0.13741   Median :0.1174   TRUE :862       Median :-0.0249927  
+##  Mean   :0.25156   Mean   :0.1179                   Mean   : 0.0008071  
+##  3rd Qu.:0.39607   3rd Qu.:0.1193                   3rd Qu.: 0.0108456  
+##  Max.   :1.00000   Max.   :0.1624                   Max.   : 1.0053782  
+##      zscore               fold     
+##  Min.   :-2.949642   Min.   :1.00  
+##  1st Qu.:-0.452572   1st Qu.:2.00  
+##  Median :-0.072949   Median :3.00  
+##  Mean   : 0.002259   Mean   :2.98  
+##  3rd Qu.: 0.030997   3rd Qu.:4.00  
+##  Max.   : 2.965721   Max.   :5.00</code></pre>
 <pre class="r"><code>summary(cv.10)</code></pre>
 <pre><code>## Object of class SpatialPointsDataFrame
 ## Coordinates:
@@ -604,20 +723,20 @@ summary(cv.50)</code></pre>
 ## proj4string : [NA]
 ## Number of points: 3420
 ## Data attributes:
-##    var1.pred         var1.var       observed          residual         
-##  Min.   :0.0000   Min.   :0.1448   Mode :logical   Min.   :-0.9928890  
-##  1st Qu.:0.1264   1st Qu.:0.1550   FALSE:1978      1st Qu.:-0.2403630  
-##  Median :0.3886   Median :0.1572   TRUE :1442      Median :-0.0195776  
-##  Mean   :0.4216   Mean   :0.1578                   Mean   : 0.0001094  
-##  3rd Qu.:0.6809   3rd Qu.:0.1596                   3rd Qu.: 0.2418571  
-##  Max.   :1.0000   Max.   :0.2113                   Max.   : 1.0011623  
-##      zscore                fold     
-##  Min.   :-2.5098941   Min.   :1.00  
-##  1st Qu.:-0.6093926   1st Qu.:2.00  
-##  Median :-0.0487928   Median :3.00  
-##  Mean   : 0.0004426   Mean   :2.95  
-##  3rd Qu.: 0.6106268   3rd Qu.:4.00  
-##  Max.   : 2.5493103   Max.   :5.00</code></pre>
+##    var1.pred         var1.var       observed          residual        
+##  Min.   :0.0000   Min.   :0.1452   Mode :logical   Min.   :-0.994787  
+##  1st Qu.:0.1238   1st Qu.:0.1551   FALSE:1978      1st Qu.:-0.242486  
+##  Median :0.3925   Median :0.1571   TRUE :1442      Median :-0.018385  
+##  Mean   :0.4207   Mean   :0.1578                   Mean   : 0.001053  
+##  3rd Qu.:0.6877   3rd Qu.:0.1596                   3rd Qu.: 0.246708  
+##  Max.   :1.0000   Max.   :0.2120                   Max.   : 1.005966  
+##      zscore               fold      
+##  Min.   :-2.503594   Min.   :1.000  
+##  1st Qu.:-0.607378   1st Qu.:2.000  
+##  Median :-0.046641   Median :3.000  
+##  Mean   : 0.002531   Mean   :2.984  
+##  3rd Qu.: 0.618186   3rd Qu.:4.000  
+##  Max.   : 2.573373   Max.   :5.000</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -637,7 +756,7 @@ plot(coordinates(cv.50), asp = 1, pch=21, col = ifelse(cv.50$observed,
  xlab = &quot;E (km)&quot;, ylab = &quot;N (km)&quot;, main = &quot;Probability of TRUE indicator (50 ppb)&quot;,
  sub = &quot;Actual indicator: green/red = FALSE/TRUE&quot;)
  grid()</code></pre>
-<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-18-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-19-1.png" width="768" style="display: block; margin: auto;" /></p>
 <pre class="r"><code> par(mfrow=c(1,1))</code></pre>
 </div>
 <div id="ik-prediction-at-grid-location" class="section level4">
@@ -764,8 +883,9 @@ ik.plot.50&lt;-levelplot(p50,
              main=&quot;Probability As &gt; 50 ppb&quot;)
 
 grid.arrange(ik.plot.10, ik.plot.50, nrow = 1)</code></pre>
-<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-22-1.png" width="816" style="display: block; margin: auto;" /></p>
+<p><img src="indicator-kriging_files/figure-html/unnamed-chunk-23-1.png" width="816" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 
 
@@ -785,6 +905,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

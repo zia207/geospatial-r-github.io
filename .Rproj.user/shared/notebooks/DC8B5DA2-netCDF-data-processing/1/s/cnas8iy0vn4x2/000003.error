@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in writeOGR(bd.SPDF, dsn = \",\", \"t2m_spatial_2015\", driver = \"ESRI Shapefile\",  : \n  could not find function \"writeOGR\"\n"}

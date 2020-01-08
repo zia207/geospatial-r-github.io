@@ -1,0 +1,2 @@
+"0","Class.grid <- model %>%"
+"0","  predict_classes(grid.df, batch_size = 100)"

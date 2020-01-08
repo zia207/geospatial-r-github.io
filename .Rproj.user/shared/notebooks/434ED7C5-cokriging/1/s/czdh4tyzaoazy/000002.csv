@@ -1,0 +1,2 @@
+"0","CK.pred<-rasterFromXYZ(as.data.frame(CK)[, c(""x"", ""y"", ""CK.pred"")])"
+"0","CK.var<-rasterFromXYZ(as.data.frame(CK)[, c(""x"", ""y"", ""CK.var"")])"

@@ -1,0 +1,6 @@
+"0","grid.point <- data.frame(rasterToPoints(b2))"
+"0","# Remove B2 column, just keep x & y"
+"0","grid.point$B2<-NULL"
+"0","# define co-ordinates and projection"
+"0","coordinates(grid.point) <- ~x + y"
+"0","projection(grid.point) <- CRS(""+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs"")"

@@ -1,0 +1,7 @@
+"0","library (raster) 	    # raster data"
+"0","library(rasterVis)	  # raster visualisation 	"
+"0","library(sp)			      # Spatial data"
+"0","library(rgdal)        # sptaial data "
+"0","library(RStoolbox)    # Image analysis"
+"0","library(ggplot2)      # advance plotting"
+"0","library(glcm)         # texture analysis"

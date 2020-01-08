@@ -352,7 +352,7 @@ $(document).ready(function () {
       <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
     </li>
     <li>
-      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
     </li>
   </ul>
 </li>
@@ -365,9 +365,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about-d.html">Content</a>
-    </li>
-    <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -403,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -463,6 +460,9 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
+      <a href="stack-ensemble-h2o.html">Stack-Ensemble-H20</a>
+    </li>
+    <li>
       <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
@@ -508,25 +508,22 @@ $(document).ready(function () {
 <div style="margin-bottom:20px;">
 
 </div>
+<div style="margin-bottom:20px;">
+
+</div>
 <p><img src="Image/DNN_h2o.png" width="100%" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:30px;">
 
 </div>
 <div id="deep-neural-network---supervised-image-classification-in-h20-r" class="section level1">
 <h1>Deep Neural Network - Supervised Image Classification in H20 R</h1>
+<div style="margin-bottom:20px;">
+
+</div>
 <p><strong>Deep Neural Networks (or Deep Dearning)</strong> is based on a multi-layer, feed-forward artificial neural network that is trained with stochastic gradient descent using back-propagation. The network can contain many hidden layers consisting of neurons with activation functions. Advanced features such as adaptive learning rate, rate annealing, momentum training, dropout, L1 or L2 regularization, checkpointing, and grid search enable high predictive accuracy. Each computer node trains a copy of the global model parameters on its local data with multi-threading (asynchronously) and contributes periodically to the global model via model averaging across the network.</p>
 <p>In this tutorial will show how to implement a Deep Neural Network for pixel based supervised classification of Sentinel-2 multispectral images using the <a href="http://h2o-release.s3.amazonaws.com/h2o/rel-lambert/5/docs-website/Ruser/Rinstall.html">H20</a> package in R.</p>
 <p><a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html">H2O is an open source, in-memory, distributed, fast, and scalable machine learning and predictive analytics platform that allows you to build machine learning models on big data and provides easy productionalization of those models in an enterprise environment</a>. It’s core code is written in Java and can read data in parallel from a distributed cluster and also from local cluster. H2O allows access to all the capabilities of H2O from an external program or script via JSON over HTTP. The Rest API is used by H2O’s <a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html">web interface (Flow UI)</a>, <a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html">R binding (H2O-R)</a>, and <a href="http://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html">Python binding (H2O-Python)</a>. Requirement and installation steps in R can be found <a href="http://h2o-release.s3.amazonaws.com/h2o/rel-wheeler/2/index.html">here</a>.</p>
 <p>First, we will split the “point_data” into a training set (75% of the data), a validation set (12%) and a test set (13%) data. The validation data set will be used to optimize the model parameters during the training process. The model’s performance will be tested with the test data set. Finally, we will predict land use classes using a grid data set.</p>
-<p><strong>Tuning and Optimizations parameters:</strong></p>
-<ul>
-<li><p>Four hidden layers with 200 neurons and Rectifier Linear (ReLU) as an activation function for the of neurons.</p></li>
-<li><p>The default stochastic gradient descent function will be used to optimize different objective functions and to minimize the training loss.</p></li>
-<li><p>To reduce the generalization error and the risk of over-fitting of the model, we will use set low values for L1 and L2 regularizations.</p></li>
-<li><p>The model will be cross validated with 10 folds with stratified sampling</p></li>
-<li><p>The model will be run with 100 epochs.</p></li>
-</ul>
-<p>More details about the of Tuning and Optimization parameters of the H20 Deep Neural Network for supervised classification can be found <a href="http://docs.h2o.ai/h2o-tutorials/latest-stable/tutorials/deeplearning/index.html">here</a></p>
 <div id="load-packages" class="section level4">
 <h4>Load packages</h4>
 <pre class="r"><code>library(rgdal)         # spatial data processing
@@ -541,12 +538,12 @@ library(ggplot2)       # Plotting</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
-<p>The data could be available for download from <a href="https://www.dropbox.com/s/a1pxx8we5r2p1zs/Data_RS_DNN.7z?dl=0">here</a>.</p>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/bupqmsfyr2tk1yg/Data_RS_DNN.7z?dl=0">here</a>.</p>
 <div style="margin-bottom:20px;">
 
 </div>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;D:/Dropbox/WebSite_Data/R_Data/Data_RS_DNN/&quot;</code></pre>
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_RS_DNN\\&quot;</code></pre>
 </div>
 <div id="load-point-and-grid-data" class="section level4">
 <h4>Load point and grid data</h4>
@@ -588,88 +585,178 @@ x &lt;- setdiff(names(train), y)</code></pre>
 
 </div>
 </div>
-<div id="model-fitting" class="section level3">
-<h3>Model Fitting</h3>
-<pre class="r"><code>dl_model &lt;- h2o.deeplearning(
-              model_id=&quot;Deep_Learning&quot;,                  # Destination id for this model
-              training_frame=train,                      # Id of the training data frame
-              validation_frame=valid,                    # Id of the validation data frame 
-              x=x,                                       # a vector predictor variable
-              y=y,                                       # name of reponse vaiables
-              standardize=TRUE,                          # standardize the data
-              score_training_samples=0,                  # training set samples for scoring (0 for all)
-              activation = &quot;RectifierWithDropout&quot;,       # Activation function
-              score_each_iteration = TRUE,              
-              hidden = c(200,200,200,200),               # 4 hidden layers, each of 200 neurons
-              hidden_dropout_ratios=c(0.2,0.1,0.1,0),    # for improve generalization
-              stopping_tolerance = 0.001,                # tolerance for metric-based stopping criterion
-              epochs=10,                                # the dataset should be iterated (streamed)
-              adaptive_rate=TRUE,                        # manually tuned learning rate
-              l1=1e-6,                                   # L1/L2 regularization, improve generalization
-              l2=1e-6,
-              max_w2=10,                                 # helps stability for Rectifier
-              nfolds=10,                                 # Number of folds for K-fold cross-validation
-              fold_assignment=&quot;Stratified&quot;,              # Cross-validation fold assignment scheme
-              keep_cross_validation_fold_assignment = TRUE,
-              seed=125,
-              reproducible = TRUE,
-              variable_importances=T
-        ) </code></pre>
-<div id="model-summary" class="section level4">
-<h4>Model Summary</h4>
-<pre class="r"><code>summary(dl_model)</code></pre>
+<div id="tuning-and-optimizations-parameters" class="section level2">
+<h2><strong>Tuning and Optimizations parameters:</strong></h2>
+<p>More details about the of Tuning and Optimization parameters of the H20 Deep Neural Network for supervised classification can be found <a href="http://docs.h2o.ai/h2o-tutorials/latest-stable/tutorials/deeplearning/index.html">here</a></p>
+<div id="grid-search-for-hyperprameters" class="section level3">
+<h3>Grid Search for hyperprameters</h3>
+<p>We can use the h2o.grid() function to perform a Random Grid Search (RGS). We could also test all possible combinations of parameters with Cartesian Grid or exhaustive search, but RGS is much faster when we have a large number of possible combinations and usually finds sufficiently accurate models.For RGS, we first define a set of hyper-parameters and search criteria to fine-tune our models. Because there are many hyper-parameters, each with a range of possible values, we want to find an (ideally) optimal combination to maximize our model’s accuracy.</p>
+<p><strong>Activation Functions</strong></p>
+<p><strong>Rectifier:</strong> is the default activation function. It is the fastest and most versatile option. It can lead to instability though and tends to be lower in accuracy. <strong>Tanh</strong>: The hyperbolic tangent is a scaled and shifted variant of the sigmoid activation function. It can take on values from -1 to 1 and centers around 0. Tanh needs more computational power than e.g. the Rectifier function. <strong>Maxout</strong>: is an activation function that is the max of the inputs. It is computationally quite demanding but can produce high accuracy models. ** …WithDropout:** When we specify with dropout, a random subset of the network is trained and the weights of all sub-networks are averaged. It works together with the parameter hidden_dropout_ratios, which controls the amount of layer neurons that are randomly dropped for each hidden layer. Hidden dropout ratios are useful for preventing overfitting on learned features.</p>
+<p><strong>Hidden layers</strong></p>
+<p>are the most important hyper-parameter to set for deep neural networks, as they specify how many hidden layers and how many nodes per hidden layer the model should learn</p>
+<p><strong>L1 and L2 penalties</strong></p>
+<p>L1: lets only strong weights survive L2: prevents any single weight from getting too big.</p>
+<p><strong>rho</strong> Adaptive learning rate time decay factor (similarity to prior updates). Defaults to 0.99. <strong>epsilon</strong> Adaptive learning rate smoothing factor (to avoid divisions by zero and allow progress). Defaults to 1e-08.</p>
+<p><strong>momentum_start</strong> Initial momentum at the beginning of training (try 0.5). Defaults to 0. <strong>momentum_stable</strong> Final momentum after the ramp is over (try 0.99). Defaults to 0. <strong>max_w2</strong> Constraint for squared sum of incoming weights per unit (e.g. for Rectifier). Defaults to 3.4028235e+38.</p>
+<pre class="r"><code>hyper_params &lt;- list(
+                     activation = c(&quot;Rectifier&quot;, &quot;Maxout&quot;, &quot;Tanh&quot;,
+                                    &quot;RectifierWithDropout&quot;, &quot;MaxoutWithDropout&quot;,
+                                    &quot;TanhWithDropout&quot;),                      
+                     hidden = list(c(5, 5, 5, 5, 5), c(10, 10, 10, 10), c(50, 50, 50), c(100, 100, 100)),
+                     epochs = c(50, 100, 200),
+                     l1 = c(0, 0.00001, 0.0001), 
+                     l2 = c(0, 0.00001, 0.0001),
+                     rate = c(0, 01, 0.005, 0.001),
+                     rate_annealing = c(1e-8, 1e-7, 1e-6),
+                     rho = c(0.9, 0.95, 0.99, 0.999),
+                     epsilon = c(1e-10, 1e-8, 1e-6, 1e-4),
+                     momentum_start = c(0, 0.5),
+                     momentum_stable = c(0.99, 0.5, 0),
+                     input_dropout_ratio = c(0, 0.1, 0.2),
+                     max_w2 = c(10, 100, 1000, 3.4028235e+38)
+                     )
+hyper_params</code></pre>
+<pre><code>## $activation
+## [1] &quot;Rectifier&quot;            &quot;Maxout&quot;               &quot;Tanh&quot;                
+## [4] &quot;RectifierWithDropout&quot; &quot;MaxoutWithDropout&quot;    &quot;TanhWithDropout&quot;     
+## 
+## $hidden
+## $hidden[[1]]
+## [1] 5 5 5 5 5
+## 
+## $hidden[[2]]
+## [1] 10 10 10 10
+## 
+## $hidden[[3]]
+## [1] 50 50 50
+## 
+## $hidden[[4]]
+## [1] 100 100 100
+## 
+## 
+## $epochs
+## [1]  50 100 200
+## 
+## $l1
+## [1] 0e+00 1e-05 1e-04
+## 
+## $l2
+## [1] 0e+00 1e-05 1e-04
+## 
+## $rate
+## [1] 0.000 1.000 0.005 0.001
+## 
+## $rate_annealing
+## [1] 1e-08 1e-07 1e-06
+## 
+## $rho
+## [1] 0.900 0.950 0.990 0.999
+## 
+## $epsilon
+## [1] 1e-10 1e-08 1e-06 1e-04
+## 
+## $momentum_start
+## [1] 0.0 0.5
+## 
+## $momentum_stable
+## [1] 0.99 0.50 0.00
+## 
+## $input_dropout_ratio
+## [1] 0.0 0.1 0.2
+## 
+## $max_w2
+## [1] 1.000000e+01 1.000000e+02 1.000000e+03 3.402823e+38</code></pre>
+</div>
+<div id="early-stopping-criteria" class="section level3">
+<h3>Early stopping criteria</h3>
+<p><strong>stopping_metric:</strong> metric that we want to use as stopping criterion <strong>stopping_tolerance and stopping_rounds</strong>: training stops when the the stopping metric does not improve by the stopping tolerance proportion any more (e.g. by 0.05 or 5%) for the number of consecutive rounds defined by stopping rounds.</p>
+<pre class="r"><code>search_criteria &lt;- list(strategy = &quot;RandomDiscrete&quot;, 
+                        max_models = 200,
+                        max_runtime_secs = 900,
+                        stopping_tolerance = 0.001,
+                        stopping_rounds = 2,
+                        seed = 1345767)</code></pre>
+<p>Now, we can train the model with combinations of hyper-parameters from our specified stopping criteria and hyper-parameter grid.</p>
+<pre class="r"><code>DNN_grid &lt;- h2o.grid(
+                  algorithm=&quot;deeplearning&quot;,
+                  grid_id = &quot;DNN_grid_ID&quot;,
+                  x= x,
+                  y = y,
+                  training_frame = train,
+                  validation_frame =valid,  
+                  stopping_metric = &quot;logloss&quot;,
+                  nfolds=10,
+                  hyper_params = hyper_params,
+                  search_criteria = search_criteria,
+                  seed = 42)</code></pre>
+<div id="grid-parameters" class="section level4">
+<h4>Grid parameters</h4>
+<pre class="r"><code>grid.dnn &lt;- h2o.getGrid(&quot;DNN_grid_ID&quot;,sort_by=&quot;RMSE&quot;,decreasing=FALSE)</code></pre>
+<pre class="r"><code>grid.dnn@summary_table[1,]</code></pre>
+<pre><code>## Hyper-Parameter Search Summary: ordered by increasing RMSE
+##   activation            epochs epsilon          hidden input_dropout_ratio
+## 1  Rectifier 37.70976165718072  1.0E-6 [100, 100, 100]                 0.1
+##       l1     l2       max_w2 momentum_stable momentum_start  rate
+## 1 1.0E-5 1.0E-4 3.4028235E38             0.5            0.5 0.001
+##   rate_annealing   rho           model_ids               rmse
+## 1         1.0E-8 0.999 DNN_grid_ID_model_2 0.4289349537940843</code></pre>
+</div>
+</div>
+<div id="the-best-model" class="section level3">
+<h3>The Best Model</h3>
+<pre class="r"><code>best_model &lt;- h2o.getModel(grid.dnn@model_ids[[1]]) ## model with lowest logloss
+best_model</code></pre>
 <pre><code>## Model Details:
 ## ==============
 ## 
 ## H2OMultinomialModel: deeplearning
-## Model Key:  Deep_Learning 
-## Status of Neuron Layers: predicting Class, 5-class classification, multinomial distribution, CrossEntropy loss, 123,805 weights/biases, 1.4 MB, 198,374 training samples, mini-batch size 1
-##   layer units             type dropout       l1       l2 mean_rate
-## 1     1    10            Input  0.00 %       NA       NA        NA
-## 2     2   200 RectifierDropout 20.00 % 0.000001 0.000001  0.002778
-## 3     3   200 RectifierDropout 10.00 % 0.000001 0.000001  0.017429
-## 4     4   200 RectifierDropout 10.00 % 0.000001 0.000001  0.009463
-## 5     5   200 RectifierDropout  0.00 % 0.000001 0.000001  0.026793
-## 6     6     5          Softmax      NA 0.000001 0.000001  0.044096
-##   rate_rms momentum mean_weight weight_rms mean_bias bias_rms
-## 1       NA       NA          NA         NA        NA       NA
-## 2 0.001755 0.000000    0.065016   0.182215  0.360042 0.080736
-## 3 0.017699 0.000000   -0.029830   0.097819  0.916611 0.146557
-## 4 0.012781 0.000000   -0.016788   0.078863  0.962554 0.029205
-## 5 0.042380 0.000000   -0.007376   0.079870  0.835408 0.249331
-## 6 0.168842 0.000000   -0.120609   0.190814 -0.182675 0.108195
+## Model ID:  DNN_grid_ID_model_2 
+## Status of Neuron Layers: predicting Class, 5-class classification, multinomial distribution, CrossEntropy loss, 21,805 weights/biases, 264.3 KB, 747,970 training samples, mini-batch size 1
+##   layer units      type dropout       l1       l2 mean_rate rate_rms
+## 1     1    10     Input 10.00 %       NA       NA        NA       NA
+## 2     2   100 Rectifier  0.00 % 0.000010 0.000100  0.165168 0.248302
+## 3     3   100 Rectifier  0.00 % 0.000010 0.000100  0.102923 0.133506
+## 4     4   100 Rectifier  0.00 % 0.000010 0.000100  0.086311 0.124872
+## 5     5     5   Softmax      NA 0.000010 0.000100  0.196298 0.287091
+##   momentum mean_weight weight_rms mean_bias bias_rms
+## 1       NA          NA         NA        NA       NA
+## 2 0.000000    0.112066   0.777472 -0.526522 0.716246
+## 3 0.000000   -0.130749   0.356847 -0.423289 1.206047
+## 4 0.000000   -0.118119   0.223992  0.030459 0.618938
+## 5 0.000000   -0.213819   0.494263  0.009617 0.785547
+## 
 ## 
 ## H2OMultinomialMetrics: deeplearning
 ## ** Reported on training data. **
-## ** Metrics reported on full training frame **
+## ** Metrics reported on temporary training frame with 10047 samples **
 ## 
 ## Training Set Metrics: 
 ## =====================
 ## 
-## Extract training frame with `h2o.getFrame(&quot;train.hex&quot;)`
-## MSE: (Extract with `h2o.mse`) 0.02795736
-## RMSE: (Extract with `h2o.rmse`) 0.1672045
-## Logloss: (Extract with `h2o.logloss`) 0.09567308
-## Mean Per-Class Error: 0.02936676
+## MSE: (Extract with `h2o.mse`) 0.1879231
+## RMSE: (Extract with `h2o.rmse`) 0.433501
+## Logloss: (Extract with `h2o.logloss`) 0.8936888
+## Mean Per-Class Error: 0.1707041
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;,train = TRUE)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
-##         Class_1 Class_2 Class_3 Class_4 Class_5  Error           Rate
-## Class_1    4036     129       1       0       0 0.0312 =  130 / 4,166
-## Class_2     153    3108      59       0       0 0.0639 =  212 / 3,320
-## Class_3     169      11    5871      64       0 0.0399 =  244 / 6,115
-## Class_4       0       0      39    3700       0 0.0104 =   39 / 3,739
-## Class_5       0       0       1       0     693 0.0014 =      1 / 694
-## Totals     4358    3248    5971    3764     693 0.0347 = 626 / 18,034
+##         Class_1 Class_2 Class_3 Class_4 Class_5  Error             Rate
+## Class_1    1675     159     477       0       0 0.2752 =    636 / 2,311
+## Class_2     296    1600      11       0       0 0.1610 =    307 / 1,907
+## Class_3      96     518    2061     696       0 0.3886 =  1,310 / 3,371
+## Class_4       0       0       0    2075       0 0.0000 =      0 / 2,075
+## Class_5       0      11       0       0     372 0.0287 =       11 / 383
+## Totals     2067    2288    2549    2771     372 0.2253 = 2,264 / 10,047
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;,train = TRUE)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.965288
-## 2 2  0.997727
-## 3 3  0.999834
-## 4 4  1.000000
+## 1 1  0.774659
+## 2 2  0.939484
+## 3 3  0.999005
+## 4 4  0.999801
 ## 5 5  1.000000
 ## 
 ## 
@@ -681,29 +768,29 @@ x &lt;- setdiff(names(train), y)</code></pre>
 ## =====================
 ## 
 ## Extract validation frame with `h2o.getFrame(&quot;valid.hex&quot;)`
-## MSE: (Extract with `h2o.mse`) 0.02696643
-## RMSE: (Extract with `h2o.rmse`) 0.1642146
-## Logloss: (Extract with `h2o.logloss`) 0.09223192
-## Mean Per-Class Error: 0.02655379
+## MSE: (Extract with `h2o.mse`) 0.1911776
+## RMSE: (Extract with `h2o.rmse`) 0.4372387
+## Logloss: (Extract with `h2o.logloss`) 0.8600006
+## Mean Per-Class Error: 0.1667773
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;,valid = TRUE)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
-##         Class_1 Class_2 Class_3 Class_4 Class_5  Error         Rate
-## Class_1     643      17       0       0       0 0.0258 =   17 / 660
-## Class_2      14     517      13       0       0 0.0496 =   27 / 544
-## Class_3      30       3     962       8       0 0.0409 = 41 / 1,003
-## Class_4       0       0      10     596       0 0.0165 =   10 / 606
-## Class_5       0       0       0       0     111 0.0000 =    0 / 111
-## Totals      687     537     985     604     111 0.0325 = 95 / 2,924
+##         Class_1 Class_2 Class_3 Class_4 Class_5  Error          Rate
+## Class_1     493      45     122       0       0 0.2530 =   167 / 660
+## Class_2      79     458       6       1       0 0.1581 =    86 / 544
+## Class_3      34     158     588     223       0 0.4138 = 415 / 1,003
+## Class_4       0       0       0     606       0 0.0000 =     0 / 606
+## Class_5       0       1       0       0     110 0.0090 =     1 / 111
+## Totals      606     662     716     830     110 0.2288 = 669 / 2,924
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;,valid = TRUE)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.967510
-## 2 2  0.997264
+## 1 1  0.771204
+## 2 2  0.937756
 ## 3 3  0.999658
-## 4 4  1.000000
+## 4 4  0.999658
 ## 5 5  1.000000
 ## 
 ## 
@@ -715,178 +802,99 @@ x &lt;- setdiff(names(train), y)</code></pre>
 ## =====================
 ## 
 ## Extract cross-validation frame with `h2o.getFrame(&quot;train.hex&quot;)`
-## MSE: (Extract with `h2o.mse`) 0.02485955
-## RMSE: (Extract with `h2o.rmse`) 0.1576691
-## Logloss: (Extract with `h2o.logloss`) 0.08782037
-## Mean Per-Class Error: 0.03186191
+## MSE: (Extract with `h2o.mse`) 0.1839852
+## RMSE: (Extract with `h2o.rmse`) 0.428935
+## Logloss: (Extract with `h2o.logloss`) 1.298239
+## Mean Per-Class Error: 0.1735686
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;,xval = TRUE)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.967728
-## 2 2  0.997948
-## 3 3  0.999778
-## 4 4  1.000000
+## 1 1  0.797106
+## 2 2  0.915715
+## 3 3  0.962127
+## 4 4  0.978319
 ## 5 5  1.000000
 ## 
 ## 
 ## Cross-Validation Metrics Summary: 
-##                                mean           sd  cv_1_valid  cv_2_valid
-## accuracy                  0.9677325  0.004471162   0.9624711  0.95986986
-## err                     0.032267496  0.004471162  0.03752887 0.040130153
-## err_count                      58.2     8.184131        65.0        74.0
-## logloss                  0.08777085 0.0064328457  0.08648893  0.10182433
-## max_per_class_error      0.05970799  0.011646003  0.09198813 0.061946902
-## mean_per_class_accuracy   0.9683733  0.005520481   0.9589077   0.9662665
-## mean_per_class_error    0.031626694  0.005520481 0.041092273 0.033733465
-## mse                     0.024850236 0.0019925938 0.025631974 0.028764095
-## r2                        0.9814064 0.0016099928  0.98136055  0.97792244
-## rmse                      0.1573793 0.0064027845   0.1600999   0.1695998
-##                          cv_3_valid  cv_4_valid  cv_5_valid  cv_6_valid
-## accuracy                  0.9775834   0.9651036   0.9725028   0.9720045
-## err                     0.022416621   0.0348964 0.027497195 0.027995521
-## err_count                      41.0        64.0        49.0        50.0
-## logloss                  0.07523714 0.101950675  0.07775727 0.089568794
-## max_per_class_error     0.042735044  0.05940594 0.046838406 0.042600896
-## mean_per_class_accuracy  0.98057896    0.963337  0.97552365  0.97674614
-## mean_per_class_error     0.01942106 0.036662996  0.02447634 0.023253873
-## mse                     0.020924417 0.027235886 0.020564312 0.025608951
-## r2                        0.9839026   0.9789827  0.98461586  0.98124653
-## rmse                     0.14465275  0.16503298  0.14340262  0.16002797
-##                          cv_7_valid  cv_8_valid  cv_9_valid cv_10_valid
-## accuracy                 0.96585906  0.96629214  0.97675705  0.95888156
-## err                      0.03414097 0.033707865 0.023242945  0.04111842
-## err_count                      62.0        60.0        42.0        75.0
-## logloss                  0.08825625  0.09100033   0.0754986   0.0901262
-## max_per_class_error     0.054545455  0.06709265 0.045180723 0.084745765
-## mean_per_class_accuracy   0.9645262  0.96686643   0.9751393   0.9558411
-## mean_per_class_error      0.0354738  0.03313359 0.024860684 0.044158857
-## mse                     0.024415873 0.026147075 0.021330735 0.027879043
-## r2                         0.981828   0.9807052  0.98461044   0.9788895
-## rmse                      0.1562558  0.16170058  0.14605045  0.16697018
-## 
-## Scoring History: 
-##              timestamp          duration training_speed   epochs
-## 1  2019-10-24 12:36:49         0.000 sec             NA  0.00000
-## 2  2019-10-24 12:37:06  7 min 13.514 sec   1098 obs/sec  1.00000
-## 3  2019-10-24 12:37:22  7 min 29.758 sec   1184 obs/sec  2.00000
-## 4  2019-10-24 12:37:37  7 min 45.080 sec   1241 obs/sec  3.00000
-## 5  2019-10-24 12:37:52  7 min 59.812 sec   1285 obs/sec  4.00000
-## 6  2019-10-24 12:38:06  8 min 14.179 sec   1320 obs/sec  5.00000
-## 7  2019-10-24 12:38:20  8 min 28.331 sec   1348 obs/sec  6.00000
-## 8  2019-10-24 12:38:34  8 min 42.311 sec   1371 obs/sec  7.00000
-## 9  2019-10-24 12:38:48  8 min 56.188 sec   1390 obs/sec  8.00000
-## 10 2019-10-24 12:39:02  9 min  9.895 sec   1408 obs/sec  9.00000
-## 11 2019-10-24 12:39:16  9 min 23.543 sec   1423 obs/sec 10.00000
-## 12 2019-10-24 12:39:29  9 min 37.107 sec   1436 obs/sec 11.00000
-##    iterations       samples training_rmse training_logloss training_r2
-## 1           0      0.000000            NA               NA          NA
-## 2           1  18034.000000       0.30807          0.31402     0.92909
-## 3           2  36068.000000       0.23927          0.18531     0.95723
-## 4           3  54102.000000       0.22067          0.16103     0.96362
-## 5           4  72136.000000       0.19930          0.13696     0.97032
-## 6           5  90170.000000       0.19737          0.12817     0.97090
-## 7           6 108204.000000       0.18215          0.11356     0.97521
-## 8           7 126238.000000       0.19155          0.12144     0.97259
-## 9           8 144272.000000       0.16898          0.09833     0.97867
-## 10          9 162306.000000       0.17510          0.10775     0.97709
-## 11         10 180340.000000       0.15287          0.08055     0.98254
-## 12         11 198374.000000       0.16720          0.09567     0.97911
-##    training_classification_error validation_rmse validation_logloss
-## 1                             NA              NA                 NA
-## 2                        0.11761         0.30326            0.30153
-## 3                        0.06920         0.24144            0.18801
-## 4                        0.06155         0.21938            0.15935
-## 5                        0.05040         0.19581            0.13044
-## 6                        0.05251         0.19743            0.12780
-## 7                        0.04148         0.17582            0.10935
-## 8                        0.04614         0.18189            0.10908
-## 9                        0.03865         0.16148            0.09300
-## 10                       0.03931         0.17383            0.10595
-## 11                       0.03488         0.15253            0.08104
-## 12                       0.03471         0.16421            0.09223
-##    validation_r2 validation_classification_error
-## 1             NA                              NA
-## 2        0.93046                         0.11491
-## 3        0.95592                         0.07182
-## 4        0.96361                         0.06224
-## 5        0.97101                         0.04822
-## 6        0.97053                         0.05198
-## 7        0.97663                         0.03933
-## 8        0.97498                         0.04104
-## 9        0.98028                         0.03146
-## 10       0.97715                         0.03933
-## 11       0.98241                         0.03249
-## 12       0.97961                         0.03249
-## 
-## Variable Importances: (Extract with `h2o.varimp`) 
-## =================================================
-## 
-## Variable Importances: 
-##    variable relative_importance scaled_importance percentage
-## 1        B2            1.000000          1.000000   0.135410
-## 2        B5            0.912811          0.912811   0.123604
-## 3       B11            0.903498          0.903498   0.122343
-## 4       B12            0.837021          0.837021   0.113341
-## 5        B3            0.805251          0.805251   0.109039
-## 6        B4            0.755519          0.755519   0.102305
-## 7        B8            0.698427          0.698427   0.094574
-## 8        B6            0.521599          0.521599   0.070630
-## 9       B8A            0.489297          0.489297   0.066256
-## 10       B7            0.461545          0.461545   0.062498</code></pre>
-<pre class="r"><code>#capture.output(print(summary(dl_model)),file =  &quot;DL_summary_model_01.txt&quot;)</code></pre>
+##                               mean          sd cv_1_valid cv_2_valid
+## accuracy                 0.6936281  0.11665897  0.6604414  0.4694678
+## err                     0.30637196  0.11665897 0.33955857 0.53053224
+## err_count                    554.1    212.3863      600.0      947.0
+## logloss                  2.3623433    1.223241  1.9144934   5.479545
+## max_per_class_error     0.64974576  0.18892963 0.59965336 0.99752474
+## mean_per_class_accuracy 0.73028266  0.08071953 0.74646026  0.5454888
+## mean_per_class_error     0.2697173  0.08071953 0.25353974  0.4545112
+## mse                     0.27800724  0.10936492 0.28370845 0.48036656
+## r2                       0.7928637 0.080600485 0.78708464  0.6482637
+## rmse                    0.50544316  0.10614719  0.5326429 0.69308484
+##                          cv_3_valid cv_4_valid cv_5_valid cv_6_valid
+## accuracy                 0.87162894 0.70124257   0.844308  0.5041006
+## err                      0.12837109 0.29875743 0.15569197  0.4958994
+## err_count                     238.0      553.0      279.0      907.0
+## logloss                  0.92916536   2.183606  1.1401047  3.4139159
+## max_per_class_error        0.484375  0.5148064        1.0   0.872549
+## mean_per_class_accuracy   0.8104849  0.7549479  0.6872787  0.6433099
+## mean_per_class_error     0.18951514 0.24505207 0.31272134 0.35669008
+## mse                     0.113817126  0.2721655 0.14670451 0.46341258
+## r2                       0.91276366  0.7975809 0.89052457  0.6576037
+## rmse                     0.33736792 0.52169484 0.38302025  0.6807441
+##                         cv_7_valid cv_8_valid  cv_9_valid cv_10_valid
+## accuracy                 0.4494259  0.6738292   0.8689181   0.8929179
+## err                     0.55057406  0.3261708  0.13108185  0.10708215
+## err_count                   1007.0      592.0       229.0       189.0
+## logloss                  5.2989054   2.191562   0.5286399   0.5434959
+## max_per_class_error      0.8955696  0.6210269  0.23157895  0.28037384
+## mean_per_class_accuracy 0.57626104  0.7453605   0.8875757  0.90565914
+## mean_per_class_error    0.42373893 0.25463948   0.1124243  0.09434085
+## mse                     0.52081656  0.2903964 0.114217095  0.09446773
+## r2                      0.61093277  0.7799708  0.91300815   0.9309045
+## rmse                    0.72167623  0.5388844  0.33796018  0.30735603</code></pre>
+<div id="the-best-parameters" class="section level4">
+<h4>The Best parameters</h4>
+<pre class="r"><code>best_params &lt;- best_model@allparameters</code></pre>
 </div>
 <div id="mean-error" class="section level4">
 <h4>Mean error</h4>
-<pre class="r"><code>h2o.mean_per_class_error(dl_model, train = TRUE, valid = TRUE, xval = TRUE)</code></pre>
-<pre><code>##      train      valid       xval 
-## 0.02936676 0.02655379 0.03186191</code></pre>
+<pre class="r"><code>h2o.mean_per_class_error(best_model, train = TRUE, valid = TRUE, xval = TRUE)</code></pre>
+<pre><code>##     train     valid      xval 
+## 0.1707041 0.1667773 0.1735686</code></pre>
 </div>
 <div id="scoring-history" class="section level4">
 <h4>Scoring history</h4>
-<pre class="r"><code>scoring_history&lt;-dl_model@model$scoring_history
+<pre class="r"><code>scoring_history&lt;-best_model@model$scoring_history
 #scoring_history
 #write.csv(scoring_history, &quot;scoring_history_model_02.csv&quot;)</code></pre>
 </div>
 <div id="plot-the-classification-error" class="section level4">
 <h4>Plot the classification error</h4>
-<pre class="r"><code>plot(dl_model,
+<pre class="r"><code>plot(best_model,
      timestep = &quot;epochs&quot;,
      metric = &quot;classification_error&quot;)</code></pre>
-<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-16-1.png" width="480" /></p>
+<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-21-1.png" width="480" /></p>
 </div>
 <div id="plot-logloss" class="section level4">
 <h4>Plot logloss</h4>
-<pre class="r"><code>plot(dl_model,
+<pre class="r"><code>plot(best_model,
      timestep = &quot;epochs&quot;,
      metric = &quot;logloss&quot;)</code></pre>
-<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-17-1.png" width="480" /></p>
-</div>
-<div id="cross-validation-error" class="section level4">
-<h4>Cross-validation Error</h4>
-<pre class="r"><code># Get the CV models from the deeplearning model object` object
-cv_models &lt;- sapply(dl_model@model$cross_validation_models, 
-                    function(i) h2o.getModel(i$name))
-# Plot the scoring history over time
-plot(cv_models[[1]], 
-     timestep = &quot;epochs&quot;, 
-     metric = &quot;classification_error&quot;)</code></pre>
-<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-18-1.png" width="480" /></p>
+<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-22-1.png" width="480" /></p>
 </div>
 <div id="cross-validation-result" class="section level4">
 <h4>Cross validation result</h4>
-<pre class="r"><code>print(dl_model@model$cross_validation_metrics_summary%&gt;%.[,c(1,2)])</code></pre>
-<pre><code>##                                mean           sd
-## accuracy                  0.9677325  0.004471162
-## err                     0.032267496  0.004471162
-## err_count                      58.2     8.184131
-## logloss                  0.08777085 0.0064328457
-## max_per_class_error      0.05970799  0.011646003
-## mean_per_class_accuracy   0.9683733  0.005520481
-## mean_per_class_error    0.031626694  0.005520481
-## mse                     0.024850236 0.0019925938
-## r2                        0.9814064 0.0016099928
-## rmse                      0.1573793 0.0064027845</code></pre>
+<pre class="r"><code>print(best_model@model$cross_validation_metrics_summary%&gt;%.[,c(1,2)])</code></pre>
+<pre><code>##                               mean          sd
+## accuracy                 0.6936281  0.11665897
+## err                     0.30637196  0.11665897
+## err_count                    554.1    212.3863
+## logloss                  2.3623433    1.223241
+## max_per_class_error     0.64974576  0.18892963
+## mean_per_class_accuracy 0.73028266  0.08071953
+## mean_per_class_error     0.2697173  0.08071953
+## mse                     0.27800724  0.10936492
+## r2                       0.7928637 0.080600485
+## rmse                    0.50544316  0.10614719</code></pre>
 <pre class="r"><code>#capture.output(print(dl_model@model$cross_validation_metrics_summary%&gt;%.[,c(1,2)]),file =  &quot;DL_CV_model_01.txt&quot;)</code></pre>
 </div>
 <div id="model-performance-with-test-data-set" class="section level4">
@@ -894,105 +902,105 @@ plot(cv_models[[1]],
 </div>
 <div id="compare-the-training-error-with-the-validation-and-test-set-errors" class="section level4">
 <h4>Compare the training error with the validation and test set errors</h4>
-<pre class="r"><code>h2o.performance(dl_model, newdata=train)     ## full train data</code></pre>
+<pre class="r"><code>h2o.performance(best_model, newdata=train)     ## full train data</code></pre>
 <pre><code>## H2OMultinomialMetrics: deeplearning
 ## 
 ## Test Set Metrics: 
 ## =====================
 ## 
-## MSE: (Extract with `h2o.mse`) 0.02795736
-## RMSE: (Extract with `h2o.rmse`) 0.1672045
-## Logloss: (Extract with `h2o.logloss`) 0.09567308
-## Mean Per-Class Error: 0.02936676
+## MSE: (Extract with `h2o.mse`) 0.188377
+## RMSE: (Extract with `h2o.rmse`) 0.4340242
+## Logloss: (Extract with `h2o.logloss`) 0.8940607
+## Mean Per-Class Error: 0.1696753
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;, &lt;data&gt;)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
-##         Class_1 Class_2 Class_3 Class_4 Class_5  Error           Rate
-## Class_1    4036     129       1       0       0 0.0312 =  130 / 4,166
-## Class_2     153    3108      59       0       0 0.0639 =  212 / 3,320
-## Class_3     169      11    5871      64       0 0.0399 =  244 / 6,115
-## Class_4       0       0      39    3700       0 0.0104 =   39 / 3,739
-## Class_5       0       0       1       0     693 0.0014 =      1 / 694
-## Totals     4358    3248    5971    3764     693 0.0347 = 626 / 18,034
+##         Class_1 Class_2 Class_3 Class_4 Class_5  Error             Rate
+## Class_1    3018     299     847       2       0 0.2756 =  1,148 / 4,166
+## Class_2     515    2781      24       0       0 0.1623 =    539 / 3,320
+## Class_3     160     907    3746    1302       0 0.3874 =  2,369 / 6,115
+## Class_4       0       0       0    3739       0 0.0000 =      0 / 3,739
+## Class_5       0      16       0       0     678 0.0231 =       16 / 694
+## Totals     3693    4003    4617    5043     678 0.2258 = 4,072 / 18,034
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;, &lt;data&gt;)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.965288
-## 2 2  0.997727
-## 3 3  0.999834
-## 4 4  1.000000
+## 1 1  0.774204
+## 2 2  0.938450
+## 3 3  0.999168
+## 4 4  0.999778
 ## 5 5  1.000000</code></pre>
-<pre class="r"><code>h2o.performance(dl_model, newdata=valid)     ## full validation data</code></pre>
+<pre class="r"><code>h2o.performance(best_model, newdata=valid)     ## full validation data</code></pre>
 <pre><code>## H2OMultinomialMetrics: deeplearning
 ## 
 ## Test Set Metrics: 
 ## =====================
 ## 
-## MSE: (Extract with `h2o.mse`) 0.02696643
-## RMSE: (Extract with `h2o.rmse`) 0.1642146
-## Logloss: (Extract with `h2o.logloss`) 0.09223192
-## Mean Per-Class Error: 0.02655379
+## MSE: (Extract with `h2o.mse`) 0.1911776
+## RMSE: (Extract with `h2o.rmse`) 0.4372387
+## Logloss: (Extract with `h2o.logloss`) 0.8600006
+## Mean Per-Class Error: 0.1667773
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;, &lt;data&gt;)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
-##         Class_1 Class_2 Class_3 Class_4 Class_5  Error         Rate
-## Class_1     643      17       0       0       0 0.0258 =   17 / 660
-## Class_2      14     517      13       0       0 0.0496 =   27 / 544
-## Class_3      30       3     962       8       0 0.0409 = 41 / 1,003
-## Class_4       0       0      10     596       0 0.0165 =   10 / 606
-## Class_5       0       0       0       0     111 0.0000 =    0 / 111
-## Totals      687     537     985     604     111 0.0325 = 95 / 2,924
+##         Class_1 Class_2 Class_3 Class_4 Class_5  Error          Rate
+## Class_1     493      45     122       0       0 0.2530 =   167 / 660
+## Class_2      79     458       6       1       0 0.1581 =    86 / 544
+## Class_3      34     158     588     223       0 0.4138 = 415 / 1,003
+## Class_4       0       0       0     606       0 0.0000 =     0 / 606
+## Class_5       0       1       0       0     110 0.0090 =     1 / 111
+## Totals      606     662     716     830     110 0.2288 = 669 / 2,924
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;, &lt;data&gt;)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.967510
-## 2 2  0.997264
+## 1 1  0.771204
+## 2 2  0.937756
 ## 3 3  0.999658
-## 4 4  1.000000
+## 4 4  0.999658
 ## 5 5  1.000000</code></pre>
-<pre class="r"><code>h2o.performance(dl_model, newdata=test)     ## full test data</code></pre>
+<pre class="r"><code>h2o.performance(best_model, newdata=test)     ## full test data</code></pre>
 <pre><code>## H2OMultinomialMetrics: deeplearning
 ## 
 ## Test Set Metrics: 
 ## =====================
 ## 
-## MSE: (Extract with `h2o.mse`) 0.02619048
-## RMSE: (Extract with `h2o.rmse`) 0.1618347
-## Logloss: (Extract with `h2o.logloss`) 0.08859117
-## Mean Per-Class Error: 0.02621799
+## MSE: (Extract with `h2o.mse`) 0.1960804
+## RMSE: (Extract with `h2o.rmse`) 0.4428097
+## Logloss: (Extract with `h2o.logloss`) 0.9358769
+## Mean Per-Class Error: 0.1745401
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;, &lt;data&gt;)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
-##         Class_1 Class_2 Class_3 Class_4 Class_5  Error         Rate
-## Class_1     684      23       1       0       0 0.0339 =   24 / 708
-## Class_2      14     543       8       0       0 0.0389 =   22 / 565
-## Class_3      34       2     936       7       0 0.0439 =   43 / 979
-## Class_4       0       0       9     619       0 0.0143 =    9 / 628
-## Class_5       0       0       0       0     107 0.0000 =    0 / 107
-## Totals      732     568     954     626     107 0.0328 = 98 / 2,987
+##         Class_1 Class_2 Class_3 Class_4 Class_5  Error          Rate
+## Class_1     508      49     150       1       0 0.2825 =   200 / 708
+## Class_2     104     459       2       0       0 0.1876 =   106 / 565
+## Class_3      28     145     594     212       0 0.3933 =   385 / 979
+## Class_4       0       0       0     628       0 0.0000 =     0 / 628
+## Class_5       0       1       0       0     106 0.0093 =     1 / 107
+## Totals      640     654     746     841     106 0.2317 = 692 / 2,987
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;, &lt;data&gt;)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.967191
-## 2 2  0.996987
-## 3 3  1.000000
-## 4 4  1.000000
+## 1 1  0.768329
+## 2 2  0.930700
+## 3 3  0.999665
+## 4 4  0.999665
 ## 5 5  1.000000</code></pre>
 <pre class="r"><code>#capture.output(print(h2o.performance(dl_model,test)),file =  &quot;test_data_model_01.txt&quot;)</code></pre>
 </div>
 <div id="confusion-matrix" class="section level4">
 <h4>Confusion matrix</h4>
-<pre class="r"><code>train.cf&lt;-h2o.confusionMatrix(dl_model)
+<pre class="r"><code>train.cf&lt;-h2o.confusionMatrix(best_model)
 print(train.cf)
-valid.cf&lt;-h2o.confusionMatrix(dl_model,valid=TRUE)
+valid.cf&lt;-h2o.confusionMatrix(best_model,valid=TRUE)
 print(valid.cf)
-test.cf&lt;-h2o.confusionMatrix(dl_model,test)
+test.cf&lt;-h2o.confusionMatrix(best_model,test)
 print(test.cf)
 #write.csv(train.cf, &quot;CFM_train_model_01.csv&quot;)
 #write.csv(valid.cf, &quot;CFM_valid_model_01.csv&quot;)
@@ -1000,12 +1008,11 @@ print(test.cf)
 </div>
 <div id="grid-prediction" class="section level4">
 <h4>Grid Prediction</h4>
-<pre class="r"><code>g.predict = as.data.frame(h2o.predict(object = dl_model, newdata = grid))</code></pre>
+<pre class="r"><code>g.predict = as.data.frame(h2o.predict(object = best_model, newdata = grid))</code></pre>
 </div>
 <div id="stop-h20-cluster" class="section level4">
 <h4>Stop h20 cluster</h4>
 <pre class="r"><code>h2o.shutdown(prompt=FALSE)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="extract-prediction-class" class="section level4">
 <h4>Extract Prediction Class</h4>
@@ -1034,12 +1041,13 @@ LU&lt;-spplot(r,&quot;Class_ID&quot;, main=&quot;Supervised Image Classification
               lab = c(&quot;Road/parking/pavement&quot; ,&quot;Building&quot;, &quot;Tree/buses&quot;, &quot;Grass&quot;, &quot;Water&quot;))),
               col.regions=myPalette,cut=4)
 LU</code></pre>
-<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-26-1.png" width="624" style="display: block; margin: auto;" /></p>
+<p><img src="deep-learning-h2o_files/figure-html/unnamed-chunk-30-1.png" width="624" style="display: block; margin: auto;" /></p>
 </div>
 <div id="write-raster" class="section level4">
 <h4>Write raster</h4>
 <pre class="r"><code># writeRaster(r, filename = paste0(dataFolder,&quot;.\\Sentinel_2\\DNN_H20_Landuse.tiff&quot;), &quot;GTiff&quot;, overwrite=T)</code></pre>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 </div>
 </div>

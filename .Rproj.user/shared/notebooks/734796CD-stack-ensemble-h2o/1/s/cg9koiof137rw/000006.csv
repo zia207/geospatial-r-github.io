@@ -1,0 +1,4 @@
+"0","drf.perf<-h2o.performance(best_drf, newdata=test)             ## full test data"
+"0","gbm.perf<-h2o.performance(best_gbm, newdata=test)             ## full test data"
+"0","dnn.perf<-h2o.performance(best_dnn, newdata=test)             ## full test data"
+"0","ensemble.perf<-h2o.performance(stack_ensemble, newdata=test)    ## full test data"

@@ -1,0 +1,1 @@
+"0","best_gbm <- h2o.getModel(gbm_get_grid@model_ids[[1]]) ## model with lowest logloss"

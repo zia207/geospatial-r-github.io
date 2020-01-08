@@ -331,6 +331,9 @@ $(document).ready(function () {
       <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
+    </li>
+    <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
     </li>
     <li>
@@ -348,6 +351,9 @@ $(document).ready(function () {
     <li>
       <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
     </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -359,9 +365,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about-d.html">Content</a>
-    </li>
-    <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -397,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -457,6 +460,9 @@ $(document).ready(function () {
       <a href="deep-learning-h2o.html">Deep Learning with H20</a>
     </li>
     <li>
+      <a href="stack-ensemble-h2o.html">Stack-Ensemble-H20</a>
+    </li>
+    <li>
       <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
     </li>
   </ul>
@@ -495,16 +501,16 @@ $(document).ready(function () {
 </div>
 
 
-<div style="margin-bottom:10px;">
-
-</div>
 <img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
 <div style="margin-bottom:20px;">
 
 </div>
 <div id="geographically-weighted-ordinary-regression" class="section level1">
 <h1>Geographically Weighted Ordinary Regression</h1>
-<p>In this exercise we will apply a general form GWR to predict Soil Organic C. We will use two covariates, elevation and NDVI to fit GWR OLS model. The soil organic carbon data (train and test data set) could be found <a href="https://www.dropbox.com/s/b5z55zvvw98zzdh/Data_OLS.7z?dl=0">here</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>In this exercise we will apply a general form GWR to predict Soil Organic C. We will use two covariates, elevation and NDVI to fit GWR OLS model. The soil organic carbon data (train and test data set) could be found <a href="https://www.dropbox.com/s/frbhs4qbtqwi84m/Data_OLS.7z?dl=0">here</a>.</p>
 <div id="load-packages" class="section level4">
 <h4>Load packages</h4>
 <pre class="r"><code>library(GWmodel)      ## GW models
@@ -523,7 +529,7 @@ library(RStoolbox)    # advance raster ploting function
 <div id="load-data" class="section level4">
 <h4>Load data</h4>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;D:\\Dropbox\\WebSite_Data\\R_Data\\Data_OLS\\&quot;</code></pre>
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_OLS\\&quot;</code></pre>
 <pre class="r"><code>train&lt;-read.csv(paste0(dataFolder,&quot;train_data.csv&quot;), header= TRUE) 
 state&lt;-shapefile(paste0(dataFolder,&quot;GP_STATE.shp&quot;))
 grid&lt;-read.csv(paste0(dataFolder, &quot;GP_prediction_grid_data.csv&quot;), header= TRUE) </code></pre>
@@ -775,7 +781,7 @@ model.view.gwr(RESPONSE, PREDICTORS, model.list = model.list)</code></pre>
 <pre><code>##    ***********************************************************************
 ##    *                       Package   GWmodel                             *
 ##    ***********************************************************************
-##    Program starts at: 2019-10-18 13:00:33 
+##    Program starts at: 2020-01-07 23:07:09 
 ##    Call:
 ##    gwr.basic(formula = SOC ~ ELEV + Aspect + Slope + TPI + K_Factor + 
 ##     MAP + MAT + NDVI + Slit_Clay, data = SPDF.1, bw = gwr.bw, 
@@ -876,7 +882,7 @@ model.view.gwr(RESPONSE, PREDICTORS, model.list = model.list)</code></pre>
 ##    ---Significance stars
 ##    Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1 
 ##    ***********************************************************************
-##    Program stops at: 2019-10-18 13:00:45</code></pre>
+##    Program stops at: 2020-01-07 23:07:20</code></pre>
 </div>
 <div id="extract-and-plot-coefficients-1" class="section level4">
 <h4>Extract and plot coefficients</h4>

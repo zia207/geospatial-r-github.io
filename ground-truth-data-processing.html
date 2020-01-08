@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Ground Truth Data Processing</title>
+<title>ground-truth-data-processing.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -253,7 +346,25 @@ $(document).ready(function () {
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
     </li>
     <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -289,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,20 +494,24 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Ground Truth Data Processing</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="ground-truth-data-processing" class="section level1">
+<h1>Ground Truth Data Processing</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p>In this lesson we will use a sub-set of <a href="https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2">Sentinel-2</a> satellite images covering the north campus of the University at Buffalo, NY taken on September 21st, 2017. We will prepare them for for pixel based classification using machine learning algorithms. The images were already radiometrically and atmospherically corrected using <a href="https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2">Sen2Cor</a>, a python based processor develop by <a href="http://www.esa.int/ESA">ESA</a> for formatting and processing (such as atmospheric correction, aerosol optical thickness correction, water vapor retrieval, surface reflectance retrieval from TOA, geometric correction with DEM) for Sentinel-2 Level 2A imagery. All bands were re-sampled at 10 meter resolution in <a href="http://step.esa.int/main/download/">SNAP Toolboxes</a>.</p>
 <p>We will train the machine learning models with 5 feature classes extracted from Google Earth imagery: (1) parking/road/pavement, (2) building, (3) trees/bushes, (4) grass, and (5) water bodies. We used on-screen digitization in <a href="https://www.qgis.org/en/site/">QGIS</a> to create polygons representing members of these feature classes. First, we will convert the polygons to a 2.5x 2.5 meter raster grid, and then convert them to spatial points. Next, we will extract values from the B2, B3, B4, B5, B6, B7, B8, B8A, B11 and B12 bands and add them to the spatial point data set that we will use for training, validation and testing the models. We will also use all bands to create a prediction grid point data set for predicting land-use classes.</p>
-<div style="margin-bottom:20px;">
-
-</div>
-<p>T##### Load R packages</p>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0">here</a>.</p>
+<div id="load-r-packages" class="section level4">
+<h4>Load R packages</h4>
 <pre class="r"><code>library(rgdal)       # spatial data processing
 library(raster)      # raster processing
 library(plyr)        # data manipulation 
@@ -405,18 +520,13 @@ library(RStoolbox)   # ploting spatial data
 library(RColorBrewer)# color
 library(ggplot2)     # ploting
 library(sp)          # spatial data
-library(gridExtra)</code></pre>
+library(gridExtra)
+library(tidyverse)   # data </code></pre>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
-<div style="margin-bottom:20px;">
-
+dataFolder&lt;-&quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_09//DATA_09//&quot;</code></pre>
 </div>
-<p>The data could be available for download from <a href="https://www.dropbox.com/s/ybh1kr487wrhl8i/DATA_09.7z?dl=0">here</a>.</p>
-<div style="margin-bottom:20px;">
-
-</div>
-<div id="load-bands" class="section level4">
-<h4>Load bands</h4>
+<div id="load-multi-band-raster" class="section level4">
+<h4>Load multi-band raster</h4>
 <pre class="r"><code>#s=stack(BLUE, GREEN, RED, NIR,SWIR1,SWIR2)
 multi=stack(paste0(dataFolder,&quot;.\\Sentinel_2\\multi_bands.tif&quot;))</code></pre>
 </div>
@@ -443,10 +553,10 @@ extent=extent(b2)</code></pre>
 extent(r) &lt;- extent(poly)
 rp &lt;- rasterize(poly, r, &#39;Class_ID&#39;)</code></pre>
 <pre class="r"><code>plot(rp, main=&quot;Ground truth data&quot;)</code></pre>
-<p><img src="ground-truth-data-processing_files/figure-html/unnamed-chunk-7-1.png" width="624" style="display: block; margin: auto;" /></p>
+<p><img src="ground-truth-data-processing_files/figure-html/unnamed-chunk-9-1.png" width="624" style="display: block; margin: auto;" /></p>
 </div>
 <div id="convert-raster-to-data.frame-and-rename-colum-to-layer-to-class_id" class="section level4">
-<h4>Convert raster to data.frame and rename colum to “layer”&quot; to Class_ID</h4>
+<h4>Convert raster to data.frame and rename colum to “layer”" to Class_ID</h4>
 <pre class="r"><code>rp.df &lt;- as.data.frame(rasterToPoints(rp))
 colnames(rp.df)[3] &lt;- &#39;Class_ID&#39;</code></pre>
 </div>
@@ -457,7 +567,7 @@ point.SPDF &lt;- SpatialPointsDataFrame(coords = xy,
                                 data=rp.df,
                                 proj4string = CRS(&quot;+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs&quot;))</code></pre>
 </div>
-<div id="load-multi-band-raster" class="section level4">
+<div id="load-multi-band-raster-1" class="section level4">
 <h4>Load multi-band raster</h4>
 <pre class="r"><code>multi=stack(paste0(dataFolder,&quot;.\\Sentinel_2\\multi_bands.tif&quot;))
 # rename the bands
@@ -485,11 +595,11 @@ p2&lt;-ggRGB(multi, r=7, g=3, b=2, stretch = &quot;lin&quot;)+
   ggtitle(&quot;False Color Infrared\n(R= NIR, G= Red,  B=Green)&quot;)
 
 grid.arrange(p1, p2, nrow = 1)</code></pre>
-<p><img src="ground-truth-data-processing_files/figure-html/unnamed-chunk-11-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="ground-truth-data-processing_files/figure-html/unnamed-chunk-13-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="extract-raster-values-to-point-file" class="section level4">
 <h4>Extract raster values to point file</h4>
-<pre class="r"><code>point.df &lt;- extract(multi, point.SPDF, df=TRUE, method=&#39;simple&#39;)</code></pre>
+<pre class="r"><code>point.df &lt;- raster::extract(multi, point.SPDF, df=TRUE, method=&#39;simple&#39;)</code></pre>
 </div>
 <div id="combine-with-data-frame" class="section level4">
 <h4>Combine with data frame</h4>
@@ -521,30 +631,30 @@ head(point.mf)</code></pre>
 <pre class="r"><code># Import lnaduse ID file
 ID&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\Landuse_ID.csv&quot;), header=T)
 # Join with point data frame
-point.gt&lt;-join(point, ID, by=&quot;Class_ID&quot;, type=&quot;inner&quot;)
+point.gt&lt;-merge(point, ID, by=&quot;Class_ID&quot;, type=&quot;inner&quot;)
 # rearrange the data
-point.gt.df&lt;-cbind(point.gt[c(1:2)],point.gt[c(4:13)],Class=point.gt$Class,Landuse=point.gt$Landuse,Class_ID=point.gt$Class_ID)
+point.gt.df&lt;-cbind(point.gt[c(2:3)],point.gt[c(4:13)],Class=point.gt$Class,Landuse=point.gt$Landuse,Class_ID=point.gt$Class_ID)
 # omit missing values
 newdata &lt;- na.omit(point.gt.df) 
 str(newdata)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    23945 obs. of  15 variables:
-##  $ x       : num  678191 678194 678196 678191 678194 ...
-##  $ y       : num  4764069 4764069 4764069 4764067 4764067 ...
-##  $ B2      : num  616 616 616 616 616 616 589 589 278 616 ...
-##  $ B3      : num  682 682 682 682 682 682 810 810 582 682 ...
-##  $ B4      : num  655 655 655 655 655 655 763 763 534 655 ...
-##  $ B5      : num  767 767 767 767 767 ...
-##  $ B6      : num  1669 1669 1669 1669 1669 ...
-##  $ B7      : num  1669 1669 1669 1669 1669 ...
-##  $ B8      : num  1922 1922 1922 1922 1922 ...
-##  $ B8A     : num  2414 2414 2414 2414 2414 ...
-##  $ B11     : num  1726 1726 1726 1726 1726 ...
-##  $ B12     : num  1115 1115 1115 1115 1115 ...
-##  $ Class   : Factor w/ 5 levels &quot;Class_1&quot;,&quot;Class_2&quot;,..: 2 2 2 2 2 2 2 2 4 2 ...
-##  $ Landuse : Factor w/ 5 levels &quot;Building&quot;,&quot;Grass&quot;,..: 1 1 1 1 1 1 1 1 2 1 ...
-##  $ Class_ID: num  2 2 2 2 2 2 2 2 4 2 ...
-##  - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int  15977 15978 15979 15980 15986 15987 15988 15989 15990 15994 ...
-##   ..- attr(*, &quot;names&quot;)= chr  &quot;15977&quot; &quot;15978&quot; &quot;15979&quot; &quot;15980&quot; ...</code></pre>
+##  $ x       : num  679868 679423 679866 678798 678436 ...
+##  $ y       : num  4763045 4763616 4763045 4763693 4762906 ...
+##  $ B2      : num  1195 1127 1195 570 1467 ...
+##  $ B3      : num  1219 1347 1219 449 1588 ...
+##  $ B4      : num  1410 1422 1410 547 1741 ...
+##  $ B5      : num  1319 1307 1319 657 1767 ...
+##  $ B6      : num  1205 2176 1205 822 1705 ...
+##  $ B7      : num  1205 2176 1205 822 1705 ...
+##  $ B8      : num  1453 2260 1453 678 1891 ...
+##  $ B8A     : num  1467 2785 1467 894 1798 ...
+##  $ B11     : num  1632 2036 1632 1333 2230 ...
+##  $ B12     : num  1490 1481 1490 1305 2145 ...
+##  $ Class   : Factor w/ 5 levels &quot;Class_1&quot;,&quot;Class_2&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Landuse : Factor w/ 5 levels &quot;Building&quot;,&quot;Grass&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ Class_ID: num  1 1 1 1 1 1 1 1 1 1 ...
+##  - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int  580 599 600 601 664 1066 1069 1070 1078 1090 ...
+##   ..- attr(*, &quot;names&quot;)= chr  &quot;580&quot; &quot;599&quot; &quot;600&quot; &quot;601&quot; ...</code></pre>
 <pre class="r"><code># save as CSV file
 write.csv(newdata, paste0(dataFolder, &quot;.\\Sentinel_2\\point_data.csv&quot;), row.names=F)</code></pre>
 </div>
@@ -560,7 +670,7 @@ coordinates(grid.point) &lt;- ~x + y
 projection(grid.point) &lt;- CRS(&quot;+proj=utm +zone=17N +ellps=WGS84 +datum=WGS84 +units=m +no_defs&quot;)</code></pre>
 <div id="extract-all-bands-values-to-grird-point" class="section level4">
 <h4>Extract all bands values to grird point:</h4>
-<pre class="r"><code>df.grid&lt;- extract(multi, grid.point, df=TRUE, method=&#39;simple&#39;)</code></pre>
+<pre class="r"><code>df.grid&lt;- raster::extract(multi, grid.point, df=TRUE, method=&#39;simple&#39;)</code></pre>
 </div>
 <div id="combine-with-grid.df-we-need-to-add-xy-coordinated-for-mapping-and-write-as-a-csv-file" class="section level4">
 <h4>Combine with grid.df (we need to add xy coordinated for mapping) and write as a CSV file:</h4>
@@ -584,6 +694,12 @@ head(grid)</code></pre>
 <div id="laod-caret-package" class="section level4">
 <h4>Laod caret package:</h4>
 <pre class="r"><code>library(caret) </code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## 
+## Attaching package: &#39;caret&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     lift</code></pre>
 <div id="split-data" class="section level5">
 <h5>Split data:</h5>
 <pre class="r"><code>set.seed(3456)
@@ -597,6 +713,7 @@ test&lt;- newdata[-trainIndex,]
 write.csv(train, paste0(dataFolder,&quot;.\\Sentinel_2\\train_data.csv&quot;),row.names=F)
 write.csv(test, paste0(dataFolder, &quot;.\\Sentinel_2\\test_data.csv&quot;), row.names=F)</code></pre>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -618,6 +735,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

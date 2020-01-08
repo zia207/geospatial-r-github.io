@@ -1,0 +1,4 @@
+"0","coordinates(grid.xy) <- ~x+y"
+"2","Error in `coordinates<-`(`*tmp*`, value = ~x + y) : 
+  setting coordinates cannot be done on Spatial objects, where they have already been set
+"

@@ -1,0 +1,2 @@
+"0","v.cross <- variogram(g)"
+"0","plot(v.cross, pl=F)"

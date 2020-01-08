@@ -1,0 +1,3 @@
+"1","
+"
+"0","#capture.output(print(h2o.performance(dl_model,test)),file =  ""test_data_model_01.txt"")"

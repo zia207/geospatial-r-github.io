@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Landsat 8 Image Processing &amp; Visualization</title>
+<title>landsat-8-image-processing.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -253,7 +346,25 @@ $(document).ready(function () {
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
     </li>
     <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -289,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,12 +494,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Landsat 8 Image Processing &amp; Visualization</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="landsat-8-image-processing-visualization" class="section level1">
+<h1>Landsat 8 Image Processing &amp; Visualization</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p>In this lesson, we will use a Landsat 8 image of the Finger Lakes region in New York State, which acquired on September 27, 2016. We will use the R-package <strong>RStoolbox</strong> to do the Landsat image processing and analysis, such as calculating spectral indices and performing principal component transformation, texture analysis, unsupervised and supervised classification and fractional cover analyses.</p>
@@ -412,7 +528,7 @@ library(sp)          # spatial data processing
 library(rgdal)       # spatial data processing      
 library(RStoolbox)   # Image analysis
 library(ggplot2)     # plotting
-library(gridExtra)</code></pre>
+library(gridExtra)   # plot arrangement</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -421,7 +537,7 @@ library(gridExtra)</code></pre>
 
 </div>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+dataFolder&lt;-&quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_09//DATA_09//&quot;</code></pre>
 </div>
 <div id="import-metadata-file-.mtl" class="section level4">
 <h4>Import metadata file (*.MTL):</h4>
@@ -461,30 +577,30 @@ summary(metaData)</code></pre>
 s &lt;- stack(bandList)
 names(s) &lt;- c(&quot;B1&quot;,&quot;B2&quot;, &quot;B3&quot;, &quot;B4&quot;,&quot;B5&quot;, &quot;B6&quot;, &quot;B7&quot;)
 s</code></pre>
-<pre><code>## class       : RasterStack 
-## dimensions  : 504, 541, 272664, 7  (nrow, ncol, ncell, nlayers)
-## resolution  : 30, 30  (x, y)
-## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## names       :    B1,    B2,    B3,    B4,    B5,    B6,    B7 
-## min values  :  8492,  7617,  6777,  6026,  5290,  5185,  5142 
-## max values  : 19081, 19935, 21595, 22716, 27590, 38013, 39165</code></pre>
+<pre><code>## class      : RasterStack 
+## dimensions : 504, 541, 272664, 7  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names      :    B1,    B2,    B3,    B4,    B5,    B6,    B7 
+## min values :  8492,  7617,  6777,  6026,  5290,  5185,  5142 
+## max values : 19081, 19935, 21595, 22716, 27590, 38013, 39165</code></pre>
 </div>
 <div id="plot-all-bands" class="section level4">
 <h4>Plot all Bands</h4>
 <pre class="r"><code>plot(s)</code></pre>
-<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="histogram-of-bands" class="section level4">
 <h4>Histogram of Bands</h4>
 <pre class="r"><code>hist(s)</code></pre>
-<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rgb-image-comparison" class="section level3">
 <h3>RGB image comparison</h3>
 <p>Below are some common band combinations in RGB comparisons for Landsat Landsat 8</p>
 <div class="figure" style="text-align: center">
-<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/RGB_comp.png" alt="Clipping" width="40%" />
+<img src="Image/PNG_FILE_08/RGB_comp.png" alt="Clipping" width="40%" />
 <p class="caption">
 Clipping
 </p>
@@ -500,7 +616,7 @@ Clipping
         axis.ticks.y=element_blank())+
   ggtitle(&quot;Natural Color\n (R= Red, G= Green, B= Blue)&quot;)
 p1</code></pre>
-<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div id="false-color-image-vegetation" class="section level4">
 <h4>False Color Image (Vegetation):</h4>
@@ -513,7 +629,7 @@ theme(axis.title.x=element_blank(),
       axis.ticks.y=element_blank())+
   ggtitle(&quot;False Color Vegetation\n (R= NIR, G= Red,  B=Green)&quot;)
 p2</code></pre>
-<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-10-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div id="false-color-image-urban" class="section level4">
 <h4>False Color Image (Urban):</h4>
@@ -527,7 +643,7 @@ theme(axis.title.x=element_blank(),
   ggtitle(&quot;False Color Urban\n (R= SWIR1, G= SWIR2,  B=Red)&quot;)</code></pre>
 <p>Let’s plot all maps side by side, for this, you have to use following function</p>
 <pre class="r"><code>grid.arrange(p1, p2, p3, nrow = 1)</code></pre>
-<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-11-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-12-1.png" width="864" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -565,10 +681,10 @@ theme(axis.title.x=element_blank(),
       axis.ticks.y=element_blank())+
   ggtitle(&quot;Pansharpened\n (PCA)&quot;)
 p4</code></pre>
-<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>Lets, plot original and pan sharpened map side by side</p>
 <pre class="r"><code>grid.arrange(p1, p4, nrow = 1)</code></pre>
-<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -608,7 +724,7 @@ summary(lsat)                     # summary of each band</code></pre>
 </ul>
 <p>The gain (G) and bias or intercept (I ) are different for each band and are provided in the Landsat header file. For Landsat 8, a linear equation is used to convert from DN to radiance (L):</p>
 <div class="figure" style="text-align: center">
-<img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/Equa.png" alt="Clipping" width="40%" />
+<img src="Image/PNG_FILE_08/Equa.png" alt="Clipping" width="40%" />
 <p class="caption">
 Clipping
 </p>
@@ -617,14 +733,14 @@ Clipping
     metaData = metaData,      # metadata (MTL file) 
     method = &quot;rad&quot;)           # convert DN to radiance
 lsat_tra</code></pre>
-<pre><code>## class       : RasterStack 
-## dimensions  : 504, 541, 272664, 10  (nrow, ncol, ncell, nlayers)
-## resolution  : 30, 30  (x, y)
-## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## names       :      B1_tra,      B2_tra,      B3_tra,      B4_tra,      B5_tra,      B6_tra,      B7_tra,      B9_tra,     B10_tra,     B11_tra 
-## min values  : 43.66201600, 33.50591100, 20.96619600, 10.20694100,  1.76545000,  0.27992000,  0.07246402,  0.00000000,  7.56201760,  7.00657720 
-## max values  : 176.0562830, 191.2132650, 195.7889600, 176.2474060, 137.5278500,  49.9815120,  17.4347412,   0.2496565,  10.1630962,   9.1691854</code></pre>
+<pre><code>## class      : RasterStack 
+## dimensions : 504, 541, 272664, 10  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names      :      B1_tra,      B2_tra,      B3_tra,      B4_tra,      B5_tra,      B6_tra,      B7_tra,      B9_tra,     B10_tra,     B11_tra 
+## min values : 43.66201600, 33.50591100, 20.96619600, 10.20694100,  1.76545000,  0.27992000,  0.07246402,  0.00000000,  7.56201760,  7.00657720 
+## max values : 176.0562830, 191.2132650, 195.7889600, 176.2474060, 137.5278500,  49.9815120,  17.4347412,   0.2496565,  10.1630962,   9.1691854</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -636,14 +752,14 @@ lsat_tra</code></pre>
     metaData = metaData,         # metadata 
     method = &quot;apref&quot;)              # convert DN top-of-atmosphere reflectance
 lsat_tre</code></pre>
-<pre><code>## class       : RasterStack 
-## dimensions  : 504, 541, 272664, 10  (nrow, ncol, ncell, nlayers)
-## resolution  : 30, 30  (x, y)
-## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## names       :       B1_tre,       B2_tre,       B3_tre,       B4_tre,       B5_tre,       B6_tre,       B7_tre,       B9_tre,       B10_bt,       B11_bt 
-## min values  : 1.036013e-01, 7.764161e-02, 5.272034e-02, 3.043955e-02, 8.603770e-03, 5.488612e-03, 4.212881e-03, 0.000000e+00, 1.036556e+02, 2.290230e+02 
-## max values  : 4.177576e-01, 4.430942e-01, 4.923433e-01, 5.256014e-01, 6.702040e-01, 9.794354e-01, 1.000000e+00, 3.115158e-03, 1.106258e+02, 2.413258e+02</code></pre>
+<pre><code>## class      : RasterStack 
+## dimensions : 504, 541, 272664, 10  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names      :       B1_tre,       B2_tre,       B3_tre,       B4_tre,       B5_tre,       B6_tre,       B7_tre,       B9_tre,       B10_bt,       B11_bt 
+## min values : 1.036013e-01, 7.764161e-02, 5.272034e-02, 3.043955e-02, 8.603770e-03, 5.488612e-03, 4.212881e-03, 0.000000e+00, 2.847589e+02, 2.830717e+02 
+## max values : 4.177576e-01, 4.430942e-01, 4.923433e-01, 5.256014e-01, 6.702040e-01, 9.794354e-01, 1.000000e+00, 3.115158e-03, 3.039071e+02, 3.018956e+02</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -658,7 +774,7 @@ hazeDN &lt;- estimateHaze(lsat, # raster object
     hazeBands = 2:5,               # haze band B2,B3, B4 and B5  
     plot = TRUE,                   # display hisgram and haze values
     darkProp=0.01)               # Proportion of pixels estimate haze</code></pre>
-<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="landsat-8-image-processing_files/figure-html/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>The following methods are available in <strong>radCor()</strong> function:</p>
 <ul>
 <li>dos - Dark object subtraction following Chavez (1989)</li>
@@ -673,20 +789,21 @@ hazeDN &lt;- estimateHaze(lsat, # raster object
     hazeBands = 2:5,                # Bands corresponding to hazeValues
     atmosphere = &quot;veryClear&quot;)     # Atmospheric characteristics
 lsat_sref</code></pre>
-<pre><code>## class       : RasterStack 
-## dimensions  : 504, 541, 272664, 10  (nrow, ncol, ncell, nlayers)
-## resolution  : 30, 30  (x, y)
-## extent      : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## names       :       B1_sre,       B2_sre,       B3_sre,       B4_sre,       B5_sre,       B6_sre,       B7_sre,      B9_sre,       B10_bt,       B11_bt 
-## min values  : 1.077987e-01, 6.414577e-03, 2.357145e-03, 3.929587e-03, 0.000000e+00, 5.283789e-03, 3.948982e-03,           ?, 1.036556e+02, 2.290230e+02 
-## max values  :    0.4346718,    0.3744582,    0.4517692,    0.5054899,    0.5213277,    0.9434545,    0.9501195,           ?,  110.6257801,  241.3257968</code></pre>
+<pre><code>## class      : RasterStack 
+## dimensions : 504, 541, 272664, 10  (nrow, ncol, ncell, nlayers)
+## resolution : 30, 30  (x, y)
+## extent     : 318195, 334425, 4737735, 4752855  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## names      :       B1_sre,       B2_sre,       B3_sre,       B4_sre,       B5_sre,       B6_sre,       B7_sre,       B9_sre,       B10_bt,       B11_bt 
+## min values : 1.078127e-01, 6.413077e-03, 2.357953e-03, 3.930255e-03, 0.000000e+00, 5.291948e-03, 3.968224e-03, 0.000000e+00, 2.847589e+02, 2.830717e+02 
+## max values : 4.347280e-01, 3.746107e-01, 4.517224e-01, 5.054354e-01, 5.210737e-01, 9.449113e-01, 9.547490e-01, 3.183901e-03, 3.039071e+02, 3.018956e+02</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
-<div id="write-a-multi-band-raster" class="section level5">
-<h5>Write a multi-band raster:</h5>
-<pre class="r"><code>writeRaster(lsat_sref, filename=(paste0(dataFolder,&quot;.//Landsat8//Landsat8_PROCESSED//multi.tif&quot;)), bylayer=F, overwrite=TRUE, format=&quot;GTiff&quot;)</code></pre>
+</div>
+<div id="write-a-multi-band-raster" class="section level4">
+<h4>Write a multi-band raster:</h4>
+<pre class="r"><code># writeRaster(lsat_sref, filename=(paste0(dataFolder,&quot;.//Landsat8//Landsat8_PROCESSED//multi.tif&quot;)), bylayer=F, overwrite=TRUE, format=&quot;GTiff&quot;)</code></pre>
 <pre class="r"><code>rm(list = ls())</code></pre>
 </div>
 </div>
@@ -709,6 +826,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

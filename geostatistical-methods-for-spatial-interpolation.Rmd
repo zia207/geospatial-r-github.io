@@ -1,10 +1,17 @@
 ---
-title: "Geostatistical Interpolation"
+title: ''
 ---
 
-<div style="margin-bottom:40px;">
+
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
 </div>
 
+# Geostatistical Interpolation
+<div style="margin-bottom:20px;">
+</div>
 
 Spatial interpolation using **geostatistical** techniques has been widely used to map environmental variables.  Geostatistics relies on on the concept of **random function**, whereby the set of unknown values is considered as a set of spatially dependent random variables. The random function concepts allows to account for structures in the spatial variation of the attributes. Unlike the deterministic interpolation approaches, geostatistics assumes that all values in a domain are the result of a random process with dependence.  At any particular location, the uncertainty of attribute value is estimated from a set of possible outcomes of the random variable at that location. This way we can model the uncertainty of spatial prediction over the entire study area. 
 
@@ -14,16 +21,20 @@ Spatial interpolation using **geostatistical** techniques has been widely used t
 The main steps involved in geostatistical interpolation model are:
 
 1.	Examining the data (distribution, trends, directional components, outliers)
+
 2.	Calculating the empirical semivariogram or covariance values
+
 3.	Fitting a model to the empirical values.
+
 4.	Generating the matrices of kriging equations.
+
 5.	Solving them to obtain a predicted value and the error (uncertainty) associated with it for each location in the output surface.
 
 <div style="margin-bottom:20px;">
 </div>
 
 ```{r echo=FALSE, out.width='40%', fig.align="center",fig.cap=paste("Work Flow Geostatistical Interpolation (Source: http://pro.arcgis.com/en/pro-app/help/analysis/geostatistical-analyst/the-geostatistical-workflow.htm )")}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\Flow_Chart.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_07\\Flow_Chart.png')
 ```
 
 <div style="margin-bottom:40px;">
@@ -61,8 +72,6 @@ We will cover following area in Geostatistical Interpolation section:
         Generalized Linear Model
 
         Random Forest
-
-        Extreme Gradient Boosting
 
         Meta-Ensemble Machine Learning
         

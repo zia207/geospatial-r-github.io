@@ -1,0 +1,2 @@
+"0","point.df[, 1:10] = scale(point.df[, 1:10])"
+"0","grid.df[, 1:10] = scale(grid.df[, 1:10])"

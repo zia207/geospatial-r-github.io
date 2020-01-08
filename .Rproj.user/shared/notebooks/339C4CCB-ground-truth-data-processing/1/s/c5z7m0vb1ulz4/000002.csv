@@ -1,0 +1,3 @@
+"0","grid<-cbind(as.data.frame(grid.point),df.grid)"
+"0","write.csv(grid, paste0(dataFolder, "".\\Sentinel_2\\prediction_grid_data.csv""), row.names=F)"
+"0","head(grid)"

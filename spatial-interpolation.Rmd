@@ -1,6 +1,16 @@
 ---
-title: "Spatial Interpolation"
+title: ''
 ---
+
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+# Spatial Interpolation
+<div style="margin-bottom:20px;">
+</div>
 
 As an integral component of risk assessment, spatial interpolation techniques for predicting values at unsampled locations has been widely used to map environmental variables for identifying geographic areas for targeting of management interventions. The spatial interpolation methods can be largely classified into two broad groups: 
 
@@ -13,3 +23,6 @@ As an integral component of risk assessment, spatial interpolation techniques fo
     e.g., ordinary kriging: OK) and  All methods rely on the similarity of nearby sample points to create the surface
 
 This section we will provide an overview of brief theory behind deterministic, and geostatistical interpolation techniques and we will explore these methods through example in R. 
+
+
+[Next](about-d.html)

@@ -1,8 +1,16 @@
 ---
-title: "Ordinary Kriging"
+title: ''
 ---
 
-<div style="margin-bottom:40px;">
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+# Ordinary Kriging
+
+<div style="margin-bottom:20px;">
 </div>
 
 Ordinary kriging (OK) is the most widely used kriging method. It is a linear unbiased estimators since error mean is equal to zero. In OK, local mean is filtered from the linear estimator by forcing the kriging weights to sum to 1. The OK is usually preferred to simple kriging because it requires neither knowledge nor stationarity of mean over the entire area.   
@@ -10,7 +18,7 @@ Ordinary kriging (OK) is the most widely used kriging method. It is a linear unb
 
 
 ```{r echo=FALSE, out.width='60%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\OK.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_07\\OK.png')
 ```
 
 <div style="margin-bottom:20px;">
@@ -58,7 +66,7 @@ The soil organic carbon data (train and test data set) could be found [here](htt
 
 ```{r}
 # Define data folder
-dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\"
 ```
 
 ```{r}

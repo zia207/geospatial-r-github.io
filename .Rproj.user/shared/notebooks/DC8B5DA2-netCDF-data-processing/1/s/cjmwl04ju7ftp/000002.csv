@@ -1,0 +1,4 @@
+"0","iTime <- ncvar_get(nc, ""time"")"
+"0","startDate <- ""1900-01-01 00:00:0.0"";"
+"0","fTime <- as.PCICt(iTime*3600, cal = ""gregorian"", origin = startDate); "
+"0","targetTime <- format(fTime, ""%m"")"

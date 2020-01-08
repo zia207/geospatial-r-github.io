@@ -1,0 +1,8 @@
+"0","soc=sim.data[,3:102]"
+"0","soc.stack=stack(soc)"
+"0","# round(quantile(soc.stack$values, probs=seq(0,1, by=.1)),1)"
+"0","at.soc=classIntervals(soc.stack$values, n = 10, style = ""quantile"")$brks"
+"0","rgb.palette <- colorRampPalette(c(""red"" ,""yellow"",""green"",""blue""),space = ""rgb"")"
+"0","bound <- list(""sp.lines"", as(state, ""SpatialLines""), col=""grey40"", lwd=.8,lty=1)"
+"0","coordinates(sim.data) <- ~x+y"
+"0","gridded(sim.data) <- TRUE"

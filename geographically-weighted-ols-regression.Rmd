@@ -1,8 +1,7 @@
 ---
 title: ''
 ---
-<div style="margin-bottom:10px;">
-</div>
+
 ```{r echo=FALSE, out.width='100%', fig.align="center"}
 knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
 ```
@@ -10,8 +9,11 @@ knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.pn
 </div>
 
 # Geographically Weighted Ordinary Regression
+<div style="margin-bottom:20px;">
+</div>
 
-In this exercise we will apply a general form GWR to  predict Soil Organic C.  We will use two covariates, elevation and NDVI to fit GWR OLS model. The soil organic carbon data (train and test data set) could be found [here](https://www.dropbox.com/s/b5z55zvvw98zzdh/Data_OLS.7z?dl=0).  
+
+In this exercise we will apply a general form GWR to  predict Soil Organic C.  We will use two covariates, elevation and NDVI to fit GWR OLS model. The soil organic carbon data (train and test data set) could be found [here](https://www.dropbox.com/s/frbhs4qbtqwi84m/Data_OLS.7z?dl=0).  
 
 
 #### Load packages
@@ -36,7 +38,7 @@ library(RStoolbox)    # advance raster ploting function
 
 ```{r}
 # Define data folder
-dataFolder<-"D:\\Dropbox\\WebSite_Data\\R_Data\\Data_OLS\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_OLS\\"
 ```
 
 ```{r}
@@ -343,10 +345,6 @@ p3.1<-levelplot(R2~x+y, df.1,cex=0.6,
 ```{r,collapse = TRUE,fig.align='center',fig.height=5, fig.width=10}
 grid.arrange(p1.1, p2.1,p3.1, ncol=3)
 ```
-
-
-
-
 
 
 

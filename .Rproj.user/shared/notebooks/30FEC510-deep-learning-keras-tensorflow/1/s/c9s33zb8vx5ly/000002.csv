@@ -1,0 +1,3 @@
+"0","#### Join Class Id Column"
+"0","ID<-read.csv(paste0(dataFolder,"".\\Sentinel_2\\Landuse_ID_keras.csv""), header=TRUE)"
+"0","ID"

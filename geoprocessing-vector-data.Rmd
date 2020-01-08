@@ -1,8 +1,14 @@
 ---
-title: "Geoprocessing of Vector Data"
+title: ''
 ---
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
 
-<div style="margin-bottom:40px;">
+# Geoprocessing of Vector Data
+<div style="margin-bottom:20px;">
 </div>
 
 Geo-processing is a GIS operation used to manipulate spatial data. 
@@ -67,7 +73,7 @@ Before reading the data from a local drive, you need to define a working directo
 
 ```{r}
 # Define data folder
-dataFolder<-"F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_04//"
+dataFolder<-"D://Dropbox/Spatial Data Analysis and Processing in R//DATA_04//DATA_04//"
 ```
 
 #### Load US State & County Shape files
@@ -103,7 +109,7 @@ Clipping  spatial data is a basic GIS task. For vector data, it involves removin
 
 
 ```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Clipping")}
-knitr::include_graphics("F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_04\\Clip.png")
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_04\\Clip.png")
 ```
 
 In R,  you can do this  several ways with different R packages. In this exercise, we will clip out other state or counties from US State and County polygon shape files, expect our area of interest (for example New York). 
@@ -176,7 +182,7 @@ plot(clip_02, main="Clip with intersect")
 
 
 ```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Union")}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_04\\Union.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_04\\Union.png')
 ```
 
 We will use state boundary of  CO, AK, NY and WY to create a new feature class using **union()** function of raster package or **spRbind** function of **maptools** package. The shape files of these states are located in **~\GP_STATE** sub-directory of the working directory. We read these files one by one one using **shapefile()** function of raster package or create a list of these files and then apply **union** function function raster package or  
@@ -247,7 +253,7 @@ plot(GP.STATE,main="Spatial Union of CO, KA, NM & WY")
 **Dissolve** aggregate features based on the attribute. It is an important tools  that we may need to perform regularly in spatial data processing. 
 
 ```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Disslove")}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_04\\Dissolve.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_04\\Dissolve.png')
 ```
 
 
@@ -284,7 +290,7 @@ plot(GP.DISSOLVE_02, main="Dissolved State Boundary - aggregate()")
 
 
 ```{r echo=FALSE, out.width='40%', fig.align="center", fig.cap=paste("Intersect")}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_04\\Intersect.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_04\\Intersect.png')
 ```
 
 We will use Yellow Stone National Park boundary shape file to find out its location in US states. The shape file of US national park was downloaded from [here](https://catalog.data.gov/data set/national-park-boundariesf0a4c/resource/a601d033-f08e-4430-91f2-674f12109bf6?inner_span=True).  

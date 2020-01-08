@@ -1,0 +1,189 @@
+"0","nc <- nc_open(paste0(dataFolder,""data_fc_2015.nc""))"
+"0","print(nc)"
+"1","File D:\Dropbox\Spatial Data Analysis and Processing in R\Data_NetCDF\data_fc_2015.nc (NC_FORMAT_64BIT):
+
+"
+"1","    "
+"1"," "
+"1","10"
+"1"," "
+"1","variables (excluding dimension variables):
+"
+"1","        short parcs[longitude,latitude,time]   
+"
+"1","            scale_factor: 147.101399295012
+"
+"1","            add_offset: 4819924.44930035
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: J m**-2
+"
+"1","            long_name: Clear sky surface photosynthetically active radiation
+"
+"1","        short par[longitude,latitude,time]   
+"
+"1","            scale_factor: 46.0887949582653
+"
+"1","            add_offset: 1510145.45560252
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: J m**-2
+"
+"1","            long_name: Photosynthetically active radiation at the surface
+"
+"1","        short t2m[longitude,latitude,time]   
+"
+"1","            scale_factor: 0.000563963986894008
+"
+"1","            add_offset: 291.025474853944
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: K
+"
+"1","            long_name: 2 metre temperature
+"
+"1","        short d2m[longitude,latitude,time]   
+"
+"1","            scale_factor: 0.000515991227702074
+"
+"1","            add_offset: 282.454575988761
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: K
+"
+"1","            long_name: 2 metre dewpoint temperature
+"
+"1","        short ssr[longitude,latitude,time]   
+"
+"1","            scale_factor: 380.074115331207
+"
+"1","            add_offset: 12453508.4629423
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: J m**-2
+"
+"1","            long_name: Surface net solar radiation
+"
+"1","            standard_name: surface_net_downward_shortwave_flux
+"
+"1","        short e[longitude,latitude,time]   
+"
+"1","            scale_factor: 1.14049848751248e-07
+"
+"1","            add_offset: -0.00341737326704554
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: m of water equivalent
+"
+"1","            long_name: Evaporation
+"
+"1","            standard_name: lwe_thickness_of_water_evaporation_amount
+"
+"1","        short sund[longitude,latitude,time]   
+"
+"1","            scale_factor: 0.631596211546091
+"
+"1","            add_offset: 20694.8814675192
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: s
+"
+"1","            long_name: Sunshine duration
+"
+"1","        short mx2t[longitude,latitude,time]   
+"
+"1","            scale_factor: 0.000545273349877161
+"
+"1","            add_offset: 291.6391316602
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: K
+"
+"1","            long_name: Maximum temperature at 2 metres since previous post-processing
+"
+"1","        short mn2t[longitude,latitude,time]   
+"
+"1","            scale_factor: 0.000551550751386706
+"
+"1","            add_offset: 290.586516216812
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: K
+"
+"1","            long_name: Minimum temperature at 2 metres since previous post-processing
+"
+"1","        short tp[longitude,latitude,time]   
+"
+"1","            scale_factor: 5.82932752846431e-07
+"
+"1","            add_offset: 0.0191003745797662
+"
+"1","            _FillValue: -32767
+"
+"1","            missing_value: -32767
+"
+"1","            units: m
+"
+"1","            long_name: Total precipitation
+"
+"1","
+    "
+"1"," "
+"1","3"
+"1"," "
+"1","dimensions:
+"
+"1","        longitude  Size:53
+"
+"1","            units: degrees_east
+"
+"1","            long_name: longitude
+"
+"1","        latitude  Size:61
+"
+"1","            units: degrees_north
+"
+"1","            long_name: latitude
+"
+"1","        time  Size:720   *** is unlimited ***
+"
+"1","            units: hours since 1900-01-01 00:00:0.0
+"
+"1","            long_name: time
+"
+"1","            calendar: gregorian
+"
+"1","
+    2 global attributes:
+"
+"1","        Conventions: CF-1.6
+"
+"1","        history: 2017-02-20 12:32:41 GMT by grib_to_netcdf-2.1.0: grib_to_netcdf /data/data01/scratch/_mars-atls15-95e2cf679cd58ee9b4db4dd119a05a8d-OvGQNj.grib -o /data/data01/scratch/_grib2netcdf-atls05-95e2cf679cd58ee9b4db4dd119a05a8d-SvnlWs.nc -utime
+"

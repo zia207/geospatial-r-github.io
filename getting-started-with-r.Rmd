@@ -2,16 +2,16 @@
 title: ''
 ---
 
-<div style="margin-bottom:10px;">
-</div>
-
 ```{r echo=FALSE, out.width='100%', fig.align="center"}
 knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
 ```
-<div style="margin-bottom:30px;">
+<div style="margin-bottom:20px;">
 </div>
 
 # Getting Started with R
+<div style="margin-bottom:20px;">
+</div>
+
 
 **What is R?** 
 

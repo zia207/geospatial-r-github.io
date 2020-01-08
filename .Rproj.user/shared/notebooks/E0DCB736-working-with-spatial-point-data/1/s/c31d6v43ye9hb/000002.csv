@@ -1,0 +1,4 @@
+"0","ID<-read.csv(paste0(dataFolder,""GP_ID.csv""), header= TRUE)          # id file"
+"2","cannot open file 'D://Dropbox//Spatial Data Analysis and Processing in R//DATA_05//DATA_05GP_ID.csv': No such file or directory"
+"2","Error in file(file, ""rt"") : cannot open the connection
+"

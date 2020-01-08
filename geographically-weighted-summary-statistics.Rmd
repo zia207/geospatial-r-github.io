@@ -1,8 +1,7 @@
 ---
 title: ''
 ---
-<div style="margin-bottom:10px;">
-</div>
+
 ```{r echo=FALSE, out.width='100%', fig.align="center"}
 knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
 ```
@@ -11,11 +10,12 @@ knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.pn
 
 
 # Geographically Weighted Summary Statistics
+<div style="margin-bottom:20px;">
+</div>
 
 To visualize geographical variation in the statistical distribution, geographically weighted local summary statistics (mean, standard deviation and Pearson’s correlation has described Brunsdon et al., (2002). This lessons we will leanr how to calculate GW means, GW standard deviation using  **GWModel** package (Gollini et al., 2013)  in the R statistical computing environment
 
 #### Load R packages
-
 
 ```{r message=F, warning=F}
 library(GWmodel)      ### GW models
@@ -32,12 +32,12 @@ library(ggplot2)      # Multiple plot
 
 #### Load Data
 
-The data use in this lesson could be found [here](https://www.dropbox.com/s/sngfyskys1jwvet/Data_GWR.7z?dl=0). 
+The data use in this lesson could be found [here](https://www.dropbox.com/s/lrz6og0ld2m64df/Data_GWR.7z?dl=0). 
 
 
 ```{r message=F, warning=F}
 # Define data folder
-dataFolder<-"D:\\Dropbox\\WebSite_Data\\R_Data\\Data_GWR\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_GWR\\"
 COUNTY<-shapefile(paste0(dataFolder,"COUNTY_ATLANTIC.shp"))
 state<-shapefile(paste0(dataFolder,"STATE_ATLANTIC.shp"))
 mf<-read.csv(paste0(dataFolder,"data_atlantic_1998_2012.csv"), header=T)

@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Green Ground Cover (GC) from UAV Images</title>
+<title>uav-ground-cover.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -253,7 +346,25 @@ $(document).ready(function () {
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
     </li>
     <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -289,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,15 +494,20 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Green Ground Cover (GC) from UAV Images</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
 
 </div>
-<p>Ground Cover or FCover is the percentage of green plant material that covers the surface. Monitoring FCover on crop fields indicates the rate of crop development and vigor. A relationship exists between fCover, NDVI, and LAI (Li et al., 2015; Richter et al., 2012; Shang et al., 2014). In most cases, however, this relationship is highly non-linear. FCover also provides a measure of the susceptibility to erosion. Crops with high fCover at early developmental stages intercept incident radiation and rainfall better, thereby increasing soil shading and decreasing soil evaporation. This can also be used to estimate irrigation requirements. <a href="http://dx.doi.org/10.2134/agrojnl2007.0140">Maas &amp; Rajan (2008)</a>] propossed a procedure that was developed to estimate GC of field crops from digital number (DN) of red and near-infrared (NIR) bands of Landsat satellite image. The processed method is the ratio of the perpendicular vegetation index (PVI) value calculated for an image pixel to the PVI value corresponding to full vegetation canopy.</p>
+<div id="green-ground-cover-gc-from-uav-images" class="section level1">
+<h1>Green Ground Cover (GC) from UAV Images</h1>
+Ground Cover or FCover is the percentage of green plant material that covers the surface. Monitoring FCover on crop fields indicates the rate of crop development and vigor. A relationship exists between fCover, NDVI, and LAI (Li et al., 2015; Richter et al., 2012; Shang et al., 2014). In most cases, however, this relationship is highly non-linear. FCover also provides a measure of the susceptibility to erosion. Crops with high fCover at early developmental stages intercept incident radiation and rainfall better, thereby increasing soil shading and decreasing soil evaporation. This can also be used to estimate irrigation requirements. <a href="http://dx.doi.org/10.2134/agrojnl2007.0140">Maas &amp; Rajan (2008)</a>] propossed a procedure that was developed to estimate GC of field crops from digital number (DN) of red and near-infrared (NIR) bands of Landsat satellite image. The processed method is the ratio of the perpendicular vegetation index (PVI) value calculated for an image pixel to the PVI value corresponding to full vegetation canopy.
+<div style="margin-bottom:20px;">
+
+</div>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -408,9 +524,18 @@ $(document).ready(function () {
 </div>
 <div id="load-pacakges" class="section level4">
 <h4>Load pacakges</h4>
-<pre class="r"><code>library(raster)
-library(rgdal)
-library(landsat)
+<pre class="r"><code>library(raster)</code></pre>
+<pre><code>## Loading required package: sp</code></pre>
+<pre class="r"><code>library(rgdal)</code></pre>
+<pre><code>## rgdal: version: 1.4-6, (SVN revision 841)
+##  Geospatial Data Abstraction Library extensions to R successfully loaded
+##  Loaded GDAL runtime: GDAL 2.2.3, released 2017/11/20
+##  Path to GDAL shared files: C:/Users/zua3/Documents/R/win-library/3.6/rgdal/gdal
+##  GDAL binary built with GEOS: TRUE 
+##  Loaded PROJ.4 runtime: Rel. 4.9.3, 15 August 2016, [PJ_VERSION: 493]
+##  Path to PROJ.4 shared files: C:/Users/zua3/Documents/R/win-library/3.6/rgdal/proj
+##  Linking to sp version: 1.3-1</code></pre>
+<pre class="r"><code>library(landsat)
 library(sp)
 library(RColorBrewer)
 library(RStoolbox)   # Image analysis
@@ -426,7 +551,7 @@ library(ggplot2)</code></pre>
 
 </div>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_09//&quot;</code></pre>
+dataFolder&lt;-&quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_09//DATA_09//&quot;</code></pre>
 <pre class="r"><code>s=stack(paste0(dataFolder,&quot;.\\UAV\\multi_bwh_mc_20150212.tif&quot;))</code></pre>
 </div>
 <div id="plot-rgb-maps" class="section level4">
@@ -440,7 +565,7 @@ theme(axis.title.x=element_blank(),
       axis.ticks.y=element_blank())+
   ggtitle(&quot;UAV&#39;s False Color Vegetation of Wheat Field\n (R= NIR, G= Red,  B=Green)&quot;)
 p1</code></pre>
-<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div id="load-red-and-nir-bands" class="section level4">
 <h4>Load Red and NIR Bands</h4>
@@ -460,7 +585,7 @@ nir = as(b5, &quot;SpatialGridDataFrame&quot;) # NIR band</code></pre>
 <div id="bare-soil-line" class="section level3">
 <h3>Bare Soil Line</h3>
 <p>The soil line is a linear relationship between the reflectance of the NIR and the Red bands for bare soil, is derived:</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/equ_bare_soil.png" width="40%" style="display: block; margin: auto;" /></p>
+<p><img src="Image/PNG_FILE_08/equ_bare_soil.png" width="40%" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -468,7 +593,7 @@ nir = as(b5, &quot;SpatialGridDataFrame&quot;) # NIR band</code></pre>
 <div style="margin-bottom:20px;">
 
 </div>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/baressoil.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="Image/PNG_FILE_08/baressoil.png" width="60%" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:20px;">
 
 </div>
@@ -501,12 +626,12 @@ Intercept = round(a0,3)</code></pre>
   text(150, 50,&quot;a0&quot;,pos=4)
   text(165, 50,&quot;=&quot;,pos=4)
   text(175, 50,Intercept,pos=4)</code></pre>
-<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div id="perpendicular-vegetation-index" class="section level3">
 <h3>Perpendicular Vegetation Index</h3>
 <p>Perpendicular Vegetation Index (PVI) any point calculated as:</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/PVI.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="Image/PNG_FILE_08/PVI.png" width="50%" style="display: block; margin: auto;" /></p>
 <p>Where, in which a1 and a0 are the slope and intercept, respectively, of the bare soil line.</p>
 <pre class="r"><code>a2= (1+a1^2)^0.5 # nominator of the  equations 
 # PVI
@@ -520,9 +645,9 @@ PVI.1&lt;-PVI/100</code></pre>
     scale_fill_gradientn(&quot;PVI&quot;, 
     colours = c(&quot;red&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;green4&quot;))+
     ggtitle(&quot;Perpendicular Vegetation Index (PVI)&quot;)</code></pre>
-<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>PVI associated with full vegetation canopy (PV1-FC):</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/PVI_FC.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="E:\GitHub\geospatial-r-github\Image\PNG_FILE_08\PNG_FILE_08\PVI_FC.png" width="50%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># NIR and Red values at full Grouncover
 FC.b2 = bsl$top[[1]]  # Red value at Full ground cover 
 FC.b5 = bsl$top[[2]]  # NIR value at Full ground cover 
@@ -534,7 +659,7 @@ PVI.FC </code></pre>
 <div id="ground-cover" class="section level3">
 <h3>Ground Cover</h3>
 <p>An approximate value of GC associated with any point can be calculated as the ratio of PVI and PVI-FC of corressponding full canopy:</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_08/GC.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="Image/PNG_FILE_08/GC.png" width="50%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Calculate fraction of GC 
 GC = PVI/PVI.FC
 # Omit value greater than 1 and lower than 0 
@@ -546,7 +671,7 @@ GC[GC &lt; 0] &lt;- 0</code></pre>
     scale_fill_gradientn(&quot;GC&quot;, 
     colours = c(&quot;red&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;green4&quot;))+
     ggtitle(&quot;Green Vegetation Cover (GC)&quot;)</code></pre>
-<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-22-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="weighted-difference-vegetation-index" class="section level3">
@@ -561,8 +686,9 @@ WDVI[WDVI &lt; 0.000] &lt;- 0.000</code></pre>
     scale_fill_gradientn(&quot;WDVI&quot;, 
     colours = c(&quot;red&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;green4&quot;))+
     ggtitle(&quot;Weighted Vegetation Index (WDVI)&quot;)</code></pre>
-<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-24-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="uav-ground-cover_files/figure-html/unnamed-chunk-25-1.png" width="480" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 </div>
 
@@ -583,6 +709,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

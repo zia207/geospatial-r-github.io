@@ -5,20 +5,20 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3337934698",
+    "hash" : "911024318",
     "id" : "FD9F9107",
-    "lastKnownWriteTime" : 1571690302,
-    "last_content_update" : 1571690302624,
+    "lastKnownWriteTime" : 1578452802,
+    "last_content_update" : 1578452802137,
     "path" : "E:/GitHub/geospatial-r-github/_site.yml",
     "project_path" : "_site.yml",
     "properties" : {
-        "cursorPosition" : "36,40",
-        "scrollLine" : "0"
+        "cursorPosition" : "118,35",
+        "scrollLine" : "110"
     },
     "read_only" : false,
     "read_only_alternatives" : [
     ],
-    "relative_order" : 4,
+    "relative_order" : 2,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "yaml"

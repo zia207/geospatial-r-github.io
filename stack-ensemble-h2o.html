@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>stack-ensemble-h2o.utf8</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div style="margin-bottom:10px;">
+
+</div>
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div style="margin-bottom:20px;">
+
+</div>
+<p><img src="Image/DNN_h2o.png" width="100%" style="display: block; margin: auto;" /></p>
+<div style="margin-bottom:30px;">
+
+</div>
+<div id="ensemble-machine-learning---supervised-image-classification-in-h20-r" class="section level1">
+<h1>Ensemble machine learning - Supervised Image Classification in H20 R</h1>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>Ensemble machine learning uses multiple learning algorithms to obtain better predictive performance than could be obtained from any of the constituent learning algorithms. Many of the popular modern machine learning algorithms are ensembles. Stack-generalization usually follows three steps: (1) set up a list of base learners (level-0) and meta-learner (level-1); (2) train each of base learners and performed K-fold cross validation prediction for each base learner; (3) use these predicted values to train the meta-learner and predict new data</p>
+<p>In this tutorial will show how to implement a Stack-generalization for pixel based supervised classification of Sentinel-2 multispectral images using the <a href="http://h2o-release.s3.amazonaws.com/h2o/rel-lambert/5/docs-website/Ruser/Rinstall.html">H20</a> package in R.</p>
+<p>First, we will split the “point_data” into a training set (75% of the data), a validation set (12%) and a test set (13%) data. The validation data set will be used to optimize the model parameters during the training process. The model’s performance will be tested with the test data set. Finally, we will predict land use classes using a grid data set.</p>
+<div id="load-packages" class="section level4">
+<h4>Load packages</h4>
+<pre class="r"><code>library(rgdal)         # spatial data processing
+library(raster)        # raster processing
+library(plyr)          # data manipulation 
+library(dplyr)         # data manipulation 
+library(RStoolbox)     # plotting raster data 
+library(ggplot2)       # plotting 
+library(RColorBrewer)  # Color
+library(sp)            # Spatial data
+library(ggplot2)       # Plotting</code></pre>
+<div style="margin-bottom:20px;">
+
+</div>
+<p>The data could be available for download from <a href="https://www.dropbox.com/s/bupqmsfyr2tk1yg/Data_RS_DNN.7z?dl=0">here</a>.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code># Define data folder
+dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_RS_DNN\\&quot;</code></pre>
+</div>
+<div id="load-point-and-grid-data" class="section level4">
+<h4>Load point and grid data</h4>
+<pre class="r"><code>point&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\point_data.csv&quot;), header = T)
+grid&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\prediction_grid_data.csv&quot;), header = T)</code></pre>
+<div id="creat-data-frames" class="section level5">
+<h5>Creat data frames</h5>
+<pre class="r"><code>point.data&lt;-cbind(point[c(3:13)])
+grid.data&lt;-grid[c(4:13)]
+grid.xy&lt;-grid[c(3,1:2)]</code></pre>
+</div>
+</div>
+<div id="install-h2o" class="section level4">
+<h4>Install H2O</h4>
+<pre class="r"><code>#install.packages(&quot;h20&quot;)</code></pre>
+</div>
+<div id="start-and-initialize-h20-local-cluster" class="section level4">
+<h4>Start and Initialize H20 local cluster</h4>
+<pre class="r"><code>library(h2o)
+localH2o &lt;- h2o.init(nthreads = -1) </code></pre>
+</div>
+<div id="import-data-to-h2o-cluster" class="section level4">
+<h4>Import data to H2O cluster</h4>
+<pre class="r"><code>df&lt;-  as.h2o(point.data)
+grid&lt;- as.h2o(grid.data)</code></pre>
+</div>
+<div id="split-data-into-train-validation-and-test-dataset" class="section level4">
+<h4>Split data into train, validation and test dataset</h4>
+<pre class="r"><code>splits &lt;- h2o.splitFrame(df, c(0.75,0.125), seed=1234)
+train  &lt;- h2o.assign(splits[[1]], &quot;train.hex&quot;) # 75%
+valid  &lt;- h2o.assign(splits[[2]], &quot;valid.hex&quot;) # 12%
+test   &lt;- h2o.assign(splits[[3]], &quot;test.hex&quot;)  # 13%</code></pre>
+</div>
+<div id="create-response-and-features-data-sets" class="section level4">
+<h4>Create response and features data sets</h4>
+<pre class="r"><code>y &lt;- &quot;Class&quot;
+x &lt;- setdiff(names(train), y)</code></pre>
+<div style="margin-bottom:20px;">
+
+
+</div>
+</div>
+<div id="random-forest" class="section level1">
+<h1>Random Forest</h1>
+<p>TRandom forests is an ensemble of multiple iterations of decision trees, which become a major data analysis tool. Each tree is made by bootstrapping of the original data set which allows for robust error estimation with the remaining test set, the so-called Out-Of-Bag (OOB) sample. The excluded OOB samples are predicted from the bootstrap samples and by combining the OOB predictions from all trees. The RF algorithm can outperform linear regression (Hengl et al., 2015), and unlike linear regression, RF has no requirements considering the form of the probability density function of the target variable (Kuhn and Johnson, 2013). One major disadvantage of RF is that it is difficult to interpret the relationships between the response and predictor variables. However, RF allows estimation of the importance of variables as measured by the mean decrease in prediction accuracy before and after permuting out-of-bag (OOB) variables. The difference between the two is then averaged over all trees and normalized by the standard deviation of the differences.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code># Hyper-parameter
+drf_hyper_params &lt;-list(
+              ntrees  = seq(10, 5000, by = 10),
+              max_depth=c(10,20,30,40,50),
+              sample_rate=c(0.7, 0.8, 0.9, 1.0)
+              )
+
+#  Serach criteria
+drf_search_criteria &lt;- list(strategy = &quot;RandomDiscrete&quot;, 
+                        max_models = 200,
+                        max_runtime_secs = 900,
+                        stopping_tolerance = 0.001,
+                        stopping_rounds = 2,
+                        seed = 1345767)
+# Grid Search
+drf_grid &lt;- h2o.grid(
+                  algorithm=&quot;randomForest&quot;,
+                  grid_id = &quot;drf_grid_ID&quot;,
+                  x= x,
+                  y = y,
+                  training_frame = train,
+                  validation_frame =valid, 
+                  stopping_metric = &quot;logloss&quot;,
+                  nfolds=10,
+                  keep_cross_validation_predictions = TRUE,
+                  hyper_params = drf_hyper_params,
+                  search_criteria = drf_search_criteria,
+                  seed = 42)</code></pre>
+<div id="drf-grid-parameters" class="section level3">
+<h3>DRF Grid parameters</h3>
+<pre class="r"><code># RF Grid parameters
+drf_get_grid &lt;- h2o.getGrid(&quot;drf_grid_ID&quot;,sort_by=&quot;logloss&quot;,decreasing=FALSE)
+drf_get_grid@summary_table[1,]</code></pre>
+</div>
+<div id="the-best-drf-model" class="section level3">
+<h3>The Best DRF Model</h3>
+<pre class="r"><code>best_drf &lt;- h2o.getModel(drf_get_grid@model_ids[[1]]) </code></pre>
+<div style="margin-bottom:40px;">
+
+</div>
+</div>
+<div id="gradient-boosting-machine-gbm" class="section level2">
+<h2>Gradient Boosting Machine (GBM)</h2>
+<p>Gradient Boosting Machine (for Regression and Classification) is a forward learning ensemble method. The guiding heuristic is that good predictive results can be obtained through increasingly refined approximations. H2O’s GBM sequentially builds regression trees on all the features of the dataset in a fully distributed way - each tree is built in parallel.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code># Hyper-parameter
+gbm_hyper_params = list( ntrees = c(100,500, 1000),
+                     max_depth = seq(1,20),
+                     min_rows = c(1,5,10,20,50,100),
+                     learn_rate = seq(0.001,0.01,0.001),
+                     sample_rate = seq(0.3,1,0.05),
+                     col_sample_rate = seq(0.3,1,0.05),
+                     col_sample_rate_per_tree = seq(0.3,1,0.05))
+# Serach criteria
+gbm_search_criteria &lt;- list(strategy = &quot;RandomDiscrete&quot;, 
+                        max_models = 200,
+                        max_runtime_secs = 900,
+                        stopping_tolerance = 0.001,
+                        stopping_rounds = 2,
+                        seed = 1345767)
+# Grid Search
+gbm_grid &lt;- h2o.grid(
+                  algorithm=&quot;gbm&quot;,
+                  grid_id = &quot;GBM_grid_IDx&quot;,
+                  x= x,
+                  y = y,
+                  training_frame = train,
+                  validation_frame =valid,  
+                  stopping_metric = &quot;logloss&quot;,
+                  nfolds=10,
+                  hyper_params = gbm_hyper_params,
+                  keep_cross_validation_predictions = TRUE,
+                  search_criteria = gbm_search_criteria,
+                  seed = 42)</code></pre>
+<pre class="r"><code>gbm_get_grid&lt;- h2o.getGrid(&quot;GBM_grid_IDx&quot;,sort_by=&quot;logloss&quot;,decreasing=FALSE)</code></pre>
+<pre class="r"><code>gbm_get_grid@summary_table[1,]</code></pre>
+<pre><code>## Hyper-Parameter Search Summary: ordered by increasing logloss
+##   col_sample_rate col_sample_rate_per_tree learn_rate max_depth min_rows
+## 1             0.6                     0.75      0.007        10      5.0
+##   ntrees sample_rate            model_ids               logloss
+## 1   1000         0.5 GBM_grid_IDx_model_2 0.0023132631150400147</code></pre>
+<div id="the-best-gbm-model" class="section level3">
+<h3>The Best GBM Model</h3>
+<pre class="r"><code>best_gbm &lt;- h2o.getModel(gbm_get_grid@model_ids[[1]]) ## model with lowest logloss</code></pre>
+<div style="margin-bottom:40px;">
+
+</div>
+</div>
+</div>
+</div>
+<div id="deep-neural-network-dnn" class="section level1">
+<h1>Deep Neural Network (DNN)</h1>
+<p>The DNN is based on a multi-layer feedforward artificial neural network (ANN) that is trained with stochastic gradient descent using backpropagation. The network may contain many hidden layers consisting of neurons with activation functions. Advanced features such as adaptive learning rate, rate annealing, momentum training, dropout, L1 or L2 regularization, check-pointing, and grid search enable the technique to achieve high predictive accuracy. Each compute node trains a copy of the global model parameters on its local data with multi-threading (asynchronously) and contributes periodically to the global model via model averaging across the network.</p>
+<div style="margin-bottom:20px;">
+
+</div>
+<pre class="r"><code># Hyper-prameter 
+dnn_hyper_params &lt;- list(
+                     activation = c(&quot;Rectifier&quot;, 
+                                    &quot;Maxout&quot;, 
+                                    &quot;Tanh&quot;, 
+                                    &quot;RectifierWithDropout&quot;, 
+                                    &quot;MaxoutWithDropout&quot;,
+                                    &quot;TanhWithDropout&quot;),
+                     hidden = list(c(5, 5, 5, 5, 5), c(10, 10, 10, 10), 
+                                   c(50, 50, 50), c(100, 100, 100)),
+                     epochs = c(50, 100, 200),
+                     l1 = c(0, 0.00001, 0.0001), 
+                     l2 = c(0, 0.00001, 0.0001),
+                     rate = c(0, 01, 0.005, 0.001),
+                     rate_annealing = c(1e-8, 1e-7, 1e-6),
+                     rho = c(0.9, 0.95, 0.99, 0.999),
+                     epsilon = c(1e-10, 1e-8, 1e-6, 1e-4),
+                     momentum_start = c(0, 0.5),
+                     momentum_stable = c(0.99, 0.5, 0),
+                     input_dropout_ratio = c(0, 0.1, 0.2),
+                     max_w2 = c(10, 100, 1000, 3.4028235e+38)
+                     )
+
+# serach criteris
+dnn_search_criteria &lt;- list(strategy = &quot;RandomDiscrete&quot;, 
+                        max_models = 200,
+                        max_runtime_secs = 900,
+                        stopping_tolerance = 0.001,
+                        stopping_rounds = 2,
+                        seed = 1345767)
+# Grid search
+DNN_grid &lt;- h2o.grid(
+                  algorithm=&quot;deeplearning&quot;,
+                  grid_id = &quot;DNN_grid_ID&quot;,
+                  x= x,
+                  y = y,
+                  training_frame = train,
+                  validation_frame =valid,  
+                  stopping_metric = &quot;logloss&quot;,
+                  nfolds=10,
+                  keep_cross_validation_predictions = TRUE,
+                  hyper_params = dnn_hyper_params,
+                  search_criteria = dnn_search_criteria,
+                  seed = 42)</code></pre>
+<div id="dnn-grid-parameters" class="section level3">
+<h3>DNN Grid parameters</h3>
+<pre class="r"><code># RF Grid parameters
+dnn_get_grid &lt;- h2o.getGrid(&quot;DNN_grid_ID&quot;,sort_by=&quot;logloss&quot;,decreasing=FALSE)
+dnn_get_grid@summary_table[1,]</code></pre>
+</div>
+<div id="the-best-dnn-model" class="section level3">
+<h3>The Best DNN Model</h3>
+<pre class="r"><code>best_dnn &lt;- h2o.getModel(dnn_get_grid@model_ids[[1]]) </code></pre>
+</div>
+</div>
+<div id="stack-ensemble" class="section level1">
+<h1>Stack-Ensemble</h1>
+<div style="margin-bottom:40px;">
+
+</div>
+<pre class="r"><code># model parmeters
+stack_ensemble &lt;- h2o.stackedEnsemble(
+                               model_id = &quot;stack_ID&quot;,
+                               x= x,
+                               y = y,
+                               training_frame = train,
+                               validation_frame =valid,
+                               base_models = list(best_drf, 
+                                                  best_dnn, 
+                                                  best_gbm),
+                               metalearner_algorithm = &quot;AUTO&quot;,
+                               metalearner_nfolds = 10,
+                               seed=123)</code></pre>
+<div id="model-performance-with-test-data-set" class="section level3">
+<h3>Model performance with Test data set</h3>
+<pre class="r"><code>drf.perf&lt;-h2o.performance(best_drf, newdata=test)             ## full test data
+gbm.perf&lt;-h2o.performance(best_gbm, newdata=test)             ## full test data
+dnn.perf&lt;-h2o.performance(best_dnn, newdata=test)             ## full test data
+ensemble.perf&lt;-h2o.performance(stack_ensemble, newdata=test)    ## full test data</code></pre>
+<div id="mean-per_class_error" class="section level4">
+<h4>Mean per_class_error</h4>
+<pre class="r"><code>cat(&#39;RF Error:&#39;,h2o.mean_per_class_error(drf.perf), &#39;\n&#39;) 
+cat(&#39;GBM Error:&#39;,h2o.mean_per_class_error(gbm.perf), &#39;\n&#39;) 
+cat(&#39;DNN Error:&#39;,h2o.mean_per_class_error(dnn.perf), &#39;\n&#39;) 
+cat(&#39;Ensmeble Error:&#39;,h2o.mean_per_class_error(ensemble.perf), &#39;\n&#39;) </code></pre>
+</div>
+<div id="log-loss" class="section level4">
+<h4>Log Loss</h4>
+<pre class="r"><code>cat(&#39;RF Log-loss:&#39;,h2o.logloss(drf.perf), &#39;\n&#39;) 
+cat(&#39;GBM Log-lossr:&#39;,h2o.logloss(gbm.perf), &#39;\n&#39;) 
+cat(&#39;DNN Log-loss:&#39;,h2o.logloss(dnn.perf), &#39;\n&#39;) 
+cat(&#39;Ensmeble Log-loss:&#39;,h2o.logloss(ensemble.perf), &#39;\n&#39;) </code></pre>
+</div>
+<div id="grid-prediction" class="section level4">
+<h4>Grid Prediction</h4>
+<pre class="r"><code>g.predict = as.data.frame(h2o.predict(object = stack_ensemble, newdata = grid))</code></pre>
+</div>
+<div id="stop-h20-cluster" class="section level4">
+<h4>Stop h20 cluster</h4>
+<pre class="r"><code>h2o.shutdown(prompt=FALSE)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="extract-prediction-class" class="section level4">
+<h4>Extract Prediction Class</h4>
+<pre class="r"><code># Extract predicted landuse class
+grid.xy$Class&lt;-g.predict$predict  
+# Import lnaduse ID file 
+ID&lt;-read.csv(paste0(dataFolder,&quot;.\\Sentinel_2\\Landuse_ID.csv&quot;), header=T)
+# Join landuse ID
+grid.new&lt;-join(grid.xy, ID, by=&quot;Class&quot;, type=&quot;inner&quot;) 
+# Omit missing values
+grid.new.na&lt;-na.omit(grid.new)                                                            </code></pre>
+</div>
+<div id="convert-to-raster-and-write" class="section level4">
+<h4>Convert to raster and write</h4>
+<pre class="r"><code>x&lt;-SpatialPointsDataFrame(as.data.frame(grid.new.na)[, c(&quot;x&quot;, &quot;y&quot;)], data = grid.new.na)
+r &lt;- rasterFromXYZ(as.data.frame(x)[, c(&quot;x&quot;, &quot;y&quot;, &quot;Class_ID&quot;)])</code></pre>
+</div>
+<div id="plot-map" class="section level4">
+<h4>Plot map</h4>
+<pre class="r"><code># Create color palette
+myPalette &lt;- colorRampPalette(c(&quot;light grey&quot;,&quot;burlywood4&quot;, &quot;forestgreen&quot;,&quot;light green&quot;, &quot;dodgerblue&quot;))
+# Plot Map
+LU&lt;-spplot(r,&quot;Class_ID&quot;, main=&quot;Supervised Image Classification: Stack-Ensemble&quot; , 
+      colorkey = list(space=&quot;right&quot;,tick.number=1,height=1, width=1.5,
+              labels = list(at = seq(1,4.8,length=5),cex=1.0,
+              lab = c(&quot;Road/parking/pavement&quot; ,&quot;Building&quot;, &quot;Tree/buses&quot;, &quot;Grass&quot;, &quot;Water&quot;))),
+              col.regions=myPalette,cut=4)
+LU</code></pre>
+<p><img src="stack-ensemble-h2o_files/figure-html/unnamed-chunk-30-1.png" width="624" style="display: block; margin: auto;" /></p>
+</div>
+<div id="write-raster" class="section level4">
+<h4>Write raster</h4>
+<pre class="r"><code># writeRaster(r, filename = paste0(dataFolder,&quot;.\\Sentinel_2\\DNN_H20_Landuse.tiff&quot;), &quot;GTiff&quot;, overwrite=T)</code></pre>
+<pre class="r"><code>rm(list = ls())</code></pre>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

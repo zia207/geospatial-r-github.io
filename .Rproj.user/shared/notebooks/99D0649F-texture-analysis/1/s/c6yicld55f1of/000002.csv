@@ -1,0 +1,4 @@
+"0","if(require(gridExtra)){"
+"0","  plots <- lapply(1:4, function(x) ggR(rpc$map, x, geom_raster = TRUE))"
+"0","  grid.arrange(plots[[1]],plots[[2]], plots[[3]], plots[[4]],ncol=2)"
+"0","}"

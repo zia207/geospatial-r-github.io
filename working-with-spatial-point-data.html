@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Working with Spatial Point Data</title>
+<title>working-with-spatial-point-data.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,9 +23,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -89,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -99,6 +96,9 @@ img {
 }
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -114,7 +114,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -134,6 +133,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,19 +191,73 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -191,6 +281,9 @@ $(document).ready(function () {
     Home
   </a>
 </li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Spatial Data Processing
@@ -200,9 +293,6 @@ $(document).ready(function () {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="about.html">Content</a>
-    </li>
-    <li>
-      <a href="getting-started-with-r.html">Getting Started with R</a>
     </li>
     <li>
       <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
@@ -222,6 +312,9 @@ $(document).ready(function () {
     <li>
       <a href="working-with-raster-data.html">Working with Raster Data</a>
     </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -235,10 +328,10 @@ $(document).ready(function () {
       <a href="about-b.html">Content</a>
     </li>
     <li>
-      <a href="spatial-statistics.html">Spatial Statistics</a>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
     </li>
     <li>
-      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
     </li>
     <li>
       <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
@@ -253,7 +346,25 @@ $(document).ready(function () {
       <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
     </li>
     <li>
-      <a href="spatial-interpolation.html">Spatial Interpolation</a>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Geographically Wighted Rrandom Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
     </li>
     <li>
       <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
@@ -289,7 +400,7 @@ $(document).ready(function () {
       <a href="cross-validation.html">Cross-validation</a>
     </li>
     <li>
-      <a href="validation-independent-dataset.html.">Validation with an Independent Dataset</a>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
     </li>
     <li>
       <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
@@ -383,12 +494,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Working with Spatial Point Data</h1>
 
 </div>
 
 
-<div style="margin-bottom:40px;">
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="working-with-spatial-point-data" class="section level1">
+<h1>Working with Spatial Point Data</h1>
+<div style="margin-bottom:20px;">
 
 </div>
 <p>In this section, we will learn how to integrated a different types of spatial data and create a data frame for spatial interpolation. This excessive consists of six major steps:</p>
@@ -424,7 +540,7 @@ library(plotGoogleMaps) # plot data on Google Map</code></pre>
 <li><p><strong>Raster data</strong>: DEM (ELEV), slope, aspect, topographic position index (TPI), mean annual air temperature (MAT), mean annual precipitation (MAP), soil texture (Silt+Clay), Fire Regime Groups(FRG), Normalized Difference Vegetation Index (NDVI), and land cover (NLCD) and soil erodibility factor (K_factor). This data has downloaded from <a href="https://daac.ornl.gov/NACP/guides/SOC_Stocks_Great_Plains.html">here</a> and detail description of the data can be found in <a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2016JG003488"><strong>Assessing soil carbon vulnerability in the Western USA by geospatial modeling of pyrogenic and particulate carbon stocks</strong></a>. For training purpose, all raster was re-sampled to 10 km x 10 km grid size.</p></li>
 </ul>
 <pre class="r"><code># Define data folder
-dataFolder&lt;-&quot;F://Spatial_Data_Processing_and_Analysis_R//Data//DATA_05//&quot;</code></pre>
+dataFolder&lt;-&quot;D://Dropbox//Spatial Data Analysis and Processing in R//DATA_05//DATA_05//&quot;</code></pre>
 <pre class="r"><code>ID&lt;-read.csv(paste0(dataFolder,&quot;GP_ID.csv&quot;), header= TRUE)          # id file
 gps&lt;-read.csv(paste0(dataFolder, &quot;GP_GPS.csv&quot;), header= TRUE)       # data file
 data&lt;-read.csv(paste0(dataFolder,&quot;GP_SOC_data.csv&quot;), header= TRUE)  # GPS coordinates</code></pre>
@@ -432,7 +548,7 @@ data&lt;-read.csv(paste0(dataFolder,&quot;GP_SOC_data.csv&quot;), header= TRUE) 
 <div id="create-a-spatial-point-data-frame" class="section level3">
 <h3>Create a Spatial Point Data Frame</h3>
 <p>Data contains three attributes: <strong>ID, longitude and latitude</strong> in <strong>decimal degree (DD)</strong> format of soil sampling location. If you have GPS coordinates as degrees (d), minutes (m), and seconds (s) format,you need to convert to DD using below formula:</p>
-<p><img src="F:/Spatial_Data_Processing_and_Analysis_R/Spatial-data-R/Image/PNG_FILE_06/Pic1.png" width="40%" style="display: block; margin: auto;" /></p>
+<p><img src="Image/PNG_FILE_06/Pic1.png" width="40%" style="display: block; margin: auto;" /></p>
 <div id="merge-data" class="section level4">
 <h4>Merge Data</h4>
 <p>We will merge ID, GPS and data objects using <strong>merge()</strong> function by a common ID</p>
@@ -483,7 +599,7 @@ str(SPDF)</code></pre>
 ##   .. .. ..@ projargs: chr NA</code></pre>
 <div id="define-projection" class="section level4">
 <h4>Define projection</h4>
-<p>We will define current CRS (WGS 84) before re-project it to **Albers Equal Area Conic NAD1983&quot;</p>
+<p>We will define current CRS (WGS 84) before re-project it to **Albers Equal Area Conic NAD1983"</p>
 <pre class="r"><code>proj4string(SPDF) = CRS(&quot;+proj=longlat +ellps=WGS84&quot;)  # WGS 84
 proj4string(SPDF)
 ## [1] &quot;+proj=longlat +ellps=WGS84&quot;</code></pre>
@@ -508,7 +624,7 @@ plot(SPDF, main=&quot;WGS 1984&quot;, pch=20, cex =0.2)
 plot(state, add=T)
 plot(SPDF.PROJ, main=&quot;Albers Equal Area Conic&quot;, pch=20, cex=0.2)
 plot(state, add=T)</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>par(mfrow=c(1,1))</code></pre>
 </div>
 <div id="convert-spdf-to-a-dataframe" class="section level4">
@@ -532,7 +648,7 @@ colnames(point.df)[10] &lt;- &quot;y&quot;</code></pre>
 <pre class="r"><code>glist &lt;- list.files(path=paste0(dataFolder, &quot;.//RASTER&quot;),pattern=&#39;.tif$&#39;,full.names=T)
 s&lt;- stack(glist)
 plot(s)</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-12-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-13-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="extract-raster-values-to-spdf" class="section level4">
 <h4>Extract raster values to SPDF</h4>
@@ -649,7 +765,7 @@ head(grid)</code></pre>
 <pre class="r"><code>hist(mf$SOC, 
      main=&quot;Histogram of Soil OC&quot;,
      xlab= &quot;Soil OC (mg C/g)&quot;)</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>You can save this figure as a high resolution tif file in your working directory</p>
 <pre class="r"><code>windows(width=5, height=4.5)
 tiff( file=&quot;FIGURE_01_HISTOGRAM_SOC.tif&quot;, 
@@ -665,7 +781,7 @@ dev.off()</code></pre>
 <h4>Quantile-Quantile (QQ) plot</h4>
 <pre class="r"><code>qqnorm(mf$SOC, pch = 1,main= &quot;&quot;)                # produces a normal QQ plot of the variable
 qqline(mf$SOC, col = &quot;steelblue&quot;, lwd = 2)      # adds a reference line</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div id="correlation-soc-with-environmental-data" class="section level4">
 <h4>Correlation SOC with environmental data</h4>
@@ -745,17 +861,17 @@ cor.matrix</code></pre>
 corrplot(cor.matrix$r, type=&quot;upper&quot;, order=&quot;hclust&quot;, 
          main=&quot;&quot;, cex.lab = 0.5,
          p.mat = cor.matrix$P, sig.level = 0.05, insig = &quot;blank&quot;)</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-22-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>In this plot, correlation coefficients are colored according to the value. Correlation matrix can be also reordered according to the degree of association between variables. Positive correlations are displayed in blue and negative correlations in red color. Color intensity and the size of the circle are proportional to the correlation coefficients. In the right side of the correlogram, the legend color shows the correlation coefficients and the corresponding colors. The correlations with p-value &gt; 0.05 are considered as insignificant. In this case the correlation coefficient values are leaved blank.</p>
 </div>
-<div id="variability-of-soc-in-relation-to-nlcd-landuse-nlcd-and-fire-regime-group-frg" class="section level4">
-<h4>Variability of SOC in relation to NLCD landuse (NLCD) and Fire Regime Group (FRG)</h4>
+</div>
+<div id="variability-of-soc-in-relation-to-nlcd-landuse-nlcd-and-fire-regime-group-frg" class="section level3">
+<h3>Variability of SOC in relation to NLCD landuse (NLCD) and Fire Regime Group (FRG)</h3>
 <p>Now we explore how SOC values varied with NLCD, TSP and FRG. We will perform following tasks:</p>
 <ul>
 <li>Box-Jitter plot</li>
 <li>Barplot and Summary stat by NLCD, TSP &amp; FRG</li>
 </ul>
-</div>
 <div id="box-jitter-plot" class="section level4">
 <h4>Box-Jitter plot</h4>
 <p>We will ggplot package to create Box-Jitter plots to explore variability of SOC with NLCD, TSP and FRG. First we will created a data.frame with this variables.</p>
@@ -793,7 +909,7 @@ ggplot(df.cat, aes(y=SOC, x=NLCD_DES)) +
   labs(y=&quot;SOC&quot;, x = &quot;&quot;)+ 
   ggtitle(&quot;Variability of SOC in relation to NLCD&quot;)+
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="frg" class="section level4">
 <h4>FRG</h4>
@@ -819,7 +935,7 @@ ggplot(df.cat, aes(y=SOC, x=FRG_DES)) +
   labs(y=&quot;SOC&quot;, x = &quot;&quot;)+
   ggtitle(&quot;Variabilty of SOC in relation to FGR&quot;)+
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-25-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-26-1.png" width="720" style="display: block; margin: auto;" /></p>
 </div>
 <div id="barplot-and-summary-statistics-grouped-by-nlcd-frg" class="section level4">
 <h4>Barplot and Summary statistics grouped by NLCD &amp; FRG</h4>
@@ -855,7 +971,7 @@ FRG.SOC&lt;-ddply(df.cat,~FRG_DES, summarise, mean=mean(SOC),median=median(SOC),
   labs(y=&quot;SOC (mg C/g)&quot;, x = &quot;&quot;)+
   ggtitle(&quot;Mean±SE of SOC grouped by NLCD&quot;)+
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-28-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-29-1.png" width="720" style="display: block; margin: auto;" /></p>
 </div>
 <div id="barplot-frg" class="section level4">
 <h4>Barplot FRG</h4>
@@ -876,7 +992,7 @@ FRG.SOC&lt;-ddply(df.cat,~FRG_DES, summarise, mean=mean(SOC),median=median(SOC),
   labs(y=&quot;SOC (mg C/g)&quot;, x = &quot;&quot;)+
   ggtitle(&quot;Mean±SE of SOC grouped by FRG&quot;)+
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-29-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-30-1.png" width="720" style="display: block; margin: auto;" /></p>
 </div>
 <div id="spatial-variability-of-soc" class="section level4">
 <h4>Spatial Variability of SOC</h4>
@@ -906,7 +1022,7 @@ soc&lt;-levelplot(SOC~x+y, mf,cex=0.8,
               sp.polygons(state,lty=1,lwd=0.5,col=&quot;grey30&quot;)
               },)
 soc</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-30-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-31-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Save as 
 windows(width=6, height=6)
 tiff(file=paste0(dataFolder,&quot;FIGURE_SOC_OBSERVED_Col.tif&quot;), 
@@ -925,7 +1041,7 @@ FIPS.SOC&lt;-ddply(mf,~FIPS, summarise, mean=mean(SOC))
 county.soc&lt;-merge(county,FIPS.SOC, by=&quot;FIPS&quot;)</code></pre>
 <pre class="r"><code>spplot(county.soc,&quot;mean&quot;,
        main=&quot;County Mean of SOC (mg C/g)&quot;)</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-33-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-34-1.png" width="576" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:40px;">
 
 </div>
@@ -937,9 +1053,9 @@ county.soc&lt;-merge(county,FIPS.SOC, by=&quot;FIPS&quot;)</code></pre>
 <pre class="r"><code>us &lt;- c(left = -125, bottom = 25.75, right = -67, top = 49)
 map &lt;- get_stamenmap(us, zoom = 5, maptype = &quot;toner-lite&quot;)
 ggmap(map)</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qmplot(Longitude, Latitude, data = df, maptype = &quot;toner-lite&quot;, color = I(&quot;red&quot;))</code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-35-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-36-1.png" width="480" style="display: block; margin: auto;" /></p>
 <div style="margin-bottom:40px;">
 
 </div>
@@ -981,8 +1097,9 @@ rgb.palette.col &lt;- colorRampPalette(c(&quot;red&quot;,&quot;yellow&quot;, &qu
               sp.points(test, col=&quot;black&quot;, cex=1.2,pch=21)
               sp.polygons(bound,lty=1,lwd=0.5,col=&quot;grey30&quot;)
               },)   </code></pre>
-<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-40-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="working-with-spatial-point-data_files/figure-html/unnamed-chunk-41-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rm(list = ls())</code></pre>
+</div>
 </div>
 </div>
 
@@ -1003,6 +1120,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

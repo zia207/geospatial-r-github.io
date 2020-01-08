@@ -1,0 +1,2 @@
+"0","county<-shapefile(paste0(dataFolder,""COUNTY_ATLANTIC.shp""))"
+"0","state<-shapefile(paste0(dataFolder,""STATE_ATLANTIC.shp""))"

@@ -1,0 +1,2 @@
+"0","prob.test <- model %>%"
+"0","  predict_proba(test, batch_size = 100)"

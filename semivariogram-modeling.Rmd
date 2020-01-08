@@ -1,12 +1,20 @@
 ---
-title: "Semivariogram Modeling"
+title: ''
 ---
 
+
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+# Semivariogram Modeling
 
 Semivariogram is a function describing the degree of spatial correlation of a spatial random variable.  In spatial modeling, semivariogram begins with a graph of the empirical semivariogram, which is the half of average squared difference between points separated by a distance. The semivariogram is calculated as:
 
 ```{r echo=FALSE, out.width='30%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\Vario.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_07\\Vario.png')
 ```
 
 
@@ -50,7 +58,7 @@ The soil organic carbon data (train and test data set) that we have created in p
 
 ```{r}
 # Define data folder
-dataFolder<-"F:\\Spatial_Data_Processing_and_Analysis_R\\Data\\DATA_08\\"
+dataFolder<-"D:\\Dropbox\\Spatial Data Analysis and Processing in R\\DATA_08\\DATA_08\\"
 ```
 
 ```{r}
@@ -160,7 +168,7 @@ After the experimental variogram is computed, we usually observe semivarince in 
 There are several parameters can be calculated from fitted model. The height that the semivariogram reaches when it levels off or the value at which the model first flattens out is called the **sill**. It is often composed of two parts: **nugget** and **partial sill**. A discontinuity at the origin or the value at which the semi-variogram (almost) intercepts the y-value, called **nugget** effect. The nugget effect explains measurement error and microscale variation. The distance at which the sill first flattens out is call **range**. In **gstat** models the sill is specified as a **partial sill**, that is, the difference between the total sill and the nugget. This is also known as the **structural sill**.
 
 ```{r echo=FALSE, out.width='50%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\Fit.vario.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_07\\Fit.vario.png')
 ```
 
 
@@ -179,7 +187,7 @@ The most common  model of variogram mainly includes **linear model, spherical mo
 
 
 ```{r echo=FALSE, out.width='60%', fig.align="center"}
-knitr::include_graphics('F:\\Spatial_Data_Processing_and_Analysis_R\\Spatial-data-R\\Image\\PNG_FILE_07\\Varo_model.png')
+knitr::include_graphics('E:\\GitHub\\geospatial-r-github\\Image\\PNG_FILE_07\\Varo_model.png')
 ```
 
 

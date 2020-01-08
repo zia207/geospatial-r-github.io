@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>netCDF-data-processing.utf8</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Geospatial Data Science in R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="getting-started-with-r.html">Getting Started with R</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Data Processing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about.html">Content</a>
+    </li>
+    <li>
+      <a href="read-write-spatial-data.html">Read and Write Spatial Data</a>
+    </li>
+    <li>
+      <a href="map-projection-coordinate-reference-systems.html">Map Projection and Coordinate Reference Systems</a>
+    </li>
+    <li>
+      <a href="geoprocessing-vector-data.html">Geoprocessing of Vector data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-point-data.html">Working with Spatial Point Data</a>
+    </li>
+    <li>
+      <a href="working-with-spatial-polygon.html">Working with Spatial Polygon Data</a>
+    </li>
+    <li>
+      <a href="working-with-raster-data.html">Working with Raster Data</a>
+    </li>
+    <li>
+      <a href="netCDF-data-processing.html">netCDF Data Processing</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-b.html">Content</a>
+    </li>
+    <li>
+      <a href="spatial-autocorrelation.html">Spatial Autocorrelation</a>
+    </li>
+    <li>
+      <a href="point-pattern-analysis.html">Point Pattern Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-models.html">Geographically Weighted Model</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-summary-statistics.html">Geographically Weighted Summary Statistics</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-principal-components-analysis.html">Geographically Weighted Principal Components Analysis</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-regression.html">Geographically Weighted Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-ols-regression.html">Geographically Weighted OLS Regression</a>
+    </li>
+    <li>
+      <a href="geographically-weighted-poisson-regression.html">Geographically Weighted Poisson Regression</a>
+    </li>
+    <li>
+      <a href="geographically-wighted-random-forest.html">Global and Local (geographically weighted) Random Forest</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Spatial Interpolation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-d.html">Content</a>
+    </li>
+    <li>
+      <a href="deterministic-methods-for-spatial-interpolation.html">Deterministic Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="geostatistical-methods-for-spatial-interpolation.html">Geostatistical Methods for Spatial Interpolation</a>
+    </li>
+    <li>
+      <a href="semivariogram-modeling.html">Semivariogram Modeling</a>
+    </li>
+    <li>
+      <a href="kriging.html">Kriging</a>
+    </li>
+    <li>
+      <a href="ordinary-kriging.html">Ordinary Kriging</a>
+    </li>
+    <li>
+      <a href="universal-kriging.html">Universal Kriging</a>
+    </li>
+    <li>
+      <a href="cokriging.html">Co-Kriging</a>
+    </li>
+    <li>
+      <a href="regression-kriging.html">Regression kriging</a>
+    </li>
+    <li>
+      <a href="indicator-kriging.html">Indicator kriging</a>
+    </li>
+    <li>
+      <a href="assessing-quality-spatial-predictions.html">Assessing the Quality of Spatial Predictions</a>
+    </li>
+    <li>
+      <a href="cross-validation.html">Cross-validation</a>
+    </li>
+    <li>
+      <a href="validation-independent-dataset.html">Validation with an Independent Dataset</a>
+    </li>
+    <li>
+      <a href="conditional-simulation-spatial-uncertainty.html">Conditional Simulation for Spatial Uncertainty</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Remote Sensing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="about-c.html">Content</a>
+    </li>
+    <li>
+      <a href="reomte-sensing-basic.html">Remote Sensing Basic</a>
+    </li>
+    <li>
+      <a href="landsat-8-image-processing.html">Landsat 8 Image Processing &amp; Visualization</a>
+    </li>
+    <li>
+      <a href="spectral-indices.html">Spectral Indices</a>
+    </li>
+    <li>
+      <a href="uav-ground-cover.html">Green Ground Cover from UAV Images</a>
+    </li>
+    <li>
+      <a href="texture-analysis.html">Texture Analysis</a>
+    </li>
+    <li>
+      <a href="image-classification.html">Image Classification</a>
+    </li>
+    <li>
+      <a href="ground-truth-data-processing.html">Ground Truth Data Processing</a>
+    </li>
+    <li>
+      <a href="unsupervised-classification.html">Unsupervised Classification</a>
+    </li>
+    <li>
+      <a href="supervised-classification.html">Supervised Classification</a>
+    </li>
+    <li>
+      <a href="random-forest.html">Random Forest</a>
+    </li>
+    <li>
+      <a href="support-vector-machine.html">Support Vector Machine</a>
+    </li>
+    <li>
+      <a href="naive-bayes.html">Naïve Bayes</a>
+    </li>
+    <li>
+      <a href="exboost.html">eXtreme Gradient Boosting</a>
+    </li>
+    <li>
+      <a href="deep-learning-h2o.html">Deep Learning with H20</a>
+    </li>
+    <li>
+      <a href="deep-learning-keras-tensorflow.html">Deep Learning with Keras-TensorFlow</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:zia207@gmail.com">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+    Email
+  </a>
+</li>
+<li>
+  <a href="http://github.com/zia207">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.linkedin.com/in/zia-ahmed-a7653578">
+    <span class="fa fa-linkedin fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div style="margin-bottom:20px;">
+
+</div>
+<img src="Image/empty_banner.png" width="100%" style="display: block; margin: auto;" />
+<div style="margin-bottom:20px;">
+
+</div>
+<div id="netcdf-data-processing-in-r" class="section level1">
+<h1>netCDF data processing in R</h1>
+<p><a href="https://en.wikipedia.org/wiki/NetCDF">NetCDF (Network Common Data Form)</a> is a set of software libraries and machine-independent data formats that support the creation, access, and sharing of array-oriented scientific data. It is also a community standard for sharing scientific data.</p>
+<p>In this excercie we will use hourly weather data download from global atmospheric reanalysis <a href="https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era-interim">ERA- Interim archive produced by European Centre for Medium-Range Weather Forecasts (ECMWF)</a>. This gridded data product includes a large variety of 3-hourly surface parameters and 6-hourly upper-air parameters covering the troposphere (Dee et al., 2011). We will process hourly data of average temperature for Bangladesh for the month of Januray to March for year 2015.</p>
+<p>The data could avilable <a href="https://apps.ecmwf.int/datasets/data/interim-land/type=fc/">here</a> for download. We used Pyhthon scrip for download data. Detail could be found <a href="https://confluence.ecmwf.int/display/WEBAPI/Access+ECMWF+Public+Datasets">here</a>. The data used in this excersice could be available for download from <a href="https://www.dropbox.com/s/ahz76sm7xtwgk01/Data_NetCDF.7z?dl=0">here</a></p>
+<p>We will use <a href="https://cran.r-project.org/web/packages/ncdf4/index.html">ncdf4</a> packge for processing netCDF data in R.</p>
+<div id="load" class="section level3">
+<h3>Load</h3>
+<pre class="r"><code>library(ncdf4)
+library(PCICt)
+library(RNetCDF)
+library(dplyr)
+library(data.table)
+library(tidyr)
+library(reshape2)
+library(stringr)
+library(raster)</code></pre>
+</div>
+<div id="set-working-directory" class="section level3">
+<h3>Set working directory</h3>
+<pre class="r"><code>dataFolder&lt;-&quot;D:\\Dropbox\\Spatial Data Analysis and Processing in R\\Data_NetCDF\\&quot;</code></pre>
+</div>
+<div id="load-netcdf-file" class="section level3">
+<h3>Load netCDF file</h3>
+<pre class="r"><code>nc &lt;- nc_open(paste0(dataFolder,&quot;data_fc_2015.nc&quot;))
+print(nc)</code></pre>
+<pre><code>## File D:\Dropbox\Spatial Data Analysis and Processing in R\Data_NetCDF\data_fc_2015.nc (NC_FORMAT_64BIT):
+## 
+##      10 variables (excluding dimension variables):
+##         short parcs[longitude,latitude,time]   
+##             scale_factor: 147.101399295012
+##             add_offset: 4819924.44930035
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: J m**-2
+##             long_name: Clear sky surface photosynthetically active radiation
+##         short par[longitude,latitude,time]   
+##             scale_factor: 46.0887949582653
+##             add_offset: 1510145.45560252
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: J m**-2
+##             long_name: Photosynthetically active radiation at the surface
+##         short t2m[longitude,latitude,time]   
+##             scale_factor: 0.000563963986894008
+##             add_offset: 291.025474853944
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: K
+##             long_name: 2 metre temperature
+##         short d2m[longitude,latitude,time]   
+##             scale_factor: 0.000515991227702074
+##             add_offset: 282.454575988761
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: K
+##             long_name: 2 metre dewpoint temperature
+##         short ssr[longitude,latitude,time]   
+##             scale_factor: 380.074115331207
+##             add_offset: 12453508.4629423
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: J m**-2
+##             long_name: Surface net solar radiation
+##             standard_name: surface_net_downward_shortwave_flux
+##         short e[longitude,latitude,time]   
+##             scale_factor: 1.14049848751248e-07
+##             add_offset: -0.00341737326704554
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: m of water equivalent
+##             long_name: Evaporation
+##             standard_name: lwe_thickness_of_water_evaporation_amount
+##         short sund[longitude,latitude,time]   
+##             scale_factor: 0.631596211546091
+##             add_offset: 20694.8814675192
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: s
+##             long_name: Sunshine duration
+##         short mx2t[longitude,latitude,time]   
+##             scale_factor: 0.000545273349877161
+##             add_offset: 291.6391316602
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: K
+##             long_name: Maximum temperature at 2 metres since previous post-processing
+##         short mn2t[longitude,latitude,time]   
+##             scale_factor: 0.000551550751386706
+##             add_offset: 290.586516216812
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: K
+##             long_name: Minimum temperature at 2 metres since previous post-processing
+##         short tp[longitude,latitude,time]   
+##             scale_factor: 5.82932752846431e-07
+##             add_offset: 0.0191003745797662
+##             _FillValue: -32767
+##             missing_value: -32767
+##             units: m
+##             long_name: Total precipitation
+## 
+##      3 dimensions:
+##         longitude  Size:53
+##             units: degrees_east
+##             long_name: longitude
+##         latitude  Size:61
+##             units: degrees_north
+##             long_name: latitude
+##         time  Size:720   *** is unlimited ***
+##             units: hours since 1900-01-01 00:00:0.0
+##             long_name: time
+##             calendar: gregorian
+## 
+##     2 global attributes:
+##         Conventions: CF-1.6
+##         history: 2017-02-20 12:32:41 GMT by grib_to_netcdf-2.1.0: grib_to_netcdf /data/data01/scratch/_mars-atls15-95e2cf679cd58ee9b4db4dd119a05a8d-OvGQNj.grib -o /data/data01/scratch/_grib2netcdf-atls05-95e2cf679cd58ee9b4db4dd119a05a8d-SvnlWs.nc -utime</code></pre>
+</div>
+<div id="extract-long-lat" class="section level3">
+<h3>Extract long &amp; lat</h3>
+<pre class="r"><code>lon &lt;- ncvar_get(nc, &quot;longitude&quot;)
+lat &lt;- ncvar_get(nc, &quot;latitude&quot;)
+station &lt;- expand.grid(lon, lat) 
+colnames(station) &lt;- c(&quot;Lon&quot;, &quot;Lat&quot;)
+station$StationName &lt;- paste(station$Lon, station$Lat, sep = &quot;_&quot;)
+head(station)</code></pre>
+<pre><code>##      Lon Lat StationName
+## 1 86.500  27     86.5_27
+## 2 86.625  27   86.625_27
+## 3 86.750  27    86.75_27
+## 4 86.875  27   86.875_27
+## 5 87.000  27       87_27
+## 6 87.125  27   87.125_27</code></pre>
+</div>
+<div id="extract-year-date-and-time" class="section level3">
+<h3>Extract year, date and time</h3>
+<pre class="r"><code>iTime &lt;- ncvar_get(nc, &quot;time&quot;)
+startDate &lt;- &quot;1900-01-01 00:00:0.0&quot;;
+fTime &lt;- as.PCICt(iTime*3600, cal = &quot;gregorian&quot;, origin = startDate); 
+targetTime &lt;- format(fTime, &quot;%m&quot;)</code></pre>
+</div>
+<div id="create-empty-data-frame" class="section level3">
+<h3>Create empty data-frame</h3>
+<pre class="r"><code>out &lt;- as.data.frame(matrix(nrow=length(targetTime), ncol = length(station$StationName) + 1))                         
+colnames(out) &lt;- c(&quot;Time&quot;, station$StationName)
+out$Time &lt;- format(fTime, &quot;%m/%d/%Y %H:%M&quot;)</code></pre>
+</div>
+<div id="extract-data-temerature" class="section level3">
+<h3>Extract data (Temerature)</h3>
+<pre class="r"><code>var &lt;- ncvar_get(nc, &quot;t2m&quot;) 
+var &lt;- (var - 273.15) # Covert to Degree
+input &lt;- var
+# Write variables in data frame
+for (i in 1:length(station$StationName)) {
+  out[, station$StationName[i]] &lt;- input[lon == station$Lon[i], lat == station$Lat[i] , ]
+}</code></pre>
+</div>
+<div id="create-daily-data" class="section level3">
+<h3>Create daily data</h3>
+<pre class="r"><code>inData&lt;-out
+uniqueDates &lt;- unique(as.Date(inData[, 1], format = &quot;%m/%d/%Y %R&quot;));
+stationNames &lt;- colnames(inData)[-1];
+outVar &lt;- data.frame(matrix(nrow = length(uniqueDates), ncol = length(stationNames) + 1));
+colnames(outVar) &lt;- c(&quot;Time&quot;, stationNames);
+outVar$Time &lt;- uniqueDates;
+for (uDate in 1:length(uniqueDates)) {
+  outVar[uDate, stationNames] &lt;- apply(inData[as.Date(inData$Time, format = &quot;%m/%d/%Y %R&quot;) == uniqueDates[uDate], stationNames], MARGIN = 2, FUN = mean, na.rm = TRUE);
+}
+head(outVar[,1:4])</code></pre>
+<pre><code>##         Time  86.5_27 86.625_27 86.75_27
+## 1 2015-01-01 16.29412  15.85004 15.40644
+## 2 2015-01-02 15.85578  15.42773 14.99982
+## 3 2015-01-03 15.11085  14.69324 14.27569
+## 4 2015-01-04 13.07508  12.77287 12.47058
+## 5 2015-01-05 11.77642  11.53546 11.29444
+## 6 2015-01-06 11.22472  10.91637 10.60802</code></pre>
+</div>
+<div id="create-daily-spatial-data" class="section level3">
+<h3>Create daily spatial data</h3>
+<pre class="r"><code>df&lt;-t(outVar)
+my.names &lt;- df[1,]
+colnames(df) &lt;- my.names
+df &lt;- cbind(Log_Lat = rownames(df), df)
+rownames(df) &lt;- 1:nrow(df)
+mf&lt;-as.data.frame(df)
+mf = mf[-1,]
+lon_lat&lt;-mf[,1]
+lon_lat&lt;-str_split_fixed(lon_lat, &quot;_&quot;, 2)
+lon_lat.df&lt;-as.data.frame(lon_lat)
+colnames(lon_lat.df) &lt;- c(&quot;lon&quot;,&quot;lat&quot;)
+data&lt;-mf[2:92]
+data_xy&lt;-cbind(lon_lat.df,data)
+my.data &lt;- mutate_all(data_xy, function(x) as.numeric(as.character(x)))
+head(my.data[,1:6])</code></pre>
+<pre><code>##      lon lat 2015-01-01 2015-01-02 2015-01-03 2015-01-04
+## 1 86.500  27   16.29412   15.85578   15.11085   13.07508
+## 2 86.625  27   15.85004   15.42773   14.69324   12.77287
+## 3 86.750  27   15.40644   14.99982   14.27569   12.47058
+## 4 86.875  27   14.96244   14.57198   13.85829   12.16816
+## 5 87.000  27   14.51844   14.14408   13.44067   11.86588
+## 6 87.125  27   14.25531   13.82875   13.21692   11.74342</code></pre>
+</div>
+<div id="create-a-spatial-point-data.frame" class="section level2">
+<h2>Create a spatial point data.frame</h2>
+<pre class="r"><code>xy&lt;-my.data[1:2]
+data&lt;- my.data[-1:-2]
+SPDF &lt;- SpatialPointsDataFrame(coords=xy, data=data)
+# define projection
+proj4string(SPDF) &lt;- CRS(&quot;+init=epsg:4326&quot;)
+# repojection to BUTM
+bd&lt;-shapefile(paste0(dataFolder,&quot;BD_Banladesh_BUTM.shp&quot;))
+BUTM&lt;-proj4string(bd)
+SPDF.proj&lt;- spTransform(SPDF,BUTM)</code></pre>
+<pre class="r"><code>plot(SPDF.proj)
+plot(bd, add=TRUE)</code></pre>
+<p><img src="netCDF-data-processing_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div id="cliping-data-with-country-boundary" class="section level3">
+<h3>Cliping data with country boundary</h3>
+<pre class="r"><code>bd.SPDF &lt;-SPDF.proj[bd, ]
+plot(bd.SPDF)
+plot(bd, add=TRUE)</code></pre>
+<p><img src="netCDF-data-processing_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="write-as-csv-file" class="section level3">
+<h3>write as csv file</h3>
+<pre class="r"><code>df.SPDF&lt;-cbind.data.frame(bd.SPDF)
+df.SPDF&lt;-df.SPDF[,-94]
+fwrite(df.SPDF, &quot;t2m_spatial_2015.csv&quot;, row.names = F)</code></pre>
+</div>
+<div id="section" class="section level3">
+<h3></h3>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
