@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578417073695.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2616868790",
+    "id" : "C7305E1A",
+    "lastKnownWriteTime" : 1578417245,
+    "last_content_update" : 1578417245422,
+    "path" : "E:/GitHub/geospatial-r-github/reomte-sensing-basic.Rmd",
+    "project_path" : "reomte-sensing-basic.Rmd",
+    "properties" : {
+        "cursorPosition" : "30,63",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

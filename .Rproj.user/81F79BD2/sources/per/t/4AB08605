@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578356407058.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2602059062",
+    "id" : "4AB08605",
+    "lastKnownWriteTime" : 1578418068,
+    "last_content_update" : 1578418068381,
+    "path" : "E:/GitHub/geospatial-r-github/spectral-indices.Rmd",
+    "project_path" : "spectral-indices.Rmd",
+    "properties" : {
+        "cursorPosition" : "81,76",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

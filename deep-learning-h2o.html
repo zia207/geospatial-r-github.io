@@ -696,11 +696,11 @@ hyper_params</code></pre>
 <pre class="r"><code>grid.dnn@summary_table[1,]</code></pre>
 <pre><code>## Hyper-Parameter Search Summary: ordered by increasing RMSE
 ##   activation            epochs epsilon          hidden input_dropout_ratio
-## 1  Rectifier 44.36138739099293  1.0E-6 [100, 100, 100]                 0.1
+## 1  Rectifier 49.91064448589369  1.0E-6 [100, 100, 100]                 0.1
 ##       l1     l2       max_w2 momentum_stable momentum_start  rate
 ## 1 1.0E-5 1.0E-4 3.4028235E38             0.5            0.5 0.001
-##   rate_annealing   rho           model_ids                rmse
-## 1         1.0E-8 0.999 DNN_grid_ID_model_2 0.47169239387450906</code></pre>
+##   rate_annealing   rho           model_ids               rmse
+## 1         1.0E-8 0.999 DNN_grid_ID_model_2 0.4665611714169148</code></pre>
 </div>
 </div>
 <div id="the-best-model" class="section level3">
@@ -712,19 +712,19 @@ best_model</code></pre>
 ## 
 ## H2OMultinomialModel: deeplearning
 ## Model ID:  DNN_grid_ID_model_2 
-## Status of Neuron Layers: predicting Class, 5-class classification, multinomial distribution, CrossEntropy loss, 21,805 weights/biases, 264.3 KB, 800,074 training samples, mini-batch size 1
+## Status of Neuron Layers: predicting Class, 5-class classification, multinomial distribution, CrossEntropy loss, 21,805 weights/biases, 264.3 KB, 990,047 training samples, mini-batch size 1
 ##   layer units      type dropout       l1       l2 mean_rate rate_rms
 ## 1     1    10     Input 10.00 %       NA       NA        NA       NA
-## 2     2   100 Rectifier  0.00 % 0.000010 0.000100  0.314352 0.382777
-## 3     3   100 Rectifier  0.00 % 0.000010 0.000100  0.076736 0.108464
-## 4     4   100 Rectifier  0.00 % 0.000010 0.000100  0.112963 0.167692
-## 5     5     5   Softmax      NA 0.000010 0.000100  0.175789 0.257652
+## 2     2   100 Rectifier  0.00 % 0.000010 0.000100  0.326439 0.378340
+## 3     3   100 Rectifier  0.00 % 0.000010 0.000100  0.094478 0.125418
+## 4     4   100 Rectifier  0.00 % 0.000010 0.000100  0.113505 0.188188
+## 5     5     5   Softmax      NA 0.000010 0.000100  0.310977 0.371920
 ##   momentum mean_weight weight_rms mean_bias bias_rms
 ## 1       NA          NA         NA        NA       NA
-## 2 0.000000    0.081650   0.762256 -0.416860 0.597625
-## 3 0.000000   -0.158692   0.279110 -0.104362 0.855401
-## 4 0.000000   -0.078609   0.262208 -0.200040 0.740129
-## 5 0.000000   -0.238700   0.492441 -0.070579 0.778065
+## 2 0.000000    0.018042   0.812464 -0.522467 0.717334
+## 3 0.000000   -0.145769   0.334543 -0.111294 1.012745
+## 4 0.000000   -0.073061   0.218634 -0.233580 0.634223
+## 5 0.000000   -0.161464   0.465983 -0.155617 0.847374
 ## 
 ## 
 ## H2OMultinomialMetrics: deeplearning
@@ -734,29 +734,29 @@ best_model</code></pre>
 ## Training Set Metrics: 
 ## =====================
 ## 
-## MSE: (Extract with `h2o.mse`) 0.06432485
-## RMSE: (Extract with `h2o.rmse`) 0.2536234
-## Logloss: (Extract with `h2o.logloss`) 0.4478265
-## Mean Per-Class Error: 0.061628
+## MSE: (Extract with `h2o.mse`) 0.1621272
+## RMSE: (Extract with `h2o.rmse`) 0.4026502
+## Logloss: (Extract with `h2o.logloss`) 1.151394
+## Mean Per-Class Error: 0.3265571
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;,train = TRUE)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
-##         Class_1 Class_2 Class_3 Class_4 Class_5  Error           Rate
-## Class_1    2008     299       4       0       0 0.1311 =  303 / 2,311
-## Class_2      38    1852      16       1       0 0.0288 =   55 / 1,907
-## Class_3     100     179    3082      10       0 0.0857 =  289 / 3,371
-## Class_4       0       0      70    2005       0 0.0337 =   70 / 2,075
-## Class_5       0       0      11       0     372 0.0287 =     11 / 383
-## Totals     2146    2330    3183    2016     372 0.0725 = 728 / 10,047
+##         Class_1 Class_2 Class_3 Class_4 Class_5  Error             Rate
+## Class_1    1707      75     529       0       0 0.2614 =    604 / 2,311
+## Class_2     312    1370     225       0       0 0.2816 =    537 / 1,907
+## Class_3      11      86    3255      19       0 0.0344 =    116 / 3,371
+## Class_4       0       0     115    1960       0 0.0554 =    115 / 2,075
+## Class_5     372       0      11       0       0 1.0000 =      383 / 383
+## Totals     2402    1531    4135    1979       0 0.1747 = 1,755 / 10,047
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;,train = TRUE)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.927541
-## 2 2  0.983079
-## 3 3  0.998905
-## 4 4  0.999204
+## 1 1  0.825321
+## 2 2  0.969344
+## 3 3  0.990345
+## 4 4  0.993232
 ## 5 5  1.000000
 ## 
 ## 
@@ -768,29 +768,29 @@ best_model</code></pre>
 ## =====================
 ## 
 ## Extract validation frame with `h2o.getFrame(&quot;valid.hex&quot;)`
-## MSE: (Extract with `h2o.mse`) 0.06796571
-## RMSE: (Extract with `h2o.rmse`) 0.2607023
-## Logloss: (Extract with `h2o.logloss`) 0.4669448
-## Mean Per-Class Error: 0.06133246
+## MSE: (Extract with `h2o.mse`) 0.1614175
+## RMSE: (Extract with `h2o.rmse`) 0.401768
+## Logloss: (Extract with `h2o.logloss`) 1.150984
+## Mean Per-Class Error: 0.3273979
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;,valid = TRUE)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
 ##         Class_1 Class_2 Class_3 Class_4 Class_5  Error          Rate
-## Class_1     568      90       2       0       0 0.1394 =    92 / 660
-## Class_2      14     522       8       0       0 0.0404 =    22 / 544
-## Class_3      34      61     908       0       0 0.0947 =  95 / 1,003
-## Class_4       0       0      14     592       0 0.0231 =    14 / 606
-## Class_5       0       0       1       0     110 0.0090 =     1 / 111
-## Totals      616     673     933     592     110 0.0766 = 224 / 2,924
+## Class_1     487      23     150       0       0 0.2621 =   173 / 660
+## Class_2      83     395      66       0       0 0.2739 =   149 / 544
+## Class_3       6      32     958       7       0 0.0449 =  45 / 1,003
+## Class_4       0       0      34     572       0 0.0561 =    34 / 606
+## Class_5     110       0       1       0       0 1.0000 =   111 / 111
+## Totals      686     450    1209     579       0 0.1751 = 512 / 2,924
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;,valid = TRUE)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.923393
-## 2 2  0.980164
-## 3 3  0.998632
-## 4 4  0.998632
+## 1 1  0.824897
+## 2 2  0.972298
+## 3 3  0.989398
+## 4 4  0.993502
 ## 5 5  1.000000
 ## 
 ## 
@@ -802,55 +802,55 @@ best_model</code></pre>
 ## =====================
 ## 
 ## Extract cross-validation frame with `h2o.getFrame(&quot;train.hex&quot;)`
-## MSE: (Extract with `h2o.mse`) 0.2224937
-## RMSE: (Extract with `h2o.rmse`) 0.4716924
-## Logloss: (Extract with `h2o.logloss`) 1.447506
-## Mean Per-Class Error: 0.2141296
+## MSE: (Extract with `h2o.mse`) 0.2176793
+## RMSE: (Extract with `h2o.rmse`) 0.4665612
+## Logloss: (Extract with `h2o.logloss`) 1.58871
+## Mean Per-Class Error: 0.1902602
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;,xval = TRUE)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.741045
-## 2 2  0.910558
-## 3 3  0.976766
-## 4 4  0.993235
+## 1 1  0.755185
+## 2 2  0.908340
+## 3 3  0.963181
+## 4 4  0.989742
 ## 5 5  1.000000
 ## 
 ## 
 ## Cross-Validation Metrics Summary: 
-##                               mean         sd cv_1_valid cv_2_valid
-## accuracy                0.76129436 0.10069433 0.60894173  0.8134454
-## err                     0.23870564 0.10069433  0.3910583 0.18655463
-## err_count                    432.8  186.34854      691.0      333.0
-## logloss                   1.569322  0.8497705  2.8955648  1.0047984
-## max_per_class_error      0.5373318 0.19675802 0.81629115 0.40359896
-## mean_per_class_accuracy  0.7820386  0.0797931 0.72296095 0.82128656
-## mean_per_class_error    0.21796137  0.0797931 0.27703905 0.17871346
-## mse                     0.21615447 0.09614596 0.35838065 0.16617437
-## r2                        0.837723 0.07374094 0.73104525   0.878323
-## rmse                     0.4451023 0.09496948   0.598649  0.4076449
+##                               mean          sd cv_1_valid cv_2_valid
+## accuracy                   0.74521  0.11108952  0.7968308  0.7977591
+## err                     0.25479004  0.11108952 0.20316921  0.2022409
+## err_count                    464.0   207.06207      359.0      361.0
+## logloss                  1.8840559   0.7867864  1.7892087  0.9503701
+## max_per_class_error     0.61453813  0.23412584  0.4262295 0.36881188
+## mean_per_class_accuracy 0.76378614 0.081231505  0.8116316  0.8073797
+## mean_per_class_error    0.23621386 0.081231505 0.18836837 0.19262029
+## mse                     0.23068552  0.10052046 0.18404047 0.16855569
+## r2                       0.8271054  0.07564617 0.86188275 0.87657934
+## rmse                    0.45683023  0.10486098  0.4289994 0.41055533
 ##                         cv_3_valid cv_4_valid cv_5_valid cv_6_valid
-## accuracy                 0.4223301 0.71420854 0.76004463 0.76489884
-## err                      0.5776699 0.28579146 0.23995535 0.23510115
-## err_count                   1071.0      529.0      430.0      430.0
-## logloss                  4.3848476  1.4806243  1.0183622   2.271966
-## max_per_class_error      0.9329173  0.5300633  0.5831325        1.0
-## mean_per_class_accuracy  0.5550463  0.7837523  0.7881052 0.62586457
-## mean_per_class_error     0.4449537 0.21624766 0.21189478 0.37413546
-## mse                     0.54586774 0.25048965 0.21005328 0.21728401
-## r2                       0.5816138   0.813702 0.84325176 0.83945787
-## rmse                    0.73882866  0.5004894  0.4583157 0.46613732
-##                          cv_7_valid cv_8_valid cv_9_valid cv_10_valid
-## accuracy                  0.8835429  0.8539945   0.892387  0.89915013
-## err                      0.11645708 0.14600551 0.10761305  0.10084986
-## err_count                     213.0      265.0      188.0       178.0
-## logloss                   1.1200165 0.66056234 0.41387418  0.44260335
-## max_per_class_error      0.20240964 0.38141808 0.35526314   0.1682243
-## mean_per_class_accuracy   0.8935614  0.8086772 0.90142334   0.9197084
-## mean_per_class_error     0.10643856  0.1913228 0.09857668  0.08029163
-## mse                     0.108755335  0.1301781 0.09114152  0.08321996
-## r2                        0.9187562 0.90136594 0.93058336   0.9391314
-## rmse                     0.32978073 0.36080202 0.30189654   0.2884787</code></pre>
+## accuracy                 0.5415318  0.5132361  0.8292411  0.8376162
+## err                     0.45846817 0.48676392 0.17075893 0.16238381
+## err_count                    850.0      901.0      306.0      297.0
+## logloss                  2.1801383   3.716771  1.9398918  1.2666479
+## max_per_class_error     0.87831515  0.8955696        1.0 0.47031963
+## mean_per_class_accuracy  0.6769504 0.65780306 0.67807394  0.8638553
+## mean_per_class_error     0.3230496  0.3421969 0.32192606  0.1361447
+## mse                     0.39675876 0.45254472 0.16529715 0.14711076
+## r2                      0.69589996  0.6634265 0.87665015   0.891306
+## rmse                     0.6298879  0.6727144  0.4065675  0.3835502
+##                         cv_7_valid cv_8_valid  cv_9_valid cv_10_valid
+## accuracy                0.49425915  0.7939394  0.89811105  0.94957507
+## err                      0.5057408  0.2060606 0.101888955  0.05042493
+## err_count                    925.0      374.0       178.0        89.0
+## logloss                  3.5184107  2.6699176   0.4420673  0.36713567
+## max_per_class_error     0.85126585        1.0  0.16842106 0.086448595
+## mean_per_class_accuracy  0.6306085  0.6424307   0.9138918  0.95523626
+## mean_per_class_error     0.3693915 0.35756928   0.0861082  0.04476375
+## mse                     0.46016648 0.19815332  0.08658148  0.04764634
+## r2                       0.6562404 0.84986204  0.93405646   0.9651506
+## rmse                    0.67835575 0.44514415  0.29424733  0.21828042</code></pre>
 <div id="the-best-parameters" class="section level4">
 <h4>The Best parameters</h4>
 <pre class="r"><code>best_params &lt;- best_model@allparameters</code></pre>
@@ -858,8 +858,8 @@ best_model</code></pre>
 <div id="mean-error" class="section level4">
 <h4>Mean error</h4>
 <pre class="r"><code>h2o.mean_per_class_error(best_model, train = TRUE, valid = TRUE, xval = TRUE)</code></pre>
-<pre><code>##      train      valid       xval 
-## 0.06162800 0.06133246 0.21412961</code></pre>
+<pre><code>##     train     valid      xval 
+## 0.3265571 0.3273979 0.1902602</code></pre>
 </div>
 <div id="scoring-history" class="section level4">
 <h4>Scoring history</h4>
@@ -884,17 +884,17 @@ best_model</code></pre>
 <div id="cross-validation-result" class="section level4">
 <h4>Cross validation result</h4>
 <pre class="r"><code>print(best_model@model$cross_validation_metrics_summary%&gt;%.[,c(1,2)])</code></pre>
-<pre><code>##                               mean         sd
-## accuracy                0.76129436 0.10069433
-## err                     0.23870564 0.10069433
-## err_count                    432.8  186.34854
-## logloss                   1.569322  0.8497705
-## max_per_class_error      0.5373318 0.19675802
-## mean_per_class_accuracy  0.7820386  0.0797931
-## mean_per_class_error    0.21796137  0.0797931
-## mse                     0.21615447 0.09614596
-## r2                        0.837723 0.07374094
-## rmse                     0.4451023 0.09496948</code></pre>
+<pre><code>##                               mean          sd
+## accuracy                   0.74521  0.11108952
+## err                     0.25479004  0.11108952
+## err_count                    464.0   207.06207
+## logloss                  1.8840559   0.7867864
+## max_per_class_error     0.61453813  0.23412584
+## mean_per_class_accuracy 0.76378614 0.081231505
+## mean_per_class_error    0.23621386 0.081231505
+## mse                     0.23068552  0.10052046
+## r2                       0.8271054  0.07564617
+## rmse                    0.45683023  0.10486098</code></pre>
 <pre class="r"><code>#capture.output(print(dl_model@model$cross_validation_metrics_summary%&gt;%.[,c(1,2)]),file =  &quot;DL_CV_model_01.txt&quot;)</code></pre>
 </div>
 <div id="model-performance-with-test-data-set" class="section level4">
@@ -908,29 +908,29 @@ best_model</code></pre>
 ## Test Set Metrics: 
 ## =====================
 ## 
-## MSE: (Extract with `h2o.mse`) 0.06543931
-## RMSE: (Extract with `h2o.rmse`) 0.2558111
-## Logloss: (Extract with `h2o.logloss`) 0.4654072
-## Mean Per-Class Error: 0.06202865
+## MSE: (Extract with `h2o.mse`) 0.1624806
+## RMSE: (Extract with `h2o.rmse`) 0.4030888
+## Logloss: (Extract with `h2o.logloss`) 1.16049
+## Mean Per-Class Error: 0.3273881
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;, &lt;data&gt;)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
 ##         Class_1 Class_2 Class_3 Class_4 Class_5  Error             Rate
-## Class_1    3590     567       9       0       0 0.1383 =    576 / 4,166
-## Class_2      83    3201      32       4       0 0.0358 =    119 / 3,320
-## Class_3     173     308    5622      12       0 0.0806 =    493 / 6,115
-## Class_4       0       0     121    3618       0 0.0324 =    121 / 3,739
-## Class_5       0       0      16       0     678 0.0231 =       16 / 694
-## Totals     3846    4076    5800    3634     678 0.0735 = 1,325 / 18,034
+## Class_1    3038     154     973       1       0 0.2708 =  1,128 / 4,166
+## Class_2     545    2384     391       0       0 0.2819 =    936 / 3,320
+## Class_3      15     150    5922      28       0 0.0316 =    193 / 6,115
+## Class_4       0       0     197    3542       0 0.0527 =    197 / 3,739
+## Class_5     678       0      16       0       0 1.0000 =      694 / 694
+## Totals     4276    2688    7499    3571       0 0.1746 = 3,148 / 18,034
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;, &lt;data&gt;)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.926528
-## 2 2  0.982422
-## 3 3  0.998780
-## 4 4  0.999113
+## 1 1  0.825441
+## 2 2  0.968781
+## 3 3  0.989520
+## 4 4  0.993346
 ## 5 5  1.000000</code></pre>
 <pre class="r"><code>h2o.performance(best_model, newdata=valid)     ## full validation data</code></pre>
 <pre><code>## H2OMultinomialMetrics: deeplearning
@@ -938,29 +938,29 @@ best_model</code></pre>
 ## Test Set Metrics: 
 ## =====================
 ## 
-## MSE: (Extract with `h2o.mse`) 0.06796571
-## RMSE: (Extract with `h2o.rmse`) 0.2607023
-## Logloss: (Extract with `h2o.logloss`) 0.4669448
-## Mean Per-Class Error: 0.06133246
+## MSE: (Extract with `h2o.mse`) 0.1614175
+## RMSE: (Extract with `h2o.rmse`) 0.401768
+## Logloss: (Extract with `h2o.logloss`) 1.150984
+## Mean Per-Class Error: 0.3273979
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;, &lt;data&gt;)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
 ##         Class_1 Class_2 Class_3 Class_4 Class_5  Error          Rate
-## Class_1     568      90       2       0       0 0.1394 =    92 / 660
-## Class_2      14     522       8       0       0 0.0404 =    22 / 544
-## Class_3      34      61     908       0       0 0.0947 =  95 / 1,003
-## Class_4       0       0      14     592       0 0.0231 =    14 / 606
-## Class_5       0       0       1       0     110 0.0090 =     1 / 111
-## Totals      616     673     933     592     110 0.0766 = 224 / 2,924
+## Class_1     487      23     150       0       0 0.2621 =   173 / 660
+## Class_2      83     395      66       0       0 0.2739 =   149 / 544
+## Class_3       6      32     958       7       0 0.0449 =  45 / 1,003
+## Class_4       0       0      34     572       0 0.0561 =    34 / 606
+## Class_5     110       0       1       0       0 1.0000 =   111 / 111
+## Totals      686     450    1209     579       0 0.1751 = 512 / 2,924
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;, &lt;data&gt;)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.923393
-## 2 2  0.980164
-## 3 3  0.998632
-## 4 4  0.998632
+## 1 1  0.824897
+## 2 2  0.972298
+## 3 3  0.989398
+## 4 4  0.993502
 ## 5 5  1.000000</code></pre>
 <pre class="r"><code>h2o.performance(best_model, newdata=test)     ## full test data</code></pre>
 <pre><code>## H2OMultinomialMetrics: deeplearning
@@ -968,29 +968,29 @@ best_model</code></pre>
 ## Test Set Metrics: 
 ## =====================
 ## 
-## MSE: (Extract with `h2o.mse`) 0.05622782
-## RMSE: (Extract with `h2o.rmse`) 0.2371241
-## Logloss: (Extract with `h2o.logloss`) 0.4035224
-## Mean Per-Class Error: 0.05159659
+## MSE: (Extract with `h2o.mse`) 0.1735605
+## RMSE: (Extract with `h2o.rmse`) 0.4166059
+## Logloss: (Extract with `h2o.logloss`) 1.208293
+## Mean Per-Class Error: 0.337838
 ## Confusion Matrix: Extract with `h2o.confusionMatrix(&lt;model&gt;, &lt;data&gt;)`)
 ## =========================================================================
 ## Confusion Matrix: Row labels: Actual class; Column labels: Predicted class
 ##         Class_1 Class_2 Class_3 Class_4 Class_5  Error          Rate
-## Class_1     616      92       0       0       0 0.1299 =    92 / 708
-## Class_2      10     551       4       0       0 0.0248 =    14 / 565
-## Class_3      21      45     912       1       0 0.0684 =    67 / 979
-## Class_4       0       0      16     612       0 0.0255 =    16 / 628
-## Class_5       0       0       1       0     106 0.0093 =     1 / 107
-## Totals      647     688     933     613     106 0.0636 = 190 / 2,987
+## Class_1     493      27     187       1       0 0.3037 =   215 / 708
+## Class_2     110     406      49       0       0 0.2814 =   159 / 565
+## Class_3       6      28     941       4       0 0.0388 =    38 / 979
+## Class_4       0       0      41     587       0 0.0653 =    41 / 628
+## Class_5     106       0       1       0       0 1.0000 =   107 / 107
+## Totals      715     461    1219     592       0 0.1875 = 560 / 2,987
 ## 
 ## Hit Ratio Table: Extract with `h2o.hit_ratio_table(&lt;model&gt;, &lt;data&gt;)`
 ## =======================================================================
 ## Top-5 Hit Ratios: 
 ##   k hit_ratio
-## 1 1  0.936391
-## 2 2  0.982926
-## 3 3  0.999665
-## 4 4  0.999665
+## 1 1  0.812521
+## 2 2  0.968195
+## 3 3  0.987948
+## 4 4  0.992635
 ## 5 5  1.000000</code></pre>
 <pre class="r"><code>#capture.output(print(h2o.performance(dl_model,test)),file =  &quot;test_data_model_01.txt&quot;)</code></pre>
 </div>
