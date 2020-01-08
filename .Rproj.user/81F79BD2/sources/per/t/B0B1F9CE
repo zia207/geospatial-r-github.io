@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578417280809.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1739388279",
+    "id" : "B0B1F9CE",
+    "lastKnownWriteTime" : 1578417648,
+    "last_content_update" : 1578417648191,
+    "path" : "E:/GitHub/geospatial-r-github/landsat-8-image-processing.Rmd",
+    "project_path" : "landsat-8-image-processing.Rmd",
+    "properties" : {
+        "cursorPosition" : "95,25",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

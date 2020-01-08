@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578419602513.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "780634898",
+    "id" : "B5578842",
+    "lastKnownWriteTime" : 1578420769,
+    "last_content_update" : 1578420769498,
+    "path" : "E:/GitHub/geospatial-r-github/ground-truth-data-processing.Rmd",
+    "project_path" : "ground-truth-data-processing.Rmd",
+    "properties" : {
+        "cursorPosition" : "47,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 13,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

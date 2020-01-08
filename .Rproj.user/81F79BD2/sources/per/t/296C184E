@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578421365800.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "188035142",
+    "id" : "296C184E",
+    "lastKnownWriteTime" : 1578421566,
+    "last_content_update" : 1578421566725,
+    "path" : "E:/GitHub/geospatial-r-github/support-vector-machine.Rmd",
+    "project_path" : "support-vector-machine.Rmd",
+    "properties" : {
+        "cursorPosition" : "48,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 18,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578497422540.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3204008922",
+    "id" : "C46A19EA",
+    "lastKnownWriteTime" : 1578359542,
+    "last_content_update" : 1578359542,
+    "path" : "E:/GitHub/geospatial-r-github/geographically-weighted-ols-regression.Rmd",
+    "project_path" : "geographically-weighted-ols-regression.Rmd",
+    "properties" : {
+        "cursorPosition" : "349,0",
+        "scrollLine" : "159"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 29,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

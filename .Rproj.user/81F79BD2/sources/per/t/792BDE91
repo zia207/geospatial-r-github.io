@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578429139837.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3988208958",
+    "id" : "792BDE91",
+    "lastKnownWriteTime" : 1578429698,
+    "last_content_update" : 1578429698115,
+    "path" : "E:/GitHub/geospatial-r-github/deep-learning-keras-tensorflow.Rmd",
+    "project_path" : "deep-learning-keras-tensorflow.Rmd",
+    "properties" : {
+        "cursorPosition" : "191,35",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 23,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

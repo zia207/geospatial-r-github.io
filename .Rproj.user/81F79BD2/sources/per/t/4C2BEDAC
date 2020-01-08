@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578422351516.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1259448013",
+    "id" : "4C2BEDAC",
+    "lastKnownWriteTime" : 1578422732,
+    "last_content_update" : 1578422732071,
+    "path" : "E:/GitHub/geospatial-r-github/exboost.Rmd",
+    "project_path" : "exboost.Rmd",
+    "properties" : {
+        "cursorPosition" : "9,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 20,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
