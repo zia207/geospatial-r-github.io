@@ -1,0 +1,42 @@
+---
+title: ''
+---
+<div style="margin-bottom:10px;">
+</div>
+```{r echo=FALSE, out.width='100%', fig.align="center"}
+knitr::include_graphics("E:\\GitHub\\geospatial-r-github\\Image\\empty_banner.png")
+```
+<div style="margin-bottom:20px;">
+</div>
+
+
+# Geographically Weighted Models
+
+When data are not described well by a global model, but data explain better by a suitably localized calibration, in this case, geographical weighted (GW) model, non-stationary spatial statistics, applies to describe local variability of data. For founding localized models at target locations, a moving window weighting technique is applied. Outputs of GW models provide a useful exploratory tool into the nature of the spatial data heterogeneity. Many of these GW models are included in the R (R Core Team 2014) package [GWmodel](https://www.jstatsoft.org/article/view/v063i17). 
+
+
+<div style="margin-bottom:30px;">
+</div>
+
+
+* [Geographically Weighted Summary Statistics](geographically-weighted-summary-statistics.html)
+    
+* [Geographically Weighted Principal Components Analysis](geographically-weighted-principal-components-analysis.html)
+    
+* [Geographically Weighted Regression](geographically-weighted-regression.html)
+
+  - [Geographically Weighted OLS Regression](geographically-weighted-ols-regression.html) 
+ 
+  - [Geographically Weighted Poisson Regression](geographically-weighted-poisson-regression.html)
+  
+  - [Global and Local (geographically weighted) Random Forest](geographically-wighted-random-forest.html)
+
+
+<div style="margin-bottom:30px;">
+</div>
+
+
+
+
+
+
