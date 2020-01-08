@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578432186596.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "208682B5",
+    "lastKnownWriteTime" : 1578455195,
+    "last_content_update" : 1578455195885,
+    "path" : "E:/GitHub/geospatial-r-github/geographically-wighted-random-forest.Rmd",
+    "project_path" : "geographically-wighted-random-forest.Rmd",
+    "properties" : {
+        "cursorPosition" : "158,33",
+        "scrollLine" : "155"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 26,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

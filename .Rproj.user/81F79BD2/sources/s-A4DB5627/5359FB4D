@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578420975986.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5359FB4D",
+    "lastKnownWriteTime" : 1578421021,
+    "last_content_update" : 1578421021664,
+    "path" : "E:/GitHub/geospatial-r-github/supervised-classification.Rmd",
+    "project_path" : "supervised-classification.Rmd",
+    "properties" : {
+        "cursorPosition" : "14,638",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 16,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

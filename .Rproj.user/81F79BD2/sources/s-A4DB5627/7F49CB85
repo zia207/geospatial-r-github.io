@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578422053324.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7F49CB85",
+    "lastKnownWriteTime" : 1578422522,
+    "last_content_update" : 1578422522841,
+    "path" : "E:/GitHub/geospatial-r-github/naive-bayes.Rmd",
+    "project_path" : "naive-bayes.Rmd",
+    "properties" : {
+        "cursorPosition" : "138,75",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 19,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
